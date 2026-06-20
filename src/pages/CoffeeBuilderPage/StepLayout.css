@@ -1,0 +1,41 @@
+/* Shared step layout styles */
+.step-layout {
+  padding-block: var(--space-2);
+}
+
+.step-layout__header {
+  margin-bottom: var(--space-6);
+}
+
+.step-layout__emoji {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: var(--space-2);
+}
+
+.step-layout__title {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2);
+}
+
+.step-layout__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.step-layout__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+@media (max-width: 480px) {
+  .step-layout__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+}

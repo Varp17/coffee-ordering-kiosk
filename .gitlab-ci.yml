@@ -1,0 +1,26 @@
+image: node:20-alpine
+
+# Cache node_modules between builds to speed up the build process
+cache:
+  paths:
+    - .npm/
+
+before_script:
+  - npm ci --cache .npm --prefer-offline
+
+pages:
+  stage: deploy
+  script:
+    - npm run build
+    # GitLab Pages serves content from a directory named 'public'.
+    # Since Vite outputs to 'dist', we remove the source 'public/' directory
+    # (its contents were copied to 'dist/' during the build) and rename 'dist' to 'public'.
+    - rm -rf public
+    - mv dist public
+    # Duplicate index.html to 404.html for client-side routing fallback
+    - cp public/index.html public/404.html
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == "Dev-Varun"

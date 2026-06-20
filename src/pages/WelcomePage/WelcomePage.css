@@ -7,7 +7,6 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #1844AB;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,26 +14,68 @@
   overflow: hidden;
   padding: 2rem;
   box-sizing: border-box;
+
+  /*
+    Base color blend from the Figma Welcome screen.
+    Subtract.svg supplies the exact exported graffiti/outline artwork above it.
+  */
+  background:
+    radial-gradient(
+      88% 110% at 25% 68%,
+      #18A5F1 0%,
+      #138EEA 24%,
+      #1C67D2 54%,
+      rgba(28, 73, 171, 0) 79%
+    ),
+    linear-gradient(112deg, #0D84ED 0%, #165ED0 48%, #1B45AA 100%);
 }
 
-/* ── Background pattern (subtle coffee bean shapes) ──── */
-.welcome-bg-pattern {
+/* ── Exact exported Figma graffiti artwork ───────────── */
+.welcome-figma-graffiti {
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(ellipse 50px 65px at 10% 20%, rgba(255,255,255,0.04) 0%, transparent 70%),
-    radial-gradient(ellipse 40px 55px at 85% 15%, rgba(255,255,255,0.035) 0%, transparent 70%),
-    radial-gradient(ellipse 55px 70px at 25% 75%, rgba(255,255,255,0.04) 0%, transparent 70%),
-    radial-gradient(ellipse 45px 60px at 70% 80%, rgba(255,255,255,0.035) 0%, transparent 70%),
-    radial-gradient(ellipse 35px 50px at 50% 45%, rgba(255,255,255,0.03) 0%, transparent 70%),
-    radial-gradient(ellipse 60px 75px at 90% 50%, rgba(255,255,255,0.04) 0%, transparent 70%),
-    radial-gradient(ellipse 50px 65px at 5% 55%, rgba(255,255,255,0.035) 0%, transparent 70%),
-    radial-gradient(ellipse 40px 55px at 40% 10%, rgba(255,255,255,0.03) 0%, transparent 70%),
-    radial-gradient(ellipse 55px 70px at 60% 90%, rgba(255,255,255,0.04) 0%, transparent 70%),
-    radial-gradient(ellipse 45px 60px at 15% 40%, rgba(255,255,255,0.035) 0%, transparent 70%),
-    radial-gradient(ellipse 35px 50px at 75% 35%, rgba(255,255,255,0.03) 0%, transparent 70%),
-    radial-gradient(ellipse 50px 65px at 35% 60%, rgba(255,255,255,0.04) 0%, transparent 70%);
+  z-index: 0;
+  overflow: hidden;
   pointer-events: none;
+}
+
+.welcome-figma-graffiti::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background:
+    radial-gradient(
+      62% 75% at 48% 49%,
+      rgba(30, 185, 255, 0.15) 0%,
+      rgba(30, 185, 255, 0) 72%
+    ),
+    linear-gradient(
+      116deg,
+      rgba(105, 233, 255, 0.10) 0%,
+      rgba(105, 233, 255, 0) 52%
+    );
+  mix-blend-mode: screen;
+}
+
+.welcome-figma-graffiti img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: max(100%, calc(100vh * 1.6357));
+  height: auto;
+  min-height: 100%;
+  max-width: none;
+  user-select: none;
+  transform: translate(-50%, -50%);
+}
+
+/* Keep all interactive content above the Figma layer. */
+.welcome-logo,
+.welcome-content,
+.welcome-cta-wrapper {
+  position: relative;
+  z-index: 3;
 }
 
 /* ── Logo ─────────────────────────────────────────────── */
@@ -46,7 +87,7 @@
   font-weight: 700;
   color: #FFFFFF;
   letter-spacing: 0.01em;
-  z-index: 2;
+  z-index: 3;
 }
 
 /* ── Content ──────────────────────────────────────────── */
@@ -56,7 +97,7 @@
   align-items: center;
   width: 100%;
   max-width: 700px;
-  z-index: 2;
+  z-index: 3;
 }
 
 /* ── Heading ──────────────────────────────────────────── */
@@ -163,7 +204,7 @@
 .welcome-cta-wrapper {
   position: absolute;
   bottom: clamp(2rem, 6vh, 4rem);
-  z-index: 2;
+  z-index: 3;
 }
 
 .welcome-cta {
@@ -231,5 +272,25 @@
 
   .welcome-subtitle {
     margin-bottom: 0.5rem;
+  }
+}
+
+
+/* Match the 1512 × 925 export on portrait phones while keeping its centre aligned. */
+@media (max-width: 600px) {
+  .welcome-figma-graffiti img {
+    width: max(100%, calc(100vh * 1.6357));
+  }
+}
+
+@media (max-height: 650px) {
+  .welcome-figma-graffiti img {
+    width: max(100%, calc(100vh * 1.6357));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-figma-graffiti::after {
+    mix-blend-mode: normal;
   }
 }

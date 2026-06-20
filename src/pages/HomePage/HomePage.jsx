@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
 import { PRODUCTS } from '@/data/products';
@@ -148,27 +149,49 @@ function injectDynamicHeroText(svgDoc, displayName, suffix) {
 }
 
 function hideStaticPlaceholders(svgDoc) {
-  // Hide Static Video Card placeholder (Rect 34)
+  // Hide the original full-width video placeholder. The React overlay supplies this video.
   const videoRect = svgDoc.querySelector('rect[y="3460"]');
-  if (videoRect) {
-    videoRect.style.display = 'none';
-  }
+  if (videoRect) videoRect.style.display = 'none';
 
-  // Hide background rect pattern0_366_1172 (image0_366_1172)
+  // Keep the hero free of the original raster background so live content can sit above it.
   const bgRect = svgDoc.querySelector('rect[fill^="url(#pattern0_366_1172"]');
-  if (bgRect) {
-    bgRect.style.display = 'none';
-  }
+  if (bgRect) bgRect.style.display = 'none';
 
-  // Hide Static Video Card Play Button
   const pathsList = svgDoc.querySelectorAll('path');
   for (const p of pathsList) {
     const d = p.getAttribute('d') || '';
-    if (d.startsWith('M786.321 3804.13')) {
+
+    // Original play controls inside the exported SVG.
+    if (
+      d.startsWith('M786.321 3804.13') ||
+      d.startsWith('M786.321 4730.13')
+    ) {
       p.style.display = 'none';
-      break;
     }
   }
+
+  // Hide every exported trending-card element after the section title. This is
+  // intentionally done by inspecting the clip-path value rather than relying on a
+  // brittle CSS selector, so the original tags/arrows cannot leak below the live rail.
+  const staticMixesGroup = Array.from(svgDoc.querySelectorAll('g')).find((group) =>
+    group.getAttribute('clip-path')?.includes('clip25_366_1172')
+  );
+
+  if (staticMixesGroup) {
+    Array.from(staticMixesGroup.children).forEach((child, index) => {
+      // Keep only: 0 = pale section background, 1 = original section heading.
+      if (index >= 2) {
+        child.setAttribute('display', 'none');
+        child.style.display = 'none';
+      }
+    });
+  }
+
+  // Remove the black bento-video placeholder. coffeeswirl1.mp4 replaces it.
+  const bentoVideoPlaceholder = svgDoc.querySelector(
+    'rect[x="422"][y="4478"]'
+  );
+  if (bentoVideoPlaceholder) bentoVideoPlaceholder.style.display = 'none';
 }
 
 // ── INFINITE TRENDING MIXES CAROUSEL ──────────────────────────────────
@@ -211,17 +234,256 @@ function TrendingMixCards({ duplicate = false }) {
   ));
 }
 
+
+// ── BENTO SOCIAL POSTS: ROTATING SLIDE SETS ────────────────────────────
+const BENTO_SOCIAL_SLOTS = ['quote', 'feature', 'amazon', 'tweet', 'reddit'];
+
+const BENTO_POST_SETS = [
+  {
+    quote: {
+      kind: 'social',
+      platform: 'facebook',
+      author: 'Bangalore Buzz',
+      handle: '@bangalorebuzz',
+      body: 'Finally a coffee brand that doesn’t judge my weird combinations.',
+      source: 'facebook',
+    },
+    feature: {
+      kind: 'promo',
+      eyebrow: 'CHILLD COFFEE',
+      headline: 'Coffee should look like this.',
+      supporting: 'Water shouldn’t.',
+      imageProductId: 'p016',
+      tone: 'blue',
+    },
+    amazon: {
+      kind: 'rating',
+      platform: 'amazon',
+      score: '5.0',
+      stars: '★★★★★',
+      body: 'Based on 128 reviews',
+      source: 'amazon',
+    },
+    tweet: {
+      kind: 'social',
+      platform: 'x',
+      author: 'Corporate Launda',
+      handle: '@corporatelaunda',
+      body: 'Meeting se pehle CHILLD leliya. Survived somehow.',
+      source: '𝕏',
+    },
+    reddit: {
+      kind: 'social',
+      platform: 'reddit',
+      author: 'Riya Works All Day',
+      handle: '@riyaworksallday',
+      body: 'Made my own drink and honestly… this might ruin normal coffee for me now.',
+      source: 'reddit',
+    },
+  },
+  {
+    quote: {
+      kind: 'social',
+      platform: 'facebook',
+      author: 'Coffee Corner',
+      handle: '@coffee_corner',
+      body: 'Effort will collide to roast the fear they and quick delivery.',
+      source: 'facebook',
+    },
+    feature: {
+      kind: 'promo',
+      eyebrow: 'BREWED FOR YOU',
+      headline: 'Pure energy in every cup.',
+      supporting: 'Built for slow mornings.',
+      imageProductId: 'p013',
+      tone: 'espresso',
+    },
+    amazon: {
+      kind: 'rating',
+      platform: 'google',
+      score: '4.9',
+      stars: '★★★★★',
+      body: 'Loved by coffee people near you',
+      source: 'Google Maps',
+    },
+    tweet: {
+      kind: 'social',
+      platform: 'x',
+      author: 'Aman',
+      handle: '@living.learned',
+      body: 'Have a latte must try ❤️ A perfect morning latte!!!',
+      source: '𝕏',
+    },
+    reddit: {
+      kind: 'social',
+      platform: 'reddit',
+      author: 'Rohit B.',
+      handle: '@rohit_brews',
+      body: 'This perfect morning latte I have stored is making me want another right now.',
+      source: 'reddit',
+    },
+  },
+  {
+    quote: {
+      kind: 'social',
+      platform: 'instagram',
+      author: 'Caffeine Journal',
+      handle: '@caffeinejournal',
+      body: 'The one coffee stop that gets your strange order exactly right.',
+      source: 'instagram',
+    },
+    feature: {
+      kind: 'promo',
+      eyebrow: 'GARDEN COLLECTION',
+      headline: 'A little calm in every pour.',
+      supporting: 'Bright, soft, and brewed fresh.',
+      imageProductId: 'p014',
+      tone: 'garden',
+    },
+    amazon: {
+      kind: 'rating',
+      platform: 'amazon',
+      score: '5.0',
+      stars: '★★★★★',
+      body: 'Worth the five-star morning',
+      source: 'amazon',
+    },
+    tweet: {
+      kind: 'social',
+      platform: 'x',
+      author: 'Aler R.',
+      handle: '@aler_sips',
+      body: 'When coffee news is both fun and there’s more coffee in it… what else do you need?',
+      source: '𝕏',
+    },
+    reddit: {
+      kind: 'social',
+      platform: 'reddit',
+      author: 'Made by You',
+      handle: '@madebyyou',
+      body: 'Not many of the unique coffee recipe ideas I’ve ever seen made this simple.',
+      source: 'reddit',
+    },
+  },
+];
+
+const BENTO_PLATFORM_LABELS = {
+  facebook: 'f',
+  instagram: '◎',
+  x: '𝕏',
+  reddit: '●',
+  amazon: 'amazon',
+  google: 'G',
+};
+
+function BentoSocialCard({ slot, post, phase, cycle }) {
+  const productImage = post.imageProductId
+    ? PRODUCTS.find((product) => product.id === post.imageProductId)?.image
+    : null;
+
+  const cardClassName = [
+    'bento-social-card',
+    `bento-social-card--${slot}`,
+    `bento-social-card--${post.kind}`,
+    post.platform ? `bento-social-card--${post.platform}` : '',
+    post.tone ? `bento-social-card--${post.tone}` : '',
+    `bento-social-card--${phase}`,
+  ].filter(Boolean).join(' ');
+
+  if (post.kind === 'promo') {
+    return (
+      <article
+        key={`${slot}-${phase}-${cycle}`}
+        className={cardClassName}
+        aria-label={post.headline}
+      >
+        <div className="bento-social-card__promo-copy">
+          <span className="bento-social-card__promo-eyebrow">{post.eyebrow}</span>
+          <h3>{post.headline}</h3>
+          <p>{post.supporting}</p>
+        </div>
+
+        {productImage && (
+          <img
+            className="bento-social-card__promo-image"
+            src={productImage}
+            alt=""
+            aria-hidden="true"
+          />
+        )}
+      </article>
+    );
+  }
+
+  if (post.kind === 'rating') {
+    return (
+      <article
+        key={`${slot}-${phase}-${cycle}`}
+        className={cardClassName}
+        aria-label={`${post.platform} rating ${post.score}`}
+      >
+        <span className="bento-social-card__rating-brand">{post.platform}</span>
+        <span className="bento-social-card__rating-stars">{post.stars}</span>
+        <div className="bento-social-card__rating-row">
+          <strong>{post.score}</strong>
+          <span>{post.body}</span>
+        </div>
+      </article>
+    );
+  }
+
+  return (
+    <article
+      key={`${slot}-${phase}-${cycle}`}
+      className={cardClassName}
+      aria-label={`${post.platform} post by ${post.author}`}
+    >
+      <div className="bento-social-card__meta">
+        <span
+          className={`bento-social-card__platform bento-social-card__platform--${post.platform}`}
+          aria-hidden="true"
+        >
+          {BENTO_PLATFORM_LABELS[post.platform] ?? post.platform}
+        </span>
+        <span className="bento-social-card__author">{post.author}</span>
+      </div>
+
+      <p className="bento-social-card__body">{post.body}</p>
+
+      <div className="bento-social-card__footer">
+        <span>{post.handle}</span>
+        <span>{post.source}</span>
+      </div>
+    </article>
+  );
+}
+
 export default function HomePage() {
   const getHeroText = useUserStore((state) => state.getHeroText);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
 
 
   const videoRef = useRef(null);
-  const carouselViewportRef = useRef(null);
+  const scrollVideoTriggerRef = useRef(null);
+  const scrollVideoFullscreenRef = useRef(null);
+  const scrollVideoModeRef = useRef('inline');
+  const scrollVideoExitTimerRef = useRef(null);
+  const bentoVideoRef = useRef(null);
+  const bentoOutgoingTimerRef = useRef(null);
+  const bentoActiveSetRef = useRef(0);
+  const carouselTrackRef = useRef(null);
+  const carouselFirstGroupRef = useRef(null);
+  const carouselFrameRef = useRef(null);
+  const carouselPositionRef = useRef(0);
+  const carouselGroupWidthRef = useRef(0);
+  const carouselPausedRef = useRef(false);
   const carouselResumeTimerRef = useRef(null);
+  const carouselPointerStartRef = useRef(null);
 
   const [isPaused, setIsPaused] = useState(false);
-  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+  const [scrollVideoMode, setScrollVideoMode] = useState('inline');
+  const [activeBentoPostSet, setActiveBentoPostSet] = useState(0);
+  const [outgoingBentoPostSet, setOutgoingBentoPostSet] = useState(null);
 
   const videoStyles = {
     position: 'absolute',
@@ -234,12 +496,21 @@ export default function HomePage() {
     overflow: 'hidden'
   };
 
-  const handleVideoClick = (e) => {
-    e.stopPropagation();
-    const video = videoRef.current;
+  const updateScrollVideoMode = (nextMode) => {
+    if (scrollVideoModeRef.current === nextMode) return;
+    scrollVideoModeRef.current = nextMode;
+    setScrollVideoMode(nextMode);
+  };
+
+  const handleVideoClick = (event, targetVideoRef = videoRef) => {
+    event.stopPropagation();
+
+    const video = targetVideoRef.current;
     if (!video) return;
+
     if (video.paused) {
-      video.play().catch(err => console.log('Playback error:', err));
+      video.muted = true;
+      video.play().catch(() => {});
       setIsPaused(false);
     } else {
       video.pause();
@@ -260,94 +531,287 @@ export default function HomePage() {
     }
   }, [displayName, suffix]);
 
-  // Start in the middle duplicated set so both previous and next navigation loop naturally.
+  // Keep the central social-grid video playing as soon as the browser allows it.
   useEffect(() => {
-    const viewport = carouselViewportRef.current;
-    if (!viewport) return undefined;
+    const video = bentoVideoRef.current;
+    if (!video) return undefined;
 
-    const setInitialCarouselPosition = () => {
-      const groupWidth = viewport.scrollWidth / 3;
-      if (groupWidth > 0) viewport.scrollLeft = groupWidth;
+    const forcePlay = () => {
+      video.muted = true;
+      video.play().catch(() => {});
     };
 
-    const frameId = requestAnimationFrame(setInitialCarouselPosition);
-    window.addEventListener('resize', setInitialCarouselPosition);
+    forcePlay();
+    video.addEventListener('canplay', forcePlay);
+    document.addEventListener('visibilitychange', forcePlay);
 
     return () => {
-      cancelAnimationFrame(frameId);
-      window.removeEventListener('resize', setInitialCarouselPosition);
+      video.removeEventListener('canplay', forcePlay);
+      document.removeEventListener('visibilitychange', forcePlay);
     };
   }, []);
 
-  // Continuous automatic movement with a seamless reset at the duplicated card set.
+  // The inline video becomes a true viewport layer when the user reaches it.
+  // Scroll remains enabled: moving beyond the video triggers a short exit animation.
   useEffect(() => {
-    const viewport = carouselViewportRef.current;
-    if (!viewport) return undefined;
+    const updateScrollVideoFromPosition = () => {
+      const trigger = scrollVideoTriggerRef.current;
+      if (!trigger) return;
 
-    let frameId;
-    let previousTime = performance.now();
-    const speed = 0.035; // pixels per millisecond
+      const triggerTop = trigger.getBoundingClientRect().top;
+      const viewportHeight = window.innerHeight;
+      const enterLine = viewportHeight * 0.70;
+      const exitLine = -viewportHeight * 0.56;
 
-    const animateCarousel = (currentTime) => {
-      const elapsed = currentTime - previousTime;
-      previousTime = currentTime;
+      if (triggerTop > enterLine) {
+        window.clearTimeout(scrollVideoExitTimerRef.current);
+        updateScrollVideoMode('inline');
+        return;
+      }
 
-      if (!isCarouselPaused) {
-        const groupWidth = viewport.scrollWidth / 3;
+      if (triggerTop > exitLine) {
+        window.clearTimeout(scrollVideoExitTimerRef.current);
+        updateScrollVideoMode('fullscreen');
+        return;
+      }
 
-        if (groupWidth > 0) {
-          viewport.scrollLeft += elapsed * speed;
+      if (
+        scrollVideoModeRef.current !== 'exiting' &&
+        scrollVideoModeRef.current !== 'after'
+      ) {
+        updateScrollVideoMode('exiting');
+        window.clearTimeout(scrollVideoExitTimerRef.current);
+        scrollVideoExitTimerRef.current = window.setTimeout(() => {
+          updateScrollVideoMode('after');
+        }, 560);
+      }
+    };
 
-          if (viewport.scrollLeft >= groupWidth * 2) {
-            viewport.scrollLeft -= groupWidth;
-          }
+    let frameId = 0;
+    const handleScrollOrResize = () => {
+      if (frameId) return;
+
+      frameId = window.requestAnimationFrame(() => {
+        updateScrollVideoFromPosition();
+        frameId = 0;
+      });
+    };
+
+    updateScrollVideoFromPosition();
+    window.addEventListener('scroll', handleScrollOrResize, { passive: true });
+    window.addEventListener('resize', handleScrollOrResize);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.clearTimeout(scrollVideoExitTimerRef.current);
+      window.removeEventListener('scroll', handleScrollOrResize);
+      window.removeEventListener('resize', handleScrollOrResize);
+    };
+  }, []);
+
+  // Handoff playback between the inline card and its fixed fullscreen counterpart.
+  useEffect(() => {
+    const inlineVideo = videoRef.current;
+    const fullscreenVideo = scrollVideoFullscreenRef.current;
+    const isFullscreenStage =
+      scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting';
+
+    if (isFullscreenStage && fullscreenVideo) {
+      if (inlineVideo && Number.isFinite(inlineVideo.currentTime)) {
+        try {
+          fullscreenVideo.currentTime = inlineVideo.currentTime;
+        } catch {
+          // Setting currentTime can be blocked until metadata has loaded; autoplay still works.
         }
       }
 
-      frameId = requestAnimationFrame(animateCarousel);
+      inlineVideo?.pause();
+      fullscreenVideo.muted = true;
+      fullscreenVideo.play().catch(() => {});
+      setIsPaused(false);
+      return;
+    }
+
+    if (scrollVideoMode === 'inline' && inlineVideo) {
+      if (fullscreenVideo && Number.isFinite(fullscreenVideo.currentTime)) {
+        try {
+          inlineVideo.currentTime = fullscreenVideo.currentTime;
+        } catch {
+          // The inline video continues from its current frame when metadata is unavailable.
+        }
+      }
+
+      fullscreenVideo?.pause();
+      inlineVideo.muted = true;
+      inlineVideo.play().catch(() => {});
+      setIsPaused(false);
+    }
+
+    if (scrollVideoMode === 'after') {
+      fullscreenVideo?.pause();
+    }
+  }, [scrollVideoMode]);
+
+  // Each set replaces the social cards every 4.8 seconds. The prior set is kept
+  // for a short moment so it can slide out while the next set slides in.
+  useEffect(() => {
+    const rotateBentoPosts = () => {
+      const current = bentoActiveSetRef.current;
+      const next = (current + 1) % BENTO_POST_SETS.length;
+
+      setOutgoingBentoPostSet(current);
+      setActiveBentoPostSet(next);
+      bentoActiveSetRef.current = next;
+
+      window.clearTimeout(bentoOutgoingTimerRef.current);
+      bentoOutgoingTimerRef.current = window.setTimeout(() => {
+        setOutgoingBentoPostSet(null);
+      }, 650);
     };
 
-    frameId = requestAnimationFrame(animateCarousel);
+    const intervalId = window.setInterval(rotateBentoPosts, 4800);
 
-    return () => cancelAnimationFrame(frameId);
-  }, [isCarouselPaused]);
+    return () => {
+      window.clearInterval(intervalId);
+      window.clearTimeout(bentoOutgoingTimerRef.current);
+    };
+  }, []);
 
-  const pauseMixCarousel = () => setIsCarouselPaused(true);
+  // The carousel moves with translate3d instead of native scrollLeft. This avoids
+  // smooth-scroll and requestAnimationFrame fighting each other on smaller devices.
+  const normalizeCarouselPosition = () => {
+    const groupWidth = carouselGroupWidthRef.current;
+    if (!groupWidth) return;
 
-  const resumeMixCarousel = () => setIsCarouselPaused(false);
+    while (carouselPositionRef.current <= -groupWidth * 2) {
+      carouselPositionRef.current += groupWidth;
+    }
+
+    while (carouselPositionRef.current > -groupWidth) {
+      carouselPositionRef.current -= groupWidth;
+    }
+  };
+
+  const renderCarouselPosition = (animated = false) => {
+    const track = carouselTrackRef.current;
+    if (!track) return;
+
+    track.style.transition = animated
+      ? 'transform 460ms cubic-bezier(0.22, 1, 0.36, 1)'
+      : 'none';
+    track.style.transform = `translate3d(${carouselPositionRef.current}px, 0, 0)`;
+  };
+
+  const pauseMixCarousel = () => {
+    carouselPausedRef.current = true;
+    window.clearTimeout(carouselResumeTimerRef.current);
+  };
+
+  const resumeMixCarousel = (delay = 350) => {
+    window.clearTimeout(carouselResumeTimerRef.current);
+    carouselResumeTimerRef.current = window.setTimeout(() => {
+      carouselPausedRef.current = false;
+    }, delay);
+  };
+
+  // Measure after paint and whenever the viewport changes so every device starts
+  // from the middle duplicate set with a valid, seamless loop position.
+  useEffect(() => {
+    const measureCarousel = () => {
+      const groupWidth = carouselFirstGroupRef.current?.getBoundingClientRect().width || 0;
+      if (!groupWidth) return;
+
+      carouselGroupWidthRef.current = groupWidth;
+      carouselPositionRef.current = -groupWidth;
+      renderCarouselPosition(false);
+    };
+
+    const frameId = requestAnimationFrame(measureCarousel);
+    const resizeObserver = typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(measureCarousel)
+      : null;
+
+    if (carouselFirstGroupRef.current) {
+      resizeObserver?.observe(carouselFirstGroupRef.current);
+    }
+
+    window.addEventListener('resize', measureCarousel);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', measureCarousel);
+    };
+  }, []);
+
+  // Continuous automatic movement. It is deliberately paused while hovering,
+  // touching, focusing, or using navigation so the rail never feels stuck.
+  useEffect(() => {
+    let previousTime = performance.now();
+
+    const animateCarousel = (currentTime) => {
+      const elapsed = Math.min(currentTime - previousTime, 64);
+      previousTime = currentTime;
+
+      if (!carouselPausedRef.current && carouselGroupWidthRef.current) {
+        carouselPositionRef.current -= elapsed * 0.024;
+        normalizeCarouselPosition();
+        renderCarouselPosition(false);
+      }
+
+      carouselFrameRef.current = requestAnimationFrame(animateCarousel);
+    };
+
+    carouselFrameRef.current = requestAnimationFrame(animateCarousel);
+
+    return () => cancelAnimationFrame(carouselFrameRef.current);
+  }, []);
 
   const moveMixCarousel = (direction) => {
-    const viewport = carouselViewportRef.current;
-    if (!viewport) return;
+    const card = carouselTrackRef.current?.querySelector('.trending-mix-card');
+    const group = carouselFirstGroupRef.current;
+    const groupWidth = carouselGroupWidthRef.current;
+    if (!card || !group || !groupWidth) return;
 
-    const card = viewport.querySelector('.trending-mix-card');
-    const group = viewport.querySelector('.trending-mixes-marquee__group');
-    if (!card || !group) return;
+    const styles = window.getComputedStyle(group);
+    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+    const moveDistance = card.getBoundingClientRect().width + gap;
 
-    const cardWidth = card.getBoundingClientRect().width;
-    const gap = parseFloat(window.getComputedStyle(group).gap) || 0;
-    const moveDistance = cardWidth + gap;
-    const groupWidth = viewport.scrollWidth / 3;
+    pauseMixCarousel();
+    carouselPositionRef.current -= direction * moveDistance;
+    normalizeCarouselPosition();
+    renderCarouselPosition(true);
+    resumeMixCarousel(900);
+  };
 
-    setIsCarouselPaused(true);
-    window.clearTimeout(carouselResumeTimerRef.current);
+  const handleCarouselPointerDown = (event) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
 
-    if (direction < 0 && viewport.scrollLeft - moveDistance <= 0) {
-      viewport.scrollLeft += groupWidth;
+    carouselPointerStartRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+    pauseMixCarousel();
+  };
+
+  const handleCarouselPointerUp = (event) => {
+    const start = carouselPointerStartRef.current;
+    carouselPointerStartRef.current = null;
+
+    if (!start) {
+      resumeMixCarousel();
+      return;
     }
 
-    if (direction > 0 && viewport.scrollLeft + moveDistance >= groupWidth * 2) {
-      viewport.scrollLeft -= groupWidth;
+    const xDistance = event.clientX - start.x;
+    const yDistance = event.clientY - start.y;
+
+    if (Math.abs(xDistance) > 42 && Math.abs(xDistance) > Math.abs(yDistance)) {
+      moveMixCarousel(xDistance > 0 ? -1 : 1);
+      return;
     }
 
-    viewport.scrollBy({
-      left: direction * moveDistance,
-      behavior: 'smooth',
-    });
-
-    carouselResumeTimerRef.current = window.setTimeout(() => {
-      setIsCarouselPaused(false);
-    }, 1800);
+    resumeMixCarousel();
   };
 
   useEffect(() => () => {
@@ -378,33 +842,64 @@ export default function HomePage() {
           }}
         />
 
-        {/* ── COFFEESWIRL1 BACKGROUND VIDEO OVERLAY ── */}
-        <div className="coffeeswirl-video-bg">
+        {/* ── BENTO GRID: CENTRAL COFFEESWIRL1 VIDEO ── */}
+        <div className="bento-video-card">
           <video
+            ref={bentoVideoRef}
             src="/Videos/coffeeswirl1.mp4"
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
+            aria-label="Coffee swirl video"
           />
         </div>
 
+        {/* ── BENTO GRID: STATIC POSTER + ROTATING SOCIAL POSTS ── */}
+        <div className="bento-grid-hover-card bento-grid-hover-card--poster" aria-hidden="true" />
+
+        {outgoingBentoPostSet !== null && BENTO_SOCIAL_SLOTS.map((slot) => (
+          <BentoSocialCard
+            key={`bento-leave-${outgoingBentoPostSet}-${slot}`}
+            slot={slot}
+            post={BENTO_POST_SETS[outgoingBentoPostSet][slot]}
+            phase="leave"
+            cycle={outgoingBentoPostSet}
+          />
+        ))}
+
+        {BENTO_SOCIAL_SLOTS.map((slot) => (
+          <BentoSocialCard
+            key={`bento-enter-${activeBentoPostSet}-${slot}`}
+            slot={slot}
+            post={BENTO_POST_SETS[activeBentoPostSet][slot]}
+            phase="enter"
+            cycle={activeBentoPostSet}
+          />
+        ))}
 
         {/* ── INFINITE TRENDING MIXES CAROUSEL ── */}
         <section
           className="trending-mixes-marquee"
           aria-label="Trending coffee mixes"
           onMouseEnter={pauseMixCarousel}
-          onMouseLeave={resumeMixCarousel}
+          onMouseLeave={() => resumeMixCarousel()}
           onFocusCapture={pauseMixCarousel}
-          onBlurCapture={resumeMixCarousel}
+          onBlurCapture={() => resumeMixCarousel()}
+          onPointerDown={handleCarouselPointerDown}
+          onPointerUp={handleCarouselPointerUp}
+          onPointerCancel={() => resumeMixCarousel()}
         >
-          <div
-            ref={carouselViewportRef}
-            className="trending-mixes-marquee__viewport"
-          >
-            <div className="trending-mixes-marquee__track">
-              <div className="trending-mixes-marquee__group">
+          <div className="trending-mixes-marquee__viewport">
+            <div
+              ref={carouselTrackRef}
+              className="trending-mixes-marquee__track"
+            >
+              <div
+                ref={carouselFirstGroupRef}
+                className="trending-mixes-marquee__group"
+              >
                 <TrendingMixCards />
               </div>
 
@@ -450,11 +945,23 @@ export default function HomePage() {
           </button>
         </div>
 
+        {/* ── TRENDING MIXES FOOTER: REPLACES HIDDEN STATIC SVG CONTENT ── */}
+        <div className="trending-mixes-footer">
+          <p>
+            Tag your mix with <strong>#MadeByYou</strong>
+          </p>
 
+          <Link to="/build" className="trending-mixes-create-link">
+            Create your Recipe
+          </Link>
+        </div>
 
-        {/* ── STATIC INLINE VIDEO CARD OVERLAY ── */}
+        {/* ── SCROLL-TRIGGERED INLINE VIDEO ── */}
         <div
-          className="scroll-video-wrapper"
+          ref={scrollVideoTriggerRef}
+          className={`scroll-video-wrapper ${
+            scrollVideoMode !== 'inline' ? 'scroll-video-wrapper--covered' : ''
+          }`}
           style={videoStyles}
         >
           <div className="video-container-inner">
@@ -465,15 +972,21 @@ export default function HomePage() {
               loop
               muted
               playsInline
-              onClick={handleVideoClick}
+              preload="auto"
+              onClick={(event) => handleVideoClick(event, videoRef)}
               className="fullscreen-scroll-video"
             />
-            {isPaused && (
-              <div className="video-play-overlay" onClick={handleVideoClick}>
+            {isPaused && scrollVideoMode === 'inline' && (
+              <button
+                type="button"
+                className="video-play-overlay"
+                aria-label="Play coffee swirl video"
+                onClick={(event) => handleVideoClick(event, videoRef)}
+              >
                 <svg viewBox="0 0 24 24" fill="white" width="64" height="64">
                   <path d="M8 5v14l11-7z" />
                 </svg>
-              </div>
+              </button>
             )}
           </div>
         </div>
@@ -553,45 +1066,9 @@ export default function HomePage() {
           title="Buy Cold Brew Core"
         />
 
-        {/* RajPresso Mix Card */}
-        <Link
-          to="/menu/p013"
-          className="homepage-link link-mix-1"
-          style={{ left: '5.29%', top: '66.85%', width: '19.44%', height: '6.00%', borderRadius: '8px' }}
-          title="Order RajPresso"
-        />
+        {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
 
-        {/* Vandy Mood Mocha Mix Card */}
-        <Link
-          to="/menu/p014"
-          className="homepage-link link-mix-2"
-          style={{ left: '28.31%', top: '66.85%', width: '19.44%', height: '6.00%', borderRadius: '8px' }}
-          title="Order Vandy Mood Mocha"
-        />
-
-        {/* Kishorappe Mix Card */}
-        <Link
-          to="/menu/p015"
-          className="homepage-link link-mix-3"
-          style={{ left: '51.32%', top: '66.85%', width: '19.44%', height: '6.00%', borderRadius: '8px' }}
-          title="Order Kishorappe"
-        />
-
-        {/* RishiLatte Mix Card */}
-        <Link
-          to="/menu/p016"
-          className="homepage-link link-mix-4"
-          style={{ left: '74.34%', top: '66.85%', width: '19.44%', height: '6.00%', borderRadius: '8px' }}
-          title="Order RishiLatte"
-        />
-
-        {/* Create Your Recipe Button */}
-        <Link
-          to="/build"
-          className="homepage-link link-trending-build"
-          style={{ left: '43.12%', top: '74.50%', width: '13.82%', height: '0.60%' }}
-          title="Create Your Recipe"
-        />
+        {/* Original SVG trending CTA is hidden; the live React CTA above owns this action. */}
 
         {/* B2B Call Button */}
         <a
@@ -649,7 +1126,43 @@ export default function HomePage() {
           title="HSR Layout Cafe"
         />
       </div>
+
+      {typeof document !== 'undefined' && createPortal(
+        (scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting') && (
+          <section
+            className={`scroll-video-stage scroll-video-stage--${scrollVideoMode}`}
+            aria-label="Fullscreen coffee swirl video"
+          >
+            <video
+              ref={scrollVideoFullscreenRef}
+              src="/Videos/coffeeswirl.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="scroll-video-stage__video"
+              onClick={(event) => handleVideoClick(event, scrollVideoFullscreenRef)}
+            />
+
+            <div className="scroll-video-stage__shade" aria-hidden="true" />
+
+            {isPaused && (
+              <button
+                type="button"
+                className="scroll-video-stage__play"
+                aria-label="Resume coffee swirl video"
+                onClick={(event) => handleVideoClick(event, scrollVideoFullscreenRef)}
+              >
+                <svg viewBox="0 0 24 24" fill="white" width="72" height="72" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+            )}
+          </section>
+        ),
+        document.body
+      )}
     </div>
   );
 }
-

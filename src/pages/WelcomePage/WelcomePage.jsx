@@ -35,8 +35,14 @@ export default function WelcomePage() {
       animate={{ opacity: isExiting ? 0 : 1, scale: isExiting ? 1.05 : 1 }}
       transition={{ duration: 0.45, ease: 'easeInOut' }}
     >
-      {/* Background pattern - subtle coffee bean shapes */}
-      <div className="welcome-bg-pattern" aria-hidden="true" />
+      {/* Exact Figma graffiti artwork — /public/Subtract.svg */}
+      <div className="welcome-figma-graffiti" aria-hidden="true">
+        <img
+          src="/Subtract.svg"
+          alt=""
+          draggable="false"
+        />
+      </div>
 
       {/* Logo */}
       <motion.div

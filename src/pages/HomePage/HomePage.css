@@ -685,56 +685,566 @@
   }
 }
 
+/* ── BENTO GRID: AUTO-ROTATING SOCIAL POSTS ─────────────────────────── */
+.bento-video-card {
+  position: absolute;
+  top: 53.765%;
+  left: 27.91%;
+  z-index: 15;
+
+  width: 44.18%;
+  height: 6.202%;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #080808;
+  box-shadow: 0 10px 24px rgba(14, 26, 52, 0.12);
+
+  transition:
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.24s ease,
+    outline-color 0.24s ease;
+}
+
+.bento-video-card video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.bento-video-card:hover {
+  outline: 2px solid #1844AB;
+  outline-offset: 3px;
+  box-shadow: 0 17px 34px rgba(24, 68, 171, 0.23);
+  transform: translateY(-4px);
+}
+
+/* The illustrated Garden poster stays as part of the exported SVG. */
+.bento-grid-hover-card {
+  position: absolute;
+  z-index: 14;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  pointer-events: auto;
+
+  transition:
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    background 0.24s ease;
+}
+
+.bento-grid-hover-card:hover {
+  border-color: #1844AB;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 0 0 3px rgba(185, 224, 255, 0.9),
+    0 15px 30px rgba(24, 68, 171, 0.18);
+  transform: translateY(-4px);
+}
+
+.bento-grid-hover-card--poster {
+  top: 53.765%;
+  left: 3.24%;
+  width: 25.66%;
+  height: 6.207%;
+}
+
+/* Every live social tile covers its old SVG equivalent and rotates with a slide. */
+.bento-social-card {
+  position: absolute;
+  z-index: 18;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #1F2A44;
+  box-shadow: 0 8px 20px rgba(14, 26, 52, 0.08);
+  isolation: isolate;
+  pointer-events: auto;
+
+  transition:
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+.bento-social-card--quote {
+  top: 53.765%;
+  left: 73.15%;
+  width: 21.56%;
+  height: 1.94%;
+}
+
+.bento-social-card--feature {
+  top: 55.895%;
+  left: 73.15%;
+  width: 21.56%;
+  height: 6.202%;
+}
+
+.bento-social-card--amazon {
+  top: 60.156%;
+  left: 5.29%;
+  width: 21.56%;
+  height: 1.94%;
+}
+
+.bento-social-card--tweet {
+  top: 60.156%;
+  left: 27.91%;
+  width: 21.56%;
+  height: 1.94%;
+}
+
+.bento-social-card--reddit {
+  top: 60.156%;
+  left: 50.53%;
+  width: 21.56%;
+  height: 1.94%;
+}
+
+/* Enter and exit are layered briefly so every social post feels like a live feed. */
+.bento-social-card--enter {
+  animation: bento-social-slide-in 0.64s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.bento-social-card--leave {
+  z-index: 17;
+  pointer-events: none;
+  animation: bento-social-slide-out 0.56s cubic-bezier(0.55, 0, 1, 0.45) both;
+}
+
+.bento-social-card--feature.bento-social-card--enter {
+  animation-name: bento-social-rise-in;
+}
+
+.bento-social-card--feature.bento-social-card--leave {
+  animation-name: bento-social-rise-out;
+}
+
+.bento-social-card--amazon.bento-social-card--enter,
+.bento-social-card--reddit.bento-social-card--enter {
+  animation-delay: 80ms;
+}
+
+.bento-social-card--tweet.bento-social-card--enter {
+  animation-delay: 140ms;
+}
+
+@keyframes bento-social-slide-in {
+  from {
+    opacity: 0;
+    transform: translate3d(115%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes bento-social-slide-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(-32%, 0, 0);
+  }
+}
+
+@keyframes bento-social-rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes bento-social-rise-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -16%, 0);
+  }
+}
+
+.bento-social-card:hover,
+.bento-social-card:focus-visible {
+  z-index: 22;
+  border-color: #1844AB;
+  box-shadow:
+    0 0 0 3px rgba(185, 224, 255, 0.9),
+    0 15px 30px rgba(24, 68, 171, 0.18);
+  transform: translateY(-4px);
+}
+
+.bento-social-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.38vw;
+  padding: 0.58vw 0.72vw 0;
+  color: #5A6476;
+  font-family: var(--font-body);
+  font-size: clamp(0.44rem, 0.49vw, 0.6rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.bento-social-card__platform {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.12em;
+  height: 1.12em;
+  border-radius: 50%;
+  color: #FFFFFF;
+  font-family: Arial, sans-serif;
+  font-size: 1.1em;
+  font-weight: 800;
+}
+
+.bento-social-card__platform--facebook {
+  background: #1877F2;
+}
+
+.bento-social-card__platform--instagram {
+  background: linear-gradient(135deg, #9B36B7, #F25F5C 55%, #F7B041);
+}
+
+.bento-social-card__platform--x {
+  background: #111827;
+}
+
+.bento-social-card__platform--reddit {
+  background: #FF5A1F;
+  font-size: 0.72em;
+}
+
+.bento-social-card__author {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bento-social-card__body {
+  display: -webkit-box;
+  margin: 0.42vw 0.72vw 0;
+  overflow: hidden;
+  color: #1D2430;
+  font-family: var(--font-body);
+  font-size: clamp(0.5rem, 0.62vw, 0.72rem);
+  font-weight: 600;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.bento-social-card__footer {
+  position: absolute;
+  right: 0.72vw;
+  bottom: 0.55vw;
+  left: 0.72vw;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4vw;
+  color: #A6AFBC;
+  font-family: var(--font-body);
+  font-size: clamp(0.4rem, 0.48vw, 0.56rem);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.bento-social-card--quote .bento-social-card__body {
+  -webkit-line-clamp: 2;
+}
+
+.bento-social-card--quote .bento-social-card__meta,
+.bento-social-card--amazon .bento-social-card__meta,
+.bento-social-card--tweet .bento-social-card__meta,
+.bento-social-card--reddit .bento-social-card__meta {
+  padding-top: 0.36vw;
+}
+
+.bento-social-card--quote .bento-social-card__body,
+.bento-social-card--amazon .bento-social-card__body,
+.bento-social-card--tweet .bento-social-card__body,
+.bento-social-card--reddit .bento-social-card__body {
+  margin-top: 0.24vw;
+}
+
+/* Rich promo tile on the right, alternating from blue drink to espresso/garden cards. */
+.bento-social-card--promo {
+  background: #1143AA;
+  color: #FFFFFF;
+}
+
+.bento-social-card--promo::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 90% 12%, rgba(255, 255, 255, 0.17), transparent 35%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.06), transparent 70%);
+  content: '';
+}
+
+.bento-social-card--espresso {
+  background:
+    linear-gradient(145deg, rgba(23, 14, 9, 0.08), rgba(23, 14, 9, 0.36)),
+    #7D4A28;
+}
+
+.bento-social-card--garden {
+  background:
+    linear-gradient(145deg, rgba(25, 71, 60, 0.14), rgba(255, 255, 255, 0.05)),
+    #5E8D7F;
+}
+
+.bento-social-card__promo-copy {
+  position: absolute;
+  z-index: 2;
+  top: 11%;
+  left: 11%;
+  width: 62%;
+}
+
+.bento-social-card__promo-eyebrow {
+  display: block;
+  margin-bottom: 0.45vw;
+  color: rgba(255, 255, 255, 0.84);
+  font-family: var(--font-heading);
+  font-size: clamp(0.42rem, 0.48vw, 0.58rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.bento-social-card__promo-copy h3 {
+  margin: 0;
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-size: clamp(0.8rem, 1.06vw, 1.18rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+.bento-social-card__promo-copy p {
+  margin: 0.65vw 0 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-family: var(--font-body);
+  font-size: clamp(0.52rem, 0.59vw, 0.68rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.bento-social-card__promo-image {
+  position: absolute;
+  right: -5%;
+  bottom: 3%;
+  width: 56%;
+  max-height: 68%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 13px rgba(0, 0, 0, 0.25));
+  transform: rotate(-4deg);
+}
+
+/* E-commerce and Google-rating tile. */
+.bento-social-card--rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.42vw 0.7vw;
+  background: #202E4C;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.bento-social-card--google.bento-social-card--rating {
+  background: #FFFFFF;
+  color: #1F2A44;
+}
+
+.bento-social-card__rating-brand {
+  font-family: Arial, sans-serif;
+  font-size: clamp(0.62rem, 0.85vw, 1rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.bento-social-card__rating-stars {
+  margin-top: 0.18vw;
+  color: #F4C430;
+  font-size: clamp(0.45rem, 0.55vw, 0.65rem);
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.bento-social-card__rating-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.34vw;
+  margin-top: 0.28vw;
+  font-family: var(--font-body);
+}
+
+.bento-social-card__rating-row strong {
+  font-size: clamp(0.75rem, 1.02vw, 1.2rem);
+  line-height: 1;
+}
+
+.bento-social-card__rating-row span {
+  font-size: clamp(0.42rem, 0.5vw, 0.57rem);
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .bento-social-card__meta {
+    gap: 0.28vw;
+    padding: 0.46vw 0.58vw 0;
+  }
+
+  .bento-social-card__body {
+    margin: 0.32vw 0.58vw 0;
+    font-size: clamp(0.42rem, 0.76vw, 0.6rem);
+  }
+
+  .bento-social-card__footer {
+    right: 0.58vw;
+    bottom: 0.42vw;
+    left: 0.58vw;
+  }
+
+  .bento-social-card__promo-copy {
+    top: 9%;
+    left: 9%;
+  }
+}
+
+@media (max-width: 640px) {
+  .bento-social-card,
+  .bento-video-card,
+  .bento-grid-hover-card {
+    border-radius: 5px;
+  }
+
+  .bento-social-card__meta,
+  .bento-social-card__footer,
+  .bento-social-card__promo-eyebrow,
+  .bento-social-card__promo-copy p,
+  .bento-social-card__rating-row span {
+    display: none;
+  }
+
+  .bento-social-card__body {
+    margin: 9% 8%;
+    font-size: clamp(0.35rem, 1.6vw, 0.48rem);
+    line-height: 1.2;
+    -webkit-line-clamp: 3;
+  }
+
+  .bento-social-card__promo-copy {
+    top: 12%;
+    left: 9%;
+    width: 58%;
+  }
+
+  .bento-social-card__promo-copy h3 {
+    font-size: clamp(0.44rem, 2.2vw, 0.65rem);
+  }
+
+  .bento-social-card__promo-image {
+    width: 52%;
+  }
+
+  .bento-social-card__rating-brand {
+    font-size: clamp(0.4rem, 1.8vw, 0.55rem);
+  }
+
+  .bento-social-card__rating-row strong {
+    font-size: clamp(0.48rem, 2vw, 0.64rem);
+  }
+}
+
 /* ── INFINITE TRENDING MIXES CAROUSEL ───────────────── */
 .trending-mixes-marquee {
   position: absolute;
-  top: 66.70%;
+  top: 66.78%;
   left: 0;
   z-index: 20;
 
   width: 100%;
-  height: 6.65%;
+  height: 5.52%;
+  padding-top: 3px;
   overflow: hidden;
-  background: #F6F9FC;
+  box-sizing: border-box;
+
+  background: #F8FAFC;
+  user-select: none;
+  touch-action: pan-y;
 }
 
 .trending-mixes-marquee__viewport {
   width: 100%;
   height: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.trending-mixes-marquee__viewport::-webkit-scrollbar {
-  display: none;
+  overflow: hidden;
 }
 
 .trending-mixes-marquee__track {
   display: flex;
   width: max-content;
   height: 100%;
-  will-change: scroll-position;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .trending-mixes-marquee__group {
   display: flex;
   flex: 0 0 auto;
-  gap: 3.57vw;
-
+  align-items: flex-start;
+  gap: 3.1vw;
   height: 100%;
-  padding: 0 3.57vw 0 5.29vw;
+  padding: 0 3.1vw 0 5.1vw;
 }
 
 .trending-mix-card {
+  position: relative;
   display: block;
-  flex: 0 0 19.44vw;
-  min-width: 240px;
+  flex: 0 0 clamp(205px, 17.7vw, 275px);
+  min-width: 0;
+  align-self: flex-start;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding-bottom: 4.0vw;
 
   color: #1F2A44;
   text-decoration: none;
   cursor: pointer;
+  outline: none;
+
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
 }
 
 .trending-mix-card__image {
@@ -742,13 +1252,9 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-
-  border-radius: 4px;
+  border-radius: 6px;
   background: #FFFFFF;
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .trending-mix-card__image img {
@@ -756,50 +1262,48 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .trending-mix-card__likes {
   position: absolute;
-  top: 0.65vw;
-  right: 0.65vw;
-
-  padding: 0.35vw 0.65vw;
+  top: 0.55vw;
+  right: 0.55vw;
+  padding: 0.3vw 0.58vw;
   border-radius: 999px;
-
   background: #B9E0FF;
   color: #1F2A44;
-
   font-family: var(--font-body);
-  font-size: clamp(0.65rem, 0.82vw, 0.8rem);
+  font-size: clamp(0.62rem, 0.75vw, 0.75rem);
   font-weight: 700;
   line-height: 1;
 }
 
 .trending-mix-card__content {
-  padding-top: 0.8vw;
+  padding-top: 0.58vw;
 }
 
 .trending-mix-card__content h3 {
   margin: 0;
-
+  overflow: hidden;
   color: #1844AB;
   font-family: var(--font-heading);
-  font-size: clamp(1.05rem, 1.59vw, 1.5rem);
+  font-size: clamp(0.94rem, 1.34vw, 1.24rem);
   font-weight: 800;
   letter-spacing: -0.035em;
-  line-height: 1.15;
+  line-height: 1.16;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .trending-mix-card__content p {
   display: -webkit-box;
-  margin: 0.6vw 0 0;
+  margin: 0.4vw 0 0;
   overflow: hidden;
-
   color: #1F2A44;
   font-family: var(--font-body);
-  font-size: clamp(0.72rem, 0.93vw, 0.9rem);
-  line-height: 1.65;
-
+  font-size: clamp(0.64rem, 0.76vw, 0.78rem);
+  line-height: 1.48;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -807,40 +1311,64 @@
 .trending-mix-card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55vw;
-  margin-top: 0.7vw;
+  gap: 0.38vw;
+  margin-top: 0.48vw;
 }
 
 .trending-mix-card__tags span {
-  padding: 0.28vw 0.7vw;
+  padding: 0.22vw 0.55vw;
   border: 1px solid #1844AB;
   border-radius: 999px;
-
   color: #1844AB;
   font-family: var(--font-heading);
-  font-size: clamp(0.58rem, 0.72vw, 0.7rem);
+  font-size: clamp(0.5rem, 0.6vw, 0.62rem);
   font-weight: 800;
   line-height: 1;
   text-transform: uppercase;
 }
 
-.trending-mix-card:hover .trending-mix-card__image,
-.trending-mix-card:focus-visible .trending-mix-card__image {
-  box-shadow: 0 14px 25px rgba(24, 68, 171, 0.16);
+.trending-mix-card:hover,
+.trending-mix-card:focus-visible {
+  z-index: 2;
+  border-color: #1844AB;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow:
+    0 0 0 3px rgba(185, 224, 255, 0.95),
+    0 13px 26px rgba(24, 68, 171, 0.18);
   transform: translateY(-4px);
 }
 
-/* Centered left/right controls below the card rail. */
+.trending-mix-card:hover .trending-mix-card__image,
+.trending-mix-card:focus-visible .trending-mix-card__image {
+  transform: scale(1.01);
+}
+
+.trending-mix-card:hover .trending-mix-card__image img,
+.trending-mix-card:focus-visible .trending-mix-card__image img {
+  transform: scale(1.025);
+}
+
+.trending-mix-card:active {
+  box-shadow:
+    0 0 0 3px rgba(185, 224, 255, 0.8),
+    0 5px 12px rgba(24, 68, 171, 0.16);
+  transform: translateY(-1px) scale(0.975);
+}
+
+.trending-mix-card:active .trending-mix-card__image img {
+  transform: scale(0.98);
+}
+
+/* Fixed controls: they never move with the loop and stay above the SVG "Tag your mix" text. */
 .trending-mixes-navigation {
   position: absolute;
-  top: 73.76%;
+  top: 72.18%;
   left: 50%;
-  z-index: 25;
-
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.9rem;
+  gap: 1.15rem;
   transform: translateX(-50%);
 }
 
@@ -848,83 +1376,257 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: clamp(2.4rem, 3.2vw, 3rem);
-  height: clamp(2.4rem, 3.2vw, 3rem);
+  width: 1.95rem;
+  height: 1.95rem;
   padding: 0;
-
-  border: 1.5px solid #1844AB;
-  border-radius: 999px;
-  background: #FFFFFF;
+  border: 0;
+  border-radius: 0;
+  appearance: none;
+  background: transparent;
   color: #1844AB;
-  box-shadow: 0 5px 14px rgba(24, 68, 171, 0.12);
+  box-shadow: none;
   cursor: pointer;
-
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: transform 0.18s ease, color 0.18s ease;
 }
 
 .trending-mixes-nav-button svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.45rem;
+  height: 1.45rem;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 2.25;
+  stroke-width: 2.2;
 }
 
 .trending-mixes-nav-button:hover {
-  transform: translateY(-2px);
-  background: #1844AB;
-  color: #FFFFFF;
-  box-shadow: 0 9px 19px rgba(24, 68, 171, 0.25);
+  background: transparent;
+  color: #0A2F83;
+  box-shadow: none;
+}
+
+.trending-mixes-nav-button:first-child:hover {
+  transform: translateX(-3px);
+}
+
+.trending-mixes-nav-button:last-child:hover {
+  transform: translateX(3px);
 }
 
 .trending-mixes-nav-button:active {
-  transform: translateY(0) scale(0.94);
+  transform: scale(0.88);
 }
 
-.trending-mixes-nav-button:focus-visible {
-  outline: 3px solid rgba(185, 224, 255, 0.95);
+.trending-mixes-nav-button:focus-visible,
+.trending-mix-card:focus-visible {
+  outline: 2px solid rgba(24, 68, 171, 0.72);
   outline-offset: 3px;
 }
 
+/* Live footer replaces the hidden Figma tag line and CTA. */
+.trending-mixes-footer {
+  position: absolute;
+  top: 73.48%;
+  left: 50%;
+  z-index: 30;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7vw;
+  width: min(90%, 430px);
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.trending-mixes-footer p {
+  margin: 0;
+  color: #1844AB;
+  font-family: var(--font-heading);
+  font-size: clamp(0.95rem, 1.35vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.trending-mixes-footer p strong {
+  font-weight: 900;
+}
+
+.trending-mixes-create-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0.7rem 1.9rem;
+
+  border-radius: 999px;
+  background: #1844AB;
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-size: clamp(0.76rem, 1.05rem, 1.05rem);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 9px 18px rgba(24, 68, 171, 0.22);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.trending-mixes-create-link:hover,
+.trending-mixes-create-link:focus-visible {
+  background: #0A2F83;
+  box-shadow: 0 12px 24px rgba(24, 68, 171, 0.3);
+  transform: translateY(-2px);
+}
+
+.trending-mixes-create-link:active {
+  transform: translateY(0) scale(0.97);
+}
+
 @media (max-width: 1024px) {
-  .trending-mixes-marquee,
+  .trending-mixes-marquee {
+    top: 66.72%;
+    height: 6.25%;
+  }
+
+  .trending-mixes-marquee__group {
+    gap: 2.6vw;
+    padding: 0 2.6vw 0 4vw;
+  }
+
+  .trending-mix-card {
+    flex-basis: clamp(144px, 22vw, 205px);
+  }
+
   .trending-mixes-navigation {
+    top: 72.78%;
+  }
+
+  .trending-mixes-footer {
+    top: 73.75%;
+  }
+
+  .trending-mixes-nav-button {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .trending-mixes-marquee {
+    top: 66.58%;
+    height: 6.15%;
+  }
+
+  .trending-mixes-marquee__group {
+    gap: 3vw;
+    padding: 0 3vw 0 4.5vw;
+  }
+
+  .trending-mix-card {
+    flex-basis: 28vw;
+    min-width: 98px;
+    border-width: 1.5px;
+    border-radius: 8px;
+  }
+
+  .trending-mix-card__image {
+    border-radius: 5px;
+  }
+
+  .trending-mix-card__likes {
+    top: 4px;
+    right: 4px;
+    padding: 3px 5px;
+    font-size: 0.5rem;
+  }
+
+  .trending-mix-card__content {
+    padding-top: 0.26rem;
+  }
+
+  .trending-mix-card__content h3 {
+    font-size: clamp(0.63rem, 2.8vw, 0.82rem);
+  }
+
+  .trending-mix-card__content p,
+  .trending-mix-card__tags {
     display: none;
+  }
+
+  .trending-mixes-navigation {
+    top: 72.35%;
+    gap: 0.88rem;
+  }
+
+  .trending-mixes-footer {
+    top: 73.18%;
+    gap: 0.45rem;
+  }
+
+  .trending-mixes-footer p {
+    font-size: clamp(0.72rem, 3vw, 0.92rem);
+  }
+
+  .trending-mixes-create-link {
+    min-height: 34px;
+    padding: 0.45rem 1rem;
+    font-size: clamp(0.62rem, 2.4vw, 0.75rem);
+  }
+
+  .trending-mixes-nav-button {
+    width: 1.85rem;
+    height: 1.85rem;
+  }
+
+  .trending-mixes-nav-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .trending-mixes-marquee__viewport {
-    scroll-behavior: auto;
+
+  .bento-video-card,
+  .bento-grid-hover-card,
+  .trending-mix-card,
+  .trending-mix-card__image,
+  .trending-mix-card__image img,
+  .trending-mixes-nav-button {
+    transition: none !important;
   }
 }
 
-
-/* ── SCROLL-PINNED FULLSCREEN VIDEO BACKGROUND ── */
+/* ── SCROLL-TRIGGERED FULLSCREEN COFFEE VIDEO ── */
 .scroll-video-wrapper {
   pointer-events: none;
   overflow: visible;
-  /* Let overlay play button and scale transitions render outside if needed */
-  transition: border-radius 0.2s ease, box-shadow 0.3s ease;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+  transition:
+    opacity 0.24s ease,
+    transform 0.24s ease,
+    border-radius 0.28s ease,
+    box-shadow 0.3s ease;
 }
 
-.scroll-video-wrapper[style*="position: fixed"] {
-  box-shadow: none;
-  /* No shadow when fullscreen */
+.scroll-video-wrapper--covered {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.985);
+}
+
+.scroll-video-wrapper--covered .video-container-inner {
+  pointer-events: none;
 }
 
 .video-container-inner {
-  width: 100%;
-  height: 100%;
   position: relative;
   display: flex;
+  width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -940,22 +1642,21 @@
   cursor: pointer;
 }
 
-/* Play/Pause Overlay */
+/* Inline pause layer. */
 .video-play-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.45);
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 0;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.45);
+  color: #FFFFFF;
   cursor: pointer;
   z-index: 10;
   backdrop-filter: blur(4px);
-  border-radius: inherit;
-  transition: all var(--transition-base);
+  transition: background 0.2s ease;
 }
 
 .video-play-overlay svg {
@@ -963,8 +1664,124 @@
   transition: transform 0.2s ease;
 }
 
+.video-play-overlay:hover {
+  background: rgba(0, 0, 0, 0.34);
+}
+
 .video-play-overlay:hover svg {
-  transform: scale(1.15);
+  transform: scale(1.12);
+}
+
+/* Rendered through a portal so the Figma wrapper cannot clip the viewport layer. */
+.scroll-video-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  place-items: center;
+  background: #050505;
+  isolation: isolate;
+  touch-action: pan-y;
+}
+
+.scroll-video-stage--fullscreen {
+  animation: scroll-video-stage-enter 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.scroll-video-stage--exiting {
+  pointer-events: none;
+  animation: scroll-video-stage-exit 560ms cubic-bezier(0.6, 0, 0.84, 0) both;
+}
+
+.scroll-video-stage__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+.scroll-video-stage__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.14), transparent 28%, rgba(0, 0, 0, 0.16));
+}
+
+.scroll-video-stage__play {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  border: 0;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.32);
+  color: #FFFFFF;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.scroll-video-stage__play svg {
+  filter: drop-shadow(0 7px 18px rgba(0, 0, 0, 0.45));
+  transition: transform 0.2s ease;
+}
+
+.scroll-video-stage__play:hover svg {
+  transform: scale(1.12);
+}
+
+@keyframes scroll-video-stage-enter {
+  from {
+    opacity: 0;
+    filter: saturate(0.84) brightness(0.82);
+    transform: scale(0.88);
+    clip-path: inset(14% 10% round 28px);
+  }
+
+  to {
+    opacity: 1;
+    filter: saturate(1) brightness(1);
+    transform: scale(1);
+    clip-path: inset(0 round 0);
+  }
+}
+
+@keyframes scroll-video-stage-exit {
+  from {
+    opacity: 1;
+    filter: blur(0) saturate(1) brightness(1);
+    transform: scale(1) translateY(0);
+    clip-path: inset(0 round 0);
+  }
+
+  to {
+    opacity: 0;
+    filter: blur(12px) saturate(0.72) brightness(0.88);
+    transform: scale(0.88) translateY(-9%);
+    clip-path: inset(16% 10% round 30px);
+  }
+}
+
+@media (max-width: 640px) {
+  .scroll-video-stage__video {
+    object-fit: cover;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-video-wrapper,
+  .scroll-video-stage,
+  .scroll-video-stage__play svg {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 /* ── COFFEESWIRL1 BACKGROUND VIDEO ONLY ── */

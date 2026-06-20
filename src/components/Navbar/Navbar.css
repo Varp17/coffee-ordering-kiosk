@@ -34,12 +34,12 @@
 
 /* ── NAVBAR ─────────────────────────────────────────── */
 .navbar {
-  position: fixed;
+  position: absolute;
   top: 40px; /* Right under top-bar */
   left: 0;
   right: 0;
   z-index: var(--z-nav);
-  height: var(--nav-height);
+  height: 70px;
   background: #FFFFFF;
   border-bottom: 1px solid rgba(31, 42, 68, 0.08);
   transition: all var(--transition-base);

@@ -1,11 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useCartStore } from '@/store/useCartStore';
-import { useAuthStore } from '@/store/useAuthStore';
 import { useUserStore } from '@/store/useUserStore';
-import toast from 'react-hot-toast';
 import './HomePage.css';
+import { PRODUCTS } from '@/data/products';
 
 // ── HELPERS FOR SVG DOM MANIPULATION ─────────────────────────────────
 
@@ -174,8 +171,47 @@ function hideStaticPlaceholders(svgDoc) {
   }
 }
 
+// ── INFINITE TRENDING MIXES CAROUSEL ──────────────────────────────────
+const TRENDING_MIXES = PRODUCTS.filter((product) => product.category === 'custom');
+
+const MIX_LIKES = {
+  p013: '50 Likes',
+  p014: '30 Likes',
+  p015: '+1K Likes',
+  p016: '250 Likes',
+};
+
+function TrendingMixCards({ duplicate = false }) {
+  return TRENDING_MIXES.map((mix) => (
+    <Link
+      key={`${mix.id}-${duplicate ? 'duplicate' : 'original'}`}
+      to={`/menu/${mix.id}`}
+      className="trending-mix-card"
+      tabIndex={duplicate ? -1 : undefined}
+      aria-hidden={duplicate ? 'true' : undefined}
+    >
+      <div className="trending-mix-card__image">
+        <img src={mix.image} alt={duplicate ? '' : mix.name} />
+        <span className="trending-mix-card__likes">
+          {MIX_LIKES[mix.id] ?? 'Trending'}
+        </span>
+      </div>
+
+      <div className="trending-mix-card__content">
+        <h3>{mix.name}</h3>
+        <p>{mix.description}</p>
+
+        <div className="trending-mix-card__tags">
+          {(mix.tags ?? []).slice(0, 2).map((tag) => (
+            <span key={tag}>{tag}</span>
+          ))}
+        </div>
+      </div>
+    </Link>
+  ));
+}
+
 export default function HomePage() {
-  const { isLoggedIn } = useAuthStore();
   const getHeroText = useUserStore((state) => state.getHeroText);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
 
@@ -219,14 +255,6 @@ export default function HomePage() {
     }
   }, [displayName, suffix]);
 
-  const handleCartClick = () => {
-    const cartButton = document.querySelector('.navbar__cart-btn-new');
-    if (cartButton) {
-      cartButton.click();
-    } else {
-      toast.success('Opening Cart Drawer...');
-    }
-  };
 
   return (
     <div className="homepage-figma-container">
@@ -262,6 +290,26 @@ export default function HomePage() {
             playsInline
           />
         </div>
+
+
+        {/* ── INFINITE TRENDING MIXES CAROUSEL ── */}
+        <section
+          className="trending-mixes-marquee"
+          aria-label="Trending coffee mixes"
+        >
+          <div className="trending-mixes-marquee__track">
+            <div className="trending-mixes-marquee__group">
+              <TrendingMixCards />
+            </div>
+
+            <div
+              className="trending-mixes-marquee__group"
+              aria-hidden="true"
+            >
+              <TrendingMixCards duplicate />
+            </div>
+          </div>
+        </section>
 
 
 
@@ -340,7 +388,7 @@ export default function HomePage() {
             fontWeight="800"
             fontFamily="var(--font-heading)"
             letterSpacing="0.08em"
-            dy="-10"
+            dy="-5"
           >
             <textPath href="#marquee-path-bottom" startOffset="0%">
               Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......

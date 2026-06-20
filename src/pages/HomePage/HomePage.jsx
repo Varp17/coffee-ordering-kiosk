@@ -217,7 +217,12 @@ export default function HomePage() {
 
 
   const videoRef = useRef(null);
+  const carouselViewportRef = useRef(null);
+  const carouselResumeTimerRef = useRef(null);
+
   const [isPaused, setIsPaused] = useState(false);
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+
   const videoStyles = {
     position: 'absolute',
     left: '5.291%',
@@ -255,6 +260,99 @@ export default function HomePage() {
     }
   }, [displayName, suffix]);
 
+  // Start in the middle duplicated set so both previous and next navigation loop naturally.
+  useEffect(() => {
+    const viewport = carouselViewportRef.current;
+    if (!viewport) return undefined;
+
+    const setInitialCarouselPosition = () => {
+      const groupWidth = viewport.scrollWidth / 3;
+      if (groupWidth > 0) viewport.scrollLeft = groupWidth;
+    };
+
+    const frameId = requestAnimationFrame(setInitialCarouselPosition);
+    window.addEventListener('resize', setInitialCarouselPosition);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('resize', setInitialCarouselPosition);
+    };
+  }, []);
+
+  // Continuous automatic movement with a seamless reset at the duplicated card set.
+  useEffect(() => {
+    const viewport = carouselViewportRef.current;
+    if (!viewport) return undefined;
+
+    let frameId;
+    let previousTime = performance.now();
+    const speed = 0.035; // pixels per millisecond
+
+    const animateCarousel = (currentTime) => {
+      const elapsed = currentTime - previousTime;
+      previousTime = currentTime;
+
+      if (!isCarouselPaused) {
+        const groupWidth = viewport.scrollWidth / 3;
+
+        if (groupWidth > 0) {
+          viewport.scrollLeft += elapsed * speed;
+
+          if (viewport.scrollLeft >= groupWidth * 2) {
+            viewport.scrollLeft -= groupWidth;
+          }
+        }
+      }
+
+      frameId = requestAnimationFrame(animateCarousel);
+    };
+
+    frameId = requestAnimationFrame(animateCarousel);
+
+    return () => cancelAnimationFrame(frameId);
+  }, [isCarouselPaused]);
+
+  const pauseMixCarousel = () => setIsCarouselPaused(true);
+
+  const resumeMixCarousel = () => setIsCarouselPaused(false);
+
+  const moveMixCarousel = (direction) => {
+    const viewport = carouselViewportRef.current;
+    if (!viewport) return;
+
+    const card = viewport.querySelector('.trending-mix-card');
+    const group = viewport.querySelector('.trending-mixes-marquee__group');
+    if (!card || !group) return;
+
+    const cardWidth = card.getBoundingClientRect().width;
+    const gap = parseFloat(window.getComputedStyle(group).gap) || 0;
+    const moveDistance = cardWidth + gap;
+    const groupWidth = viewport.scrollWidth / 3;
+
+    setIsCarouselPaused(true);
+    window.clearTimeout(carouselResumeTimerRef.current);
+
+    if (direction < 0 && viewport.scrollLeft - moveDistance <= 0) {
+      viewport.scrollLeft += groupWidth;
+    }
+
+    if (direction > 0 && viewport.scrollLeft + moveDistance >= groupWidth * 2) {
+      viewport.scrollLeft -= groupWidth;
+    }
+
+    viewport.scrollBy({
+      left: direction * moveDistance,
+      behavior: 'smooth',
+    });
+
+    carouselResumeTimerRef.current = window.setTimeout(() => {
+      setIsCarouselPaused(false);
+    }, 1800);
+  };
+
+  useEffect(() => () => {
+    window.clearTimeout(carouselResumeTimerRef.current);
+  }, []);
 
   return (
     <div className="homepage-figma-container">
@@ -296,20 +394,61 @@ export default function HomePage() {
         <section
           className="trending-mixes-marquee"
           aria-label="Trending coffee mixes"
+          onMouseEnter={pauseMixCarousel}
+          onMouseLeave={resumeMixCarousel}
+          onFocusCapture={pauseMixCarousel}
+          onBlurCapture={resumeMixCarousel}
         >
-          <div className="trending-mixes-marquee__track">
-            <div className="trending-mixes-marquee__group">
-              <TrendingMixCards />
-            </div>
+          <div
+            ref={carouselViewportRef}
+            className="trending-mixes-marquee__viewport"
+          >
+            <div className="trending-mixes-marquee__track">
+              <div className="trending-mixes-marquee__group">
+                <TrendingMixCards />
+              </div>
 
-            <div
-              className="trending-mixes-marquee__group"
-              aria-hidden="true"
-            >
-              <TrendingMixCards duplicate />
+              <div
+                className="trending-mixes-marquee__group"
+                aria-hidden="true"
+              >
+                <TrendingMixCards duplicate />
+              </div>
+
+              <div
+                className="trending-mixes-marquee__group"
+                aria-hidden="true"
+              >
+                <TrendingMixCards duplicate />
+              </div>
             </div>
           </div>
         </section>
+
+        {/* ── CENTERED TRENDING MIXES NAVIGATION ── */}
+        <div className="trending-mixes-navigation" aria-label="Trending mixes navigation">
+          <button
+            type="button"
+            className="trending-mixes-nav-button"
+            aria-label="Show previous mixes"
+            onClick={() => moveMixCarousel(-1)}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14.5 5 7.5 12l7 7" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="trending-mixes-nav-button"
+            aria-label="Show next mixes"
+            onClick={() => moveMixCarousel(1)}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9.5 5 7 7-7 7" />
+            </svg>
+          </button>
+        </div>
 
 
 

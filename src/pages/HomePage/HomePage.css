@@ -695,17 +695,27 @@
   width: 100%;
   height: 6.65%;
   overflow: hidden;
-
   background: #F6F9FC;
+}
+
+.trending-mixes-marquee__viewport {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.trending-mixes-marquee__viewport::-webkit-scrollbar {
+  display: none;
 }
 
 .trending-mixes-marquee__track {
   display: flex;
   width: max-content;
   height: 100%;
-
-  animation: trending-mixes-loop 26s linear infinite;
-  will-change: transform;
+  will-change: scroll-position;
 }
 
 .trending-mixes-marquee__group {
@@ -820,30 +830,78 @@
   transform: translateY(-4px);
 }
 
-.trending-mixes-marquee:hover .trending-mixes-marquee__track,
-.trending-mixes-marquee:focus-within .trending-mixes-marquee__track {
-  animation-play-state: paused;
+/* Centered left/right controls below the card rail. */
+.trending-mixes-navigation {
+  position: absolute;
+  top: 73.76%;
+  left: 50%;
+  z-index: 25;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  transform: translateX(-50%);
 }
 
-@keyframes trending-mixes-loop {
-  from {
-    transform: translateX(0);
-  }
+.trending-mixes-nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(2.4rem, 3.2vw, 3rem);
+  height: clamp(2.4rem, 3.2vw, 3rem);
+  padding: 0;
 
-  to {
-    transform: translateX(-50%);
-  }
+  border: 1.5px solid #1844AB;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: #1844AB;
+  box-shadow: 0 5px 14px rgba(24, 68, 171, 0.12);
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.trending-mixes-nav-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.25;
+}
+
+.trending-mixes-nav-button:hover {
+  transform: translateY(-2px);
+  background: #1844AB;
+  color: #FFFFFF;
+  box-shadow: 0 9px 19px rgba(24, 68, 171, 0.25);
+}
+
+.trending-mixes-nav-button:active {
+  transform: translateY(0) scale(0.94);
+}
+
+.trending-mixes-nav-button:focus-visible {
+  outline: 3px solid rgba(185, 224, 255, 0.95);
+  outline-offset: 3px;
 }
 
 @media (max-width: 1024px) {
-  .trending-mixes-marquee {
+  .trending-mixes-marquee,
+  .trending-mixes-navigation {
     display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .trending-mixes-marquee__track {
-    animation: none;
+  .trending-mixes-marquee__viewport {
+    scroll-behavior: auto;
   }
 }
 

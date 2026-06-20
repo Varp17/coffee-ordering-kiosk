@@ -7,6 +7,136 @@ import { useUserStore } from '@/store/useUserStore';
 import toast from 'react-hot-toast';
 import './HomePage.css';
 
+// ── HELPERS FOR SVG DOM MANIPULATION ─────────────────────────────────
+
+function injectSvgStyles(svgDoc) {
+  const styleElem = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
+  styleElem.textContent = `
+    @keyframes slide-up {
+      from {
+        transform: translateY(900px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .animated-cup {
+      animation: slide-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transform-origin: center bottom;
+    }
+  `;
+  svgDoc.documentElement.appendChild(styleElem);
+}
+
+function animateSvgCup(svgDoc) {
+  // Cup is Rect 15 (filled with pattern3)
+  const cupRect = svgDoc.querySelector('rect[fill^="url(#pattern3_"]');
+  if (cupRect) {
+    cupRect.classList.add('animated-cup');
+  }
+}
+
+function injectDynamicHeroText(svgDoc, displayName, suffix) {
+  const paths = svgDoc.querySelectorAll('path');
+  let targetPath = null;
+  for (const p of paths) {
+    const d = p.getAttribute('d') || '';
+    if (d.startsWith('M412.238 193.403H445.952V502.648')) {
+      targetPath = p;
+      break;
+    }
+  }
+
+  if (targetPath) {
+    const existingText = svgDoc.getElementById('dynamic-hero-text');
+    if (existingText) {
+      existingText.remove();
+    }
+
+    const textElem = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'text');
+    textElem.setAttribute('id', 'dynamic-hero-text');
+    textElem.setAttribute('x', '355');
+    textElem.setAttribute('y', '390');
+    textElem.setAttribute('font-family', 'Outfit, Inter, sans-serif');
+    textElem.setAttribute('font-weight', '900');
+    textElem.setAttribute('font-size', '340');
+    textElem.setAttribute('transform', 'scale(1,1.42)');
+    textElem.setAttribute('letter-spacing', '-0.045em');
+
+    const fullLen = displayName.length + suffix.length;
+    let textLengthVal = '1000';
+    if (fullLen <= 4) textLengthVal = '760';
+    else if (fullLen <= 6) textLengthVal = '840';
+    else if (fullLen <= 8) textLengthVal = '920';
+
+    textElem.setAttribute('textLength', textLengthVal);
+    textElem.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+
+    const tspan1 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+    tspan1.setAttribute('fill', '#1844AB');
+
+    const tspan2 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+    tspan2.setAttribute('fill', '#B9E0FF');
+    tspan2.setAttribute('dx', '0.02em');
+
+    textElem.appendChild(tspan1);
+    textElem.appendChild(tspan2);
+
+    targetPath.parentNode.insertBefore(textElem, targetPath);
+
+    // Typing effect trigger after delay
+    const fullText = displayName + suffix;
+    let charIndex = 0;
+    let currentTyped = '';
+
+    const typeNextChar = () => {
+      if (charIndex < fullText.length) {
+        currentTyped += fullText[charIndex];
+        charIndex++;
+
+        if (charIndex <= displayName.length) {
+          tspan1.textContent = currentTyped;
+          tspan2.textContent = '';
+        } else {
+          tspan1.textContent = displayName;
+          tspan2.textContent = currentTyped.slice(displayName.length);
+        }
+
+        setTimeout(typeNextChar, 80 + Math.random() * 40);
+      }
+    };
+
+    setTimeout(typeNextChar, 500); // Trigger typing effect 500ms after cup animation starts
+  }
+}
+
+function hideStaticPlaceholders(svgDoc) {
+  // Hide Static Video Card placeholder (Rect 34)
+  const videoRect = svgDoc.querySelector('rect[y="3460"]');
+  if (videoRect) {
+    videoRect.style.display = 'none';
+  }
+
+  // Hide background rect pattern0_366_1172 (image0_366_1172)
+  const bgRect = svgDoc.querySelector('rect[fill^="url(#pattern0_366_1172"]');
+  if (bgRect) {
+    bgRect.style.display = 'none';
+  }
+
+  // Hide Static Video Card Play Button
+  const pathsList = svgDoc.querySelectorAll('path');
+  for (const p of pathsList) {
+    const d = p.getAttribute('d') || '';
+    if (d.startsWith('M786.321 3804.13')) {
+      p.style.display = 'none';
+      break;
+    }
+  }
+}
+
 export default function HomePage() {
   const { isLoggedIn } = useAuthStore();
   const getHeroText = useUserStore((state) => state.getHeroText);
@@ -110,165 +240,10 @@ export default function HomePage() {
               const svgDoc = e.target.contentDocument;
               if (!svgDoc) return;
 
-              // ── 1. Inject CSS Animations for Cup ──
-              const styleElem = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
-              styleElem.textContent = `
-                @keyframes slide-up {
-                  from {
-                    transform: translateY(900px);
-                    opacity: 0;
-                  }
-                  to {
-                    transform: translateY(0);
-                    opacity: 1;
-                  }
-                }
-
-                .animated-cup {
-                  animation: slide-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-                  transform-origin: center bottom;
-                }
-              `;
-              svgDoc.documentElement.appendChild(styleElem);
-
-              // ── 2. Assign Animation Class to Cup ──
-              // Cup is Rect 15 (filled with pattern3)
-              const cupRect = svgDoc.querySelector('rect[fill^="url(#pattern3_"]');
-              if (cupRect) {
-                cupRect.classList.add('animated-cup');
-              }
-
-              // ── 3. Inject Dynamic Name Text with Typing Effect ──
-              const paths = svgDoc.querySelectorAll('path');
-              let targetPath = null;
-              for (const p of paths) {
-                const d = p.getAttribute('d') || '';
-                if (d.startsWith('M412.238 193.403H445.952V502.648')) {
-                  targetPath = p;
-                  break;
-                }
-              }
-
-              if (targetPath) {
-                const existingText = svgDoc.getElementById('dynamic-hero-text');
-                if (existingText) {
-                  existingText.remove();
-                }
-
-                const textElem = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'text');
-                textElem.setAttribute('id', 'dynamic-hero-text');
-                textElem.setAttribute('x', '355');
-                textElem.setAttribute('y', '390');
-
-                textElem.setAttribute(
-                  'font-family',
-                  'Outfit, Inter, sans-serif'
-                );
-
-                textElem.setAttribute('font-weight', '900');
-                textElem.setAttribute('font-size', '340');
-
-                textElem.setAttribute(
-                  'transform',
-                  'scale(1,1.42)'
-                );
-
-                textElem.setAttribute(
-                  'letter-spacing',
-                  '-0.045em'
-                );
-
-                const fullLen =
-                  displayName.length +
-                  suffix.length;
-
-                if (fullLen <= 4) {
-                  textElem.setAttribute(
-                    'textLength',
-                    '760'
-                  );
-                }
-                else if (fullLen <= 6) {
-                  textElem.setAttribute(
-                    'textLength',
-                    '840'
-                  );
-                }
-                else if (fullLen <= 8) {
-                  textElem.setAttribute(
-                    'textLength',
-                    '920'
-                  );
-                }
-                else {
-                  textElem.setAttribute(
-                    'textLength',
-                    '1000'
-                  );
-                }
-
-                textElem.setAttribute(
-                  'lengthAdjust',
-                  'spacingAndGlyphs'
-                );
-
-                const tspan1 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-                tspan1.setAttribute('fill', '#1844AB');
-
-                const tspan2 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-                tspan2.setAttribute('fill', '#B9E0FF');
-                tspan2.setAttribute('dx', '0.02em');
-
-                textElem.appendChild(tspan1);
-                textElem.appendChild(tspan2);
-
-                targetPath.parentNode.insertBefore(textElem, targetPath);
-
-                // Typing effect trigger after delay
-                const fullText = displayName + suffix;
-                let charIndex = 0;
-                let currentTyped = '';
-
-                const typeNextChar = () => {
-                  if (charIndex < fullText.length) {
-                    currentTyped += fullText[charIndex];
-                    charIndex++;
-
-                    if (charIndex <= displayName.length) {
-                      tspan1.textContent = currentTyped;
-                      tspan2.textContent = '';
-                    } else {
-                      tspan1.textContent = displayName;
-                      tspan2.textContent = currentTyped.slice(displayName.length);
-                    }
-
-                    setTimeout(typeNextChar, 80 + Math.random() * 40);
-                  }
-                };
-
-                setTimeout(typeNextChar, 500); // Trigger typing effect 500ms after cup animation starts
-              }
-
-              // ── 4. Hide Static Video Card placeholder (Rect 34) & Play Button in SVG ──
-              const videoRect = svgDoc.querySelector('rect[y="3460"]');
-              if (videoRect) {
-                videoRect.style.display = 'none';
-              }
-
-              // Hide background rect pattern0_366_1172 (image0_366_1172)
-              const bgRect = svgDoc.querySelector('rect[fill^="url(#pattern0_366_1172"]');
-              if (bgRect) {
-                bgRect.style.display = 'none';
-              }
-
-              const pathsList = svgDoc.querySelectorAll('path');
-              for (const p of pathsList) {
-                const d = p.getAttribute('d') || '';
-                if (d.startsWith('M786.321 3804.13')) {
-                  p.style.display = 'none';
-                  break;
-                }
-              }
+              injectSvgStyles(svgDoc);
+              animateSvgCup(svgDoc);
+              injectDynamicHeroText(svgDoc, displayName, suffix);
+              hideStaticPlaceholders(svgDoc);
             } catch (err) {
               console.error('Error injecting dynamic assets into SVG:', err);
             }

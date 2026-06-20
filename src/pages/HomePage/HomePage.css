@@ -3,7 +3,8 @@
   background-color: #FFFFFF;
   overflow-x: hidden;
   position: relative;
-  padding-top: calc(var(--nav-height) + 40px); /* Account for combined fixed header height (112px) */
+  padding-top: calc(var(--nav-height) + 40px);
+  /* Account for combined fixed header height (112px) */
   box-sizing: border-box;
 }
 
@@ -13,15 +14,18 @@
   width: 100%;
   aspect-ratio: 1512 / 8329;
   box-shadow: 0 0 80px rgba(31, 42, 68, 0.05);
-  margin-top: -7.4074vw; /* Shift up by exactly the SVG header height (112px at 1512px width) */
-  clip-path: inset(7.4074vw 0 0 0); /* Clip the top portion so it doesn't overlap the fixed React Navbar */
+  margin-top: -7.4074vw;
+  /* Shift up by exactly the SVG header height (112px at 1512px width) */
+  clip-path: inset(7.4074vw 0 0 0);
+  /* Clip the top portion so it doesn't overlap the fixed React Navbar */
 }
 
 .figma-svg-object {
   width: 100%;
   height: 100%;
   display: block;
-  pointer-events: none; /* Let clicks pass through to absolute overlays */
+  pointer-events: none;
+  /* Let clicks pass through to absolute overlays */
   position: relative;
   z-index: 3;
 }
@@ -89,12 +93,15 @@
     opacity: 0;
     top: 90vh;
   }
+
   10% {
     opacity: 0.65;
   }
+
   90% {
     opacity: 0.65;
   }
+
   100% {
     transform: translateY(-95vh) rotate(360deg) scale(1.1);
     opacity: 0;
@@ -102,12 +109,41 @@
   }
 }
 
-.particle-0 { left: 8%; animation-duration: 9s; animation-delay: 0s; }
-.particle-1 { left: 22%; animation-duration: 11s; animation-delay: 2s; }
-.particle-2 { left: 45%; animation-duration: 8s; animation-delay: 1s; }
-.particle-3 { left: 68%; animation-duration: 12s; animation-delay: 3s; }
-.particle-4 { left: 84%; animation-duration: 10s; animation-delay: 1.5s; }
-.particle-5 { left: 93%; animation-duration: 13s; animation-delay: 4s; }
+.particle-0 {
+  left: 8%;
+  animation-duration: 9s;
+  animation-delay: 0s;
+}
+
+.particle-1 {
+  left: 22%;
+  animation-duration: 11s;
+  animation-delay: 2s;
+}
+
+.particle-2 {
+  left: 45%;
+  animation-duration: 8s;
+  animation-delay: 1s;
+}
+
+.particle-3 {
+  left: 68%;
+  animation-duration: 12s;
+  animation-delay: 3s;
+}
+
+.particle-4 {
+  left: 84%;
+  animation-duration: 10s;
+  animation-delay: 1.5s;
+}
+
+.particle-5 {
+  left: 93%;
+  animation-duration: 13s;
+  animation-delay: 4s;
+}
 
 
 /* ── LOOPING WAVY MARQUEE OVERLAYS ──────────────────── */
@@ -124,7 +160,8 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 1.35vw; /* Scale dynamically with viewport width on desktop */
+  font-size: 1.35vw;
+  /* Scale dynamically with viewport width on desktop */
   box-sizing: border-box;
 }
 
@@ -155,6 +192,7 @@
   0% {
     transform: translateX(-50%);
   }
+
   100% {
     transform: translateX(0);
   }
@@ -164,7 +202,8 @@
 /* ── RESPONSIVE MOBILE & TABLET LAYOUT STYLES ────────── */
 @media (max-width: 1024px) {
   .beans-overlay-container {
-    display: none; /* Hide particle animations on small touch screens for performance and clarity */
+    display: none;
+    /* Hide particle animations on small touch screens for performance and clarity */
   }
 
   .homepage-mobile-content {
@@ -301,8 +340,15 @@
   }
 
   @keyframes float-cup {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-12px);
+    }
   }
 
   /* Mobile Marquee bands */
@@ -316,7 +362,8 @@
   }
 
   .mobile-marquee-wrapper .wavy-text-item {
-    font-size: 0.9rem; /* Flat font size for readability on mobile devices */
+    font-size: 0.9rem;
+    /* Flat font size for readability on mobile devices */
     padding-right: 1.5rem;
   }
 
@@ -596,11 +643,13 @@
 }
 
 .hero-name-primary {
-  color: #1844AB; /* Royal Blue */
+  color: #1844AB;
+  /* Royal Blue */
 }
 
 .hero-name-suffix {
-  color: #B9E0FF; /* Light Blue */
+  color: #B9E0FF;
+  /* Light Blue */
 }
 
 .hero-name-primary,
@@ -639,13 +688,15 @@
 /* ── SCROLL-PINNED FULLSCREEN VIDEO BACKGROUND ── */
 .scroll-video-wrapper {
   pointer-events: none;
-  overflow: visible; /* Let overlay play button and scale transitions render outside if needed */
+  overflow: visible;
+  /* Let overlay play button and scale transitions render outside if needed */
   transition: border-radius 0.2s ease, box-shadow 0.3s ease;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .scroll-video-wrapper[style*="position: fixed"] {
-  box-shadow: none; /* No shadow when fullscreen */
+  box-shadow: none;
+  /* No shadow when fullscreen */
 }
 
 .video-container-inner {

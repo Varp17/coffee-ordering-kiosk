@@ -39,6 +39,48 @@ function animateSvgCup(svgDoc) {
   }
 }
 
+const HERO_TEXT_LAYOUT = {
+  centerX: 756,
+  baselineY: 340,
+  maxTextWidth: 1100,
+  maxFontSize: 400,
+  minFontSize: 140,
+};
+
+function fitHeroText(textElem) {
+  const { maxTextWidth, maxFontSize, minFontSize } = HERO_TEXT_LAYOUT;
+
+  textElem.setAttribute('font-size', String(maxFontSize));
+
+  const measuredWidth = textElem.getComputedTextLength();
+
+  if (!Number.isFinite(measuredWidth) || measuredWidth <= 0) return;
+
+  const fittedFontSize = Math.max(
+    minFontSize,
+    Math.min(maxFontSize, maxFontSize * (maxTextWidth / measuredWidth))
+  );
+
+  textElem.setAttribute('font-size', fittedFontSize.toFixed(2));
+}
+
+function updateDynamicHeroText(svgDoc, displayName, suffix) {
+  const textElem = svgDoc.getElementById('dynamic-hero-text');
+  if (!textElem) return;
+
+  const nameSpan = textElem.querySelector('[data-hero-part="name"]');
+  const drinkSpan = textElem.querySelector('[data-hero-part="drink"]');
+
+  if (!nameSpan || !drinkSpan) return;
+
+  // displayName = user's name (e.g. "ALEX")
+  // suffix = last 4 chars of drink from store (e.g. " ESSO")
+  nameSpan.textContent = displayName;
+  drinkSpan.textContent = suffix;
+
+  fitHeroText(textElem);
+}
+
 function injectDynamicHeroText(svgDoc, displayName, suffix) {
   const paths = svgDoc.querySelectorAll('path');
   let targetPath = null;
@@ -58,32 +100,25 @@ function injectDynamicHeroText(svgDoc, displayName, suffix) {
 
     const textElem = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'text');
     textElem.setAttribute('id', 'dynamic-hero-text');
-    textElem.setAttribute('x', '355');
-    textElem.setAttribute('y', '390');
+    textElem.setAttribute('x', String(HERO_TEXT_LAYOUT.centerX));
+    textElem.setAttribute('y', String(HERO_TEXT_LAYOUT.baselineY));
+    textElem.setAttribute('text-anchor', 'middle');
     textElem.setAttribute('font-family', 'Outfit, Inter, sans-serif');
     textElem.setAttribute('font-weight', '900');
-    textElem.setAttribute('font-size', '340');
+    textElem.setAttribute('letter-spacing', '-0.018em');
     textElem.setAttribute('transform', 'scale(1,1.42)');
-    textElem.setAttribute('letter-spacing', '-0.045em');
 
-    const fullLen = displayName.length + suffix.length;
-    let textLengthVal = '1000';
-    if (fullLen <= 4) textLengthVal = '760';
-    else if (fullLen <= 6) textLengthVal = '840';
-    else if (fullLen <= 8) textLengthVal = '920';
+    const nameSpan = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+    nameSpan.setAttribute('data-hero-part', 'name');
+    nameSpan.setAttribute('fill', '#1844AB');
 
-    textElem.setAttribute('textLength', textLengthVal);
-    textElem.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+    const drinkSpan = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+    drinkSpan.setAttribute('data-hero-part', 'drink');
+    drinkSpan.setAttribute('fill', '#B9E0FF');
+    drinkSpan.setAttribute('dx', '0.09em');
 
-    const tspan1 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    tspan1.setAttribute('fill', '#1844AB');
-
-    const tspan2 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    tspan2.setAttribute('fill', '#B9E0FF');
-    tspan2.setAttribute('dx', '0.02em');
-
-    textElem.appendChild(tspan1);
-    textElem.appendChild(tspan2);
+    textElem.appendChild(nameSpan);
+    textElem.appendChild(drinkSpan);
 
     targetPath.parentNode.insertBefore(textElem, targetPath);
 
@@ -98,12 +133,14 @@ function injectDynamicHeroText(svgDoc, displayName, suffix) {
         charIndex++;
 
         if (charIndex <= displayName.length) {
-          tspan1.textContent = currentTyped;
-          tspan2.textContent = '';
+          nameSpan.textContent = currentTyped;
+          drinkSpan.textContent = '';
         } else {
-          tspan1.textContent = displayName;
-          tspan2.textContent = currentTyped.slice(displayName.length);
+          nameSpan.textContent = displayName;
+          drinkSpan.textContent = currentTyped.slice(displayName.length);
         }
+
+        fitHeroText(textElem);
 
         setTimeout(typeNextChar, 80 + Math.random() * 40);
       }
@@ -141,13 +178,7 @@ export default function HomePage() {
   const { isLoggedIn } = useAuthStore();
   const getHeroText = useUserStore((state) => state.getHeroText);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
-  const fullText = displayName + suffix;
 
-  const sizeClass = fullText.length > 11
-    ? 'hero-name--small'
-    : fullText.length > 8
-      ? 'hero-name--medium'
-      : '';
 
   const videoRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -182,36 +213,7 @@ export default function HomePage() {
       const svgDoc = objectElem.contentDocument;
       if (!svgDoc) return;
 
-      const textElem = svgDoc.getElementById('dynamic-hero-text');
-      if (textElem) {
-        const tspan1 = textElem.querySelector('tspan:nth-child(1)');
-        const tspan2 = textElem.querySelector('tspan:nth-child(2)');
-        if (tspan1) tspan1.textContent = displayName;
-        if (tspan2) tspan2.textContent = suffix;
-
-        const fullLen = displayName.length + suffix.length;
-        textElem.setAttribute('font-size', '340');
-        textElem.setAttribute('y', '390');
-        textElem.setAttribute('transform', 'scale(1,1.42)');
-
-        if (fullLen <= 4) {
-          textElem.setAttribute('textLength', '760');
-        }
-        else if (fullLen <= 6) {
-          textElem.setAttribute('textLength', '840');
-        }
-        else if (fullLen <= 8) {
-          textElem.setAttribute('textLength', '920');
-        }
-        else {
-          textElem.setAttribute('textLength', '1000');
-        }
-
-        textElem.setAttribute(
-          'lengthAdjust',
-          'spacingAndGlyphs'
-        );
-      }
+      updateDynamicHeroText(svgDoc, displayName, suffix);
     } catch (err) {
       console.error('Error updating dynamic SVG text:', err);
     }

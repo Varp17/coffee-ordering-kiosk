@@ -1,22 +1,212 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useCartStore } from '@/store/useCartStore';
-import { useAuthStore } from '@/store/useAuthStore';
-import toast from 'react-hot-toast';
 import './HomePage.css';
 
+function WhyMotionOverlay() {
+  return (
+    <div className="why-motion-overlay" aria-hidden="true">
+      <svg className="why-motion-layer" viewBox="0 0 1512 1034" role="presentation">
+        <defs>
+          <clipPath id="why-photo-built" clipPathUnits="userSpaceOnUse">
+            <rect x="68" y="64" width="226" height="290" rx="5" />
+          </clipPath>
+          <clipPath id="why-photo-bold" clipPathUnits="userSpaceOnUse">
+            <rect x="42" y="26" width="205" height="286" rx="8" />
+          </clipPath>
+          <linearGradient id="why-hourglass-fade" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#D8DCE2" />
+            <stop offset="100%" stopColor="#A8ADB5" />
+          </linearGradient>
+        </defs>
+
+        <rect width="1512" height="1034" fill="#FFFFFF" />
+        <text
+          x="756"
+          y="82"
+          textAnchor="middle"
+          fontFamily="var(--font-heading)"
+          fontSize="54"
+          fontWeight="850"
+          fill="#EFF3F8"
+        >
+          Why Choose Chilld?
+        </text>
+
+        <g className="why-card why-card--built" transform="translate(112 98) rotate(-8 170 245)">
+          <g className="why-card__float">
+            <rect className="why-tape" x="38" y="16" width="250" height="40" rx="5" />
+            <rect x="67" y="63" width="228" height="292" rx="7" fill="#F7F2EA" />
+            <image
+              href="/images/image5_366_1172.png"
+              x="68"
+              y="64"
+              width="226"
+              height="290"
+              preserveAspectRatio="xMidYMid slice"
+              clipPath="url(#why-photo-built)"
+            />
+            <rect className="why-photo-gloss" x="74" y="70" width="72" height="278" rx="4" />
+            <text
+              x="0"
+              y="420"
+              fontFamily="var(--font-heading)"
+              fontSize="44"
+              fontWeight="900"
+              fill="#1F2A44"
+            >
+              Built for the grind
+            </text>
+            <text
+              x="35"
+              y="456"
+              fontFamily="var(--font-body)"
+              fontSize="23"
+              fontWeight="700"
+              fontStyle="italic"
+              fill="#1F2A44"
+            >
+              <tspan x="35" dy="0">Heavy monday, extra shot, light</tspan>
+              <tspan x="35" dy="30">friday, one less. you run the dial</tspan>
+            </text>
+          </g>
+        </g>
+
+        <g className="why-card why-card--bold" transform="translate(500 356) rotate(1 145 200)">
+          <g className="why-card__float">
+            <rect className="why-tape why-tape--blue" x="25" y="1" width="238" height="34" rx="5" />
+            <rect x="41" y="25" width="207" height="288" rx="10" fill="#F7F2EA" />
+            <image
+              href="/images/image6_366_1172.png"
+              x="42"
+              y="26"
+              width="205"
+              height="286"
+              preserveAspectRatio="xMinYMid slice"
+              clipPath="url(#why-photo-bold)"
+            />
+            <text
+              x="145"
+              y="370"
+              textAnchor="middle"
+              fontFamily="var(--font-heading)"
+              fontSize="44"
+              fontWeight="900"
+              fill="#1F2A44"
+            >
+              Brewed for the Bold
+            </text>
+            <text
+              x="145"
+              y="408"
+              textAnchor="middle"
+              fontFamily="var(--font-body)"
+              fontSize="22"
+              fontWeight="700"
+              fontStyle="italic"
+              fill="#1F2A44"
+            >
+              <tspan x="145" dy="0">Your order is on no menu, it lives</tspan>
+              <tspan x="145" dy="29">in your head. now in your cup</tspan>
+            </text>
+          </g>
+        </g>
+
+        <g className="why-card why-card--time" transform="translate(775 122) rotate(-4 205 225)">
+          <g className="why-card__float">
+            <path
+              className="why-hourglass-cup"
+              d="M112 46 H309 L293 386 H128 Z"
+              fill="url(#why-hourglass-fade)"
+              opacity="0.55"
+            />
+            <rect className="why-hourglass-lid" x="108" y="0" width="205" height="28" rx="3" />
+            <rect className="why-hourglass-lid" x="80" y="26" width="260" height="20" rx="3" />
+            <image
+              className="why-hourglass-img"
+              href="/images/image7_366_1172.png"
+              x="120"
+              y="58"
+              width="175"
+              height="258"
+              preserveAspectRatio="xMidYMid slice"
+            />
+            <circle className="why-sand-dot why-sand-dot--top" cx="208" cy="164" r="5" />
+            <circle className="why-sand-dot why-sand-dot--bottom" cx="208" cy="220" r="5" />
+            <line className="why-sand-stream" x1="208" y1="170" x2="208" y2="226" />
+            <text
+              x="0"
+              y="430"
+              fontFamily="var(--font-heading)"
+              fontSize="43"
+              fontWeight="900"
+              fill="#1F2A44"
+            >
+              Time is Money
+            </text>
+            <text
+              x="12"
+              y="468"
+              fontFamily="var(--font-body)"
+              fontSize="22"
+              fontWeight="700"
+              fontStyle="italic"
+              fill="#1F2A44"
+            >
+              <tspan x="12" dy="0">Nobody ever got a promotion</tspan>
+              <tspan x="12" dy="30">standing in a coffee queue</tspan>
+            </text>
+          </g>
+        </g>
+
+        <g className="why-card why-card--money" transform="translate(1118 356) rotate(8 160 270)">
+          <g className="why-card__float">
+            <image
+              className="why-iced-cup"
+              href="/images/image3_366_1172.png"
+              x="-2"
+              y="0"
+              width="308"
+              height="460"
+              preserveAspectRatio="xMidYMid meet"
+            />
+            <path
+              className="why-cup-swirl"
+              d="M79 227 C133 191 170 261 223 220"
+              fill="none"
+              stroke="#F8E0C0"
+              strokeWidth="8"
+              strokeLinecap="round"
+              opacity="0.72"
+            />
+            <text
+              x="-70"
+              y="520"
+              fontFamily="var(--font-heading)"
+              fontSize="43"
+              fontWeight="900"
+              fill="#1F2A44"
+            >
+              Money is Money
+            </text>
+            <text
+              x="-50"
+              y="557"
+              fontFamily="var(--font-body)"
+              fontSize="21"
+              fontWeight="700"
+              fontStyle="italic"
+              fill="#1F2A44"
+            >
+              <tspan x="-50" dy="0">Don't pay for pendant lights and</tspan>
+              <tspan x="-50" dy="29">latte art, just the coffee.</tspan>
+            </text>
+          </g>
+        </g>
+      </svg>
+    </div>
+  );
+}
+
 export default function HomePage() {
-  const { isLoggedIn } = useAuthStore();
-
-  const handleCartClick = () => {
-    const cartButton = document.querySelector('.navbar__cart-btn-new');
-    if (cartButton) {
-      cartButton.click();
-    } else {
-      toast.success('Opening Cart Drawer...');
-    }
-  };
-
   return (
     <div className="homepage-figma-container">
       {/* ── DESKTOP & MOBILE UNIFIED FIGMA SVG LAYOUT ───────────────────────── */}
@@ -27,6 +217,8 @@ export default function HomePage() {
           className="figma-svg-object"
           aria-label="Figma Homepage Design"
         />
+
+        <WhyMotionOverlay />
 
         {/* ── LOOPING WAVY MARQUEE OVERLAYS ── */}
         <svg

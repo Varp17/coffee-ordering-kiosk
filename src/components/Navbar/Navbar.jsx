@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, User, Menu as MenuIcon, X, Coffee, Sparkles, ChevronDown } from 'lucide-react';
+import { ShoppingBag, User, Menu as MenuIcon, X, ChevronDown } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import CartDrawer from '@/components/CartDrawer/CartDrawer';
@@ -37,14 +37,9 @@ export default function Navbar() {
   return (
     <>
       {/* Top Announcement Bar */}
-      <div className="top-bar">
-        <div className="container top-bar__inner">
-          <span>Summer Sale 30% OFF is Now Live</span>
-          <Link to="/menu" className="top-bar__link">
-            Shop Now <span className="arrow">→</span>
-          </Link>
-        </div>
-      </div>
+      <Link to="/menu" className="top-bar">
+        <span>Summer Sale 30% OFF is Now Live &rarr;</span>
+      </Link>
 
       <motion.nav
         className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}
@@ -55,7 +50,7 @@ export default function Navbar() {
         <div className="navbar__inner container">
           {/* Logo */}
           <Link to="/" className="navbar__logo" aria-label="Chilld Coffee Home">
-            <Logo height="32px" width="auto" color="currentColor" />
+            <Logo height="42px" width="auto" color="currentColor" />
           </Link>
 
           {/* Desktop links */}
@@ -76,13 +71,13 @@ export default function Navbar() {
           <div className="navbar__actions">
             {isLoggedIn ? (
               <Link to="/profile" className="navbar__user-profile-new">
-                <User size={18} />
+                <User size={22} />
                 <span className="navbar__username">Arya Kagathara</span>
-                <ChevronDown size={14} className="navbar__chevron" />
+                <ChevronDown size={16} className="navbar__chevron" />
               </Link>
             ) : (
               <Link to="/auth" className="navbar__user-profile-new" aria-label="Account">
-                <User size={18} />
+                <User size={22} />
                 <span className="navbar__username">Login</span>
               </Link>
             )}
@@ -92,13 +87,17 @@ export default function Navbar() {
               onClick={() => setCartOpen(true)}
               aria-label="Open cart"
             >
-              <ShoppingBag size={20} />
+              <ShoppingBag size={22} />
               <span className="navbar__cart-count">{totalItems}</span>
             </button>
 
             {/* Build your brew capsule call to action */}
             <Link to="/build" className="navbar__build-pill">
-              <Coffee size={16} />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+                <path d="M6 8h12M7 8V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2" />
+                <path d="M7 8l1.2 11c.1.9.9 1.6 1.8 1.6h4c.9 0 1.7-.7 1.8-1.6L17 8" />
+                <path d="M8.5 13h7" />
+              </svg>
               <span>Create Your Drink</span>
             </Link>
 

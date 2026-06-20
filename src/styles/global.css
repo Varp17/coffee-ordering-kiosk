@@ -61,8 +61,8 @@ ul, ol {
   --color-bg:           #FFFFFF;
   --color-surface:      #FFFFFF;
   --color-surface-alt:  #F5F9FC;
-  --color-primary:      #007AFF; /* Bright Blue */
-  --color-primary-dark: #0056B3;
+  --color-primary:      #1844AB; /* Royal Blue */
+  --color-primary-dark: #133587;
   --color-primary-light:#E6F4FF; /* Soft Baby Blue */
   --color-accent:       #C67C4E; /* Coffee Brown secondary */
   --color-dark:         #1F2A44; /* Deep Navy Blue */
@@ -143,7 +143,7 @@ ul, ol {
   --container-lg:  1024px;
   --container-xl:  1280px;
   --container-2xl: 1440px;
-  --nav-height:    72px;
+  --nav-height:    88px;
   --bottom-nav-height: 64px;
 }
 

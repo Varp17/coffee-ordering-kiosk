@@ -84,7 +84,7 @@
 }
 
 .auth-back-btn:hover {
-  color: var(--color-primary);
+  color: #1844AB;
 }
 
 .auth-step-header h2 {
@@ -119,9 +119,9 @@
 }
 
 .phone-input-wrapper:focus-within {
-  border-color: var(--color-primary);
+  border-color: #1844AB;
   background: white;
-  box-shadow: 0 0 0 3px rgba(198, 124, 78, 0.1);
+  box-shadow: 0 0 0 3px rgba(24, 68, 171, 0.1);
 }
 
 .country-code {
@@ -154,6 +154,18 @@
   width: 100%;
   min-height: 48px;
   font-size: var(--text-sm);
+  background: #1844AB !important;
+  border-color: #1844AB !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(24, 68, 171, 0.18) !important;
+  transition: all var(--transition-base) !important;
+}
+
+.auth-submit-btn:hover {
+  background: #133587 !important;
+  border-color: #133587 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(24, 68, 171, 0.25) !important;
 }
 
 .auth-disclaimer {
@@ -193,10 +205,10 @@
   gap: 6px;
   font-size: var(--text-xs);
   font-weight: 700;
-  color: var(--color-primary);
+  color: #1844AB;
   transition: color var(--transition-fast);
 }
 
 .resend-btn:hover {
-  color: var(--color-primary-dark);
+  color: #133587;
 }

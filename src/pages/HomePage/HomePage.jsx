@@ -254,6 +254,13 @@ export default function HomePage() {
               if (videoRect) {
                 videoRect.style.display = 'none';
               }
+
+              // Hide background rect pattern0_366_1172 (image0_366_1172)
+              const bgRect = svgDoc.querySelector('rect[fill^="url(#pattern0_366_1172"]');
+              if (bgRect) {
+                bgRect.style.display = 'none';
+              }
+
               const pathsList = svgDoc.querySelectorAll('path');
               for (const p of pathsList) {
                 const d = p.getAttribute('d') || '';
@@ -267,6 +274,19 @@ export default function HomePage() {
             }
           }}
         />
+
+        {/* ── COFFEESWIRL1 BACKGROUND VIDEO OVERLAY ── */}
+        <div className="coffeeswirl-video-bg">
+          <video
+            src="/Videos/coffeeswirl1.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        </div>
+
+
 
         {/* ── STATIC INLINE VIDEO CARD OVERLAY ── */}
         <div

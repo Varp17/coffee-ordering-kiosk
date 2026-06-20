@@ -5,6 +5,7 @@ import { ShoppingBag, User, Menu as MenuIcon, X, Coffee, Sparkles, ChevronDown }
 import { useCartStore } from '@/store/useCartStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import CartDrawer from '@/components/CartDrawer/CartDrawer';
+import Logo from '@/components/Logo/Logo';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -26,6 +27,7 @@ export default function Navbar() {
   }, [location.pathname]);
 
   const navLinks = [
+    { to: '/', label: 'Home' },
     { to: '/menu', label: 'Products' },
     { to: '/build', label: 'Recipes' },
     { to: '/location', label: 'About Us' },
@@ -52,8 +54,8 @@ export default function Navbar() {
       >
         <div className="navbar__inner container">
           {/* Logo */}
-          <Link to="/" className="navbar__logo">
-            <span>Chilld,</span>
+          <Link to="/" className="navbar__logo" aria-label="Chilld Coffee Home">
+            <Logo height="32px" width="auto" color="currentColor" />
           </Link>
 
           {/* Desktop links */}

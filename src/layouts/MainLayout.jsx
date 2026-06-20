@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, Outlet } from 'react-router-dom';
 import Navbar from '@/components/Navbar/Navbar';
 import Footer from '@/components/Footer/Footer';
 import BottomNav from '@/components/BottomNav/BottomNav';
@@ -10,7 +10,7 @@ export default function MainLayout({ children }) {
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      <main>{children || <Outlet />}</main>
       {!isHome && <Footer />}
       {!isHome && <BottomNav />}
     </>

@@ -1,12 +1,91 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useCartStore } from '@/store/useCartStore';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useUserStore } from '@/store/useUserStore';
 import toast from 'react-hot-toast';
 import './HomePage.css';
 
 export default function HomePage() {
   const { isLoggedIn } = useAuthStore();
+  const getHeroText = useUserStore((state) => state.getHeroText);
+  const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
+  const fullText = displayName + suffix;
+
+  const sizeClass = fullText.length > 11
+    ? 'hero-name--small'
+    : fullText.length > 8
+      ? 'hero-name--medium'
+      : '';
+
+  const videoRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const videoStyles = {
+    position: 'absolute',
+    left: '5.291%',
+    top: '41.54%',
+    width: '89.42%',
+    height: '8.403%',
+    borderRadius: '24px',
+    zIndex: 10,
+    overflow: 'hidden'
+  };
+
+  const handleVideoClick = (e) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play().catch(err => console.log('Playback error:', err));
+      setIsPaused(false);
+    } else {
+      video.pause();
+      setIsPaused(true);
+    }
+  };
+
+  useEffect(() => {
+    try {
+      const objectElem = document.querySelector('.figma-svg-object');
+      if (!objectElem) return;
+      const svgDoc = objectElem.contentDocument;
+      if (!svgDoc) return;
+
+      const textElem = svgDoc.getElementById('dynamic-hero-text');
+      if (textElem) {
+        const tspan1 = textElem.querySelector('tspan:nth-child(1)');
+        const tspan2 = textElem.querySelector('tspan:nth-child(2)');
+        if (tspan1) tspan1.textContent = displayName;
+        if (tspan2) tspan2.textContent = suffix;
+
+        const fullLen = displayName.length + suffix.length;
+        textElem.setAttribute('font-size', '340');
+        textElem.setAttribute('y', '390');
+        textElem.setAttribute('transform', 'scale(1,1.42)');
+
+        if (fullLen <= 4) {
+          textElem.setAttribute('textLength', '760');
+        }
+        else if (fullLen <= 6) {
+          textElem.setAttribute('textLength', '840');
+        }
+        else if (fullLen <= 8) {
+          textElem.setAttribute('textLength', '920');
+        }
+        else {
+          textElem.setAttribute('textLength', '1000');
+        }
+
+        textElem.setAttribute(
+          'lengthAdjust',
+          'spacingAndGlyphs'
+        );
+      }
+    } catch (err) {
+      console.error('Error updating dynamic SVG text:', err);
+    }
+  }, [displayName, suffix]);
 
   const handleCartClick = () => {
     const cartButton = document.querySelector('.navbar__cart-btn-new');
@@ -26,7 +105,194 @@ export default function HomePage() {
           type="image/svg+xml"
           className="figma-svg-object"
           aria-label="Figma Homepage Design"
+          onLoad={(e) => {
+            try {
+              const svgDoc = e.target.contentDocument;
+              if (!svgDoc) return;
+
+              // ── 1. Inject CSS Animations for Cup ──
+              const styleElem = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
+              styleElem.textContent = `
+                @keyframes slide-up {
+                  from {
+                    transform: translateY(900px);
+                    opacity: 0;
+                  }
+                  to {
+                    transform: translateY(0);
+                    opacity: 1;
+                  }
+                }
+
+                .animated-cup {
+                  animation: slide-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                  transform-origin: center bottom;
+                }
+              `;
+              svgDoc.documentElement.appendChild(styleElem);
+
+              // ── 2. Assign Animation Class to Cup ──
+              // Cup is Rect 15 (filled with pattern3)
+              const cupRect = svgDoc.querySelector('rect[fill^="url(#pattern3_"]');
+              if (cupRect) {
+                cupRect.classList.add('animated-cup');
+              }
+
+              // ── 3. Inject Dynamic Name Text with Typing Effect ──
+              const paths = svgDoc.querySelectorAll('path');
+              let targetPath = null;
+              for (const p of paths) {
+                const d = p.getAttribute('d') || '';
+                if (d.startsWith('M412.238 193.403H445.952V502.648')) {
+                  targetPath = p;
+                  break;
+                }
+              }
+
+              if (targetPath) {
+                const existingText = svgDoc.getElementById('dynamic-hero-text');
+                if (existingText) {
+                  existingText.remove();
+                }
+
+                const textElem = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'text');
+                textElem.setAttribute('id', 'dynamic-hero-text');
+                textElem.setAttribute('x', '355');
+                textElem.setAttribute('y', '390');
+
+                textElem.setAttribute(
+                  'font-family',
+                  'Outfit, Inter, sans-serif'
+                );
+
+                textElem.setAttribute('font-weight', '900');
+                textElem.setAttribute('font-size', '340');
+
+                textElem.setAttribute(
+                  'transform',
+                  'scale(1,1.42)'
+                );
+
+                textElem.setAttribute(
+                  'letter-spacing',
+                  '-0.045em'
+                );
+
+                const fullLen =
+                  displayName.length +
+                  suffix.length;
+
+                if (fullLen <= 4) {
+                  textElem.setAttribute(
+                    'textLength',
+                    '760'
+                  );
+                }
+                else if (fullLen <= 6) {
+                  textElem.setAttribute(
+                    'textLength',
+                    '840'
+                  );
+                }
+                else if (fullLen <= 8) {
+                  textElem.setAttribute(
+                    'textLength',
+                    '920'
+                  );
+                }
+                else {
+                  textElem.setAttribute(
+                    'textLength',
+                    '1000'
+                  );
+                }
+
+                textElem.setAttribute(
+                  'lengthAdjust',
+                  'spacingAndGlyphs'
+                );
+
+                const tspan1 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                tspan1.setAttribute('fill', '#1844AB');
+
+                const tspan2 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                tspan2.setAttribute('fill', '#B9E0FF');
+                tspan2.setAttribute('dx', '0.02em');
+
+                textElem.appendChild(tspan1);
+                textElem.appendChild(tspan2);
+
+                targetPath.parentNode.insertBefore(textElem, targetPath);
+
+                // Typing effect trigger after delay
+                const fullText = displayName + suffix;
+                let charIndex = 0;
+                let currentTyped = '';
+
+                const typeNextChar = () => {
+                  if (charIndex < fullText.length) {
+                    currentTyped += fullText[charIndex];
+                    charIndex++;
+
+                    if (charIndex <= displayName.length) {
+                      tspan1.textContent = currentTyped;
+                      tspan2.textContent = '';
+                    } else {
+                      tspan1.textContent = displayName;
+                      tspan2.textContent = currentTyped.slice(displayName.length);
+                    }
+
+                    setTimeout(typeNextChar, 80 + Math.random() * 40);
+                  }
+                };
+
+                setTimeout(typeNextChar, 500); // Trigger typing effect 500ms after cup animation starts
+              }
+
+              // ── 4. Hide Static Video Card placeholder (Rect 34) & Play Button in SVG ──
+              const videoRect = svgDoc.querySelector('rect[y="3460"]');
+              if (videoRect) {
+                videoRect.style.display = 'none';
+              }
+              const pathsList = svgDoc.querySelectorAll('path');
+              for (const p of pathsList) {
+                const d = p.getAttribute('d') || '';
+                if (d.startsWith('M786.321 3804.13')) {
+                  p.style.display = 'none';
+                  break;
+                }
+              }
+            } catch (err) {
+              console.error('Error injecting dynamic assets into SVG:', err);
+            }
+          }}
         />
+
+        {/* ── STATIC INLINE VIDEO CARD OVERLAY ── */}
+        <div
+          className="scroll-video-wrapper"
+          style={videoStyles}
+        >
+          <div className="video-container-inner">
+            <video
+              ref={videoRef}
+              src="/Videos/coffeeswirl.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              onClick={handleVideoClick}
+              className="fullscreen-scroll-video"
+            />
+            {isPaused && (
+              <div className="video-play-overlay" onClick={handleVideoClick}>
+                <svg viewBox="0 0 24 24" fill="white" width="64" height="64">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* ── LOOPING WAVY MARQUEE OVERLAYS ── */}
         <svg
@@ -65,7 +331,7 @@ export default function HomePage() {
             dy="30"
           >
             <textPath href="#marquee-path-top" startOffset="0%">
-              Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy.......
+              Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
               <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
             </textPath>
           </text>
@@ -80,7 +346,7 @@ export default function HomePage() {
             dy="-10"
           >
             <textPath href="#marquee-path-bottom" startOffset="0%">
-              Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy....... Great coffee, made easy.......
+              Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
               <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
             </textPath>
           </text>
@@ -198,22 +464,6 @@ export default function HomePage() {
           style={{ left: '72.75%', top: '94.61%', width: '13.23%', height: '0.36%', borderRadius: '0' }}
           title="HSR Layout Cafe"
         />
-      </div>
-
-      {/* Floating beans overlay for micro-motion feel */}
-      <div className="beans-overlay-container" aria-hidden="true">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className={`floating-bean-particle particle-${i}`}
-            style={{
-              backgroundImage: 'url(/images/image4_366_1172.png)',
-              '--left': `${10 + i * 15}%`,
-              '--delay': `${i * 0.8}s`,
-              '--speed': `${6 + i * 2}s`
-            }}
-          />
-        ))}
       </div>
     </div>
   );

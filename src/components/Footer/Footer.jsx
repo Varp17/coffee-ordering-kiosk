@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Coffee, MapPin } from 'lucide-react';
+import Logo from '@/components/Logo/Logo';
 import './Footer.css';
 
 export default function Footer() {
@@ -8,8 +9,7 @@ export default function Footer() {
       <div className="container footer__inner">
         <div className="footer__brand">
           <div className="footer__logo">
-            <Coffee size={22} strokeWidth={2.5} />
-            <span>chilld</span>
+            <Logo width="100px" height="auto" color="white" />
           </div>
           <p className="footer__tagline">
             Craft coffee, your way.<br />Born from curiosity.

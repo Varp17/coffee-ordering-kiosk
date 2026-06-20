@@ -229,6 +229,7 @@ h1, h2, h3, h4, h5, h6 {
   to { transform: scale(4); opacity: 0; }
 }
 
+
 /* Shimmer loading */
 @keyframes shimmer {
   from { background-position: -200% 0; }
@@ -241,13 +242,6 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
-/* Bean rotate (3D floating beans) */
-@keyframes bean-float {
-  0%   { transform: translateY(0) rotate(0deg); }
-  33%  { transform: translateY(-15px) rotate(120deg); }
-  66%  { transform: translateY(5px) rotate(240deg); }
-  100% { transform: translateY(0) rotate(360deg); }
-}
 
 /* Pour drop animation */
 @keyframes pour-drop {

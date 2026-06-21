@@ -952,6 +952,7 @@
   line-height: 1.45;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
 .bento-social-card__footer {
@@ -972,6 +973,7 @@
 
 .bento-social-card--quote .bento-social-card__body {
   -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
 .bento-social-card--quote .bento-social-card__meta,
@@ -1158,6 +1160,7 @@
     font-size: clamp(0.35rem, 1.6vw, 0.48rem);
     line-height: 1.2;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
   }
 
   .bento-social-card__promo-copy {
@@ -1306,6 +1309,7 @@
   line-height: 1.48;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
 .trending-mix-card__tags {

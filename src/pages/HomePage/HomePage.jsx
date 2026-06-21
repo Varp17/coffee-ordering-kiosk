@@ -149,27 +149,83 @@ function injectDynamicHeroText(svgDoc, displayName, suffix) {
 }
 
 function hideStaticPlaceholders(svgDoc) {
-  // Hide the original full-width video placeholder. The React overlay supplies this video.
-  const videoRect = svgDoc.querySelector('rect[y="3460"]');
-  if (videoRect) videoRect.style.display = 'none';
+  // Remove the static background image and pattern from the SVG defs to prevent any overlap
+  const bgImg = svgDoc.getElementById('image0_366_1172') || svgDoc.querySelector('image[id^="image0_"]');
+  if (bgImg) bgImg.remove();
+  const bgPattern = svgDoc.getElementById('pattern0_366_1172') || svgDoc.querySelector('pattern[id^="pattern0_"]');
+  if (bgPattern) bgPattern.remove();
 
-  // Keep pattern0 visible: it contains the original hard-part copy and wave artwork.
-  // coffeeswirl2 is layered transparently above that panel, not used as a replacement.
+  // Remove all SVG background header elements (y < 120) to prevent overlap with the React fixed Navbar
+  // Remove rects with height < 150 that start at y < 120 (either via y attribute or vertical translate)
+  const rects = svgDoc.querySelectorAll('rect');
+  for (const rect of rects) {
+    const hAttr = rect.getAttribute('height');
+    const hVal = parseFloat(hAttr || '0');
+    
+    // Extract y coordinate
+    const yAttr = rect.getAttribute('y');
+    const transform = rect.getAttribute('transform') || '';
+    let yVal = 0;
+    if (yAttr) {
+      yVal = parseFloat(yAttr);
+    } else {
+      const transMatch = transform.match(/translate\(\s*[\d.-]+\s+([\d.-]+)\)/i);
+      if (transMatch) {
+        yVal = parseFloat(transMatch[1]);
+      }
+    }
+
+    if (hVal > 0 && hVal < 150) {
+      if (yVal < 120) {
+        rect.remove();
+        continue;
+      }
+    }
+
+    // Remove the static image pattern0 rect to prevent it from overlapping with the transparent coffeeswirl2 video
+    const fillAttr = rect.getAttribute('fill') || '';
+    if (fillAttr.includes('pattern0_')) {
+      rect.remove();
+    }
+  }
+
+  // Remove the original full-width video placeholder. The React overlay supplies this video.
+  const videoRect = svgDoc.querySelector('rect[y="3460"]');
+  if (videoRect) videoRect.remove();
 
   const pathsList = svgDoc.querySelectorAll('path');
   for (const p of pathsList) {
     const d = p.getAttribute('d') || '';
+    const fill = p.getAttribute('fill') || '';
+
+    const match = d.match(/^M\s*([\d.-]+)\s+([\d.-]+)/i);
+    if (match) {
+      const yVal = parseFloat(match[2]);
+      if (!isNaN(yVal)) {
+        // Remove paths that start at y < 120 (header)
+        if (yVal < 120) {
+          p.remove();
+          continue;
+        }
+      }
+    }
+
+    // Bottom marquee background wave (#1F2A44)
+    if (d.startsWith('M0 7396') && fill.toUpperCase() === '#1F2A44') {
+      p.remove();
+      continue;
+    }
 
     // Original play controls inside the exported SVG.
     if (
       d.startsWith('M786.321 3804.13') ||
       d.startsWith('M786.321 4730.13')
     ) {
-      p.style.display = 'none';
+      p.remove();
     }
   }
 
-  // Hide every exported trending-card element after the section title. This is
+  // Remove every exported trending-card element after the section title. This is
   // intentionally done by inspecting the clip-path value rather than relying on a
   // brittle CSS selector, so the original tags/arrows cannot leak below the live rail.
   const staticMixesGroup = Array.from(svgDoc.querySelectorAll('g')).find((group) =>
@@ -180,8 +236,7 @@ function hideStaticPlaceholders(svgDoc) {
     Array.from(staticMixesGroup.children).forEach((child, index) => {
       // Keep only: 0 = pale section background, 1 = original section heading.
       if (index >= 2) {
-        child.setAttribute('display', 'none');
-        child.style.display = 'none';
+        child.remove();
       }
     });
   }
@@ -190,7 +245,7 @@ function hideStaticPlaceholders(svgDoc) {
   const bentoVideoPlaceholder = svgDoc.querySelector(
     'rect[x="422"][y="4478"]'
   );
-  if (bentoVideoPlaceholder) bentoVideoPlaceholder.style.display = 'none';
+  if (bentoVideoPlaceholder) bentoVideoPlaceholder.remove();
 }
 
 // ── INFINITE TRENDING MIXES CAROUSEL ──────────────────────────────────
@@ -235,7 +290,7 @@ function TrendingMixCards({ duplicate = false }) {
 
 
 // ── BENTO SOCIAL POSTS: ROTATING SLIDE SETS ────────────────────────────
-const BENTO_SOCIAL_SLOTS = ['quote', 'feature', 'amazon', 'tweet', 'reddit'];
+const BENTO_SOCIAL_SLOTS = ['quote', 'amazon', 'tweet', 'reddit', 'googleReview'];
 
 const BENTO_POST_SETS = [
   {
@@ -279,6 +334,14 @@ const BENTO_POST_SETS = [
       body: 'Made my own drink and honestly… this might ruin normal coffee for me now.',
       source: 'reddit',
     },
+    googleReview: {
+      kind: 'social',
+      platform: 'google',
+      author: 'Khushi P.',
+      handle: 'Khushi P.',
+      body: 'Finally a coffee brand that doesn’t judge my weird combinations.',
+      source: 'Google Maps',
+    },
   },
   {
     quote: {
@@ -299,11 +362,11 @@ const BENTO_POST_SETS = [
     },
     amazon: {
       kind: 'rating',
-      platform: 'google',
-      score: '4.9',
+      platform: 'amazon',
+      score: '5.0',
       stars: '★★★★★',
-      body: 'Loved by coffee people near you',
-      source: 'Google Maps',
+      body: 'Based on 128 reviews',
+      source: 'amazon',
     },
     tweet: {
       kind: 'social',
@@ -320,6 +383,14 @@ const BENTO_POST_SETS = [
       handle: '@rohit_brews',
       body: 'This perfect morning latte I have stored is making me want another right now.',
       source: 'reddit',
+    },
+    googleReview: {
+      kind: 'social',
+      platform: 'google',
+      author: 'Khushi P.',
+      handle: 'Khushi P.',
+      body: 'Finally a coffee brand that doesn’t judge my weird combinations.',
+      source: 'Google Maps',
     },
   },
   {
@@ -363,6 +434,14 @@ const BENTO_POST_SETS = [
       body: 'Not many of the unique coffee recipe ideas I’ve ever seen made this simple.',
       source: 'reddit',
     },
+    googleReview: {
+      kind: 'social',
+      platform: 'google',
+      author: 'Khushi P.',
+      handle: 'Khushi P.',
+      body: 'Finally a coffee brand that doesn’t judge my weird combinations.',
+      source: 'Google Maps',
+    },
   },
 ];
 
@@ -374,6 +453,80 @@ const BENTO_PLATFORM_LABELS = {
   amazon: 'amazon',
   google: 'G',
 };
+
+function renderFooterBrand(platform, source) {
+  if (platform === 'facebook') {
+    return (
+      <span className="bento-social-card__brand bento-social-card__brand--facebook" style={{ color: '#1877F2', fontWeight: '800', fontFamily: 'var(--font-body)' }}>
+        facebook
+      </span>
+    );
+  }
+  if (platform === 'x') {
+    return (
+      <span className="bento-social-card__brand bento-social-card__brand--x" style={{ color: '#000000', display: 'inline-flex', alignItems: 'center' }}>
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+      </span>
+    );
+  }
+  if (platform === 'reddit') {
+    return (
+      <span className="bento-social-card__brand bento-social-card__brand--reddit" style={{ color: '#FF4500', display: 'inline-flex', alignItems: 'center', gap: '3px', fontWeight: '700' }}>
+        <svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+          <g>
+            <path d="M17.16 9.17a2.12 2.12 0 0 0-3.52-1.57c-1.2-.74-2.83-1.22-4.63-1.28L10 2.22l2.9.61c.03.52.46.94.99.94a1.03 1.03 0 1 0-1.03-1.03c0 .06.01.12.02.18l-3.23-.68a.43.43 0 0 0-.49.31L8.1 6.32c-1.83.04-3.5.52-4.73 1.27a2.12 2.12 0 0 0-2.4 3.19c-.06.24-.09.5-.09.76 0 3.2 3.82 5.8 8.54 5.8s8.54-2.6 8.54-5.8c0-.25-.03-.49-.08-.72a2.11 2.11 0 0 0 1.28-2.65ZM4.67 11.3a1.23 1.23 0 1 1 2.46 0 1.23 1.23 0 0 1-2.46 0Zm7.89 3.03c-.92.92-2.67.92-3.6 0a.39.39 0 1 1 .55-.55c.62.61 1.88.61 2.5 0a.39.39 0 1 1 .55.55Zm-.75-1.8a1.23 1.23 0 1 1 0-2.46 1.23 1.23 0 0 1 0 2.46Z" />
+          </g>
+        </svg>
+        reddit
+      </span>
+    );
+  }
+  if (platform === 'google') {
+    return (
+      <span className="bento-social-card__brand bento-social-card__brand--google" style={{ color: '#1F2A44', display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: '700' }}>
+        <svg viewBox="0 0 24 24" width="14" height="14" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+          <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.287 4.114a5.955 5.955 0 0 1-5.955-5.957 5.957 5.957 0 0 1 5.955-5.957c1.478 0 2.822.505 3.89 1.488l3.142-3.14C18.73 2.926 15.65 2 12.24 2 6.586 2 2 6.586 2 12.24s4.586 10.24 10.24 10.24c5.795 0 10.24-4.11 10.24-10.24 0-.627-.067-1.283-.24-1.955H12.24z" fill="#4285F4" />
+          <path d="M12.24 22.48c2.926 0 5.61-.967 7.747-2.615l-3.414-2.82c-1.186.79-2.703 1.275-4.333 1.275-3.327 0-6.143-2.25-7.148-5.284l-3.523 2.73c2.096 4.16 6.398 6.714 10.67 6.714z" fill="#34A853" />
+          <path d="M5.092 13.036a6.208 6.208 0 0 1 0-3.66l-3.523-2.73a10.228 10.228 0 0 0 0 9.12l3.523-2.73z" fill="#FBBC05" />
+          <path d="M12.24 5.76c1.82 0 3.456.627 4.745 1.822l3.504-3.5C18.32 1.944 15.485 1 12.24 1 7.968 1 3.666 3.554 1.57 7.714l3.523 2.73c1.005-3.034 3.82-5.284 7.147-5.284z" fill="#EA4335" />
+        </svg>
+        Google Maps
+      </span>
+    );
+  }
+  return <span>{source}</span>;
+}
+
+function renderRatingBrand(platform) {
+  if (platform === 'amazon') {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1 }}>
+        <span style={{ fontSize: 'clamp(0.95rem, 1.2vw, 1.45rem)', fontWeight: '900', letterSpacing: '-0.04em', color: '#FFFFFF', fontFamily: 'var(--font-body)' }}>
+          amazon
+        </span>
+        <svg viewBox="0 0 76 15" width="62" height="12" fill="none" style={{ marginTop: '1px', display: 'block' }}>
+          <path d="M4 3c14 6.5 32 6.5 46 0" stroke="#FF9900" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M45.5 2c1.2.8 2.5 1.5 3 2.5-.5-.2-1.8-.8-3-1" stroke="#FF9900" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      </div>
+    );
+  }
+  if (platform === 'google') {
+    return (
+      <span className="bento-social-card__rating-google-logo" style={{ fontFamily: 'Product Sans, var(--font-heading)', fontWeight: 'bold', fontSize: '20px', letterSpacing: '-0.05em', display: 'block', margin: '0 auto' }}>
+        <span style={{ color: '#4285F4' }}>G</span>
+        <span style={{ color: '#EA4335' }}>o</span>
+        <span style={{ color: '#FBBC05' }}>o</span>
+        <span style={{ color: '#4285F4' }}>g</span>
+        <span style={{ color: '#34A853' }}>l</span>
+        <span style={{ color: '#EA4335' }}>e</span>
+      </span>
+    );
+  }
+  return <span style={{ fontWeight: 'bold', fontSize: '16px' }}>{platform}</span>;
+}
 
 function BentoSocialCard({ slot, post, phase, cycle }) {
   const productImage = post.imageProductId
@@ -421,7 +574,9 @@ function BentoSocialCard({ slot, post, phase, cycle }) {
         className={cardClassName}
         aria-label={`${post.platform} rating ${post.score}`}
       >
-        <span className="bento-social-card__rating-brand">{post.platform}</span>
+        <div className="bento-social-card__rating-logo-wrapper" style={{ marginBottom: '6px' }}>
+          {renderRatingBrand(post.platform)}
+        </div>
         <span className="bento-social-card__rating-stars">{post.stars}</span>
         <div className="bento-social-card__rating-row">
           <strong>{post.score}</strong>
@@ -437,21 +592,11 @@ function BentoSocialCard({ slot, post, phase, cycle }) {
       className={cardClassName}
       aria-label={`${post.platform} post by ${post.author}`}
     >
-      <div className="bento-social-card__meta">
-        <span
-          className={`bento-social-card__platform bento-social-card__platform--${post.platform}`}
-          aria-hidden="true"
-        >
-          {BENTO_PLATFORM_LABELS[post.platform] ?? post.platform}
-        </span>
-        <span className="bento-social-card__author">{post.author}</span>
-      </div>
-
       <p className="bento-social-card__body">{post.body}</p>
 
       <div className="bento-social-card__footer">
         <span>{post.handle}</span>
-        <span>{post.source}</span>
+        {renderFooterBrand(post.platform, post.source)}
       </div>
     </article>
   );
@@ -511,7 +656,7 @@ export default function HomePage() {
 
     if (video.paused) {
       video.muted = true;
-      video.play().catch(() => {});
+      video.play().catch(() => { });
       setIsPaused(false);
     } else {
       video.pause();
@@ -539,7 +684,7 @@ export default function HomePage() {
 
     const forcePlay = () => {
       video.muted = true;
-      video.play().catch(() => {});
+      video.play().catch(() => { });
     };
 
     forcePlay();
@@ -563,7 +708,7 @@ export default function HomePage() {
     const forcePlay = () => {
       if (document.visibilityState === 'hidden') return;
       video.muted = true;
-      video.play().catch(() => {});
+      video.play().catch(() => { });
     };
 
     let frameId = 0;
@@ -676,7 +821,7 @@ export default function HomePage() {
 
       inlineVideo?.pause();
       fullscreenVideo.muted = true;
-      fullscreenVideo.play().catch(() => {});
+      fullscreenVideo.play().catch(() => { });
       setIsPaused(false);
       return;
     }
@@ -692,7 +837,7 @@ export default function HomePage() {
 
       fullscreenVideo?.pause();
       inlineVideo.muted = true;
-      inlineVideo.play().catch(() => {});
+      inlineVideo.play().catch(() => { });
       setIsPaused(false);
     }
 
@@ -909,6 +1054,9 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* ── BENTO GRID SECTION TITLE ── */}
+        <h2 className="bento-section-title">What People Are Saying About CHILLD</h2>
+
         {/* ── BENTO GRID: CENTRAL COFFEESWIRL1 VIDEO ── */}
         <div className="bento-video-card">
           <video
@@ -1027,9 +1175,8 @@ export default function HomePage() {
         {/* ── SCROLL-TRIGGERED INLINE VIDEO ── */}
         <div
           ref={scrollVideoTriggerRef}
-          className={`scroll-video-wrapper ${
-            scrollVideoMode !== 'inline' ? 'scroll-video-wrapper--covered' : ''
-          }`}
+          className={`scroll-video-wrapper ${scrollVideoMode !== 'inline' ? 'scroll-video-wrapper--covered' : ''
+            }`}
           style={videoStyles}
         >
           <div className="video-container-inner">

@@ -1,15 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
-/* ── ANNOUNCEMENT BAR ────────────────────────────────── */
-.top-bar {
+/* ── HEADER WRAPPER ─────────────────────────────────── */
+.header-wrapper {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.header-wrapper--hidden {
+  transform: translateY(-100%);
+}
+
+/* ── ANNOUNCEMENT BAR ────────────────────────────────── */
+.top-bar {
   height: 40px;
   background: #1F2A44;
   color: #FFFFFF;
-  z-index: var(--z-nav);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,6 +30,7 @@
   text-decoration: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   transition: opacity 0.2s ease;
+  width: 100%;
 }
 
 .top-bar:hover {
@@ -34,15 +46,12 @@
 
 /* ── NAVBAR ─────────────────────────────────────────── */
 .navbar {
-  position: absolute;
-  top: 40px; /* Right under top-bar */
-  left: 0;
-  right: 0;
-  z-index: var(--z-nav);
+  position: relative;
   height: 70px;
   background: #FFFFFF;
   border-bottom: 1px solid rgba(31, 42, 68, 0.08);
   transition: all var(--transition-base);
+  width: 100%;
 }
 
 .navbar--scrolled {

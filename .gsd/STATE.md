@@ -25,3 +25,19 @@
 
 **Next Wave TODO:**
 - Monitor user actions/feedback on new recipes created.
+
+---
+
+## Revert of Commit 133720f8a6ca500cb39f781013f21ba5dbbca538
+
+**Objective:** Revert commit 133720f8a6ca500cb39f781013f21ba5dbbca538 ("feat: implement responsive homepage with interactive Figma SVG and mobile-specific layout components").
+
+**Changes:**
+- Reverted all modifications in `src/pages/HomePage/HomePage.css` and `src/pages/HomePage/HomePage.jsx` introduced by the target commit.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.css`
+- `src/pages/HomePage/HomePage.jsx`
+
+**Verification:**
+- `npm run build`: Completed successfully.

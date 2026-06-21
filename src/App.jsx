@@ -12,6 +12,8 @@ import AuthPage from '@/pages/AuthPage/AuthPage';
 import PaymentPage from '@/pages/PaymentPage/PaymentPage';
 import OrderConfirmPage from '@/pages/OrderConfirmPage/OrderConfirmPage';
 import ProfilePage from '@/pages/ProfilePage/ProfilePage';
+import CreateRecipePage from '@/pages/CreateRecipePage/create-recipe-page';
+import RecipeDetailsPage from '@/pages/RecipeDetailsPage/recipe-details-page';
 import { useUserStore } from '@/store/useUserStore';
 import './App.css';
 
@@ -66,6 +68,8 @@ function App() {
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/order-confirm" element={<OrderConfirmPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/create-recipe" element={<CreateRecipePage />} />
+          <Route path="/recipe-details/:id" element={<RecipeDetailsPage />} />
         </Route>
       </Routes>
     </Router>

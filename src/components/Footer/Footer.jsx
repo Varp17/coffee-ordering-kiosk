@@ -39,6 +39,12 @@ export default function Footer() {
         </div>
 
         <div className="footer__links-group">
+          <h4>Recipes</h4>
+          <Link to="/create-recipe">Create Recipe 🎨</Link>
+          <Link to="/recipe-details/georgesso">Recipe Details ☕</Link>
+        </div>
+
+        <div className="footer__links-group">
           <h4>Visit</h4>
           <Link to="/location"><MapPin size={12} /> Indiranagar</Link>
           <Link to="/location"><MapPin size={12} /> Koramangala</Link>

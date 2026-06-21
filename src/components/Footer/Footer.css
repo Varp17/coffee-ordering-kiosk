@@ -6,7 +6,7 @@
 
 .footer__inner {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   gap: var(--space-12);
   padding-top: var(--space-16);
   padding-bottom: var(--space-12);

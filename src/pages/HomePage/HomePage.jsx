@@ -198,6 +198,16 @@ function hideStaticPlaceholders(svgDoc) {
     const d = p.getAttribute('d') || '';
     const fill = p.getAttribute('fill') || '';
 
+    // Remove the static bottom marquee texts (both the linear gradient outline and the solid blue outline)
+    if (fill.includes('paint1_linear_')) {
+      p.remove();
+      continue;
+    }
+    if (fill.toUpperCase() === '#1F2A44' && (d.startsWith('M185.8') || d.length > 20000)) {
+      p.remove();
+      continue;
+    }
+
     const match = d.match(/^M\s*([\d.-]+)\s+([\d.-]+)/i);
     if (match) {
       const yVal = parseFloat(match[2]);

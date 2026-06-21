@@ -1233,7 +1233,7 @@
   box-sizing: border-box;
   border: 2px solid transparent;
   border-radius: 10px;
-  padding-bottom: 4.0vw;
+  padding-bottom: clamp(0.25rem, 0.45vw, 0.5rem);
 
   color: #1F2A44;
   text-decoration: none;
@@ -1359,25 +1359,55 @@
   transform: scale(0.98);
 }
 
-/* Fixed controls: they never move with the loop and stay above the SVG "Tag your mix" text. */
-.trending-mixes-navigation {
+/* The carousel fades gently at its edges instead of showing abrupt cropped cards. */
+.trending-mixes-marquee__viewport {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 4.5%,
+    #000 95.5%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 4.5%,
+    #000 95.5%,
+    transparent 100%
+  );
+}
+
+/* Controls live inside the fixed footer column. They never travel with the cards. */
+.trending-mixes-footer {
   position: absolute;
-  top: 72.18%;
+  top: 72.52%;
   left: 50%;
   z-index: 30;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.32rem, 0.58vw, 0.62rem);
+  width: min(90%, 430px);
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: auto;
+}
+
+.trending-mixes-navigation {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.15rem;
-  transform: translateX(-50%);
+  gap: clamp(0.72rem, 1.15vw, 1.15rem);
+  min-height: 1.55rem;
 }
 
 .trending-mixes-nav-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.95rem;
-  height: 1.95rem;
+  width: 1.6rem;
+  height: 1.6rem;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -1390,8 +1420,8 @@
 }
 
 .trending-mixes-nav-button svg {
-  width: 1.45rem;
-  height: 1.45rem;
+  width: 1.32rem;
+  height: 1.32rem;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -1423,22 +1453,6 @@
   outline-offset: 3px;
 }
 
-/* Live footer replaces the hidden Figma tag line and CTA. */
-.trending-mixes-footer {
-  position: absolute;
-  top: 73.48%;
-  left: 50%;
-  z-index: 30;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.7vw;
-  width: min(90%, 430px);
-  transform: translateX(-50%);
-  text-align: center;
-}
-
 .trending-mixes-footer p {
   margin: 0;
   color: #1844AB;
@@ -1456,8 +1470,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 46px;
-  padding: 0.7rem 1.9rem;
+  min-height: 42px;
+  padding: 0.62rem 1.6rem;
 
   border-radius: 999px;
   background: #1844AB;
@@ -1488,7 +1502,7 @@
 @media (max-width: 1024px) {
   .trending-mixes-marquee {
     top: 66.72%;
-    height: 6.25%;
+    height: 5.98%;
   }
 
   .trending-mixes-marquee__group {
@@ -1497,39 +1511,32 @@
   }
 
   .trending-mix-card {
-    flex-basis: clamp(144px, 22vw, 205px);
-  }
-
-  .trending-mixes-navigation {
-    top: 72.78%;
+    flex-basis: clamp(132px, 20vw, 190px);
   }
 
   .trending-mixes-footer {
-    top: 73.75%;
-  }
-
-  .trending-mixes-nav-button {
-    width: 2rem;
-    height: 2rem;
+    top: 72.90%;
   }
 }
 
 @media (max-width: 640px) {
   .trending-mixes-marquee {
     top: 66.58%;
-    height: 6.15%;
+    height: 5.92%;
+    padding-top: 2px;
   }
 
   .trending-mixes-marquee__group {
-    gap: 3vw;
-    padding: 0 3vw 0 4.5vw;
+    gap: 3.1vw;
+    padding: 0 3.1vw 0 4.6vw;
   }
 
   .trending-mix-card {
-    flex-basis: 28vw;
-    min-width: 98px;
+    flex-basis: clamp(88px, 23.8vw, 108px);
+    min-width: 0;
+    padding-bottom: 0.22rem;
     border-width: 1.5px;
-    border-radius: 8px;
+    border-radius: 7px;
   }
 
   .trending-mix-card__image {
@@ -1544,11 +1551,12 @@
   }
 
   .trending-mix-card__content {
-    padding-top: 0.26rem;
+    padding-top: 0.24rem;
   }
 
   .trending-mix-card__content h3 {
-    font-size: clamp(0.63rem, 2.8vw, 0.82rem);
+    font-size: clamp(0.63rem, 2.75vw, 0.8rem);
+    line-height: 1.1;
   }
 
   .trending-mix-card__content p,
@@ -1556,34 +1564,36 @@
     display: none;
   }
 
-  .trending-mixes-navigation {
-    top: 72.35%;
-    gap: 0.88rem;
-  }
-
   .trending-mixes-footer {
-    top: 73.18%;
-    gap: 0.45rem;
+    top: 72.68%;
+    gap: 0.3rem;
+    width: min(92%, 340px);
   }
 
-  .trending-mixes-footer p {
-    font-size: clamp(0.72rem, 3vw, 0.92rem);
-  }
-
-  .trending-mixes-create-link {
-    min-height: 34px;
-    padding: 0.45rem 1rem;
-    font-size: clamp(0.62rem, 2.4vw, 0.75rem);
+  .trending-mixes-navigation {
+    gap: 0.72rem;
+    min-height: 1.25rem;
   }
 
   .trending-mixes-nav-button {
-    width: 1.85rem;
-    height: 1.85rem;
+    width: 1.35rem;
+    height: 1.35rem;
   }
 
   .trending-mixes-nav-button svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.14rem;
+    height: 1.14rem;
+  }
+
+  .trending-mixes-footer p {
+    font-size: clamp(0.72rem, 3vw, 0.88rem);
+    line-height: 1.1;
+  }
+
+  .trending-mixes-create-link {
+    min-height: 31px;
+    padding: 0.42rem 0.98rem;
+    font-size: clamp(0.62rem, 2.4vw, 0.73rem);
   }
 }
 
@@ -1784,20 +1794,47 @@
   }
 }
 
-/* ── COFFEESWIRL1 BACKGROUND VIDEO ONLY ── */
-.coffeeswirl-video-bg {
+/* ── HARD-PART SECTION: COFFEESWIRL2 PARALLAX BACKGROUND ── */
+/* A transparent moving layer above the exported panel. The original Figma copy
+   stays visible below it, while the coffee texture keeps drifting on scroll. */
+.hard-part-parallax-video {
+  --hard-part-parallax-shift: 0px;
+
   position: absolute;
   top: 6.027%;
   left: 0;
+  z-index: 4;
+
   width: 100%;
   height: 27.23%;
-  z-index: 2;
   overflow: hidden;
   pointer-events: none;
+  isolation: isolate;
 }
 
-.coffeeswirl-video-bg video {
+.hard-part-parallax-video video {
+  display: block;
   width: 100%;
-  height: 100%;
+  height: 124%;
+  margin-top: -12%;
   object-fit: cover;
+  opacity: 0.44;
+  filter: saturate(0.88) contrast(1.08) brightness(0.68);
+  transform: translate3d(0, var(--hard-part-parallax-shift), 0) scale(1.06);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+@media (max-width: 640px) {
+  .hard-part-parallax-video video {
+    height: 132%;
+    margin-top: -16%;
+    object-position: 52% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hard-part-parallax-video video {
+    transform: scale(1.06);
+  }
 }

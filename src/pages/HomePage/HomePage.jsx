@@ -153,9 +153,8 @@ function hideStaticPlaceholders(svgDoc) {
   const videoRect = svgDoc.querySelector('rect[y="3460"]');
   if (videoRect) videoRect.style.display = 'none';
 
-  // Keep the hero free of the original raster background so live content can sit above it.
-  const bgRect = svgDoc.querySelector('rect[fill^="url(#pattern0_366_1172"]');
-  if (bgRect) bgRect.style.display = 'none';
+  // Keep pattern0 visible: it contains the original hard-part copy and wave artwork.
+  // coffeeswirl2 is layered transparently above that panel, not used as a replacement.
 
   const pathsList = svgDoc.querySelectorAll('path');
   for (const p of pathsList) {
@@ -469,6 +468,8 @@ export default function HomePage() {
   const scrollVideoModeRef = useRef('inline');
   const scrollVideoExitTimerRef = useRef(null);
   const bentoVideoRef = useRef(null);
+  const hardPartParallaxRef = useRef(null);
+  const hardPartVideoRef = useRef(null);
   const bentoOutgoingTimerRef = useRef(null);
   const bentoActiveSetRef = useRef(0);
   const carouselTrackRef = useRef(null);
@@ -548,6 +549,54 @@ export default function HomePage() {
     return () => {
       video.removeEventListener('canplay', forcePlay);
       document.removeEventListener('visibilitychange', forcePlay);
+    };
+  }, []);
+
+  // coffeeswirl2 is the moving texture behind the "We handled the hard part" copy.
+  // It lives below the exported SVG, so the original heading, paragraph and CTA
+  // remain crisp above it while the coffee motion drifts at a slower scroll speed.
+  useEffect(() => {
+    const layer = hardPartParallaxRef.current;
+    const video = hardPartVideoRef.current;
+    if (!layer || !video) return undefined;
+
+    const forcePlay = () => {
+      if (document.visibilityState === 'hidden') return;
+      video.muted = true;
+      video.play().catch(() => {});
+    };
+
+    let frameId = 0;
+    const updateParallax = () => {
+      const rect = layer.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const layerCenter = rect.top + rect.height / 2;
+      const distanceFromCenter = viewportCenter - layerCenter;
+      const shift = Math.max(-54, Math.min(54, distanceFromCenter * 0.11));
+
+      layer.style.setProperty('--hard-part-parallax-shift', `${shift.toFixed(1)}px`);
+      frameId = 0;
+    };
+
+    const queueParallaxUpdate = () => {
+      if (frameId) return;
+      frameId = window.requestAnimationFrame(updateParallax);
+    };
+
+    forcePlay();
+    queueParallaxUpdate();
+
+    video.addEventListener('canplay', forcePlay);
+    document.addEventListener('visibilitychange', forcePlay);
+    window.addEventListener('scroll', queueParallaxUpdate, { passive: true });
+    window.addEventListener('resize', queueParallaxUpdate);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      video.removeEventListener('canplay', forcePlay);
+      document.removeEventListener('visibilitychange', forcePlay);
+      window.removeEventListener('scroll', queueParallaxUpdate);
+      window.removeEventListener('resize', queueParallaxUpdate);
     };
   }, []);
 
@@ -842,6 +891,24 @@ export default function HomePage() {
           }}
         />
 
+        {/* ── HARD-PART SECTION: COFFEESWIRL2, CLIPPED TO FIGMA WAVES ── */}
+        <div className="hard-part-parallax-clip" aria-hidden="true">
+          <div
+            ref={hardPartParallaxRef}
+            className="hard-part-parallax-video"
+          >
+            <video
+              ref={hardPartVideoRef}
+              src="/Videos/coffeeswirl2.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+            />
+          </div>
+        </div>
+
         {/* ── BENTO GRID: CENTRAL COFFEESWIRL1 VIDEO ── */}
         <div className="bento-video-card">
           <video
@@ -920,33 +987,34 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── CENTERED TRENDING MIXES NAVIGATION ── */}
-        <div className="trending-mixes-navigation" aria-label="Trending mixes navigation">
-          <button
-            type="button"
-            className="trending-mixes-nav-button"
-            aria-label="Show previous mixes"
-            onClick={() => moveMixCarousel(-1)}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M14.5 5 7.5 12l7 7" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            className="trending-mixes-nav-button"
-            aria-label="Show next mixes"
-            onClick={() => moveMixCarousel(1)}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m9.5 5 7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-
-        {/* ── TRENDING MIXES FOOTER: REPLACES HIDDEN STATIC SVG CONTENT ── */}
+        {/* ── TRENDING MIXES CONTROLS ──
+            Keeping the arrows inside this footer keeps them fixed, centered,
+            and vertically separated from the tagline on every screen size. */}
         <div className="trending-mixes-footer">
+          <div className="trending-mixes-navigation" aria-label="Trending mixes navigation">
+            <button
+              type="button"
+              className="trending-mixes-nav-button"
+              aria-label="Show previous mixes"
+              onClick={() => moveMixCarousel(-1)}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14.5 5 7.5 12l7 7" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              className="trending-mixes-nav-button"
+              aria-label="Show next mixes"
+              onClick={() => moveMixCarousel(1)}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9.5 5 7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
           <p>
             Tag your mix with <strong>#MadeByYou</strong>
           </p>

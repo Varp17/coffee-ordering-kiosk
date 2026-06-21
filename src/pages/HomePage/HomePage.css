@@ -1795,29 +1795,83 @@
 }
 
 /* ── HARD-PART SECTION: COFFEESWIRL2 PARALLAX BACKGROUND ── */
-/* A transparent moving layer above the exported panel. The original Figma copy
-   stays visible below it, while the coffee texture keeps drifting on scroll. */
+/*
+  The wrapper has the same 1512 × 8329 geometry as Homepage.svg. The polygon
+  traces the exported Figma waves, so coffeeswirl2 is visible ONLY inside the
+  “We handled the hard part” panel — never above its top wave or below its
+  bottom wave.
+*/
+.hard-part-parallax-clip {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+
+  clip-path: polygon(
+    /* Top Figma wave: y 951–1119 */
+    0% 13.435%,
+    4.167% 13.098%,
+    8.008% 12.795%,
+    13.021% 12.426%,
+    18.815% 12.058%,
+    25% 11.755%,
+    31.25% 11.565%,
+    37.5% 11.502%,
+    43.75% 11.565%,
+    50% 11.755%,
+    56.25% 12.053%,
+    62.5% 12.385%,
+    68.75% 12.654%,
+    75% 12.763%,
+    81.185% 12.654%,
+    86.979% 12.385%,
+    91.992% 12.053%,
+    95.833% 11.755%,
+    100% 11.418%,
+
+    /* Bottom Figma wave: y 2069–2238, traced right-to-left */
+    100% 26.865%,
+    95.833% 26.529%,
+    91.992% 26.231%,
+    86.979% 25.899%,
+    81.185% 25.629%,
+    75% 25.52%,
+    68.75% 25.629%,
+    62.5% 25.899%,
+    56.25% 26.231%,
+    50% 26.529%,
+    43.75% 26.718%,
+    37.5% 26.781%,
+    31.25% 26.718%,
+    25% 26.529%,
+    18.815% 26.225%,
+    13.021% 25.857%,
+    8.008% 25.488%,
+    4.167% 25.185%,
+    0% 24.848%
+  );
+}
+
 .hard-part-parallax-video {
   --hard-part-parallax-shift: 0px;
 
   position: absolute;
-  top: 6.027%;
+  top: 10.65%;
   left: 0;
-  z-index: 4;
-
   width: 100%;
-  height: 27.23%;
+  height: 17.9%;
   overflow: hidden;
-  pointer-events: none;
-  isolation: isolate;
 }
 
 .hard-part-parallax-video video {
   display: block;
   width: 100%;
-  height: 124%;
-  margin-top: -12%;
+  height: 132%;
+  margin-top: -16%;
   object-fit: cover;
+  object-position: center 52%;
   opacity: 0.44;
   filter: saturate(0.88) contrast(1.08) brightness(0.68);
   transform: translate3d(0, var(--hard-part-parallax-shift), 0) scale(1.06);
@@ -1826,9 +1880,14 @@
 }
 
 @media (max-width: 640px) {
+  .hard-part-parallax-video {
+    top: 10.3%;
+    height: 18.45%;
+  }
+
   .hard-part-parallax-video video {
-    height: 132%;
-    margin-top: -16%;
+    height: 140%;
+    margin-top: -20%;
     object-position: 52% center;
   }
 }

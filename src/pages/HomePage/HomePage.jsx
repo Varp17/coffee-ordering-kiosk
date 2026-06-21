@@ -891,21 +891,22 @@ export default function HomePage() {
           }}
         />
 
-        {/* ── PARALLAX BACKGROUND: COFFEESWIRL2 UNDER THE HARD-PART COPY ── */}
-        <div
-          ref={hardPartParallaxRef}
-          className="hard-part-parallax-video"
-          aria-hidden="true"
-        >
-          <video
-            ref={hardPartVideoRef}
-            src="/Videos/coffeeswirl2.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-          />
+        {/* ── HARD-PART SECTION: COFFEESWIRL2, CLIPPED TO FIGMA WAVES ── */}
+        <div className="hard-part-parallax-clip" aria-hidden="true">
+          <div
+            ref={hardPartParallaxRef}
+            className="hard-part-parallax-video"
+          >
+            <video
+              ref={hardPartVideoRef}
+              src="/Videos/coffeeswirl2.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+            />
+          </div>
         </div>
 
         {/* ── BENTO GRID: CENTRAL COFFEESWIRL1 VIDEO ── */}

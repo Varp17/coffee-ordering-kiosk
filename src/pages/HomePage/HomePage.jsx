@@ -161,7 +161,7 @@ function hideStaticPlaceholders(svgDoc) {
   for (const rect of rects) {
     const hAttr = rect.getAttribute('height');
     const hVal = parseFloat(hAttr || '0');
-    
+
     // Extract y coordinate
     const yAttr = rect.getAttribute('y');
     const transform = rect.getAttribute('transform') || '';
@@ -1063,9 +1063,6 @@ export default function HomePage() {
             />
           </div>
         </div>
-
-        {/* ── BENTO GRID SECTION TITLE ── */}
-        <h2 className="bento-section-title">What People Are Saying About CHILLD</h2>
 
         {/* ── BENTO GRID: CENTRAL COFFEESWIRL1 VIDEO ── */}
         <div className="bento-video-card">

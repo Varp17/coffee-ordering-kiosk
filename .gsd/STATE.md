@@ -41,3 +41,22 @@
 
 **Verification:**
 - `npm run build`: Completed successfully.
+
+---
+
+## Wave 2: Align Footer Wave with Figma Design
+
+**Objective:** Align the bottom marquee background wave and footer background with the Figma design.
+
+**Changes:**
+- Restored the bottom marquee background wave path (`d.startsWith('M0 7396')` and `fill.toUpperCase() === '#1F2A44'`) in `hideStaticPlaceholders` in `HomePage.jsx`. This allows the wavy dark navy (`#1F2A44`) top of the footer to render and seamlessly transition from the white section above it to the dark navy footer background, matching the Figma design.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.jsx`
+
+**Verification:**
+- `npm run build`: Production build completed successfully.
+- Visual check: Verified via browser subagent screenshots that the white gap above the footer is resolved and the wavy transition matches the Figma design.
+
+**Risks/Debt:**
+- None.

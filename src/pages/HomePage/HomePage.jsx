@@ -220,11 +220,11 @@ function hideStaticPlaceholders(svgDoc) {
       }
     }
 
-    // Bottom marquee background wave (#1F2A44)
-    if (d.startsWith('M0 7396') && fill.toUpperCase() === '#1F2A44') {
-      p.remove();
-      continue;
-    }
+    // Bottom marquee background wave (#1F2A44) - Do not remove this, otherwise we get a white gap above the footer.
+    // if (d.startsWith('M0 7396') && fill.toUpperCase() === '#1F2A44') {
+    //   p.remove();
+    //   continue;
+    // }
 
     // Original play controls inside the exported SVG.
     if (

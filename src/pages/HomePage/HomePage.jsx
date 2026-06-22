@@ -29,12 +29,120 @@ function injectSvgStyles(svgDoc) {
   svgDoc.documentElement.appendChild(styleElem);
 }
 
+const HERO_CONTENT_LIFT = 48;
+
 function animateSvgCup(svgDoc) {
   // Cup is Rect 15 (filled with pattern3)
   const cupRect = svgDoc.querySelector('rect[fill^="url(#pattern3_"]');
   if (cupRect) {
+    const currentY = parseFloat(cupRect.getAttribute('y') || '0');
+    if (Number.isFinite(currentY)) {
+      cupRect.setAttribute('y', String(currentY - HERO_CONTENT_LIFT));
+    }
+
     cupRect.classList.add('animated-cup');
   }
+}
+
+const HERO_BEAN_ENTRANCES = {
+  4: { x: -420, y: -220, delay: 120, duration: 920, floatX: 3, floatY: -7, floatDuration: 3900 },
+  5: { x: -560, y: 80, delay: 260, duration: 980, floatX: -4, floatY: 6, floatDuration: 4300 },
+  6: { x: -500, y: 300, delay: 420, duration: 900, floatX: 4, floatY: -5, floatDuration: 3600 },
+  7: { x: -220, y: 420, delay: 560, duration: 980, floatX: -3, floatY: -8, floatDuration: 4600 },
+  8: { x: -340, y: 140, delay: 700, duration: 860, floatX: 2, floatY: 5, floatDuration: 3400 },
+  9: { x: 360, y: 320, delay: 240, duration: 980, floatX: -4, floatY: -6, floatDuration: 4200 },
+  10: { x: 520, y: 120, delay: 400, duration: 880, floatX: 3, floatY: 5, floatDuration: 3700 },
+  11: { x: 540, y: -260, delay: 80, duration: 1040, floatX: -3, floatY: 7, floatDuration: 4500 },
+  12: { x: 260, y: -300, delay: 620, duration: 820, floatX: 2, floatY: -5, floatDuration: 3300 },
+  13: { x: 380, y: 180, delay: 760, duration: 860, floatX: -2, floatY: 6, floatDuration: 3800 },
+  14: { x: 520, y: 240, delay: 900, duration: 900, floatX: 3, floatY: -6, floatDuration: 4100 },
+};
+
+function getHeroBeanPatternNumber(node) {
+  const fill = node.getAttribute('fill') || '';
+  const match = fill.match(/^url\(#pattern(\d+)_/);
+  if (!match) return null;
+
+  const patternNumber = Number(match[1]);
+  return patternNumber >= 4 && patternNumber <= 14 ? patternNumber : null;
+}
+
+function startHeroBeanFloat(wrapper, entrance) {
+  wrapper.animate(
+    [
+      { transform: 'translate(0, 0)' },
+      { transform: `translate(${entrance.floatX}px, ${entrance.floatY}px)` },
+      { transform: 'translate(0, 0)' },
+    ],
+    {
+      duration: entrance.floatDuration,
+      delay: entrance.delay % 320,
+      easing: 'ease-in-out',
+      iterations: Infinity,
+    }
+  );
+}
+
+function animateHeroBeans(svgDoc) {
+  const prefersReducedMotion = svgDoc.defaultView?.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const beanRects = Array.from(svgDoc.querySelectorAll('rect')).filter((rect) =>
+    getHeroBeanPatternNumber(rect) !== null
+  );
+
+  beanRects.forEach((rect) => {
+    const patternNumber = getHeroBeanPatternNumber(rect);
+    const entrance = HERO_BEAN_ENTRANCES[patternNumber];
+    const parent = rect.parentNode;
+
+    if (!parent || !entrance || parent.getAttribute?.('data-hero-bean-wrapper') === 'true') {
+      return;
+    }
+
+    const wrapper = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'g');
+    wrapper.setAttribute('data-hero-bean-wrapper', 'true');
+    wrapper.setAttribute('data-hero-bean-pattern', String(patternNumber));
+    wrapper.style.transformOrigin = 'center center';
+    wrapper.style.transformBox = 'fill-box';
+    parent.insertBefore(wrapper, rect);
+    wrapper.appendChild(rect);
+
+    if (prefersReducedMotion) {
+      wrapper.style.opacity = '1';
+      wrapper.style.transform = 'translate(0, 0)';
+      return;
+    }
+
+    wrapper.style.opacity = '0';
+    wrapper.style.transform = `translate(${entrance.x}px, ${entrance.y}px)`;
+
+    const animation = wrapper.animate(
+      [
+        {
+          opacity: 0,
+          transform: `translate(${entrance.x}px, ${entrance.y}px)`,
+        },
+        {
+          opacity: 1,
+          transform: 'translate(0, 0)',
+        },
+      ],
+      {
+        duration: entrance.duration,
+        delay: entrance.delay,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        fill: 'forwards',
+      }
+    );
+
+    animation.finished
+      .then(() => {
+        wrapper.style.opacity = '1';
+        wrapper.style.transform = 'translate(0, 0)';
+        animation.cancel();
+        startHeroBeanFloat(wrapper, entrance);
+      })
+      .catch(() => {});
+  });
 }
 
 function syncHardPartTextOverlay(svgDoc, overlaySvg) {
@@ -124,7 +232,7 @@ function compactLowerHomepageSections(svgDoc) {
 
 const HERO_TEXT_LAYOUT = {
   centerX: 756,
-  baselineY: 340,
+  baselineY: 340 - HERO_CONTENT_LIFT,
   maxTextWidth: 1100,
   maxFontSize: 400,
   minFontSize: 140,
@@ -1124,6 +1232,7 @@ export default function HomePage() {
 
               injectSvgStyles(svgDoc);
               animateSvgCup(svgDoc);
+              animateHeroBeans(svgDoc);
               injectDynamicHeroText(svgDoc, displayName, suffix);
               hideStaticPlaceholders(svgDoc);
               compactLowerHomepageSections(svgDoc);

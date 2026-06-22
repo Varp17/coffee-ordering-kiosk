@@ -44,7 +44,7 @@ export default function Navbar() {
   const navLinks = [
     { to: '/', label: 'Home' },
     { to: '/menu', label: 'Products' },
-    { to: '/build', label: 'Recipes' },
+    { to: '/recipe-details/georgesso', label: 'Recipes' },
     { to: '/location', label: 'About Us' },
     { to: '/location', label: 'Contact' },
   ];

@@ -37,6 +37,91 @@ function animateSvgCup(svgDoc) {
   }
 }
 
+function syncHardPartTextOverlay(svgDoc, overlaySvg) {
+  if (!overlaySvg) return;
+
+  const overlayGroup = overlaySvg.querySelector('[data-hard-part-copy]');
+  if (!overlayGroup) return;
+
+  overlayGroup.replaceChildren();
+
+  const hardPartCopyNodes = Array.from(svgDoc.querySelectorAll('path')).filter((path) => {
+    const fill = (path.getAttribute('fill') || '').toLowerCase();
+    const d = path.getAttribute('d') || '';
+    const match = d.match(/^M\s*([\d.-]+)\s+([\d.-]+)/i);
+
+    if (fill !== 'white' || !match) return false;
+
+    const yVal = parseFloat(match[2]);
+    return yVal >= 1280 && yVal <= 2010;
+  });
+
+  const hardPartCtaPill = svgDoc.querySelector('rect[x="517"][y="1932"]');
+  if (hardPartCtaPill) {
+    const clone = overlaySvg.ownerDocument.importNode(hardPartCtaPill, true);
+    clone.setAttribute('fill', '#FFFFFF');
+    clone.setAttribute('opacity', '1');
+    overlayGroup.appendChild(clone);
+  }
+
+  hardPartCopyNodes.forEach((node) => {
+    const clone = overlaySvg.ownerDocument.importNode(node, true);
+    clone.setAttribute('fill', '#FFFFFF');
+    clone.setAttribute('opacity', '0.96');
+    overlayGroup.appendChild(clone);
+  });
+
+  const hardPartCtaLabel = Array.from(svgDoc.querySelectorAll('path')).find((path) => {
+    const fill = (path.getAttribute('fill') || '').toLowerCase();
+    const d = path.getAttribute('d') || '';
+    const match = d.match(/^M\s*([\d.-]+)\s+([\d.-]+)/i);
+
+    if (fill !== 'black' || !match) return false;
+
+    const xVal = parseFloat(match[1]);
+    const yVal = parseFloat(match[2]);
+    return xVal >= 540 && xVal <= 790 && yVal >= 1940 && yVal <= 1970;
+  });
+
+  if (hardPartCtaLabel) {
+    const clone = overlaySvg.ownerDocument.importNode(hardPartCtaLabel, true);
+    clone.setAttribute('fill', '#000000');
+    clone.setAttribute('opacity', '1');
+    overlayGroup.appendChild(clone);
+  }
+}
+
+const LOWER_SECTION_COMPACT_Y = 6516;
+const LOWER_SECTION_COMPACT_SHIFT = 260;
+const LOWER_SECTION_COMPACT_SHIFT_PERCENT = `${((LOWER_SECTION_COMPACT_SHIFT / 8329) * 100).toFixed(2)}%`;
+
+function getSvgNodeStartY(node) {
+  const yAttr = node.getAttribute('y');
+  if (yAttr) return parseFloat(yAttr);
+
+  const transform = node.getAttribute('transform') || '';
+  const translateMatch = transform.match(/translate\(\s*[\d.-]+[\s,]+([\d.-]+)\)/i);
+  if (translateMatch) return parseFloat(translateMatch[1]);
+
+  const d = node.getAttribute('d') || '';
+  const pathMatch = d.match(/^M\s*[\d.-]+\s+([\d.-]+)/i);
+  if (pathMatch) return parseFloat(pathMatch[1]);
+
+  return Number.NaN;
+}
+
+function compactLowerHomepageSections(svgDoc) {
+  const nodes = svgDoc.querySelectorAll('rect, path, image, g');
+
+  nodes.forEach((node) => {
+    const yVal = getSvgNodeStartY(node);
+    if (!Number.isFinite(yVal) || yVal < LOWER_SECTION_COMPACT_Y) return;
+
+    const transform = node.getAttribute('transform') || '';
+    node.setAttribute('transform', `${transform} translate(0 -${LOWER_SECTION_COMPACT_SHIFT})`.trim());
+  });
+}
+
 const HERO_TEXT_LAYOUT = {
   centerX: 756,
   baselineY: 340,
@@ -625,6 +710,7 @@ export default function HomePage() {
   const bentoVideoRef = useRef(null);
   const hardPartParallaxRef = useRef(null);
   const hardPartVideoRef = useRef(null);
+  const hardPartTextOverlayRef = useRef(null);
   const bentoOutgoingTimerRef = useRef(null);
   const bentoActiveSetRef = useRef(0);
   const carouselTrackRef = useRef(null);
@@ -1040,6 +1126,8 @@ export default function HomePage() {
               animateSvgCup(svgDoc);
               injectDynamicHeroText(svgDoc, displayName, suffix);
               hideStaticPlaceholders(svgDoc);
+              compactLowerHomepageSections(svgDoc);
+              syncHardPartTextOverlay(svgDoc, hardPartTextOverlayRef.current);
             } catch (err) {
               console.error('Error injecting dynamic assets into SVG:', err);
             }
@@ -1065,6 +1153,21 @@ export default function HomePage() {
         </div>
 
         {/* ── BENTO GRID: CENTRAL COFFEESWIRL1 VIDEO ── */}
+        <svg
+          ref={hardPartTextOverlayRef}
+          className="hard-part-copy-overlay"
+          viewBox="0 0 1512 8329"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <defs>
+            <filter id="hard-part-copy-glow" x="-2%" y="-2%" width="104%" height="104%">
+              <feDropShadow dx="0" dy="2" stdDeviation="2.2" floodColor="#2B1608" floodOpacity="0.32" />
+            </filter>
+          </defs>
+          <g data-hard-part-copy filter="url(#hard-part-copy-glow)" />
+        </svg>
+
         <div className="bento-video-card">
           <video
             ref={bentoVideoRef}
@@ -1236,7 +1339,7 @@ export default function HomePage() {
             {/* Bottom Wave Curve aligned exactly with the top border of the navy blue wave and extended off-screen */}
             <path
               id="marquee-path-bottom"
-              d="M-150 7462 L0 7396 L63 7367.96 C126 7340.35 252 7283.65 378 7283.97 C504 7283.65 630 7340.35 756 7367.96 C882 7396 1008 7396 1134 7367.96 C1260 7340.35 1386 7283.65 1449 7256.03 L1512 7228 L1662 7162"
+              d="M-150 7202 L0 7136 L63 7107.96 C126 7080.35 252 7023.65 378 7023.97 C504 7023.65 630 7080.35 756 7107.96 C882 7136 1008 7136 1134 7107.96 C1260 7080.35 1386 7023.65 1449 6996.03 L1512 6968 L1662 6902"
             />
           </defs>
 
@@ -1288,6 +1391,14 @@ export default function HomePage() {
           title="Buy Cold Brew Core"
         />
 
+        {/* Explore Recipes Swirl Button */}
+        <Link
+          to="/recipe-details/georgesso"
+          className="homepage-link link-swirl-recipes"
+          style={{ left: '55.68%', top: '23.19%', width: '12.2%', height: '0.60%' }}
+          title="Explore Recipes"
+        />
+
         {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
 
         {/* Original SVG trending CTA is hidden; the live React CTA above owns this action. */}
@@ -1296,7 +1407,7 @@ export default function HomePage() {
         <a
           href="tel:+918693852250"
           className="homepage-link link-b2b-call"
-          style={{ left: '7.94%', top: '84.56%', width: '17.26%', height: '0.60%' }}
+          style={{ left: '7.94%', top: `calc(84.56% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '17.26%', height: '0.60%' }}
           title="Call Us"
         />
 
@@ -1304,7 +1415,7 @@ export default function HomePage() {
         <Link
           to="/menu?cat=cold-brew"
           className="homepage-link link-footer-shop-1"
-          style={{ left: '55.49%', top: '93.65%', width: '13.23%', height: '0.36%', borderRadius: '0' }}
+          style={{ left: '55.49%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
           title="Shop Cold Brew Core"
         />
 
@@ -1312,7 +1423,7 @@ export default function HomePage() {
         <Link
           to="/menu?cat=matcha"
           className="homepage-link link-footer-shop-2"
-          style={{ left: '55.49%', top: '94.13%', width: '13.23%', height: '0.36%', borderRadius: '0' }}
+          style={{ left: '55.49%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
           title="Shop Ceremonial Matcha"
         />
 
@@ -1320,15 +1431,31 @@ export default function HomePage() {
         <Link
           to="/build"
           className="homepage-link link-footer-shop-3"
-          style={{ left: '55.49%', top: '94.61%', width: '13.23%', height: '0.36%', borderRadius: '0' }}
+          style={{ left: '55.49%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
           title="Code Your Drink"
+        />
+
+        {/* Footer Link - Create Recipe */}
+        <Link
+          to="/create-recipe"
+          className="homepage-link link-footer-recipe-create"
+          style={{ left: '64.15%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
+          title="Create Recipe"
+        />
+
+        {/* Footer Link - Recipe Details */}
+        <Link
+          to="/recipe-details/georgesso"
+          className="homepage-link link-footer-recipe-details"
+          style={{ left: '64.15%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
+          title="Recipe Details"
         />
 
         {/* Footer Link - Indiranagar */}
         <Link
           to="/location"
           className="homepage-link link-footer-visit-1"
-          style={{ left: '72.75%', top: '93.65%', width: '13.23%', height: '0.36%', borderRadius: '0' }}
+          style={{ left: '72.75%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
           title="Indiranagar Cafe"
         />
 
@@ -1336,7 +1463,7 @@ export default function HomePage() {
         <Link
           to="/location"
           className="homepage-link link-footer-visit-2"
-          style={{ left: '72.75%', top: '94.13%', width: '13.23%', height: '0.36%', borderRadius: '0' }}
+          style={{ left: '72.75%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
           title="Koramangala Cafe"
         />
 
@@ -1344,7 +1471,7 @@ export default function HomePage() {
         <Link
           to="/location"
           className="homepage-link link-footer-visit-3"
-          style={{ left: '72.75%', top: '94.61%', width: '13.23%', height: '0.36%', borderRadius: '0' }}
+          style={{ left: '72.75%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
           title="HSR Layout Cafe"
         />
       </div>

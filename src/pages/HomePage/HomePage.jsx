@@ -1220,28 +1220,38 @@ export default function HomePage() {
     <div className="homepage-figma-container">
       {/* ── DESKTOP & MOBILE UNIFIED FIGMA SVG LAYOUT ───────────────────────── */}
       <div className="figma-svg-wrapper">
-        <object
-          data="/Homepage.svg?v=1.7"
-          type="image/svg+xml"
-          className="figma-svg-object"
-          aria-label="Figma Homepage Design"
-          onLoad={(e) => {
-            try {
-              const svgDoc = e.target.contentDocument;
-              if (!svgDoc) return;
+        <div className="figma-svg-content">
+          <object
+            data="/Homepage.svg?v=1.7"
+            type="image/svg+xml"
+            className="figma-svg-object"
+            aria-label="Figma Homepage Design"
+            onLoad={(e) => {
+              try {
+                const svgDoc = e.target.contentDocument;
+                if (!svgDoc) return;
 
-              injectSvgStyles(svgDoc);
-              animateSvgCup(svgDoc);
-              animateHeroBeans(svgDoc);
-              injectDynamicHeroText(svgDoc, displayName, suffix);
-              hideStaticPlaceholders(svgDoc);
-              compactLowerHomepageSections(svgDoc);
-              syncHardPartTextOverlay(svgDoc, hardPartTextOverlayRef.current);
-            } catch (err) {
-              console.error('Error injecting dynamic assets into SVG:', err);
-            }
-          }}
-        />
+                injectSvgStyles(svgDoc);
+                animateSvgCup(svgDoc);
+                animateHeroBeans(svgDoc);
+                injectDynamicHeroText(svgDoc, displayName, suffix);
+                hideStaticPlaceholders(svgDoc);
+                compactLowerHomepageSections(svgDoc);
+
+                // Shrink SVG canvas height by compact shift to prevent trailing whitespace
+                const svg = svgDoc.querySelector('svg');
+                if (svg) {
+                  const currentHeight = parseFloat(svg.getAttribute('height') || '8329');
+                  svg.setAttribute('height', String(currentHeight - LOWER_SECTION_COMPACT_SHIFT));
+                  svg.setAttribute('viewBox', `0 0 1512 ${currentHeight - LOWER_SECTION_COMPACT_SHIFT}`);
+                }
+
+                syncHardPartTextOverlay(svgDoc, hardPartTextOverlayRef.current);
+              } catch (err) {
+                console.error('Error injecting dynamic assets into SVG:', err);
+              }
+            }}
+          />
 
         {/* ── HARD-PART SECTION: COFFEESWIRL2, CLIPPED TO FIGMA WAVES ── */}
         <div className="hard-part-parallax-clip" aria-hidden="true">
@@ -1583,6 +1593,7 @@ export default function HomePage() {
           style={{ left: '72.75%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
           title="HSR Layout Cafe"
         />
+        </div>
       </div>
 
       {typeof document !== 'undefined' && createPortal(

@@ -199,7 +199,7 @@
   align-self: auto;
   justify-self: center;
   margin-top: 1.5rem;
-  margin-bottom: clamp(140px, 12vw, 220px);
+  margin-bottom: clamp(360px, 20vw, 360px);
   margin-inline: auto;
   color: var(--footer-ink);
   font-size: clamp(0.82rem, 0.92vw, 1rem);
@@ -219,10 +219,10 @@
 .footer__watermark {
   position: absolute;
   right: -4%;
-  bottom: -90px;
+  bottom: 15px;
   left: -2.5%;
   z-index: -1;
-  height: clamp(340px, 28vw, 520px);
+  height: clamp(310px, 28vw, 520px);
   opacity: 1;
   pointer-events: none;
 }

@@ -60,3 +60,31 @@
 
 **Risks/Debt:**
 - None.
+
+---
+
+## Wave 3: Shrink SVG Canvas and Align Global Footer
+
+**Objective:** Resolve the empty spacing below the homepage footer caused by SVG canvas height, fix logo auto-width attribute warnings, and align the global footer links and spacing with the Figma design.
+
+**Changes:**
+- Wrapped the homepage SVG and overlays inside a `.figma-svg-content` scaling container in `HomePage.jsx` and `HomePage.css` to keep all percentage-based absolute coordinates aligned.
+- Dynamically shrunk the SVG document height inside the `<object>`'s `onLoad` handler by `260px` to match the compact homepage layout, preventing trailing empty space below the footer.
+- Omitted the `width` and `height` attributes from the SVG tag in `Logo.jsx` when they are set to `auto`, passing them to styles instead to prevent browser console attribute errors.
+- Aligned global `Footer.jsx` link columns (Shop, Recipes, Visit) and links targets with the homepage footer layout.
+- Removed the white `<rect>` element from the SVG wave in `Footer.jsx` to make the header wave transparent, allowing a seamless transition from the page background.
+- Increased the margin-bottom on `.footer__copyright` in `Footer.css` to `clamp(260px, 20vw, 360px)` to provide adequate spacing for the watermark logo on desktop screens.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.jsx`
+- `src/pages/HomePage/HomePage.css`
+- `src/components/Logo/Logo.jsx`
+- `src/components/Footer/Footer.jsx`
+- `src/components/Footer/Footer.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully in 1.03s with zero compile errors.
+- Visual check: Verified via browser subagent runs that the homepage SVG height is shrunk to `8069px`, no console errors exist, and the watermark logo on the menu page footer is fully visible with correct spacing and transition.
+
+**Risks/Debt:**
+- None.

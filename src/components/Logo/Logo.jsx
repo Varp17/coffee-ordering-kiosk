@@ -13,13 +13,18 @@ export default function Logo({
 }) {
   return (
     <svg
-      width={width}
-      height={height}
+      width={width === 'auto' ? undefined : width}
+      height={height === 'auto' ? undefined : height}
       viewBox="0 0 392 150"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      style={{ display: 'block', ...style }}
+      style={{
+        display: 'block',
+        width: width === 'auto' ? 'auto' : undefined,
+        height: height === 'auto' ? 'auto' : undefined,
+        ...style
+      }}
     >
       <path
         d="M83.6241 126.264C75.5315 131.479 64.0219 133.997 50.8938 133.997C17.9837 133.997 0 112.956 0 86.6994C0 50.0127 25.1772 24.6557 61.684 24.6557C74.8121 24.6557 87.2209 27.7129 94.9539 33.1081L88.8394 48.9337C82.725 43.8983 71.3952 40.841 61.3244 40.841C34.5287 40.841 17.9837 59.3642 17.9837 85.0809C17.9837 104.683 31.6513 117.811 53.5914 117.811C65.2808 117.811 76.7903 114.394 84.883 108.819L83.6241 126.264Z"

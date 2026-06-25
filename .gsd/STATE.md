@@ -88,3 +88,21 @@
 
 **Risks/Debt:**
 - None.
+
+---
+
+## Wave 4: Eliminate Horizontal Layout Overflow
+
+**Objective:** Resolve the horizontal layout overflow that causes a white gap/vertical stripe on the right side of the screen, particularly on pages using the global React `Footer` component (like `/menu`).
+
+**Changes:**
+- Optimized grid column minimum widths in `.footer__inner` from `minmax(420px, ...)` and `minmax(690px, ...)` to `minmax(300px, 0.95fr)` and `minmax(480px, 1.05fr)` in `Footer.css`.
+- Changed the grid outer margin behavior using `width: min(100% - 4rem, 1660px)` (instead of `10-rem`) and adjusted the main footer column grid gap to `clamp(2rem, 5vw, 12rem)` to ensure comfortable rendering at intermediate viewport sizes (e.g. between `960px` and `1366px`).
+- Reduced minimum width constraints of link columns in `.footer__links` to `minmax(120px, 1fr)` and updated their layout gap to `clamp(1.5rem, 5vw, 9.5rem)` to avoid forced right-side clipping or horizontal overflow scrollbars.
+
+**Files Touched:**
+- `src/components/Footer/Footer.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully in 1.11s.
+

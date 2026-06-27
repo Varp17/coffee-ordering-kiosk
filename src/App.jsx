@@ -1,5 +1,15 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
+
+/* Scroll to top of the page on route transition */
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 import MainLayout from '@/layouts/MainLayout';
 import WelcomePage from '@/pages/WelcomePage/WelcomePage';
 import HomePage from '@/pages/HomePage/HomePage';
@@ -27,6 +37,7 @@ function RequireWelcome({ children }) {
 function App() {
   return (
     <Router basename={import.meta.env.BASE_URL}>
+      <ScrollToTop />
       <Toaster
         position="top-center"
         toastOptions={{

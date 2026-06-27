@@ -8,6 +8,8 @@ import CartDrawer from '@/components/CartDrawer/CartDrawer';
 import Logo from '@/components/Logo/Logo';
 import './Navbar.css';
 
+const SHOW_PROMO = false; // Set to true when we have a promo
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
@@ -25,7 +27,8 @@ export default function Navbar() {
       setScrolled(currentScrollY > 20);
 
       // Hide only when scrolling down past the header height and mobile menu is closed
-      if (currentScrollY > lastScrollY && currentScrollY > 110 && !mobileOpen) {
+      const headerThreshold = SHOW_PROMO ? 110 : 70;
+      if (currentScrollY > lastScrollY && currentScrollY > headerThreshold && !mobileOpen) {
         setVisible(false);
       } else {
         setVisible(true);

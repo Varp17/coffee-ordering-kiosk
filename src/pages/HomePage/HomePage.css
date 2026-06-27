@@ -3,7 +3,7 @@
   background-color: #1F2A44;
   overflow-x: hidden;
   position: relative;
-  padding-top: calc(var(--nav-height) + 40px);
+  padding-top: calc(var(--nav-height) + var(--announcement-bar-height));
   /* Account for combined fixed header height (112px) */
   box-sizing: border-box;
 }

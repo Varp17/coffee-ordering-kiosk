@@ -9,6 +9,7 @@ import './WelcomePage.css';
 export default function WelcomePage() {
   const navigate = useNavigate();
   const completeWelcome = useUserStore((s) => s.completeWelcome);
+  const skipWelcome = useUserStore((s) => s.skipWelcome);
 
   const [name, setName] = useState('');
   const [selectedCoffee, setSelectedCoffee] = useState('');
@@ -21,6 +22,12 @@ export default function WelcomePage() {
     completeWelcome(name.trim(), selectedCoffee);
     setIsExiting(true);
     /* Short delay for exit animation */
+    setTimeout(() => navigate('/', { replace: true }), 500);
+  };
+
+  const handleSkip = () => {
+    skipWelcome();
+    setIsExiting(true);
     setTimeout(() => navigate('/', { replace: true }), 500);
   };
 
@@ -131,6 +138,15 @@ export default function WelcomePage() {
         >
           <Coffee size={18} />
           <span>Code Your Own Coffee</span>
+        </button>
+
+        <button
+          className="welcome-skip-btn"
+          onClick={handleSkip}
+          type="button"
+          id="welcome-skip-btn"
+        >
+          Skip Interactivity
         </button>
       </motion.div>
     </motion.div>

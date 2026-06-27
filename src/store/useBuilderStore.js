@@ -2,9 +2,10 @@ import { create } from 'zustand';
 
 export const useBuilderStore = create((set, get) => ({
   step:       1,
-  maxStep:    5,
+  maxStep:    6,
   direction:  1, // 1 = forward, -1 = back
 
+  category:    null,
   concentrate: null,
   sweetener:   null,
   milk:        null,
@@ -12,6 +13,7 @@ export const useBuilderStore = create((set, get) => ({
   brewName:    '',
   size:        'small',
 
+  setCategory:    (cat) => set({ category: cat }),
   setConcentrate: (c) => set({ concentrate: c }),
   setSweetener:   (s) => set({ sweetener: s }),
   setMilk:        (m) => set({ milk: m }),
@@ -38,6 +40,7 @@ export const useBuilderStore = create((set, get) => ({
     set({
       step:        1,
       direction:   1,
+      category:    null,
       concentrate: null,
       sweetener:   null,
       milk:        null,
@@ -47,12 +50,12 @@ export const useBuilderStore = create((set, get) => ({
     }),
 
   isComplete: () => {
-    const { concentrate, sweetener, milk, topping } = get();
-    return !!(concentrate && sweetener && milk && topping);
+    const { category, concentrate, sweetener, milk, topping } = get();
+    return !!(category && concentrate && sweetener && milk && topping);
   },
 
   getSelection: () => {
-    const { concentrate, sweetener, milk, topping } = get();
-    return { concentrate, sweetener, milk, topping };
+    const { category, concentrate, sweetener, milk, topping } = get();
+    return { category, concentrate, sweetener, milk, topping };
   },
 }));

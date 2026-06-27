@@ -2,9 +2,9 @@ import './StepProgressBar.css';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 
-const STEP_LABELS = ['Concentrate', 'Sweetener', 'Milk', 'Topping', 'Review'];
+const STEP_LABELS = ['Category', 'Coffee', 'Body', 'Sweetener', 'Garnish', 'Review'];
 
-export default function StepProgressBar({ currentStep, maxStep = 5 }) {
+export default function StepProgressBar({ currentStep, maxStep = 6 }) {
   return (
     <div className="step-progress" role="progressbar" aria-valuenow={currentStep} aria-valuemax={maxStep}>
       {STEP_LABELS.map((label, idx) => {

@@ -157,6 +157,7 @@ ol {
   --container-2xl: 1440px;
   --nav-height: 70px;
   --bottom-nav-height: 64px;
+  --announcement-bar-height: 0px; /* Hidden for now. To be used when we have a promo (40px) */
 }
 
 /* =====================================================
@@ -493,10 +494,9 @@ h6 {
    ===================================================== */
 .page-wrapper {
   min-height: 100vh;
-  padding-top: calc(var(--nav-height) + 40px);
+  padding-top: calc(var(--nav-height) + var(--announcement-bar-height));
   padding-bottom: var(--bottom-nav-height);
 }
-
 @media (min-width: 769px) {
   .page-wrapper {
     padding-bottom: 0;

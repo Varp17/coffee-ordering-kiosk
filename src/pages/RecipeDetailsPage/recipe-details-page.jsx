@@ -9,6 +9,7 @@ const kishorapppe = '/images/image13_366_1172.png';
 const rishiLatte = '/images/image14_366_1172.png';
 const startupIndia = '/images/image2_366_1172.png';
 const sideGraffiti = '/images/side-graffiti.svg';
+const SHOW_PROMO = false; // Set to true when we have a promo
 
 const ingredients = [
   '2 Shots Double Espresso (Dark Roast)',
@@ -161,7 +162,9 @@ function RecipeDetailPage() {
 
   return (
     <main className="recipe-page">
-      <div className="recipe-promo">Summer Sale 30% OFF is Now Live <Icon name="arrowRight" size={15} /></div>
+      {SHOW_PROMO && (
+        <div className="recipe-promo">Summer Sale 30% OFF is Now Live <Icon name="arrowRight" size={15} /></div>
+      )}
 
       <header className="recipe-nav-shell">
         <nav className="recipe-nav" aria-label="Main navigation">

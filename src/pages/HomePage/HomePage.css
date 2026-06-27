@@ -1805,6 +1805,23 @@
   “We handled the hard part” panel — never above its top wave or below its
   bottom wave.
 */
+.hard-part-anchor-target {
+  position: absolute;
+  top: 15.5%;
+  left: 0;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+  scroll-margin-top: 112px;
+}
+
+.hard-part-shadow-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
 .hard-part-parallax-clip {
   position: absolute;
   inset: 0;
@@ -1812,7 +1829,6 @@
   overflow: hidden;
   pointer-events: none;
   isolation: isolate;
-
   clip-path: polygon(
       /* Top Figma wave: y 951–1119 */
       0% 13.435%,
@@ -1855,6 +1871,18 @@
       8.008% 25.488%,
       4.167% 25.185%,
       0% 24.848%);
+}
+
+.hard-part-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.98) 0%,
+      rgba(0, 0, 0, 0.65) 25%,
+      rgba(0, 0, 0, 0) 55%,
+      transparent 100%);
+  pointer-events: none;
+  z-index: 10;
 }
 
 .hard-part-parallax-video {

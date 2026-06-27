@@ -161,7 +161,7 @@ function RecipeDetailPage() {
 
   return (
     <main className="recipe-page">
-      <div className="recipe-promo">Summer Sale 30% OFF is Now Live <Icon name="arrowRight" size={15} /></div>
+      {/* <div className="recipe-promo">Summer Sale 30% OFF is Now Live <Icon name="arrowRight" size={15} /></div> */}
 
       <header className="recipe-nav-shell">
         <nav className="recipe-nav" aria-label="Main navigation">

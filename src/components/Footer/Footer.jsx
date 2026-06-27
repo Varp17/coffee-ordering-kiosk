@@ -9,7 +9,7 @@ const shopLinks = [
 ];
 
 const exploreLinks = [
-  { label: 'About Us', to: '/' },
+  { label: 'About Us', to: '/#hard-part' },
   { label: 'Create Recipe', to: '/create-recipe' },
   { label: 'Recipes', to: '/recipe-details/georgesso' },
   { label: 'Contact', to: '/location' },

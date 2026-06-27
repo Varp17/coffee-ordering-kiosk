@@ -45,17 +45,18 @@ export default function Navbar() {
     { to: '/', label: 'Home' },
     { to: '/menu', label: 'Products' },
     { to: '/recipe-details/georgesso', label: 'Recipes' },
-    { to: '/location', label: 'About Us' },
+    { to: '/#hard-part', label: 'About Us' },
     { to: '/location', label: 'Contact' },
   ];
 
   return (
     <>
       <header className={`header-wrapper ${visible ? '' : 'header-wrapper--hidden'}`}>
-        {/* Top Announcement Bar */}
+        {/* Top Announcement Bar
         <Link to="/menu" className="top-bar">
           <span>Summer Sale 30% OFF is Now Live &rarr;</span>
         </Link>
+        */}
 
         <motion.nav
           className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}

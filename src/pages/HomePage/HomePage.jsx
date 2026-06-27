@@ -197,6 +197,17 @@ function syncHardPartTextOverlay(svgDoc, overlaySvg) {
     clone.setAttribute('opacity', '1');
     overlayGroup.appendChild(clone);
   }
+
+  // Draw a white horizontal underline centered below the heading
+  const underline = overlaySvg.ownerDocument.createElementNS('http://www.w3.org/2000/svg', 'line');
+  underline.setAttribute('x1', '300');
+  underline.setAttribute('y1', '1365');
+  underline.setAttribute('x2', '1212');
+  underline.setAttribute('y2', '1365');
+  underline.setAttribute('stroke', '#FFFFFF');
+  underline.setAttribute('stroke-width', '2.5');
+  underline.setAttribute('opacity', '0.7');
+  overlayGroup.appendChild(underline);
 }
 
 const LOWER_SECTION_COMPACT_Y = 6516;
@@ -1221,6 +1232,7 @@ export default function HomePage() {
       {/* ── DESKTOP & MOBILE UNIFIED FIGMA SVG LAYOUT ───────────────────────── */}
       <div className="figma-svg-wrapper">
         <div className="figma-svg-content">
+          <div id="hard-part" className="hard-part-anchor-target" />
           <object
             data="/Homepage.svg?v=1.7"
             type="image/svg+xml"
@@ -1254,20 +1266,23 @@ export default function HomePage() {
           />
 
         {/* ── HARD-PART SECTION: COFFEESWIRL2, CLIPPED TO FIGMA WAVES ── */}
-        <div className="hard-part-parallax-clip" aria-hidden="true">
-          <div
-            ref={hardPartParallaxRef}
-            className="hard-part-parallax-video"
-          >
-            <video
-              ref={hardPartVideoRef}
-              src="/Videos/coffeeswirl2.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-            />
+        <div className="hard-part-shadow-wrapper">
+          <div className="hard-part-parallax-clip" aria-hidden="true">
+            <div
+              ref={hardPartParallaxRef}
+              className="hard-part-parallax-video"
+            >
+              <video
+                ref={hardPartVideoRef}
+                src="/Videos/coffeeswirl2.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+              />
+              <div className="hard-part-video-overlay" />
+            </div>
           </div>
         </div>
 

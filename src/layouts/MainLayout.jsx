@@ -9,8 +9,18 @@ export default function MainLayout({ children }) {
   const isHome = location.pathname === '/';
 
   useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        const timer = setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    }
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-  }, [location.pathname, location.search]);
+  }, [location.pathname, location.search, location.hash]);
 
   return (
     <div className="main-layout">

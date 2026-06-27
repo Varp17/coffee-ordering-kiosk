@@ -24,6 +24,10 @@ import OrderConfirmPage from '@/pages/OrderConfirmPage/OrderConfirmPage';
 import ProfilePage from '@/pages/ProfilePage/ProfilePage';
 import CreateRecipePage from '@/pages/CreateRecipePage/create-recipe-page';
 import RecipeDetailsPage from '@/pages/RecipeDetailsPage/recipe-details-page';
+import RecipesPage from '@/pages/RecipesPage/RecipesPage';
+import ContactPage from '@/pages/ContactPage/ContactPage';
+import StorePage from '@/pages/StorePage/StorePage';
+import B2BPage from '@/pages/B2BPage/B2BPage';
 import { useUserStore } from '@/store/useUserStore';
 import './App.css';
 
@@ -80,7 +84,11 @@ function App() {
           <Route path="/order-confirm" element={<OrderConfirmPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/create-recipe" element={<CreateRecipePage />} />
+          <Route path="/recipes" element={<RecipesPage />} />
           <Route path="/recipe-details/:id" element={<RecipeDetailsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/store" element={<StorePage />} />
+          <Route path="/b2b" element={<B2BPage />} />
         </Route>
       </Routes>
     </Router>

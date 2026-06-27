@@ -10,34 +10,42 @@ import toast from 'react-hot-toast';
 import './ProductCard.css';
 
 const BADGE_MAP = {
-  bestseller:    { label: 'Bestseller',    color: '#C67C4E' },
-  recommended:   { label: 'Recommended',  color: '#3D9B6B' },
-  'most-preferred': { label: 'Fan Fav ❤️', color: '#D94F4F' },
-  vegan:         { label: 'Vegan 🌱',      color: '#3D9B6B' },
+  bestseller: { label: 'Bestseller', color: '#C67C4E' },
+  featured: { label: 'Featured', color: '#1F4BA8' },
+  classic: { label: 'Classic', color: '#5F6F52' },
+  smooth: { label: 'Smooth', color: '#3D7E8C' },
+  'best-value': { label: 'Best Value', color: '#3D9B6B' },
+  bold: { label: 'Bold', color: '#1F2A44' },
+  regional: { label: 'Regional', color: '#7D4E24' },
+  rich: { label: 'Rich', color: '#8A3B2A' },
+  refreshing: { label: 'Refreshing', color: '#2E8B74' },
+  'low-caffeine': { label: 'Low Caffeine', color: '#6B7D8F' },
 };
 
 export default function ProductCard({ product, compact = false }) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
-  const [isAdding,     setIsAdding]     = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
   const navigate = useNavigate();
 
   const price = product.basePrice + (selectedSize?.modifier || 0);
+  const image = product.gallery?.[0]?.src || product.image;
+  const rating = product.reviews?.rating;
+  const reviewCount = product.reviews?.count;
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
     e.preventDefault();
     setIsAdding(true);
     addItem({
-      id:       product.id,
-      name:     product.name,
+      id: product.id,
+      name: product.name,
       price,
-      size:     selectedSize?.id,
-      image:    product.image,
+      size: selectedSize?.id,
+      image,
       category: product.category,
     });
     toast.success(`${product.name} added to cart!`, {
-      icon: '☕',
       style: {
         background: '#1F2A44',
         color: '#fff',
@@ -58,17 +66,15 @@ export default function ProductCard({ product, compact = false }) {
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && navigate(`/menu/${product.id}`)}
     >
-      {/* Image */}
       <div className="product-card__img-wrap">
         <img
-          src={product.image}
+          src={image}
           alt={product.name}
           loading="lazy"
           className="product-card__img"
         />
-        {/* Badges */}
         <div className="product-card__badges">
-          {product.badges.slice(0, 2).map((b) => (
+          {product.badges?.slice(0, 2).map((b) => (
             <span
               key={b}
               className="product-card__badge"
@@ -78,20 +84,27 @@ export default function ProductCard({ product, compact = false }) {
             </span>
           ))}
         </div>
-        {/* Caffeine */}
         <span className={`product-card__caffeine caffeine--${product.caffeine?.toLowerCase().replace(/\s/g, '-')}`}>
-          ⚡ {product.caffeine}
+          Caffeine: {product.caffeine}
         </span>
       </div>
 
-      {/* Content */}
       <div className="product-card__body">
-        <h3 className="product-card__name">{product.name}</h3>
-        {!compact && (
-          <p className="product-card__tagline">{product.tagline}</p>
+        <div>
+          <h3 className="product-card__name">{product.name}</h3>
+          {!compact && (
+            <p className="product-card__tagline">{product.tagline}</p>
+          )}
+        </div>
+
+        {rating && (
+          <div className="product-card__reviews" aria-label={`${rating} out of 5 from ${reviewCount} reviews`}>
+            <Star size={14} fill="currentColor" />
+            <strong>{rating.toFixed(1)}</strong>
+            <span>({reviewCount} reviews)</span>
+          </div>
         )}
 
-        {/* Size selector */}
         <SizeSelector
           sizes={product.sizes}
           selected={selectedSize}
@@ -99,7 +112,6 @@ export default function ProductCard({ product, compact = false }) {
           basePrice={product.basePrice}
         />
 
-        {/* Footer */}
         <div className="product-card__footer">
           <div className="product-card__price">
             <span className="product-card__price-label">from</span>
@@ -116,7 +128,9 @@ export default function ProductCard({ product, compact = false }) {
                 key="check"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-              >✓</motion.span>
+              >
+                OK
+              </motion.span>
             ) : (
               <ShoppingBag size={16} />
             )}

@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
 import { PRODUCTS } from '@/data/products';
+import { RECIPES } from '@/data/recipes';
 
 // ── HELPERS FOR SVG DOM MANIPULATION ─────────────────────────────────
 
@@ -463,20 +464,29 @@ function hideStaticPlaceholders(svgDoc) {
 }
 
 // ── INFINITE TRENDING MIXES CAROUSEL ──────────────────────────────────
-const TRENDING_MIXES = PRODUCTS.filter((product) => product.category === 'custom');
+// Select visually strong recipes: prioritise ones with exact media / video.
+const TRENDING_MIXES = (() => {
+  const withMedia = RECIPES.filter((r) => r.hasExactMedia || r.video);
+  // Pad with remaining recipes if we have fewer than 8
+  const rest = RECIPES.filter((r) => !r.hasExactMedia && !r.video);
+  return [...withMedia, ...rest].slice(0, 10);
+})();
 
-const MIX_LIKES = {
-  p013: '50 Likes',
-  p014: '30 Likes',
-  p015: '+1K Likes',
-  p016: '250 Likes',
+const MIX_LIKES_MAP = {
+  'golden-jaggery-velvet': '250 Likes',
+  'ice-mocha': '+1K Likes',
+  'hazelnut-cream-latte': '120 Likes',
+  'cold-brew-orange-burst': '80 Likes',
+  'cold-brew-mint-tonic': '95 Likes',
+  'sif-on-the-rocks': '180 Likes',
+  'vanilla-shake': '60 Likes',
 };
 
 function TrendingMixCards({ duplicate = false }) {
   return TRENDING_MIXES.map((mix) => (
     <Link
       key={`${mix.id}-${duplicate ? 'duplicate' : 'original'}`}
-      to={`/menu/${mix.id}`}
+      to={`/recipe-details/${mix.id}`}
       className="trending-mix-card"
       tabIndex={duplicate ? -1 : undefined}
       aria-hidden={duplicate ? 'true' : undefined}
@@ -484,7 +494,7 @@ function TrendingMixCards({ duplicate = false }) {
       <div className="trending-mix-card__image">
         <img src={mix.image} alt={duplicate ? '' : mix.name} />
         <span className="trending-mix-card__likes">
-          {MIX_LIKES[mix.id] ?? 'Trending'}
+          {MIX_LIKES_MAP[mix.id] ?? 'Trending'}
         </span>
       </div>
 
@@ -501,6 +511,7 @@ function TrendingMixCards({ duplicate = false }) {
     </Link>
   ));
 }
+
 
 
 // ── BENTO SOCIAL POSTS: ROTATING SLIDE SETS ────────────────────────────
@@ -969,8 +980,8 @@ export default function HomePage() {
 
       const triggerTop = trigger.getBoundingClientRect().top;
       const viewportHeight = window.innerHeight;
-      const enterLine = viewportHeight * 0.70;
-      const exitLine = -viewportHeight * 0.56;
+      const enterLine = viewportHeight * 0.45;
+      const exitLine = viewportHeight * 0.40;
 
       if (triggerTop > enterLine) {
         window.clearTimeout(scrollVideoExitTimerRef.current);
@@ -1022,43 +1033,16 @@ export default function HomePage() {
   useEffect(() => {
     const inlineVideo = videoRef.current;
     const fullscreenVideo = scrollVideoFullscreenRef.current;
-    const isFullscreenStage =
-      scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting';
 
-    if (isFullscreenStage && fullscreenVideo) {
-      if (inlineVideo && Number.isFinite(inlineVideo.currentTime)) {
-        try {
-          fullscreenVideo.currentTime = inlineVideo.currentTime;
-        } catch {
-          // Setting currentTime can be blocked until metadata has loaded; autoplay still works.
-        }
-      }
-
-      inlineVideo?.pause();
-      fullscreenVideo.muted = true;
-      fullscreenVideo.play().catch(() => { });
-      setIsPaused(false);
-      return;
-    }
-
-    if (scrollVideoMode === 'inline' && inlineVideo) {
-      if (fullscreenVideo && Number.isFinite(fullscreenVideo.currentTime)) {
-        try {
-          inlineVideo.currentTime = fullscreenVideo.currentTime;
-        } catch {
-          // The inline video continues from its current frame when metadata is unavailable.
-        }
-      }
-
-      fullscreenVideo?.pause();
+    if (inlineVideo) {
       inlineVideo.muted = true;
       inlineVideo.play().catch(() => { });
-      setIsPaused(false);
     }
-
-    if (scrollVideoMode === 'after') {
-      fullscreenVideo?.pause();
+    if (fullscreenVideo) {
+      fullscreenVideo.muted = true;
+      fullscreenVideo.play().catch(() => { });
     }
+    setIsPaused(false);
   }, [scrollVideoMode]);
 
   // Each set replaces the social cards every 4.8 seconds. The prior set is kept
@@ -1419,14 +1403,17 @@ export default function HomePage() {
         {/* ── SCROLL-TRIGGERED INLINE VIDEO ── */}
         <div
           ref={scrollVideoTriggerRef}
-          className={`scroll-video-wrapper ${scrollVideoMode !== 'inline' ? 'scroll-video-wrapper--covered' : ''
-            }`}
+          className={`scroll-video-wrapper ${
+            (scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting')
+              ? 'scroll-video-wrapper--covered'
+              : ''
+          }`}
           style={videoStyles}
         >
           <div className="video-container-inner">
             <video
               ref={videoRef}
-              src="/Videos/coffeeswirl.mp4"
+              src="/Videos/coffee_concentrate_with_glass.mp4"
               autoPlay
               loop
               muted
@@ -1527,7 +1514,7 @@ export default function HomePage() {
 
         {/* Explore Recipes Swirl Button */}
         <Link
-          to="/recipe-details/georgesso"
+          to="/recipes"
           className="homepage-link link-swirl-recipes"
           style={{ left: '55.68%', top: '23.19%', width: '12.2%', height: '0.60%' }}
           title="Explore Recipes"
@@ -1579,10 +1566,10 @@ export default function HomePage() {
 
         {/* Footer Link - Recipe Details */}
         <Link
-          to="/recipe-details/georgesso"
+          to="/recipes"
           className="homepage-link link-footer-recipe-details"
           style={{ left: '64.15%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
-          title="Recipe Details"
+          title="Recipes"
         />
 
         {/* Footer Link - Indiranagar */}
@@ -1612,39 +1599,41 @@ export default function HomePage() {
       </div>
 
       {typeof document !== 'undefined' && createPortal(
-        (scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting') && (
-          <section
-            className={`scroll-video-stage scroll-video-stage--${scrollVideoMode}`}
-            aria-label="Fullscreen coffee swirl video"
-          >
-            <video
-              ref={scrollVideoFullscreenRef}
-              src="/Videos/coffeeswirl.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              className="scroll-video-stage__video"
+        <section
+          className={`scroll-video-stage scroll-video-stage--${scrollVideoMode}`}
+          aria-label="Fullscreen coffee swirl video"
+          style={{
+            display: (scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting') ? 'grid' : 'none',
+            pointerEvents: (scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting') ? 'auto' : 'none'
+          }}
+        >
+          <video
+            ref={scrollVideoFullscreenRef}
+            src="/Videos/coffee_concentrate_with_glass.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="scroll-video-stage__video"
+            onClick={(event) => handleVideoClick(event, scrollVideoFullscreenRef)}
+          />
+
+          <div className="scroll-video-stage__shade" aria-hidden="true" />
+
+          {isPaused && (
+            <button
+              type="button"
+              className="scroll-video-stage__play"
+              aria-label="Resume coffee swirl video"
               onClick={(event) => handleVideoClick(event, scrollVideoFullscreenRef)}
-            />
-
-            <div className="scroll-video-stage__shade" aria-hidden="true" />
-
-            {isPaused && (
-              <button
-                type="button"
-                className="scroll-video-stage__play"
-                aria-label="Resume coffee swirl video"
-                onClick={(event) => handleVideoClick(event, scrollVideoFullscreenRef)}
-              >
-                <svg viewBox="0 0 24 24" fill="white" width="72" height="72" aria-hidden="true">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </button>
-            )}
-          </section>
-        ),
+            >
+              <svg viewBox="0 0 24 24" fill="white" width="72" height="72" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+          )}
+        </section>,
         document.body
       )}
     </div>

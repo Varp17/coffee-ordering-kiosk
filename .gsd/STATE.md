@@ -106,3 +106,29 @@
 **Verification:**
 - `npm run build`: Production build completed successfully in 1.11s.
 
+---
+
+## Wave 5: Add Store & B2B "Launching Soon" Pages
+
+**Objective:** Add a Store and B2B pages to the navigation bar beside Products, set up their routing, and style them as custom "Launching Soon" placeholders.
+
+**Changes:**
+- Created [StorePage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/StorePage/StorePage.jsx) and [StorePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/StorePage/StorePage.css) with glassmorphism layout, mock concentrates bottle, and early access form.
+- Created [B2BPage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/B2BPage/B2BPage.jsx) and [B2BPage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/B2BPage/B2BPage.css) with a mock corporate dispensing kiosk visual and corporate partner request form.
+- Updated [Navbar.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/Navbar/Navbar.jsx) to display "Store" and "B2B" menu links beside "Products".
+- Updated [Footer.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/Footer/Footer.jsx) to link to `/store` and `/b2b` under Shop.
+- Registered `/store` and `/b2b` routes in [App.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/App.jsx).
+
+**Files Touched:**
+- `src/pages/StorePage/StorePage.jsx`
+- `src/pages/StorePage/StorePage.css`
+- `src/pages/B2BPage/B2BPage.jsx`
+- `src/pages/B2BPage/B2BPage.css`
+- `src/components/Navbar/Navbar.jsx`
+- `src/components/Footer/Footer.jsx`
+- `src/App.jsx`
+
+**Verification:**
+- `npm run build`: Completed successfully in 806ms.
+
+

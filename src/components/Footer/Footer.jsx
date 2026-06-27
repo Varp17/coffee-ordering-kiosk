@@ -4,6 +4,8 @@ import './Footer.css';
 
 const shopLinks = [
   { label: 'All Products', to: '/menu' },
+  { label: 'Store (Soon)', to: '/store' },
+  { label: 'B2B (Soon)', to: '/b2b' },
   { label: 'Create Your Drink', to: '/build' },
   { label: 'Cart', to: '/checkout' },
 ];
@@ -11,8 +13,8 @@ const shopLinks = [
 const exploreLinks = [
   { label: 'About Us', to: '/#hard-part' },
   { label: 'Create Recipe', to: '/create-recipe' },
-  { label: 'Recipes', to: '/recipe-details/georgesso' },
-  { label: 'Contact', to: '/location' },
+  { label: 'Recipes', to: '/recipes' },
+  { label: 'Contact', to: '/contact' },
 ];
 
 const otherLinks = [
@@ -50,21 +52,15 @@ export default function Footer() {
         <defs>
           <path
             id="footer-wave-text-path"
-            d="M-180 125
-       C 50 25, 300 35, 520 115
-       C 720 180, 980 185, 1185 115
-       C 1325 75, 1455 45, 1640 15"
+            d="M -180 236 C -120 236, -60 181.3, 0 208 L 63 179.96 C 126 152.35, 252 95.65, 378 95.97 C 504 95.65, 630 152.35, 756 179.96 C 882 208, 1008 208, 1134 179.96 C 1260 152.35, 1386 95.65, 1449 68.03 L 1512 40 C 1572 13.3, 1632 -14, 1692 -14"
           />
         </defs>
 
         <rect width="1512" height="230" fill="#ffffff" />
 
         <path
-          d="M-180 125
-       C 50 25, 300 35, 520 115
-       C 720 180, 980 185, 1185 115
-       C 1325 75, 1455 45, 1640 15
-       V250 H-180 Z"
+          d="M -180 236 C -120 236, -60 181.3, 0 208 L 63 179.96 C 126 152.35, 252 95.65, 378 95.97 C 504 95.65, 630 152.35, 756 179.96 C 882 208, 1008 208, 1134 179.96 C 1260 152.35, 1386 95.65, 1449 68.03 L 1512 40 C 1572 13.3, 1632 -14, 1692 -14
+       V280 H-180 Z"
           fill="#1F2A44"
         />
 

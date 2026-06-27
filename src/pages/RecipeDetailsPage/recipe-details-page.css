@@ -353,7 +353,8 @@ a {
   overflow: hidden;
 }
 
-.hero-drink-card img {
+.hero-drink-card img,
+.hero-drink-card video {
   width: min(72%, 491px);
   max-height: 83%;
   object-fit: contain;
@@ -592,21 +593,23 @@ a {
   overflow: hidden;
 }
 
-.related-image img {
+.related-image img,
+.related-image video {
   width: 80%;
   height: 80%;
   object-fit: contain;
   transition: transform .3s ease;
 }
 
-.related-recipe-card:hover .related-image img {
+.related-recipe-card:hover .related-image img,
+.related-recipe-card:hover .related-image video {
   transform: scale(1.07) translateY(-3px);
 }
 
+.related-video,
 .related-likes {
   position: absolute;
   top: 10px;
-  right: 10px;
   min-height: 28px;
   padding: 3px 9px;
   display: inline-flex;
@@ -615,6 +618,16 @@ a {
   border-radius: 999px;
   color: var(--recipe-navy);
   font-size: 12px;
+}
+
+.related-video {
+  left: 10px;
+  background: var(--recipe-primary);
+  color: #fff;
+}
+
+.related-likes {
+  right: 10px;
 }
 
 .related-recipe-card h3 {
@@ -878,7 +891,8 @@ a {
     border-radius: 6px;
   }
 
-  .hero-drink-card img {
+  .hero-drink-card img,
+  .hero-drink-card video {
     width: 75%;
   }
 

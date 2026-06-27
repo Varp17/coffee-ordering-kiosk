@@ -1,84 +1,11 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
+import RecipeMedia from '@/components/RecipeMedia/RecipeMedia';
+import { RECIPES } from '@/data/recipes';
 import './recipe-details-page.css';
 
-const heroDrink = '/images/georgesso-hero.png';
-const rajpresso = '/images/image11_366_1172.png';
-const vandyMoodMocha = '/images/image12_366_1172.png';
-const kishorapppe = '/images/image13_366_1172.png';
-const rishiLatte = '/images/image14_366_1172.png';
-const startupIndia = '/images/image2_366_1172.png';
 const sideGraffiti = '/images/side-graffiti.svg';
 const SHOW_PROMO = false; // Set to true when we have a promo
-
-const ingredients = [
-  '2 Shots Double Espresso (Dark Roast)',
-  '1 Cup Chilled Oat milk',
-  '1 tbsp Jaggery syrup',
-  'Ice cubes as needed',
-  'Cocoa dust',
-];
-
-const steps = [
-  {
-    title: 'Step 1: Brew & Cool',
-    copy: 'Prepare double espresso and let it cool slightly. Using a dark roast will cut through the sweetness of the jaggery perfectly.',
-  },
-  {
-    title: 'Step 2: Sweeten',
-    copy: 'Stir in jaggery syrup while coffee is warm. Ensure it dissolves completely to avoid settling at the bottom of your glass.',
-  },
-  {
-    title: 'Step 3: Prepare Glass',
-    copy: 'Fill a tall glass with large ice cubes. The larger the cubes, the slower they will melt, preserving the strength of your comeback.',
-  },
-  {
-    title: 'Step 4: The Base',
-    copy: 'Pour in oat milk first for a marbled effect. Oat milk provides a creamy, neutral base that complements the earthy jaggery.',
-  },
-  {
-    title: 'Step 5: The Pour',
-    copy: 'Slowly top with the jaggery espresso. Add a tiny pinch of sea salt on top to elevate the flavors.',
-  },
-];
-
-const relatedRecipes = [
-  {
-    title: 'Rajpresso',
-    likes: '50 Likes',
-    image: rajpresso,
-    description: 'A silky-smooth Espresso Martini kissed with rich Cold Coffee concentrate...',
-    tags: ['MASCA', 'SWEET'],
-  },
-  {
-    title: 'Vandy Mood Mocha',
-    likes: '30 Likes',
-    image: vandyMoodMocha,
-    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
-    tags: ['MOCHA', 'BITTER'],
-  },
-  {
-    title: 'Kishorapppe',
-    likes: '+1K Likes',
-    image: kishorapppe,
-    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
-    tags: ['CHILLED', 'LEMON'],
-  },
-  {
-    title: 'RishiLatte',
-    likes: '250 Likes',
-    image: rishiLatte,
-    description: 'A silky-smooth Nitro Espresso Martini kissed with chocolate liqueur...',
-    tags: ['COLD COFFEE', 'STRONG'],
-  },
-  {
-    title: 'Rajat Brew',
-    likes: '82 Likes',
-    image: rajpresso,
-    description: 'A bold cold-coffee finish for late evenings and early plans...',
-    tags: ['ESPRESSO', 'SWEET'],
-  },
-];
 
 const initialComments = [
   {
@@ -124,14 +51,39 @@ function Icon({ name, size = 22, stroke = 'currentColor' }) {
   return <svg {...common}>{paths[name]}</svg>;
 }
 
-function RecipeDetailPage() {
+function RecipeDetailContent({ id, location }) {
   const [isLiked, setIsLiked] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState(initialComments);
   const carouselRef = useRef(null);
 
-  const likes = isLiked ? '1,001 Likes' : '1,000 Likes';
+  // Look up current recipe: first check location state (for draft preview), then central list
+  const currentRecipe = location.state?.name
+    ? {
+        id: id || 'custom-mix',
+        name: location.state.name,
+        description: location.state.description,
+        likes: '0 Likes',
+        image: location.state.image,
+        tags: location.state.tags || [],
+        concentrate: 'custom',
+        author: location.state.author || 'Anonymous',
+        mood: location.state.mood || 'Chill',
+        ingredients: location.state.ingredients || [],
+        steps: location.state.recipeText
+          ? location.state.recipeText.split('\n\n').map((block, idx) => {
+              const lines = block.split('\n');
+              return {
+                title: lines[0] || `Step ${idx + 1}`,
+                copy: lines.slice(1).join(' ') || lines[0] || '',
+              };
+            })
+          : [],
+      }
+    : (RECIPES.find((r) => r.id === id) || RECIPES[0]);
+
+  const likes = isLiked ? '1,001 Likes' : currentRecipe.likes || '1,000 Likes';
 
   const submitComment = () => {
     const trimmed = comment.trim();
@@ -160,6 +112,9 @@ function RecipeDetailPage() {
     carouselRef.current?.scrollBy({ left: direction * 360, behavior: 'smooth' });
   };
 
+  // Get other recipes for bottom carousel
+  const relatedRecipes = RECIPES.filter((r) => r.id !== currentRecipe.id);
+
   return (
     <main className="recipe-page">
       {SHOW_PROMO && (
@@ -168,12 +123,14 @@ function RecipeDetailPage() {
 
       <header className="recipe-nav-shell">
         <nav className="recipe-nav" aria-label="Main navigation">
-          <a className="recipe-logo" href="#top" aria-label="Chilld home">Chilld.</a>
+          <Link className="recipe-logo" to="/" aria-label="Chilld home">Chilld.</Link>
 
           <div className={`recipe-links ${mobileNavOpen ? 'is-open' : ''}`}>
-            {['Home', 'Products', 'Recipes', 'About Us', 'Contact'].map((item) => (
-              <a href={`#${item.toLowerCase().replaceAll(' ', '-')}`} key={item} onClick={() => setMobileNavOpen(false)}>{item}</a>
-            ))}
+            <Link to="/" onClick={() => setMobileNavOpen(false)}>Home</Link>
+            <Link to="/menu" onClick={() => setMobileNavOpen(false)}>Products</Link>
+            <Link to="/recipes" onClick={() => setMobileNavOpen(false)}>Recipes</Link>
+            <Link to="/#hard-part" onClick={() => setMobileNavOpen(false)}>About Us</Link>
+            <Link to="/location" onClick={() => setMobileNavOpen(false)}>Contact</Link>
           </div>
 
           <div className="recipe-nav-actions">
@@ -185,7 +142,7 @@ function RecipeDetailPage() {
             <button className="icon-button basket-button" type="button" aria-label="Basket has 3 items">
               <Icon name="bag" size={19} /><span>3</span>
             </button>
-            <button className="create-drink-button" type="button"><Icon name="coffee" size={18} /> Create Your Drink</button>
+            <Link className="create-drink-button" to="/build"><Icon name="coffee" size={18} /> Create Your Drink</Link>
             <button className="mobile-menu-button" type="button" onClick={() => setMobileNavOpen((open) => !open)} aria-label="Toggle menu">
               <Icon name={mobileNavOpen ? 'close' : 'menu'} size={24} />
             </button>
@@ -197,7 +154,7 @@ function RecipeDetailPage() {
         <img className="recipe-side-graffiti" src={sideGraffiti} alt="" aria-hidden="true" />
         <div className="recipe-container hero-layout">
           <article className="recipe-summary">
-            <h1>Georgesso</h1>
+            <h1>{currentRecipe.name}</h1>
 
             <div className="like-row">
               <div className="like-count"><Icon name="heart" size={19} /><span>{likes}</span></div>
@@ -208,21 +165,31 @@ function RecipeDetailPage() {
 
             <div className="description-copy">
               <p className="eyebrow">Description</p>
-              <p>A smooth oat milk cold coffee with jaggery sweetness and double espresso for chaotic office days.</p>
+              <p>{currentRecipe.description}</p>
             </div>
 
             <div className="recipe-tags" aria-label="Recipe tags">
-              {['OFFICE', 'STRONG', 'SWEET', 'OAT MILK'].map((tag) => <span key={tag}>{tag}</span>)}
+              {currentRecipe.tags.map((tag) => <span key={tag}>{tag}</span>)}
             </div>
 
             <div className="recipe-meta">
-              <div className="meta-line"><span>By: Aanya Kapoor</span><div className="meta-icons"><button type="button" aria-label="Share recipe"><Icon name="share" size={18} /></button><button type="button" aria-label="Print recipe"><Icon name="print" size={18} /></button></div></div>
-              <div className="meta-line"><span>Mood</span><span>Chill</span></div>
+              <div className="meta-line"><span>By: {currentRecipe.author}</span><div className="meta-icons"><button type="button" aria-label="Share recipe"><Icon name="share" size={18} /></button><button type="button" aria-label="Print recipe"><Icon name="print" size={18} /></button></div></div>
+              <div className="meta-line"><span>Mood</span><span>{currentRecipe.mood}</span></div>
+              {currentRecipe.concentrate !== 'custom' && (
+                <div className="meta-line">
+                  <span>Concentrate Base</span>
+                  <span style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{currentRecipe.concentrate}</span>
+                </div>
+              )}
             </div>
           </article>
 
           <figure className="hero-drink-card">
-            <img src={heroDrink} alt="Georgesso coffee in a coupe glass" />
+            <RecipeMedia
+              recipe={currentRecipe}
+              alt={`${currentRecipe.name} coffee`}
+              preferVideo
+            />
           </figure>
         </div>
       </section>
@@ -230,14 +197,14 @@ function RecipeDetailPage() {
       <section className="recipe-container cooking-section">
         <aside className="ingredients-panel">
           <h2>Ingredients</h2>
-          <ul>{ingredients.map((item) => <li key={item}>{item}</li>)}</ul>
+          <ul>{currentRecipe.ingredients.map((item) => <li key={item}>{item}</li>)}</ul>
         </aside>
 
         <article className="directions-panel">
           <h2>Recipe</h2>
           <div className="steps-list">
-            {steps.map((step) => (
-              <section className="recipe-step" key={step.title}>
+            {currentRecipe.steps.map((step, idx) => (
+              <section className="recipe-step" key={step.title + idx}>
                 <h3>{step.title}</h3>
                 <p>{step.copy}</p>
               </section>
@@ -266,15 +233,22 @@ function RecipeDetailPage() {
 
       <section className="more-recipes-section" id="recipes">
         <div className="recipe-container">
-          <div className="section-heading-row"><h2>More great recipes</h2><button type="button" className="view-recipes-button">View all recipes <Icon name="arrowUpRight" size={17} /></button></div>
+          <div className="section-heading-row">
+            <h2>More great recipes</h2>
+            <Link to="/recipes" className="view-recipes-button">View all recipes <Icon name="arrowUpRight" size={17} /></Link>
+          </div>
           <div ref={carouselRef} className="recipe-carousel" tabIndex="0" aria-label="More coffee recipes">
             {relatedRecipes.map((recipe) => (
-              <article className="related-recipe-card" key={recipe.title}>
-                <div className="related-image"><img src={recipe.image} alt="" /><span className="related-likes">{recipe.likes}</span></div>
-                <h3>{recipe.title}</h3>
+              <Link to={`/recipe-details/${recipe.id}`} className="related-recipe-card" key={recipe.id}>
+                <div className="related-image">
+                  <RecipeMedia recipe={recipe} alt={recipe.name} />
+                  {recipe.video && <span className="related-video">Video</span>}
+                  <span className="related-likes">{recipe.likes}</span>
+                </div>
+                <h3>{recipe.name}</h3>
                 <p>{recipe.description}</p>
                 <div className="related-tags">{recipe.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-              </article>
+              </Link>
             ))}
           </div>
           <div className="carousel-buttons"><button type="button" onClick={() => scrollRecipes(-1)} aria-label="Previous recipes"><Icon name="arrowLeft" size={21} /></button><button type="button" onClick={() => scrollRecipes(1)} aria-label="Next recipes"><Icon name="arrowRight" size={21} /></button></div>
@@ -283,6 +257,14 @@ function RecipeDetailPage() {
 
     </main>
   );
+}
+
+function RecipeDetailPage() {
+  const { id } = useParams();
+  const location = useLocation();
+  const recipeKey = location.state?.name ? `${id || 'custom'}-${location.key}` : id || 'default';
+
+  return <RecipeDetailContent key={recipeKey} id={id} location={location} />;
 }
 
 export default RecipeDetailPage;

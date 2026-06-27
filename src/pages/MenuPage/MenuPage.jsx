@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '@/components/ProductCard/ProductCard';
@@ -8,31 +8,27 @@ import './MenuPage.css';
 
 export default function MenuPage() {
   const [params, setParams] = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState(params.get('cat') || 'all');
-  const [searchQuery,    setSearchQuery]    = useState('');
-
-  useEffect(() => {
-    const cat = params.get('cat');
-    if (cat) setActiveCategory(cat);
-  }, [params]);
+  const activeCategory = params.get('cat') || 'all';
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filtered = PRODUCTS.filter((p) => {
+    const query = searchQuery.toLowerCase();
     const catMatch = activeCategory === 'all' || p.category === activeCategory;
-    const qMatch   = searchQuery
-      ? p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()))
+    const qMatch = searchQuery
+      ? p.name.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query) ||
+        p.concentrateType.toLowerCase().includes(query) ||
+        p.tags.some((t) => t.toLowerCase().includes(query))
       : true;
     return catMatch && qMatch;
   });
 
   const handleCatChange = (id) => {
-    setActiveCategory(id);
     setParams(id !== 'all' ? { cat: id } : {});
   };
 
   return (
     <div className="menu-page page-wrapper">
-      {/* Page header */}
       <div className="menu-page__header">
         <div className="container">
           <motion.h1
@@ -41,7 +37,7 @@ export default function MenuPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
           >
-            Our Menu
+            Cold Brew Concentrates
           </motion.h1>
           <motion.p
             className="menu-page__sub"
@@ -49,10 +45,9 @@ export default function MenuPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
           >
-            Every drink crafted with intention and care.
+            Shop the Chilld concentrate line for cold coffee, kaapi, tonics, and signature serves.
           </motion.p>
 
-          {/* Search */}
           <motion.div
             className="menu-search"
             initial={{ opacity: 0, y: 16 }}
@@ -62,19 +57,18 @@ export default function MenuPage() {
             <input
               id="menu-search"
               type="search"
-              placeholder="Search drinks..."
+              placeholder="Search concentrates..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="menu-search__input"
-              aria-label="Search menu"
+              aria-label="Search products"
             />
           </motion.div>
         </div>
       </div>
 
       <div className="container">
-        {/* Category tabs */}
-        <div className="menu-tabs" role="tablist" aria-label="Filter by category">
+        <div className="menu-tabs" role="tablist" aria-label="Filter by product type">
           {CATEGORIES.map((cat) => (
             <motion.button
               key={cat.id}
@@ -84,7 +78,7 @@ export default function MenuPage() {
               onClick={() => handleCatChange(cat.id)}
               whileTap={{ scale: 0.96 }}
             >
-              <span>{cat.emoji}</span>
+              <span className="menu-tab__icon">{cat.icon || cat.emoji}</span>
               <span>{cat.label}</span>
               {activeCategory === cat.id && (
                 <motion.div className="menu-tab__indicator" layoutId="tab-indicator" />
@@ -93,13 +87,11 @@ export default function MenuPage() {
           ))}
         </div>
 
-        {/* Results count */}
         <p className="menu-results-count">
-          {filtered.length} drink{filtered.length !== 1 ? 's' : ''}
+          {filtered.length} product{filtered.length !== 1 ? 's' : ''}
           {searchQuery && ` for "${searchQuery}"`}
         </p>
 
-        {/* Grid */}
         {filtered.length > 0 ? (
           <motion.div
             className="menu-grid"
@@ -116,9 +108,9 @@ export default function MenuPage() {
           </motion.div>
         ) : (
           <div className="menu-empty">
-            <span>🔍</span>
-            <p>No drinks found</p>
-            <span>Try searching something else or browse all drinks</span>
+            <span>Search</span>
+            <p>No products found</p>
+            <span>Try searching another concentrate or browse all products</span>
           </div>
         )}
       </div>

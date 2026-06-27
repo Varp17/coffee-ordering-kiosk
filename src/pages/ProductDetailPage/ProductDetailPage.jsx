@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ShoppingBag, Sparkles, AlertCircle, Plus, Minus, Info } from 'lucide-react';
-import { PRODUCTS, getProductById } from '@/data/products';
+import { ArrowLeft, ShoppingBag, AlertCircle, Plus, Minus, Star } from 'lucide-react';
+import { getProductById } from '@/data/products';
 import { ADDONS } from '@/data/recommendations';
 import { useCartStore } from '@/store/useCartStore';
 import { formatPrice } from '@/utils/coffeeBuilder';
@@ -10,33 +10,43 @@ import SizeSelector from '@/components/SizeSelector/SizeSelector';
 import toast from 'react-hot-toast';
 import './ProductDetailPage.css';
 
+const formatBadge = (badge) =>
+  badge
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+
 export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCartStore();
 
   const product = getProductById(id);
+  const [selectedSizeId, setSelectedSizeId] = useState(null);
+  const [selectedAddons, setSelectedAddons] = useState([]);
+  const [activeImageId, setActiveImageId] = useState(null);
+  const [qty, setQty] = useState(1);
 
   if (!product) {
     return (
       <div className="product-detail-page page-wrapper container product-not-found">
         <AlertCircle size={48} className="error-icon" />
         <h2>Product Not Found</h2>
-        <p>The drink you're looking for doesn't exist or has been removed.</p>
+        <p>The product you're looking for doesn't exist or has been removed.</p>
         <Link to="/menu" className="btn btn-primary">
-          Back to Menu
+          Back to Products
         </Link>
       </div>
     );
   }
 
-  // Find standard size as default
-  const defaultSize = product.sizes.find((s) => s.id === 'standard') || product.sizes[0];
-  const [selectedSize, setSelectedSize] = useState(defaultSize);
-  const [selectedAddons, setSelectedAddons] = useState([]);
-  const [qty, setQty] = useState(1);
+  const gallery = product.gallery?.length
+    ? product.gallery
+    : [{ id: `${product.id}-image`, label: 'Product image', src: product.image, alt: product.name }];
+  const defaultSize = product.sizes.find((s) => s.id === '250ml') || product.sizes[0];
+  const selectedSize = product.sizes.find((s) => s.id === selectedSizeId) || defaultSize;
+  const activeImage = gallery.find((item) => item.id === activeImageId) || gallery[0];
 
-  // Compatible addons
   const compatibleAddons = ADDONS.filter((addon) =>
     addon.compatibleWith.includes(product.category)
   );
@@ -54,12 +64,12 @@ export default function ProductDetailPage() {
     setQty(val);
   };
 
-  // Price calculations
   const basePrice = product.basePrice;
   const sizePrice = basePrice + selectedSize.modifier;
   const addonsTotal = selectedAddons.reduce((acc, a) => acc + a.price, 0);
   const unitPrice = sizePrice + addonsTotal;
   const totalPrice = unitPrice * qty;
+  const rating = product.reviews?.rating;
 
   const handleAddToCart = () => {
     const cartItem = {
@@ -68,26 +78,25 @@ export default function ProductDetailPage() {
       price: unitPrice,
       size: selectedSize.id,
       image: product.image,
+      category: product.category,
       isCustom: false,
-      qty: qty,
+      qty,
       addons: selectedAddons.map((a) => ({ id: a.id, name: a.name, price: a.price })),
     };
 
     addItem(cartItem);
-    toast.success(`${product.name} added to cart! ☕`);
+    toast.success(`${product.name} added to cart!`);
     navigate('/menu');
   };
 
   return (
     <div className="product-detail-page page-wrapper">
       <div className="container">
-        {/* Back navigation */}
         <button className="product-detail__back" onClick={() => navigate('/menu')}>
-          <ArrowLeft size={18} /> Back to Menu
+          <ArrowLeft size={18} /> Back to Products
         </button>
 
         <div className="product-detail__grid">
-          {/* Left Column: Image with parallax wrapper */}
           <div className="product-detail__image-area">
             <motion.div
               className="product-detail__img-wrapper"
@@ -95,43 +104,93 @@ export default function ProductDetailPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <img src={product.image} alt={product.name} className="product-detail__img" />
-              {product.badges && product.badges.map((b) => (
-                <span key={b} className={`product-detail__badge badge--${b}`}>
-                  {b === 'bestseller' ? '🔥 Bestseller' : b === 'recommended' ? '⭐ Rec' : b === 'vegan' ? '🌿 Vegan' : b}
-                </span>
-              ))}
+              <img
+                src={activeImage.src}
+                alt={activeImage.alt}
+                className="product-detail__img"
+                fetchPriority="high"
+                decoding="async"
+                width="960"
+                height="960"
+              />
+              {product.badges?.length > 0 && (
+                <div className="product-detail__badge-stack">
+                  {product.badges.slice(0, 3).map((badge) => (
+                    <span key={badge} className={`product-detail__badge badge--${badge}`}>
+                      {formatBadge(badge)}
+                    </span>
+                  ))}
+                </div>
+              )}
             </motion.div>
 
-            {/* Info specs */}
+            <div className="product-detail__gallery" aria-label="Product images">
+              {gallery.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`product-detail__thumb ${activeImage.id === item.id ? 'product-detail__thumb--active' : ''}`}
+                  onClick={() => setActiveImageId(item.id)}
+                  aria-label={`View ${item.label}`}
+                  aria-pressed={activeImage.id === item.id}
+                >
+                  <img src={item.src} alt="" loading="lazy" />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
+
             <div className="product-detail__specs">
               <div className="spec-tile">
                 <span className="spec-title">Caffeine</span>
                 <span className="spec-value">{product.caffeine}</span>
               </div>
               <div className="spec-tile">
-                <span className="spec-title">Ingredients</span>
-                <span className="spec-value">{product.ingredients.length} items</span>
+                <span className="spec-title">Servings</span>
+                <span className="spec-value">{product.servings}</span>
+              </div>
+              <div className="spec-tile">
+                <span className="spec-title">Ratio</span>
+                <span className="spec-value">{product.brewRatio}</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Configurator */}
           <div className="product-detail__info-area">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <span className="product-detail__category">{product.category}</span>
+              <span className="product-detail__category">{product.concentrateType}</span>
               <h1 className="product-detail__title">{product.name}</h1>
               <p className="product-detail__tagline">{product.tagline}</p>
+              {rating && (
+                <div className="product-detail__rating" aria-label={`${rating} out of 5 from ${product.reviews.count} reviews`}>
+                  <Star size={16} fill="currentColor" />
+                  <strong>{rating.toFixed(1)}</strong>
+                  <span>{product.reviews.count} reviews</span>
+                </div>
+              )}
               <p className="product-detail__desc">{product.description}</p>
             </motion.div>
 
-            {/* Ingredients detail */}
             <div className="product-detail__section product-detail__ingredients">
-              <h3 className="section-title-small">What's Inside</h3>
+              <h3 className="section-title-small">Product Details</h3>
+              <div className="product-detail__facts">
+                <div>
+                  <span>Roast</span>
+                  <strong>{product.roast}</strong>
+                </div>
+                <div>
+                  <span>Profile</span>
+                  <strong>{product.beanProfile}</strong>
+                </div>
+                <div>
+                  <span>Best Mix</span>
+                  <strong>{product.brewRatio}</strong>
+                </div>
+              </div>
               <div className="ingredients-pills">
                 {product.ingredients.map((ing) => (
                   <span key={ing} className="ingredient-pill">
@@ -141,21 +200,31 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            {/* Size Selector */}
+            {product.reviews && (
+              <div className="product-detail__section product-detail__reviews">
+                <h3 className="section-title-small">Reviews</h3>
+                <p>{product.reviews.summary}</p>
+                <div className="review-quotes">
+                  {product.reviews.quotes.map((quote) => (
+                    <span key={quote}>{quote}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="product-detail__section">
-              <h3 className="section-title-small">Choose Size</h3>
+              <h3 className="section-title-small">Choose Bottle Size</h3>
               <SizeSelector
                 sizes={product.sizes}
                 selected={selectedSize}
-                onChange={setSelectedSize}
+                onChange={(size) => setSelectedSizeId(size.id)}
                 basePrice={basePrice}
               />
             </div>
 
-            {/* Addons Selector */}
             {compatibleAddons.length > 0 && (
               <div className="product-detail__section">
-                <h3 className="section-title-small">Customize Your Drink</h3>
+                <h3 className="section-title-small">Optional Add-ons</h3>
                 <div className="addons-grid">
                   {compatibleAddons.map((addon) => {
                     const isSelected = selectedAddons.some((a) => a.id === addon.id);
@@ -179,7 +248,6 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Footer Order Box */}
             <div className="product-detail__order-box">
               <div className="qty-selector">
                 <button
@@ -206,7 +274,7 @@ export default function ProductDetailPage() {
               </div>
 
               <button className="btn btn-primary order-add-btn" onClick={handleAddToCart}>
-                <ShoppingBag size={16} style={{ marginRight: 8 }} /> Add to Cart
+                <ShoppingBag size={16} className="order-add-btn__icon" /> Add to Cart
               </button>
             </div>
           </div>

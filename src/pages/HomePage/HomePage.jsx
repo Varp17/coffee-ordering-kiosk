@@ -26,6 +26,18 @@ function injectSvgStyles(svgDoc) {
       animation: slide-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       transform-origin: center bottom;
     }
+
+    g[data-cup-hover-wrapper] {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+      transform-origin: center center;
+      transform-box: fill-box;
+      cursor: pointer;
+    }
+
+    g[data-cup-hover-wrapper]:hover {
+      transform: scale(1.06);
+      filter: drop-shadow(0 14px 28px rgba(31, 42, 68, 0.18));
+    }
   `;
   svgDoc.documentElement.appendChild(styleElem);
 }
@@ -461,6 +473,39 @@ function hideStaticPlaceholders(svgDoc) {
     'rect[x="422"][y="4478"]'
   );
   if (bentoVideoPlaceholder) bentoVideoPlaceholder.remove();
+}
+
+function wrapCupElements(svgDoc, cupIndex, nextSiblingCount) {
+  const gMask = svgDoc.querySelector(`g[mask^="url(#mask${cupIndex}_"]`);
+  if (!gMask) return;
+
+  const parent = gMask.parentNode;
+  if (!parent) return;
+
+  // 1. Create Parallax Wrapper (handles translateY)
+  const parallaxWrapper = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'g');
+  parallaxWrapper.setAttribute('data-cup-parallax-wrapper', String(cupIndex));
+  parallaxWrapper.style.transition = 'transform 0.15s cubic-bezier(0.25, 1, 0.5, 1)';
+  parallaxWrapper.style.transformBox = 'view-box';
+
+  // 2. Create Hover Wrapper (handles scale and drop shadow on hover)
+  const hoverWrapper = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'g');
+  hoverWrapper.setAttribute('data-cup-hover-wrapper', String(cupIndex));
+
+  parent.insertBefore(parallaxWrapper, gMask);
+  parallaxWrapper.appendChild(hoverWrapper);
+  
+  // Move elements inside the hover wrapper
+  hoverWrapper.appendChild(gMask);
+
+  let currentSibling = parallaxWrapper.nextSibling;
+  for (let k = 0; k < nextSiblingCount; k++) {
+    if (currentSibling) {
+      const next = currentSibling.nextSibling;
+      hoverWrapper.appendChild(currentSibling);
+      currentSibling = next;
+    }
+  }
 }
 
 // ── INFINITE TRENDING MIXES CAROUSEL ──────────────────────────────────
@@ -1207,6 +1252,53 @@ export default function HomePage() {
     resumeMixCarousel();
   };
 
+  // Scroll parallax effect for the "Why Chilld?" section cups
+  useEffect(() => {
+    let frameId = 0;
+    const handleScroll = () => {
+      if (frameId) return;
+
+      frameId = window.requestAnimationFrame(() => {
+        try {
+          const objectElem = document.querySelector('.figma-svg-object');
+          if (!objectElem) return;
+          const svgDoc = objectElem.contentDocument;
+          if (!svgDoc) return;
+
+          const svgRect = objectElem.getBoundingClientRect();
+          const viewportCenter = window.innerHeight / 2;
+          const scale = svgRect.height / 8329;
+
+          // Cup centers in SVG space
+          const cupCenters = [2650, 2900, 2700, 2950];
+          const cupSpeeds = [0.22, -0.22, 0.16, -0.16];
+
+          for (let i = 1; i <= 4; i++) {
+            const wrapper = svgDoc.querySelector(`g[data-cup-parallax-wrapper="${i}"]`);
+            if (wrapper) {
+              const screenCenter = svgRect.top + cupCenters[i - 1] * scale;
+              const distanceFromCenter = viewportCenter - screenCenter;
+              const shift = distanceFromCenter * cupSpeeds[i - 1];
+
+              wrapper.style.transform = `translate3d(0, ${shift.toFixed(1)}px, 0)`;
+            }
+          }
+        } catch (err) {
+          // Ignore loaded SVG access errors
+        }
+        frameId = 0;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
   useEffect(() => () => {
     window.clearTimeout(carouselResumeTimerRef.current);
   }, []);
@@ -1233,6 +1325,12 @@ export default function HomePage() {
                 injectDynamicHeroText(svgDoc, displayName, suffix);
                 hideStaticPlaceholders(svgDoc);
                 compactLowerHomepageSections(svgDoc);
+
+                // Wrap the cup elements for parallax effect
+                wrapCupElements(svgDoc, 1, 2);
+                wrapCupElements(svgDoc, 2, 2);
+                wrapCupElements(svgDoc, 3, 2);
+                wrapCupElements(svgDoc, 4, 3);
 
                 // Shrink SVG canvas height by compact shift to prevent trailing whitespace
                 const svg = svgDoc.querySelector('svg');

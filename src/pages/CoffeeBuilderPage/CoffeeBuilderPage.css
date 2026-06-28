@@ -1,20 +1,36 @@
-.builder-page { background: var(--color-bg); }
+/* =====================================================
+   COFFEE BUILDER PAGE — FULLY ADAPTIVE LAYOUT
+   ===================================================== */
 
+.builder-page {
+  background: var(--color-bg);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Progress bar wrapper */
+.builder-page__progress {
+  padding-top: clamp(0.5rem, 1.5vw, 1rem);
+  padding-bottom: 0;
+}
+
+/* ── HEADER ── */
 .builder-page__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-2);
-  gap: var(--space-4);
+  padding-top: clamp(0.25rem, 0.8vw, 0.75rem);
+  padding-bottom: clamp(0.125rem, 0.25vw, 0.5rem);
+  gap: clamp(0.5rem, 1.5vw, 1.25rem);
 }
 
 .builder-page__back {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: clamp(30px, 3.5vw, 40px);
+  height: clamp(30px, 3.5vw, 40px);
   border-radius: var(--radius-full);
   border: 1.5px solid var(--color-border);
   background: var(--color-surface);
@@ -22,108 +38,75 @@
   cursor: pointer;
   transition: all var(--transition-base);
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-.builder-page__back:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+.builder-page__back:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.builder-page__back:active { transform: scale(0.92); }
+
+.builder-page__back svg {
+  width: clamp(14px, 1.8vw, 20px);
+  height: clamp(14px, 1.8vw, 20px);
 }
 
-.builder-page__title-group { text-align: center; }
+.builder-page__title-group { text-align: center; min-width: 0; flex: 1; }
 
 .builder-page__title {
-  font-size: var(--text-xl);
+  font-size: clamp(0.95rem, 2.5vw, 1.5rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
 .builder-page__sub {
-  font-size: var(--text-xs);
+  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
   color: var(--color-text-muted);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-/* Centered Body Layout without Sidebar */
+.builder-page__thumb {
+  width: clamp(30px, 3.5vw, 40px);
+  height: clamp(30px, 3.5vw, 40px);
+  border-radius: 50%;
+  object-fit: contain;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface-alt);
+  flex-shrink: 0;
+}
+
+/* ── BODY — height adapts to content ── */
 .builder-page__body {
-  padding-block: var(--space-6);
-  min-height: 50vh;
+  padding-block: clamp(0.5rem, 1.5vw, 1.5rem);
+  flex: 1;
 }
 
 .builder-page__body--centered {
   display: flex;
   justify-content: center;
-  max-width: var(--container-md);
+  max-width: min(var(--container-md), 100%);
   margin-inline: auto;
+  width: 100%;
 }
 
 .builder-page__step-area {
   position: relative;
   overflow: hidden;
   width: 100%;
+  max-width: 100%;
 }
 
 .builder-page__step-area--wide {
-  max-width: var(--container-md);
+  max-width: min(1200px, 100%);
 }
 
 .builder-page__step {
   width: 100%;
-}
-
-/* Navigation */
-.builder-page__nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-block: var(--space-6);
-  gap: var(--space-4);
-}
-
-.builder-page__nav-back,
-.builder-page__nav-next {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-full);
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: var(--text-sm);
-  cursor: pointer;
-  transition: all var(--transition-base);
-}
-
-.builder-page__nav-back {
-  background: var(--color-surface-alt);
-  border: 1.5px solid var(--color-border);
-  color: var(--color-text-muted);
-}
-
-.builder-page__nav-back:hover:not(:disabled) {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-.builder-page__nav-back:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.builder-page__nav-next {
-  background: var(--color-primary);
-  border: none;
-  color: #fff;
-  box-shadow: var(--shadow-warm);
-  margin-left: auto;
-}
-
-.builder-page__nav-next:hover:not(.disabled) {
-  background: var(--color-primary-dark);
-  transform: translateY(-2px);
-}
-
-.builder-page__nav-next.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
+  max-width: 100%;
 }

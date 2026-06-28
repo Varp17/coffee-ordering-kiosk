@@ -87,6 +87,8 @@ ol {
   --color-success: #3D9B6B;
   --color-error: #D94F4F;
   --color-warning: #E5A764;
+  --color-card-bg: var(--color-surface);
+  --color-card-hover: var(--color-surface-alt);
 
   /* Typography */
   --font-heading: 'Outfit', system-ui, sans-serif;

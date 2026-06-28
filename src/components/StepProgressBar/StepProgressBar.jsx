@@ -4,7 +4,7 @@ import { Check } from 'lucide-react';
 
 const STEP_LABELS = ['Category', 'Coffee', 'Body', 'Sweetener', 'Garnish', 'Review'];
 
-export default function StepProgressBar({ currentStep, maxStep = 6 }) {
+export default function StepProgressBar({ currentStep, maxStep = 5, onStepClick }) {
   return (
     <div className="step-progress" role="progressbar" aria-valuenow={currentStep} aria-valuemax={maxStep}>
       {STEP_LABELS.map((label, idx) => {
@@ -13,7 +13,12 @@ export default function StepProgressBar({ currentStep, maxStep = 6 }) {
         const isActive = step === currentStep;
 
         return (
-          <div key={step} className="step-progress__item">
+          <button
+            key={step}
+            className="step-progress__item"
+            onClick={() => onStepClick?.(step)}
+            style={{ cursor: 'pointer', background: 'none', border: 'none', padding: 0, fontFamily: 'inherit' }}
+          >
             {/* Dot */}
             <motion.div
               className={`step-progress__dot ${isActive ? 'dot--active' : ''} ${isDone ? 'dot--done' : ''}`}
@@ -40,7 +45,7 @@ export default function StepProgressBar({ currentStep, maxStep = 6 }) {
                 />
               </div>
             )}
-          </div>
+          </button>
         );
       })}
     </div>

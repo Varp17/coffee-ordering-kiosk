@@ -142,8 +142,36 @@
   margin-bottom: var(--space-20);
 }
 
-@media (max-width: 480px) {
-  .menu-grid { grid-template-columns: 1fr; gap: var(--space-4); }
+@media (max-width: 640px) {
+  .menu-page__header {
+    padding-block: var(--space-8);
+    margin-bottom: var(--space-5);
+  }
+
+  .menu-page__title {
+    font-size: 2rem;
+    letter-spacing: 0;
+  }
+
+  .menu-page__sub {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-bottom: var(--space-4);
+  }
+
+  .menu-tabs {
+    margin-bottom: var(--space-4);
+  }
+
+  .menu-results-count {
+    margin-bottom: var(--space-4);
+  }
+
+  .menu-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-bottom: var(--space-12);
+  }
 }
 
 /* Empty */

@@ -48,7 +48,7 @@ export const authService = {
       if (refreshToken) {
         await api.post('/auth/logout', { refreshToken });
       }
-    } catch (_) { /* ignore logout errors */ }
+    } catch { /* ignore logout errors */ }
     api.setToken(null);
   },
 };

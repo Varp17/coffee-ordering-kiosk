@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Coffee, ArrowRight, ShieldCheck, MapPin, ClipboardList, HelpCircle } from 'lucide-react';
+import { CheckCircle2, ArrowRight, MapPin } from 'lucide-react';
 import { useOrderStore } from '@/store/useOrderStore';
-import { formatPrice } from '@/utils/coffeeBuilder';
 import toast from 'react-hot-toast';
 import './OrderConfirmPage.css';
 
@@ -63,6 +62,7 @@ export default function OrderConfirmPage() {
 
   return (
     <div className="order-confirm-page page-wrapper">
+      {/* ── CONFETTI DECORATION ── */}
       <div className="confetti-container" aria-hidden="true">
         {[...Array(30)].map((_, i) => (
           <div
@@ -70,14 +70,15 @@ export default function OrderConfirmPage() {
             className="confetti-piece"
             style={{
               '--delay': `${(i * 0.15).toFixed(2)}s`,
-              '--left': `${Math.floor(Math.random() * 100)}%`,
+              '--left': `${(i * 17) % 100}%`,
               '--color': i % 3 === 0 ? 'var(--color-primary)' : i % 3 === 1 ? 'var(--color-accent)' : '#fff',
-              '--rotation': `${Math.floor(Math.random() * 360)}deg`,
+              '--rotation': `${(i * 37) % 360}deg`,
             }}
           />
         ))}
       </div>
 
+      {/* ── CONFIRMATION CARD ── */}
       <div className="container confirm-container">
         <motion.div
           className="confirm-card"
@@ -94,7 +95,7 @@ export default function OrderConfirmPage() {
           <h1 className="confirm-title">Thank you for your order!</h1>
           <p className="confirm-order-id">Order ID: <strong>{orderId}</strong></p>
 
-          {/* Token Box */}
+          {/* ── TOKEN BOX ── */}
           <div className="token-display-box">
             <span className="token-lbl">Your Token</span>
             <div className="token-number">{token}</div>
@@ -103,7 +104,7 @@ export default function OrderConfirmPage() {
             </p>
           </div>
 
-          {/* Live Order Status Tracking */}
+          {/* ── LIVE STATUS TRACKER ── */}
           <div className="order-status-tracker">
             <h3 className="status-indicator-title">{getStatusText()}</h3>
 
@@ -139,7 +140,7 @@ export default function OrderConfirmPage() {
             </div>
           </div>
 
-          {/* Location Summary card */}
+          {/* ── LOCATION DETAILS ── */}
           <div className="confirm-location-card">
             <MapPin size={16} />
             <div className="loc-card-details">
@@ -148,6 +149,7 @@ export default function OrderConfirmPage() {
             </div>
           </div>
 
+          {/* ── FINISH ACTION ── */}
           <div className="confirm-actions">
             <button className="btn btn-primary finish-btn" onClick={handleFinish}>
               Back to Menu <ArrowRight size={16} style={{ marginLeft: 6 }} />

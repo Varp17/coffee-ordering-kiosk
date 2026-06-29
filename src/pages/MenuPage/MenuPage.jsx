@@ -29,6 +29,7 @@ export default function MenuPage() {
 
   return (
     <div className="menu-page page-wrapper">
+      {/* ── HEADER & SEARCH ── */}
       <div className="menu-page__header">
         <div className="container">
           <motion.h1
@@ -68,6 +69,7 @@ export default function MenuPage() {
       </div>
 
       <div className="container">
+        {/* ── FILTER TABS ── */}
         <div className="menu-tabs" role="tablist" aria-label="Filter by product type">
           {CATEGORIES.map((cat) => (
             <motion.button
@@ -92,6 +94,7 @@ export default function MenuPage() {
           {searchQuery && ` for "${searchQuery}"`}
         </p>
 
+        {/* ── PRODUCT GRID ── */}
         {filtered.length > 0 ? (
           <motion.div
             className="menu-grid"

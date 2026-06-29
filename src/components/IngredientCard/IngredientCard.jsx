@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Star } from 'lucide-react';
+import { Check } from 'lucide-react';
 import './IngredientCard.css';
 
 export default function IngredientCard({ item, selected, onSelect, type }) {

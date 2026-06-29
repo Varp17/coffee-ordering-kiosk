@@ -17,7 +17,7 @@ export default function Navbar() {
   const [cartOpen, setCartOpen] = useState(false);
   const location = useLocation();
   const totalItems = useCartStore((s) => s.getTotalItems());
-  const { isLoggedIn, phone } = useAuthStore();
+  const { isLoggedIn } = useAuthStore();
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -41,6 +41,7 @@ export default function Navbar() {
   }, [mobileOpen]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileOpen(false);
   }, [location.pathname]);
 

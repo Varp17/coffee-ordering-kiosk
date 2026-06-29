@@ -565,4 +565,138 @@
     align-items: flex-start;
     gap: 0.75rem;
   }
+
+  .rp-slider-section {
+    padding-block: 2rem 1.5rem;
+  }
+
+  .rp-marquee {
+    padding-block: 0.25rem 0.55rem;
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+
+  .rp-marquee__track {
+    gap: 0.75rem;
+    animation-duration: 52s;
+  }
+
+  .rp-slide-card {
+    width: 11.4rem;
+    border-radius: 8px;
+  }
+
+  .rp-slide-card__img-wrap {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .rp-slide-card__body {
+    padding: 0.62rem;
+  }
+
+  .rp-slide-card__meta {
+    gap: 0.35rem;
+  }
+
+  .rp-slide-card__concentrate,
+  .rp-slide-card__mood,
+  .rp-slide-card__video-tag,
+  .rp-slide-card__likes-tag {
+    font-size: 0.58rem;
+    letter-spacing: 0;
+  }
+
+  .rp-slide-card__body h3 {
+    display: -webkit-box;
+    min-height: 2.55em;
+    overflow: hidden;
+    font-size: 0.82rem;
+    line-height: 1.28;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .rp-slide-card__body p {
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+
+  .rp-grid-section {
+    padding-block: 1.5rem 3rem;
+  }
+
+  .rp-filter-bar {
+    gap: 0.45rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.7rem;
+    scrollbar-width: none;
+  }
+
+  .rp-filter-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rp-filter-chip {
+    flex: 0 0 auto;
+    padding: 0.42rem 0.8rem;
+    font-size: 0.72rem;
+  }
+
+  .rp-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .rp-grid-card {
+    border-radius: 8px;
+  }
+
+  .rp-grid-card__img-wrap {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .rp-grid-card__badge {
+    bottom: 0.45rem;
+    left: 0.45rem;
+    max-width: calc(100% - 0.9rem);
+    padding: 3px 6px;
+    border-radius: 999px;
+    font-size: 0.56rem;
+    letter-spacing: 0;
+  }
+
+  .rp-grid-card__body {
+    padding: 0.62rem;
+  }
+
+  .rp-grid-card__body h3 {
+    display: -webkit-box;
+    min-height: 2.55em;
+    overflow: hidden;
+    font-size: 0.82rem;
+    line-height: 1.28;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .rp-grid-card__body p {
+    font-size: 0.68rem;
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+  }
+
+  .rp-grid-card__foot {
+    padding-top: 0.45rem;
+    font-size: 0.62rem;
+  }
+
+  .rp-grid-card__author {
+    display: none;
+  }
 }

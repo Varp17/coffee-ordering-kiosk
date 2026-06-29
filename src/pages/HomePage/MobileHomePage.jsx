@@ -4,12 +4,12 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  MapPin,
   Phone,
   PlayCircle,
   Sparkles,
 } from 'lucide-react';
 import { useUserStore } from '@/store/useUserStore';
+import Footer from '@/components/Footer/Footer';
 import './MobileHomePage.css';
 
 const ASSET_BASE = '/images/mobile-home/';
@@ -733,23 +733,7 @@ export default function MobileHomePage() {
         </div>
       </section>
 
-      <footer className="mobile-home-footer">
-        <div className="mobile-home-footer__brand">
-          Chilld<span>.</span>
-        </div>
-        <p>Good coffee. No overthinking.</p>
-        <nav className="mobile-home-footer__links" aria-label="Mobile home footer links">
-          <Link to="/menu?cat=cold-brew">Cold brew core</Link>
-          <Link to="/build">Create drink</Link>
-          <Link to="/recipes">Recipes</Link>
-          <Link to="/location">
-            <MapPin size={14} aria-hidden="true" />
-            Locations
-          </Link>
-          <Link to="/contact">Contact</Link>
-        </nav>
-        <img src={`${ASSET_BASE}fssai.png`} alt="FSSAI licensed" loading="lazy" decoding="async" />
-      </footer>
+      <Footer className="footer--mobile-home" />
     </div>
   );
 }

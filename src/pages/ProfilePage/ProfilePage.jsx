@@ -35,6 +35,7 @@ export default function ProfilePage() {
           <ArrowLeft size={18} /> Back to Menu
         </button>
 
+        {/* ── PROFILE CARD ── */}
         <motion.div
           className="profile-card"
           initial={{ opacity: 0, y: 20 }}
@@ -48,6 +49,7 @@ export default function ProfilePage() {
           <h1 className="profile-card__title">My Account</h1>
           <p className="profile-card__subtitle">Chilld Coffee Regular</p>
 
+          {/* ── ACCOUNT DETAILS ── */}
           <div className="profile-card__details">
             <div className="detail-row">
               <Phone size={16} />

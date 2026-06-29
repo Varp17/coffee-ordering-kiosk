@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { motion as motionFramer, AnimatePresence as AnimatePresenceFramer } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, Phone, ArrowLeft, ArrowRight, ShieldCheck, RefreshCw } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import OTPInput from '@/components/OTPInput/OTPInput';
@@ -16,7 +16,6 @@ export default function AuthPage() {
     isLoggedIn,
     phone,
     otpSent,
-    setPhone,
     sendOTP,
     verifyOTP,
     resetOTP,
@@ -97,22 +96,23 @@ export default function AuthPage() {
   return (
     <div className="auth-page page-wrapper">
       <div className="container auth-container">
-        <motionFramer
+        <motion.div
           className="auth-card"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Logo or brand header */}
+          {/* ── BRAND HEADER ── */}
           <div className="auth-card__brand">
             <span className="brand-emoji">☕</span>
             <h1 className="brand-title">Chilld Coffee</h1>
             <p className="brand-subtitle">Pure Craft Coffee Platform</p>
           </div>
 
-          <AnimatePresenceFramer mode="wait">
+          {/* ── AUTH STEPS SWITCH ── */}
+          <AnimatePresence mode="wait">
             {!otpSent ? (
-              <motionFramer
+              <motion.div
                 key="phone-step"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -120,6 +120,7 @@ export default function AuthPage() {
                 transition={{ duration: 0.25 }}
                 className="auth-step-form"
               >
+                {/* ── PHONE NUMBER STEP ── */}
                 <div className="auth-step-header">
                   <h2>Enter Contact Number</h2>
                   <p>Login or create an account with your mobile number.</p>
@@ -150,9 +151,9 @@ export default function AuthPage() {
                   <Lock size={12} />
                   <span>Your connection is secure and encrypted.</span>
                 </div>
-              </motionFramer>
+              </motion.div>
             ) : (
-              <motionFramer
+              <motion.div
                 key="otp-step"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -160,6 +161,7 @@ export default function AuthPage() {
                 transition={{ duration: 0.25 }}
                 className="auth-step-form"
               >
+                {/* ── OTP VERIFICATION STEP ── */}
                 <button className="auth-back-btn" onClick={handleBackToPhone} aria-label="Go back">
                   <ArrowLeft size={16} /> Edit number
                 </button>
@@ -188,10 +190,10 @@ export default function AuthPage() {
                   <ShieldCheck size={12} />
                   <span>Secure 2-factor OTP verification.</span>
                 </div>
-              </motionFramer>
+              </motion.div>
             )}
-          </AnimatePresenceFramer>
-        </motionFramer>
+          </AnimatePresence>
+        </motion.div>
       </div>
     </div>
   );

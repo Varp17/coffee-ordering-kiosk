@@ -986,29 +986,62 @@ a {
   }
 
   .recipe-carousel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-top: 26px;
-    gap: 18px;
+    gap: 12px;
+    overflow: visible;
+    scroll-snap-type: none;
   }
 
   .related-recipe-card {
-    flex-basis: 220px;
+    min-width: 0;
+    flex-basis: auto;
+    gap: 7px;
   }
 
   .related-image {
-    height: 220px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
   }
 
   .related-recipe-card h3 {
-    font-size: 24px;
+    display: -webkit-box;
+    min-height: 2.55em;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.28;
+    letter-spacing: 0;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
 
   .related-recipe-card p {
-    min-height: 48px;
-    font-size: 14px;
+    display: -webkit-box;
+    min-height: 0;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .related-tags {
+    gap: 5px;
   }
 
   .related-tags span {
-    font-size: 10px;
+    min-height: 22px;
+    padding: 3px 7px;
+    border-radius: 999px;
+    font-size: 9px;
+  }
+
+  .carousel-buttons {
+    display: none;
   }
 
 }

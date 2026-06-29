@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Building2, Mail, CheckCircle2, ArrowRight, Activity, Award, Briefcase, Users, Coffee, Zap, Shield, TrendingUp } from 'lucide-react';
+import { Building2, CheckCircle2, ArrowRight, Activity, Award, Briefcase, Users, Coffee, Zap, Shield, TrendingUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import './B2BPage.css';
 

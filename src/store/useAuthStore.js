@@ -39,7 +39,7 @@ export const useAuthStore = create(
             userName: user?.name || '',
           });
           return true;
-        } catch (err) {
+        } catch {
           return false;
         }
       },
@@ -47,7 +47,9 @@ export const useAuthStore = create(
       logout: async () => {
         try {
           await authService.logout();
-        } catch (_) {}
+        } catch {
+          /* ignore logout failures */
+        }
         set({
           isLoggedIn:  false,
           phone:       '',

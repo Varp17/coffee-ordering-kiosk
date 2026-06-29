@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Reusable Logo component that displays the custom Figma hand-drawn SVG for "Chilld,".
  * Accepts color, width, height, className, and standard style properties.

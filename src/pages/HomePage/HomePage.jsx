@@ -716,15 +716,6 @@ const BENTO_POST_SETS = [
   },
 ];
 
-const BENTO_PLATFORM_LABELS = {
-  facebook: 'f',
-  instagram: '◎',
-  x: '𝕏',
-  reddit: '●',
-  amazon: 'amazon',
-  google: 'G',
-};
-
 function renderFooterBrand(platform, source) {
   if (platform === 'facebook') {
     return (
@@ -1079,6 +1070,7 @@ function DesktopHomePage() {
   useEffect(() => {
     const inlineVideo = videoRef.current;
     const fullscreenVideo = scrollVideoFullscreenRef.current;
+    let pauseResetTimer = 0;
 
     if (inlineVideo) {
       inlineVideo.muted = true;
@@ -1088,7 +1080,9 @@ function DesktopHomePage() {
       fullscreenVideo.muted = true;
       fullscreenVideo.play().catch(() => { });
     }
-    setIsPaused(false);
+    pauseResetTimer = window.setTimeout(() => setIsPaused(false), 0);
+
+    return () => window.clearTimeout(pauseResetTimer);
   }, [scrollVideoMode]);
 
   // Each set replaces the social cards every 4.8 seconds. The prior set is kept
@@ -1284,7 +1278,7 @@ function DesktopHomePage() {
               wrapper.style.transform = `translate3d(0, ${shift.toFixed(1)}px, 0)`;
             }
           }
-        } catch (err) {
+        } catch {
           // Ignore loaded SVG access errors
         }
         frameId = 0;
@@ -1608,7 +1602,7 @@ function DesktopHomePage() {
           to="/menu?cat=cold-brew"
           className="homepage-link link-swirl-buy"
           style={{ left: '34.19%', top: '23.19%', width: '18.45%', height: '0.60%' }}
-          title="Buy Cold Brew Core"
+          title="Buy Cold Brew Concentrate"
         />
 
         {/* Explore Recipes Swirl Button */}
@@ -1739,10 +1733,12 @@ function DesktopHomePage() {
   );
 }
 
+const MOBILE_HOME_VIEWPORT_QUERY = '(max-width: 1024px), (pointer: coarse) and (max-width: 1180px)';
+
 function useIsMobileHomeViewport() {
   const getMatches = () => {
     if (typeof window === 'undefined') return false;
-    return window.matchMedia('(max-width: 1024px)').matches;
+    return window.matchMedia(MOBILE_HOME_VIEWPORT_QUERY).matches;
   };
 
   const [isMobileHomeViewport, setIsMobileHomeViewport] = useState(getMatches);
@@ -1750,13 +1746,17 @@ function useIsMobileHomeViewport() {
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
 
-    const mediaQuery = window.matchMedia('(max-width: 1024px)');
+    const mediaQuery = window.matchMedia(MOBILE_HOME_VIEWPORT_QUERY);
     const syncViewport = () => setIsMobileHomeViewport(mediaQuery.matches);
 
     syncViewport();
-    mediaQuery.addEventListener('change', syncViewport);
+    mediaQuery.addEventListener?.('change', syncViewport);
+    mediaQuery.addListener?.(syncViewport);
 
-    return () => mediaQuery.removeEventListener('change', syncViewport);
+    return () => {
+      mediaQuery.removeEventListener?.('change', syncViewport);
+      mediaQuery.removeListener?.(syncViewport);
+    };
   }, []);
 
   return isMobileHomeViewport;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Coffee } from 'lucide-react';
 import { useUserStore, COFFEE_TYPES } from '@/store/useUserStore';
 import Logo from '@/components/Logo/Logo';
@@ -42,7 +42,7 @@ export default function WelcomePage() {
       animate={{ opacity: isExiting ? 0 : 1, scale: isExiting ? 1.05 : 1 }}
       transition={{ duration: 0.45, ease: 'easeInOut' }}
     >
-      {/* Exact Figma graffiti artwork — /public/Subtract.svg */}
+      {/* ── GRAFFITI ARTWORK ── */}
       <div className="welcome-figma-graffiti" aria-hidden="true">
         <img
           src="/Subtract.svg"
@@ -51,7 +51,7 @@ export default function WelcomePage() {
         />
       </div>
 
-      {/* Logo */}
+      {/* ── LOGO ── */}
       <motion.div
         className="welcome-logo"
         initial={{ opacity: 0, y: -20 }}
@@ -61,7 +61,7 @@ export default function WelcomePage() {
         <Logo width="clamp(100px, 15vw, 150px)" height="auto" color="white" />
       </motion.div>
 
-      {/* Main Content */}
+      {/* ── MAIN CONTENT ── */}
       <div className="welcome-content">
         {/* Heading */}
         <motion.h1
@@ -123,7 +123,7 @@ export default function WelcomePage() {
         </motion.div>
       </div>
 
-      {/* CTA Button */}
+      {/* ── CTA BUTTONS ── */}
       <motion.div
         className="welcome-cta-wrapper"
         initial={{ opacity: 0, y: 30 }}

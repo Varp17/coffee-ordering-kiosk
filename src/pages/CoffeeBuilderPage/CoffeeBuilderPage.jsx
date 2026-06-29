@@ -41,6 +41,7 @@ export default function CoffeeBuilderPage() {
 
   return (
     <div className="builder-page page-wrapper">
+      {/* ── PROGRESS BAR ── */}
       <div className="builder-page__progress container">
         <StepProgressBar
           currentStep={Math.min(step, 6)}
@@ -49,6 +50,7 @@ export default function CoffeeBuilderPage() {
         />
       </div>
 
+      {/* ── STEP HEADER ── */}
       <div className="builder-page__header container">
         <button className="builder-page__back" onClick={() => isFirstStep ? navigate('/menu') : goBack()} aria-label="Go back">
           <ArrowLeft size={18} />
@@ -66,6 +68,7 @@ export default function CoffeeBuilderPage() {
         )}
       </div>
 
+      {/* ── ACTIVE STEP CONTENT ── */}
       <div className="builder-page__body container">
         <div className="builder-page__step-area">
           <AnimatePresence custom={direction} mode="wait">

@@ -45,9 +45,9 @@ function FooterColumn({ title, links }) {
   );
 }
 
-export default function Footer() {
+export default function Footer({ className = '' }) {
   return (
-    <footer className="footer">
+    <footer className={`footer ${className}`.trim()}>
       <svg className="footer-wave-svg" viewBox="0 0 1512 230" preserveAspectRatio="none">
         <defs>
           <path
@@ -65,6 +65,7 @@ export default function Footer() {
         />
 
         <text
+          className="footer-wave-svg__text"
           fill="#1F2A44"
           fontSize="32"
           fontWeight="900"

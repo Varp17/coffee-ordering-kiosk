@@ -497,7 +497,7 @@ h6 {
 .page-wrapper {
   min-height: 100vh;
   padding-top: calc(var(--nav-height) + var(--announcement-bar-height));
-  padding-bottom: var(--bottom-nav-height);
+  padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
 }
 @media (min-width: 769px) {
   .page-wrapper {

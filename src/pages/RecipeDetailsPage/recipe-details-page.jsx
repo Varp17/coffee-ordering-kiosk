@@ -121,6 +121,7 @@ function RecipeDetailContent({ id, location }) {
         <div className="recipe-promo">Summer Sale 30% OFF is Now Live <Icon name="arrowRight" size={15} /></div>
       )}
 
+      {/* ── NAVIGATION HEADER ── */}
       <header className="recipe-nav-shell">
         <nav className="recipe-nav" aria-label="Main navigation">
           <Link className="recipe-logo" to="/" aria-label="Chilld home">Chilld.</Link>
@@ -150,6 +151,7 @@ function RecipeDetailContent({ id, location }) {
         </nav>
       </header>
 
+      {/* ── RECIPE HERO ── */}
       <section className="recipe-hero" id="top">
         <img className="recipe-side-graffiti" src={sideGraffiti} alt="" aria-hidden="true" />
         <div className="recipe-container hero-layout">
@@ -194,6 +196,7 @@ function RecipeDetailContent({ id, location }) {
         </div>
       </section>
 
+      {/* ── INGREDIENTS & INSTRUCTIONS ── */}
       <section className="recipe-container cooking-section">
         <aside className="ingredients-panel">
           <h2>Ingredients</h2>
@@ -213,6 +216,7 @@ function RecipeDetailContent({ id, location }) {
         </article>
       </section>
 
+      {/* ── USER COMMENTS ── */}
       <section className="comments-section recipe-container" id="comments">
         <h2>Comments</h2>
         <div className="comment-form">
@@ -231,6 +235,7 @@ function RecipeDetailContent({ id, location }) {
         </div>
       </section>
 
+      {/* ── RELATED RECIPES ── */}
       <section className="more-recipes-section" id="recipes">
         <div className="recipe-container">
           <div className="section-heading-row">

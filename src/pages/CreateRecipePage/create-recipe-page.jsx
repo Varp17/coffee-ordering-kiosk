@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ChevronDown,
-  ImagePlus,
   Plus,
   Sparkles,
   Tag,
@@ -113,6 +112,7 @@ export default function CreateRecipePage() {
 
   return (
     <main className="create-recipe-page">
+      {/* ── HERO HEADER ── */}
       <section className="create-recipe-hero" aria-labelledby="create-recipe-title">
         <div className="create-recipe-hero__graffiti" aria-hidden="true" />
         <div className="create-recipe-shell create-recipe-hero__content">
@@ -123,6 +123,7 @@ export default function CreateRecipePage() {
       </section>
 
       <section className="create-recipe-shell create-recipe-workspace" aria-label="Create your coffee recipe">
+        {/* ── MEDIA & DETAILS CONFIGURATION ── */}
         <div className="create-recipe-workspace__top">
           <div className="create-recipe-media-column">
             <input
@@ -243,6 +244,7 @@ export default function CreateRecipePage() {
           </div>
         </div>
 
+        {/* ── INGREDIENTS & STEPS EDITOR ── */}
         <div className="create-recipe-workspace__bottom">
           <section className="create-recipe-editor-card create-recipe-ingredients" aria-labelledby="ingredients-title">
             <div className="create-recipe-editor-card__heading">
@@ -297,6 +299,7 @@ export default function CreateRecipePage() {
           </section>
         </div>
 
+        {/* ── PUBLISH CONTROL ── */}
         <div className="create-recipe-publish-row">
           <p role="status" aria-live="polite">{status}</p>
           <button type="button" className="create-recipe-publish" onClick={publishRecipe}>

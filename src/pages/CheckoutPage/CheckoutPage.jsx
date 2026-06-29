@@ -1,6 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, MapPin, Coffee, ShoppingBag, CreditCard, User, ClipboardList } from 'lucide-react';
+import { ArrowLeft, MapPin, CreditCard, User, ClipboardList } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useOrderStore } from '@/store/useOrderStore';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -50,7 +49,7 @@ export default function CheckoutPage() {
 
           <h1 className="checkout-page__title">Review Order</h1>
 
-          {/* Location details card */}
+          {/* ── STORE & LOCATION SUMMARY ── */}
           <div className="checkout-card checkout-location">
             <div className="checkout-card__header">
               <MapPin size={18} className="icon-gold" />
@@ -84,7 +83,7 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Cart items review */}
+          {/* ── CART ITEMS REVIEW ── */}
           <div className="checkout-card checkout-items">
             <div className="checkout-card__header">
               <ClipboardList size={18} className="icon-gold" />
@@ -146,7 +145,7 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* Right Column: Pricing & Place Order Box */}
+        {/* ── BILL DETAILS & ACTIONS ── */}
         <div className="checkout-page__summary">
           <div className="summary-sticky">
             <h2 className="section-title-small">Bill Details</h2>

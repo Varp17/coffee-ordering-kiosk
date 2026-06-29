@@ -1,11 +1,10 @@
 import './SizeSelector.css';
 import { formatPrice } from '@/utils/coffeeBuilder';
 
-export default function SizeSelector({ sizes, selected, onChange, basePrice }) {
+export default function SizeSelector({ sizes, selected, onChange }) {
   return (
     <div className="size-selector" role="group" aria-label="Select size">
       {sizes.map((size) => {
-        const price = basePrice + size.modifier;
         const isActive = selected?.id === size.id;
         return (
           <button

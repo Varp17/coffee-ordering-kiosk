@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, Shield, QrCode, CreditCard, Wallet, Smartphone, Loader2 } from 'lucide-react';
+import { ArrowLeft, Shield, QrCode, CreditCard, Wallet, Smartphone, Loader2 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useOrderStore } from '@/store/useOrderStore';
 import { formatPrice, generateToken } from '@/utils/coffeeBuilder';
@@ -109,7 +108,7 @@ export default function PaymentPage() {
   return (
     <div className="payment-page page-wrapper">
       <div className="container payment-page__grid">
-        {/* Left Column: Payment Options */}
+        {/* ── PAYMENT METHODS SELECTION ── */}
         <div className="payment-page__forms">
           <button className="payment-page__back" onClick={() => navigate('/checkout')}>
             <ArrowLeft size={18} /> Back to Checkout
@@ -149,6 +148,7 @@ export default function PaymentPage() {
           </div>
 
           <div className="payment-form-card">
+            {/* ── ACTIVE TAB CONTENT (UPI/CARD/WALLET) ── */}
             {activeTab === 'upi' && (
               <div className="upi-payment">
                 <div className="qr-container">
@@ -347,7 +347,7 @@ export default function PaymentPage() {
           </div>
         </div>
 
-        {/* Right Column: Bill Review summary */}
+        {/* ── ORDER SUMMARY & TRUST BADGES ── */}
         <div className="payment-page__summary">
           <div className="summary-sticky">
             <h2 className="section-title-small">Order Summary</h2>

@@ -97,6 +97,7 @@ export default function ProductDetailPage() {
         </button>
 
         <div className="product-detail__grid">
+          {/* ── PRODUCT IMAGES & SPECS ── */}
           <div className="product-detail__image-area">
             <motion.div
               className="product-detail__img-wrapper"
@@ -156,6 +157,7 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
+          {/* ── PRODUCT DESCRIPTION & DETAILS ── */}
           <div className="product-detail__info-area">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -212,6 +214,7 @@ export default function ProductDetailPage() {
               </div>
             )}
 
+            {/* ── BOTTLE SIZE SELECTOR ── */}
             <div className="product-detail__section">
               <h3 className="section-title-small">Choose Bottle Size</h3>
               <SizeSelector
@@ -222,6 +225,7 @@ export default function ProductDetailPage() {
               />
             </div>
 
+            {/* ── OPTIONAL ADD-ONS ── */}
             {compatibleAddons.length > 0 && (
               <div className="product-detail__section">
                 <h3 className="section-title-small">Optional Add-ons</h3>
@@ -248,6 +252,7 @@ export default function ProductDetailPage() {
               </div>
             )}
 
+            {/* ── ORDER ACTION BOX ── */}
             <div className="product-detail__order-box">
               <div className="qty-selector">
                 <button

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Compass, Navigation, Clock, Phone, Check, ChevronRight } from 'lucide-react';
+import { Compass, Navigation, Clock, Check, ChevronRight } from 'lucide-react';
 import { useOrderStore } from '@/store/useOrderStore';
 import { LOCATIONS, getLocationsWithDistance } from '@/data/locations';
 import toast from 'react-hot-toast';
@@ -19,14 +19,12 @@ export default function LocationPage() {
   } = useOrderStore();
 
   const [locations, setLocations] = useState(LOCATIONS);
-  const [loadingGeo, setLoadingGeo] = useState(false);
-  const [geoError, setGeoError] = useState(null);
+  const [loadingGeo, setLoadingGeo] = useState('geolocation' in navigator);
   const [coords, setCoords] = useState(null);
 
   // Auto-detect geolocation
   useEffect(() => {
     if ('geolocation' in navigator) {
-      setLoadingGeo(true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const lat = position.coords.latitude;
@@ -43,7 +41,6 @@ export default function LocationPage() {
         },
         (error) => {
           console.warn('Geolocation error:', error);
-          setGeoError(error.message);
           setLoadingGeo(false);
           if (!selectedLocation) {
             setLocation(LOCATIONS[0]); // fallback to first
@@ -56,6 +53,7 @@ export default function LocationPage() {
         setLocation(LOCATIONS[0]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSelectLocation = (loc) => {
@@ -85,7 +83,7 @@ export default function LocationPage() {
   return (
     <div className="location-page page-wrapper">
       <div className="container location-page__grid">
-        {/* Left Column: Cafe Selection */}
+        {/* ── CAFE LOCATION SELECTION ── */}
         <div className="location-page__selection">
           <div className="location-header-block">
             <h1 className="location-page__title">Select Location</h1>
@@ -114,10 +112,10 @@ export default function LocationPage() {
 
               return (
                 <button
-                  key={loc.id}
-                  className={`location-tile ${isSelected ? 'location-tile--selected' : ''}`}
-                  onClick={() => handleSelectLocation(loc)}
-                  type="button"
+                   key={loc.id}
+                   className={`location-tile ${isSelected ? 'location-tile--selected' : ''}`}
+                   onClick={() => handleSelectLocation(loc)}
+                   type="button"
                 >
                   <div className="location-tile__img">
                     <img src={loc.image} alt={loc.shortName} loading="lazy" />
@@ -165,7 +163,7 @@ export default function LocationPage() {
           </div>
         </div>
 
-        {/* Right Column: Order Type & Dining Table Setup */}
+        {/* ── ORDER CONFIGURATION (DINE-IN/TAKEAWAY) ── */}
         <div className="location-page__config">
           <div className="config-sticky">
             <h2 className="section-title-small">Order Details</h2>

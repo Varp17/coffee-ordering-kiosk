@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
+import MobileHomePage from './MobileHomePage';
 import { PRODUCTS } from '@/data/products';
 import { RECIPES } from '@/data/recipes';
 
@@ -872,7 +873,7 @@ function BentoSocialCard({ slot, post, phase, cycle }) {
   );
 }
 
-export default function HomePage() {
+function DesktopHomePage() {
   const getHeroText = useUserStore((state) => state.getHeroText);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
 
@@ -1736,4 +1737,33 @@ export default function HomePage() {
       )}
     </div>
   );
+}
+
+function useIsMobileHomeViewport() {
+  const getMatches = () => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(max-width: 1024px)').matches;
+  };
+
+  const [isMobileHomeViewport, setIsMobileHomeViewport] = useState(getMatches);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const mediaQuery = window.matchMedia('(max-width: 1024px)');
+    const syncViewport = () => setIsMobileHomeViewport(mediaQuery.matches);
+
+    syncViewport();
+    mediaQuery.addEventListener('change', syncViewport);
+
+    return () => mediaQuery.removeEventListener('change', syncViewport);
+  }, []);
+
+  return isMobileHomeViewport;
+}
+
+export default function HomePage() {
+  const isMobileHomeViewport = useIsMobileHomeViewport();
+
+  return isMobileHomeViewport ? <MobileHomePage /> : <DesktopHomePage />;
 }

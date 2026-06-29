@@ -94,7 +94,7 @@
   padding: 0;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   .navbar__links { display: none; }
 }
 
@@ -230,7 +230,7 @@
   color: #1844AB;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   .navbar__hamburger { display: flex; }
   .navbar__build-pill { display: none; }
 }

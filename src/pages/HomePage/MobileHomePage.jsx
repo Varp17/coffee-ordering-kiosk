@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
   ChevronLeft,
@@ -142,7 +142,7 @@ const peopleCards = [
   },
 ];
 
-function MobileButton({ to, href, children, variant = 'light', className = '', showArrow = true }) {
+function MobileButton({ to, href, children, variant = 'light', className = '', showArrow = true, onClick }) {
   const classes = `mobile-home-button mobile-home-button--${variant} ${className}`.trim();
   const content = (
     <>
@@ -153,14 +153,14 @@ function MobileButton({ to, href, children, variant = 'light', className = '', s
 
   if (href) {
     return (
-      <a className={classes} href={href}>
+      <a className={classes} href={href} onClick={onClick}>
         {content}
       </a>
     );
   }
 
   return (
-    <Link className={classes} to={to}>
+    <Link className={classes} to={to} onClick={onClick}>
       {content}
     </Link>
   );
@@ -484,10 +484,14 @@ function PeopleSayingSection() {
 }
 
 export default function MobileHomePage() {
+  const navigate = useNavigate();
   const getHeroText = useUserStore((state) => state.getHeroText);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
   const fullHeroText = `${displayName}${suffix}`;
   const [typedHeroText, setTypedHeroText] = useState('');
+  const [isCupSlamming, setIsCupSlamming] = useState(false);
+  const slamInProgressRef = useRef(false);
+  const slamTimeoutRef = useRef(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -527,6 +531,37 @@ export default function MobileHomePage() {
       window.clearInterval(timer);
     };
   }, [fullHeroText]);
+
+  useEffect(() => () => window.clearTimeout(slamTimeoutRef.current), []);
+
+  const handleHeroNavigation = useCallback((to) => (event) => {
+    if (
+      event.defaultPrevented ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    if (slamInProgressRef.current) return;
+
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      navigate(to);
+      return;
+    }
+
+    slamInProgressRef.current = true;
+    setIsCupSlamming(true);
+    window.clearTimeout(slamTimeoutRef.current);
+    slamTimeoutRef.current = window.setTimeout(() => {
+      navigate(to);
+    }, 560);
+  }, [navigate]);
 
   const typedName = typedHeroText.slice(0, displayName.length);
   const typedSuffix = typedHeroText.slice(displayName.length);
@@ -568,7 +603,7 @@ export default function MobileHomePage() {
           ))}
         </div>
 
-        <div className="mobile-home-hero__cup-wrap">
+        <div className={`mobile-home-hero__cup-wrap ${isCupSlamming ? 'mobile-home-hero__cup-wrap--slam' : ''}`}>
           <img
             className="mobile-home-hero__cup"
             src={`${ASSET_BASE}cold-brew-cup.png`}
@@ -579,11 +614,16 @@ export default function MobileHomePage() {
           <span className="mobile-home-hero__shadow" aria-hidden="true" />
         </div>
 
-        <div className="mobile-home-hero__actions" data-mobile-home-reveal>
-          <MobileButton to="/build" variant="light" className="mobile-home-hero__primary">
+        <div className={`mobile-home-hero__actions ${isCupSlamming ? 'mobile-home-hero__actions--locked' : ''}`} data-mobile-home-reveal>
+          <MobileButton
+            to="/build"
+            variant="light"
+            className="mobile-home-hero__primary"
+            onClick={handleHeroNavigation('/build')}
+          >
             Code your own coffee
           </MobileButton>
-          <Link className="mobile-home-hero__text-link" to="/recipes">
+          <Link className="mobile-home-hero__text-link" to="/recipes" onClick={handleHeroNavigation('/recipes')}>
             Explore recipes
             <ArrowRight size={16} aria-hidden="true" />
           </Link>

@@ -1,5 +1,6 @@
 /* =====================================================
    COFFEE BUILDER PAGE — FULLY ADAPTIVE LAYOUT
+   Mobile-first: sticky nav, full-height scroll
    ===================================================== */
 
 .builder-page {
@@ -7,11 +8,13 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* Progress bar wrapper */
 .builder-page__progress {
-  padding-top: clamp(0.5rem, 1.5vw, 1rem);
+  padding-top: clamp(0.375rem, 1.2vw, 0.75rem);
   padding-bottom: 0;
 }
 
@@ -20,42 +23,38 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: clamp(0.25rem, 0.8vw, 0.75rem);
-  padding-bottom: clamp(0.125rem, 0.25vw, 0.5rem);
-  gap: clamp(0.5rem, 1.5vw, 1.25rem);
+  padding-top: clamp(0.25rem, 0.6vw, 0.5rem);
+  padding-bottom: clamp(0.125rem, 0.25vw, 0.375rem);
+  gap: clamp(0.375rem, 1.2vw, 1rem);
 }
 
 .builder-page__back {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(30px, 3.5vw, 40px);
-  height: clamp(30px, 3.5vw, 40px);
-  border-radius: var(--radius-full);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   border: 1.5px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-text);
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: all 0.2s;
   flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
 
 .builder-page__back:hover { border-color: var(--color-primary); color: var(--color-primary); }
-.builder-page__back:active { transform: scale(0.92); }
 
 .builder-page__back svg {
-  width: clamp(14px, 1.8vw, 20px);
-  height: clamp(14px, 1.8vw, 20px);
+  width: 16px;
+  height: 16px;
 }
 
 .builder-page__title-group { text-align: center; min-width: 0; flex: 1; }
 
 .builder-page__title {
-  font-size: clamp(0.95rem, 2.5vw, 1.5rem);
+  font-size: clamp(0.9rem, 2.2vw, 1.35rem);
   font-weight: 800;
-  letter-spacing: -0.02em;
   color: var(--color-text);
   white-space: nowrap;
   overflow: hidden;
@@ -64,7 +63,7 @@
 }
 
 .builder-page__sub {
-  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+  font-size: clamp(0.55rem, 1vw, 0.75rem);
   color: var(--color-text-muted);
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -72,8 +71,8 @@
 }
 
 .builder-page__thumb {
-  width: clamp(30px, 3.5vw, 40px);
-  height: clamp(30px, 3.5vw, 40px);
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: contain;
   border: 2px solid var(--color-border);
@@ -81,32 +80,59 @@
   flex-shrink: 0;
 }
 
-/* ── BODY — height adapts to content ── */
+/* ── BODY — scrollable content area ── */
 .builder-page__body {
-  padding-block: clamp(0.5rem, 1.5vw, 1.5rem);
   flex: 1;
-}
-
-.builder-page__body--centered {
   display: flex;
-  justify-content: center;
-  max-width: min(var(--container-md), 100%);
-  margin-inline: auto;
+  flex-direction: column;
   width: 100%;
+  max-width: min(1100px, 100%);
+  margin-inline: auto;
+  padding-inline: clamp(0.75rem, 2.5vw, 1.5rem);
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .builder-page__step-area {
-  position: relative;
-  overflow: hidden;
+  flex: 1;
   width: 100%;
-  max-width: 100%;
-}
-
-.builder-page__step-area--wide {
-  max-width: min(1200px, 100%);
 }
 
 .builder-page__step {
   width: 100%;
-  max-width: 100%;
+}
+
+/* ── NAVIGATION BUTTONS — sticky bottom on mobile ── */
+.builder-page__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-block: 0.75rem;
+  position: sticky;
+  bottom: 0;
+  background: var(--color-bg);
+  z-index: 10;
+  border-top: 1px solid var(--color-border);
+}
+
+.builder-page__nav .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+@media (min-width: 768px) {
+  .builder-page__nav .btn {
+    flex: none;
+    padding: 0.6rem 1.5rem;
+  }
 }

@@ -1,24 +1,24 @@
 import { lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useBuilderStore } from '@/store/useBuilderStore';
 import StepProgressBar from '@/components/StepProgressBar/StepProgressBar';
 import './CoffeeBuilderPage.css';
 
-const Step1Category = lazy(() => import('./steps/Step1Category'));
+const Step1Concentrate = lazy(() => import('./steps/Step1Concentrate'));
 const Step2Coffee = lazy(() => import('./steps/Step2Coffee'));
 const Step3Milk = lazy(() => import('./steps/Step3Milk'));
 const Step4Sweetener = lazy(() => import('./steps/Step4Sweetener'));
 const Step5Topping = lazy(() => import('./steps/Step5Topping'));
 const Step6Review = lazy(() => import('./steps/Step6Review'));
 
-const STEPS = [Step1Category, Step2Coffee, Step3Milk, Step4Sweetener, Step5Topping, Step6Review];
+const STEPS = [Step1Concentrate, Step2Coffee, Step3Milk, Step4Sweetener, Step5Topping, Step6Review];
 
 const stepVariants = {
-  enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-  center: { x: 0, opacity: 1, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
-  exit: (dir)  => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0, transition: { duration: 0.25, ease: 'easeIn' } }),
+  enter: (dir) => ({ x: dir > 0 ? '60px' : '-60px', opacity: 0 }),
+  center: { x: 0, opacity: 1, transition: { duration: 0.3, ease: 'easeOut' } },
+  exit: (dir)  => ({ x: dir > 0 ? '-60px' : '60px', opacity: 0, transition: { duration: 0.2, ease: 'easeIn' } }),
 };
 
 function StepFallback() {
@@ -31,16 +31,16 @@ function StepFallback() {
 }
 
 export default function CoffeeBuilderPage() {
-  const { step, direction, goBack, goToStep, image, name } = useBuilderStore();
+  const { step, direction, goBack, goToStep, goNext, image, name } = useBuilderStore();
   const navigate = useNavigate();
 
   const CurrentStep = STEPS[step - 1];
   const isReviewStep = step === 6;
+  const isFirstStep = step === 1;
   const hasDrink = !!image;
 
   return (
     <div className="builder-page page-wrapper">
-      {/* Step Progress Bar — clickable */}
       <div className="builder-page__progress container">
         <StepProgressBar
           currentStep={Math.min(step, 6)}
@@ -49,31 +49,25 @@ export default function CoffeeBuilderPage() {
         />
       </div>
 
-      {/* Title row */}
       <div className="builder-page__header container">
-        <button className="builder-page__back" onClick={() => step === 1 ? navigate('/menu') : goBack()} aria-label="Go back">
+        <button className="builder-page__back" onClick={() => isFirstStep ? navigate('/menu') : goBack()} aria-label="Go back">
           <ArrowLeft size={18} />
         </button>
         <div className="builder-page__title-group">
           <h1 className="builder-page__title">Code Your Coffee</h1>
           <p className="builder-page__sub">
-            {isReviewStep ? 'Review & Checkout' : `Step ${step} of 5`}
+            {isReviewStep ? 'Review & Checkout' : `Step ${Math.min(step, 5)} of 5`}
           </p>
         </div>
         {hasDrink ? (
-          <img
-            src={image}
-            alt={name}
-            className="builder-page__thumb"
-          />
+          <img src={image} alt={name} className="builder-page__thumb" />
         ) : (
           <div style={{ width: 36 }} />
         )}
       </div>
 
-      {/* Step Content */}
-      <div className="builder-page__body container builder-page__body--centered">
-        <div className="builder-page__step-area builder-page__step-area--wide">
+      <div className="builder-page__body container">
+        <div className="builder-page__step-area">
           <AnimatePresence custom={direction} mode="wait">
             <motion.div
               key={step}
@@ -90,6 +84,17 @@ export default function CoffeeBuilderPage() {
             </motion.div>
           </AnimatePresence>
         </div>
+
+        {!isReviewStep && (
+          <div className="builder-page__nav">
+            <button className="btn btn-outline" onClick={() => isFirstStep ? navigate('/menu') : goBack()}>
+              <ArrowLeft size={16} /> {isFirstStep ? 'Menu' : 'Back'}
+            </button>
+            <button className="btn btn-primary" onClick={() => goNext()}>
+              Continue <ArrowRight size={16} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

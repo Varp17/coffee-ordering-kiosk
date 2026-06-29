@@ -1,101 +1,121 @@
 import { useMemo } from 'react';
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { useBuilderStore } from '@/store/useBuilderStore';
-import { coffeeRecipes } from '../CoffeeBuilder/coffeeRecipes';
+import { coffeeRecipes, normalize } from '../CoffeeBuilder/coffeeRecipes';
 import '../StepLayout.css';
 
-const CATEGORY_MAP = {
-  dairy: ['Dairy', 'Dairy Milk'],
-  oat: ['Oat Milk'],
-  coconut: ['Coconut Milk'],
-  sugar: ['Sugar Syrup'],
-  jaggery: ['Jaggery Syrup'],
-  coffee50: ['Coffee 50:50'],
-  coffee70: ['Coffee 70-30'],
-};
+const ITEMS_PER_PAGE = 40;
 
-function getGroupKey(r) {
-  return `${r.concentrateType}||${r.sweetener}||${r.milkType}`;
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h) + s.charCodeAt(i);
+  return Math.abs(h);
+}
+
+function randCost(name) {
+  return 120 + (hashStr(name) % 81);
+}
+
+function pickRecommended(drinks, concentrateType) {
+  const seed = hashStr(concentrateType || 'all');
+  const count = Math.min(3, drinks.length);
+  const picked = new Set();
+  const result = new Set();
+  for (let i = 0; i < count; i++) {
+    const idx = ((seed * (i + 1) * 7) % drinks.length);
+    if (!picked.has(idx)) {
+      picked.add(idx);
+      result.add(drinks[idx].name);
+    }
+  }
+  return result;
 }
 
 export default function Step2Coffee() {
-  const { category, selectedRecipe, setSelectedRecipe, goNext } = useBuilderStore();
+  const { selectedRecipe, setSelectedRecipe, concentrateType, coffeePage, setCoffeePage } = useBuilderStore();
 
   const filtered = useMemo(() => {
-    let list = coffeeRecipes;
-    if (category && CATEGORY_MAP[category]) {
-      const vals = CATEGORY_MAP[category];
-      list = list.filter(r =>
-        vals.includes(r.sweetener) ||
-        vals.includes(r.milkType) ||
-        vals.includes(r.concentrateType)
-      );
-    }
-    return list;
-  }, [category]);
+    if (!concentrateType) return coffeeRecipes;
+    return coffeeRecipes.filter(r =>
+      normalize(r.concentrateType) === normalize(concentrateType)
+    );
+  }, [concentrateType]);
 
-  const rows = useMemo(() => {
-    const groups = {};
-    filtered.forEach(r => {
-      const key = getGroupKey(r);
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(r);
+  const recommended = useMemo(() => pickRecommended(filtered, concentrateType), [filtered, concentrateType]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const page = Math.min(coffeePage, totalPages || 1);
+  const pageItems = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
+    .sort((a, b) => {
+      const aRec = recommended.has(a.name) ? 0 : 1;
+      const bRec = recommended.has(b.name) ? 0 : 1;
+      return aRec - bRec;
     });
-    const entries = Object.entries(groups);
-    const maxRows = Math.min(entries.length, 8);
-    const result = [];
-    for (let i = 0; i < maxRows; i++) {
-      const [, drinks] = entries[i];
-      result.push({ rowIndex: i, drinks });
-    }
-    return result;
-  }, [filtered]);
 
   return (
     <div className="step-layout">
       <div className="step-layout__header">
         <span className="step-layout__emoji">☕</span>
-        <h2 className="step-layout__title">Choose Your Coffee</h2>
-        <p className="step-layout__desc">{filtered.length} drinks available{category ? ` in selected category` : ''}</p>
+        <h2 className="step-layout__title">Choose Your Drink</h2>
+        <p className="step-layout__desc">
+          {filtered.length} drinks available{concentrateType ? ` for ${concentrateType}` : ''}
+        </p>
       </div>
 
-      <div className="scroll-rows">
-        {rows.map(({ rowIndex, drinks }) => {
-          const dir = rowIndex % 2 === 0 ? 'ltr' : 'rtl';
-          const duplicated = [...drinks, ...drinks, ...drinks];
+      <div className="drink-grid">
+        {pageItems.map((drink) => {
+          const isSelected = selectedRecipe?.name === drink.name;
+          const isRec = recommended.has(drink.name);
+          const cost = randCost(drink.name);
           return (
-            <div key={`row-${rowIndex}`} className="scroll-row">
-              <div className={`scroll-row__inner scroll-row__inner--${dir}`}>
-                <div className="scroll-row__track">
-                  {duplicated.map((drink, i) => {
-                    const isSelected = selectedRecipe?.name === drink.name;
-                    return (
-                      <div
-                        key={`${drink.name}-${i}`}
-                        className={`scroll-card ${isSelected ? 'selected' : ''}`}
-                        onClick={() => { setSelectedRecipe(drink); setTimeout(() => goNext(), 300); }}
-                      >
-                        <div className="scroll-card__img-wrap">
-                          <img
-                            src={drink.image}
-                            alt={drink.name}
-                            className="scroll-card__img"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        </div>
-                        <span className="scroll-card__name">{drink.name}</span>
-                      </div>
-                    );
-                  })}
+            <div
+              key={drink.name}
+              className={`card drink-card ${isSelected ? 'selected' : ''} ${isRec ? 'drink-card--recommended' : ''}`}
+              onClick={() => setSelectedRecipe(drink)}
+            >
+              {isRec && (
+                <div className="drink-card__rec-badge">
+                  <Star size={10} fill="currentColor" /> Highly Recommended
                 </div>
+              )}
+              <div className="drink-card__img-wrap">
+                <img
+                  src={drink.image}
+                  alt={drink.name}
+                  className="drink-card__img"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
+              <span className="drink-card__name">{drink.name}</span>
+              <span className="drink-card__cost">₹{cost}</span>
             </div>
           );
         })}
       </div>
 
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            className="pagination__btn"
+            disabled={page <= 1}
+            onClick={() => setCoffeePage(page - 1)}
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <span className="pagination__info">Page {page} of {totalPages}</span>
+          <button
+            className="pagination__btn"
+            disabled={page >= totalPages}
+            onClick={() => setCoffeePage(page + 1)}
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
+      )}
+
       {selectedRecipe && (
-        <div className="step-continue" style={{ marginTop: 16 }}>
+        <div className="step-continue">
           <p>Selected: {selectedRecipe.name}</p>
         </div>
       )}

@@ -1,19 +1,15 @@
 /* =====================================================
    COFFEE BUILDER — FULLY ADAPTIVE STEP LAYOUT
-   Adapts seamlessly from 280px phones to 2560px+ screens
    ===================================================== */
 
 .step-layout {
   padding-block: clamp(0.25rem, 1.5vw, 1.5rem);
   width: 100%;
   max-width: 100%;
-  container-type: inline-size;
-  container-name: step;
 }
 
-/* ── HEADER ── */
 .step-layout__header {
-  margin-bottom: clamp(0.75rem, 3vw, 2.5rem);
+  margin-bottom: clamp(0.75rem, 3vw, 2rem);
 }
 
 .step-layout__emoji {
@@ -24,200 +20,132 @@
 }
 
 .step-layout__title {
-  font-size: clamp(1.1rem, 4vw, 2rem);
+  font-size: clamp(1.1rem, 3.5vw, 1.75rem);
   font-weight: 800;
   color: var(--color-text);
-  letter-spacing: -0.02em;
   margin-bottom: clamp(0.25rem, 1vw, 0.75rem);
   line-height: 1.2;
-  word-break: break-word;
 }
 
 .step-layout__desc {
-  font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+  font-size: clamp(0.75rem, 1.6vw, 0.9rem);
   color: var(--color-text-muted);
-  line-height: 1.5;
 }
 
 /* ════════════════════════════════════════════════════════
-   CAROUSEL (Step1Category)
+   CONCENTRATE GRID (Step1)
    ════════════════════════════════════════════════════════ */
 
-.carousel-wrapper {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
+.concentrate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(150px, 20vw, 220px), 1fr));
+  gap: clamp(0.625rem, 1.5vw, 1rem);
 }
 
-.carousel-track {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding-bottom: 4px;
-}
-
-.carousel-track::-webkit-scrollbar { display: none; }
-
-.carousel-item {
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
-
-.carousel-arrows {
-  display: flex;
-  justify-content: center;
-  gap: clamp(0.5rem, 2vw, 1.25rem);
-  margin-top: clamp(0.75rem, 2vw, 1.25rem);
-}
-
-.carousel-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(36px, 4vw, 48px);
-  height: clamp(36px, 4vw, 48px);
-  border-radius: 50%;
-  border: 1.5px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-.carousel-arrow:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  background: var(--color-primary-light);
-}
-
-.carousel-arrow:active {
-  transform: scale(0.92);
-}
-
-/* Category card inside carousel */
-.category-card {
+.concentrate-card {
   background: var(--color-surface);
   border: 2px solid var(--color-border);
   border-radius: clamp(10px, 1.5vw, 16px);
-  padding: clamp(12px, 2.5vw, 28px);
-  cursor: pointer;
-  text-align: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  min-height: clamp(76px, 15vw, 130px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  touch-action: manipulation;
-}
-
-.category-card:hover {
-  transform: translateY(clamp(-3px, -0.6vw, -6px));
-  box-shadow: 0 clamp(6px, 1.5vw, 14px) clamp(16px, 3.5vw, 35px) rgba(0, 0, 0, 0.10);
-  border-color: var(--color-primary);
-}
-
-.category-card:active { transform: translateY(-1px); }
-
-.category-card.selected {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 clamp(1px, 0.2vw, 2px) rgba(24, 68, 171, 0.20);
-  background: var(--color-primary-light);
-}
-
-.category-emoji {
-  font-size: clamp(1.5rem, 4vw, 2.8rem);
-  display: block;
-  margin-bottom: clamp(4px, 1vw, 12px);
-  line-height: 1;
-}
-
-.category-name {
-  font-size: clamp(0.8rem, 1.6vw, 1.1rem);
-  font-weight: 700;
-  color: var(--color-text);
-  line-height: 1.25;
-  word-break: break-word;
-}
-
-/* ════════════════════════════════════════════════════════
-   SCROLL ROWS (Step2Coffee / Step5Topping)
-   ════════════════════════════════════════════════════════ */
-
-.scroll-rows {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.25rem, 1vw, 0.75rem);
-}
-
-.scroll-row {
-  overflow: hidden;
-  width: 100%;
-}
-
-.scroll-row__inner {
-  overflow: hidden;
-  width: 100%;
-}
-
-.scroll-row__inner--ltr .scroll-row__track {
-  animation: scroll-ltr 30s linear infinite;
-}
-
-.scroll-row__inner--rtl .scroll-row__track {
-  animation: scroll-rtl 30s linear infinite;
-}
-
-.scroll-row__track {
-  display: flex;
-  gap: clamp(8px, 1.5vw, 14px);
-  width: fit-content;
-}
-
-@keyframes scroll-ltr {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-33.333%); }
-}
-
-@keyframes scroll-rtl {
-  0%   { transform: translateX(-33.333%); }
-  100% { transform: translateX(0); }
-}
-
-/* Scroll card (Step2Coffee) */
-.scroll-card {
-  flex-shrink: 0;
-  width: clamp(100px, 14vw, 150px);
-  background: var(--color-surface);
-  border: 2px solid var(--color-border);
-  border-radius: clamp(8px, 1.2vw, 14px);
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-.scroll-card:hover {
-  transform: translateY(clamp(-2px, -0.4vw, -4px));
-  box-shadow: 0 clamp(4px, 1vw, 10px) clamp(12px, 2.5vw, 25px) rgba(0, 0, 0, 0.10);
+.concentrate-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
   border-color: var(--color-primary);
 }
 
-.scroll-card.selected {
+.concentrate-card:active { transform: translateY(-1px); }
+
+.concentrate-card.selected {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 2px rgba(24, 68, 171, 0.20);
   background: var(--color-primary-light);
 }
 
-.scroll-card__img-wrap {
+.concentrate-card__img-wrap {
+  width: 100%;
+  aspect-ratio: 1.3 / 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-alt);
+}
+
+.concentrate-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: clamp(6px, 1vw, 12px);
+  transition: transform 0.25s ease;
+}
+
+.concentrate-card:hover .concentrate-card__img { transform: scale(1.06); }
+
+.concentrate-card__body {
+  padding: clamp(8px, 1.2vw, 14px);
+  border-top: 1px solid var(--color-border);
+}
+
+.concentrate-card__name {
+  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.concentrate-card__desc {
+  font-size: clamp(0.65rem, 1.1vw, 0.8rem);
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.concentrate-card__qty {
+  font-size: clamp(0.6rem, 1vw, 0.75rem);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ════════════════════════════════════════════════════════
+   DRINK GRID (Step2)
+   ════════════════════════════════════════════════════════ */
+
+.drink-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 15vw, 160px), 1fr));
+  gap: clamp(0.5rem, 1.2vw, 0.875rem);
+}
+
+.drink-card {
+  position: relative;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: clamp(10px, 1.5vw, 16px);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.drink-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+  border-color: var(--color-primary);
+}
+
+.drink-card.selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(24, 68, 171, 0.20);
+  background: var(--color-primary-light);
+}
+
+.drink-card__img-wrap {
   width: 100%;
   aspect-ratio: 1.2 / 1;
   overflow: hidden;
@@ -227,32 +155,74 @@
   background: var(--color-surface-alt);
 }
 
-.scroll-card__img {
+.drink-card__img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: clamp(3px, 0.6vw, 6px);
+  padding: clamp(4px, 0.8vw, 8px);
   transition: transform 0.25s ease;
 }
 
-.scroll-card:hover .scroll-card__img { transform: scale(1.08); }
+.drink-card:hover .drink-card__img { transform: scale(1.06); }
 
-.scroll-card__name {
+.drink-card__name {
   display: block;
-  padding: clamp(4px, 0.6vw, 8px) clamp(6px, 0.8vw, 10px);
-  font-size: clamp(0.6rem, 1vw, 0.8rem);
+  padding: clamp(6px, 0.8vw, 10px);
+  font-size: clamp(0.65rem, 1.1vw, 0.8rem);
   font-weight: 600;
   color: var(--color-text);
   text-align: center;
   line-height: 1.2;
+  border-top: 1px solid var(--color-border);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-top: 1px solid var(--color-border);
 }
 
 /* ════════════════════════════════════════════════════════
-   SPLIT PANEL (Step3Milk / Step4Sweetener)
+   PAGINATION
+   ════════════════════════════════════════════════════════ */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  margin-top: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+.pagination__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(32px, 3.5vw, 40px);
+  height: clamp(32px, 3.5vw, 40px);
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination__btn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pagination__btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pagination__info {
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* ════════════════════════════════════════════════════════
+   SPLIT PANEL (Step3 / Step4)
    ════════════════════════════════════════════════════════ */
 
 .split-panel {
@@ -262,18 +232,16 @@
   align-items: start;
 }
 
-@container step (max-width: 500px) {
-  .split-panel {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 500px) {
+  .split-panel { grid-template-columns: 1fr; }
 }
 
-.split-panel__left,
-.split-panel__right {
-  min-width: 0;
-}
+.split-panel__left, .split-panel__right { min-width: 0; }
 
-/* ── Milk Grid (2×2) ── */
+/* ════════════════════════════════════════════════════════
+   MILK GRID (2×2)
+   ════════════════════════════════════════════════════════ */
+
 .milk-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -284,46 +252,65 @@
   background: var(--color-surface);
   border: 2px solid var(--color-border);
   border-radius: clamp(10px, 1.5vw, 16px);
-  padding: clamp(12px, 2vw, 24px);
   cursor: pointer;
-  text-align: center;
-  min-height: clamp(60px, 12vw, 100px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(4px, 0.8vw, 8px);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
-  user-select: none;
   touch-action: manipulation;
 }
 
 .milk-card:hover {
-  transform: translateY(clamp(-2px, -0.4vw, -4px));
-  box-shadow: 0 clamp(4px, 1vw, 10px) clamp(12px, 2.5vw, 25px) rgba(0, 0, 0, 0.10);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
   border-color: var(--color-primary);
 }
 
 .milk-card.selected {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 clamp(1px, 0.2vw, 2px) rgba(24, 68, 171, 0.20);
+  box-shadow: 0 0 0 2px rgba(24, 68, 171, 0.20);
   background: var(--color-primary-light);
 }
 
-.milk-card__emoji {
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  line-height: 1;
+.milk-card__img-wrap {
+  width: 100%;
+  aspect-ratio: 1.3 / 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-alt);
+}
+
+.milk-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: clamp(6px, 1vw, 12px);
 }
 
 .milk-card__label {
-  font-size: clamp(0.7rem, 1.4vw, 0.9rem);
+  display: block;
+  padding: clamp(6px, 0.8vw, 10px);
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
   font-weight: 700;
   color: var(--color-text);
-  line-height: 1.2;
+  text-align: center;
+  border-top: 1px solid var(--color-border);
 }
 
-/* ── Sweetener Row (2 cards) ── */
+.milk-card__rec {
+  display: block;
+  font-size: clamp(0.55rem, 0.9vw, 0.7rem);
+  color: var(--color-primary);
+  font-weight: 600;
+  text-align: center;
+  padding: 0 6px 6px;
+}
+
+/* ════════════════════════════════════════════════════════
+   SWEETENER ROW (2 cards)
+   ════════════════════════════════════════════════════════ */
+
 .sweetener-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -334,54 +321,70 @@
   background: var(--color-surface);
   border: 2px solid var(--color-border);
   border-radius: clamp(10px, 1.5vw, 16px);
-  padding: clamp(12px, 2vw, 24px);
   cursor: pointer;
-  text-align: center;
-  min-height: clamp(60px, 12vw, 100px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(4px, 0.8vw, 8px);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
-  user-select: none;
   touch-action: manipulation;
 }
 
 .sweetener-card:hover {
-  transform: translateY(clamp(-2px, -0.4vw, -4px));
-  box-shadow: 0 clamp(4px, 1vw, 10px) clamp(12px, 2.5vw, 25px) rgba(0, 0, 0, 0.10);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
   border-color: var(--color-primary);
 }
 
 .sweetener-card.selected {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 clamp(1px, 0.2vw, 2px) rgba(24, 68, 171, 0.20);
+  box-shadow: 0 0 0 2px rgba(24, 68, 171, 0.20);
   background: var(--color-primary-light);
 }
 
-.sweetener-card__emoji {
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  line-height: 1;
+.sweetener-card__img-wrap {
+  width: 100%;
+  aspect-ratio: 1.3 / 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-alt);
+}
+
+.sweetener-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: clamp(6px, 1vw, 12px);
 }
 
 .sweetener-card__label {
-  font-size: clamp(0.7rem, 1.4vw, 0.9rem);
+  display: block;
+  padding: clamp(6px, 0.8vw, 10px);
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
   font-weight: 700;
   color: var(--color-text);
-  line-height: 1.2;
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+}
+
+.sweetener-card__rec {
+  display: block;
+  font-size: clamp(0.55rem, 0.9vw, 0.7rem);
+  color: var(--color-primary);
+  font-weight: 600;
+  text-align: center;
+  padding: 0 6px 6px;
 }
 
 /* ════════════════════════════════════════════════════════
-   QUANTITY PANEL (Step3Milk / Step4Sweetener)
+   QUANTITY PANEL
    ════════════════════════════════════════════════════════ */
 
 .qty-panel {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: clamp(10px, 1.5vw, 16px);
-  padding: clamp(0.75rem, 2vw, 1.5rem);
+  padding: clamp(0.75rem, 2vw, 1.25rem);
 }
 
 .qty-panel__title {
@@ -390,7 +393,14 @@
   color: var(--color-text);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin-bottom: clamp(0.5rem, 1.2vw, 0.875rem);
+  margin-bottom: clamp(0.375rem, 0.8vw, 0.625rem);
+}
+
+.qty-recommended {
+  font-size: clamp(0.6rem, 1vw, 0.75rem);
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-bottom: clamp(0.375rem, 0.8vw, 0.625rem);
 }
 
 .qty-presets {
@@ -401,18 +411,16 @@
 }
 
 .qty-btn {
-  min-width: clamp(40px, 6vw, 52px);
-  height: clamp(34px, 4.5vw, 42px);
+  min-width: clamp(38px, 5vw, 48px);
+  height: clamp(32px, 4vw, 40px);
   border-radius: clamp(6px, 0.8vw, 10px);
   border: 1.5px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-text);
-  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  font-size: clamp(0.65rem, 1.1vw, 0.8rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
 
 .qty-btn:hover {
@@ -432,16 +440,15 @@
 
 .qty-input {
   flex: 1;
-  height: clamp(36px, 4.5vw, 44px);
+  height: clamp(34px, 4vw, 42px);
   padding: 0 clamp(0.5rem, 1.2vw, 0.875rem);
   border-radius: clamp(6px, 0.8vw, 10px);
   border: 1.5px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-text);
   font-size: clamp(0.75rem, 1.3vw, 0.9rem);
-  font-weight: 500;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s;
   box-sizing: border-box;
 }
 
@@ -450,25 +457,12 @@
   box-shadow: 0 0 0 3px rgba(24, 68, 171, 0.10);
 }
 
-.qty-input::placeholder {
-  color: var(--color-text-muted);
-  opacity: 0.6;
-}
-
 /* ════════════════════════════════════════════════════════
-   TOPPING GROUPS & CHIPS (Step5Topping)
+   TOPPING ITEMS
    ════════════════════════════════════════════════════════ */
 
-.topping-groups {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.75rem, 1.5vw, 1.25rem);
-}
-
 .topping-group {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(4px, 0.6vw, 8px);
+  margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
 }
 
 .topping-group__label {
@@ -477,36 +471,61 @@
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  padding-inline: clamp(4px, 0.5vw, 8px);
+  margin-bottom: clamp(0.375rem, 0.8vw, 0.625rem);
 }
 
-.topping-chip {
-  flex-shrink: 0;
-  padding: clamp(5px, 0.8vw, 10px) clamp(10px, 1.5vw, 18px);
+.topping-group__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(6px, 1vw, 10px);
+}
+
+.topping-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.6vw, 8px);
+  padding: clamp(4px, 0.6vw, 8px) clamp(8px, 1.2vw, 14px);
   border-radius: 20px;
   border: 1.5px solid var(--color-border);
   background: var(--color-surface);
-  color: var(--color-text);
-  font-size: clamp(0.65rem, 1.1vw, 0.8rem);
-  font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
   transition: all 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-.topping-chip:hover {
+.topping-item:hover {
   border-color: var(--color-primary);
-  color: var(--color-primary);
   background: var(--color-primary-light);
 }
 
-.topping-chip.selected {
+.topping-item.selected {
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: #fff;
 }
+
+.topping-item__img {
+  width: clamp(16px, 2vw, 24px);
+  height: clamp(16px, 2vw, 24px);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.topping-item__name {
+  font-size: clamp(0.6rem, 1vw, 0.8rem);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.topping-item__rec {
+  font-size: clamp(0.5rem, 0.8vw, 0.65rem);
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+.topping-item.selected .topping-item__rec { color: rgba(255,255,255,0.8); }
 
 /* ════════════════════════════════════════════════════════
    ALERT BANNERS
@@ -534,11 +553,11 @@
 }
 
 /* ════════════════════════════════════════════════════════
-   STEP CONTINUE
+   STEP CONTINUE / INFO
    ════════════════════════════════════════════════════════ */
 
 .step-continue {
-  margin-top: clamp(12px, 2.5vw, 24px);
+  margin-top: clamp(12px, 2vw, 20px);
   padding: clamp(10px, 1.5vw, 16px);
   background: var(--color-primary-light);
   border-radius: clamp(8px, 1vw, 12px);
@@ -547,11 +566,195 @@
 
 .step-continue p {
   color: var(--color-text-muted);
-  font-size: clamp(0.75rem, 1.4vw, 0.95rem);
+  font-size: clamp(0.75rem, 1.4vw, 0.9rem);
 }
 
 .step-continue p:first-child {
   color: var(--color-primary);
   font-weight: 600;
-  margin-bottom: 2px;
+}
+
+/* ════════════════════════════════════════════════════════
+   DRINK CARD COST (Step2)
+   ════════════════════════════════════════════════════════ */
+
+.drink-card__cost {
+  display: block;
+  text-align: center;
+  font-size: clamp(0.6rem, 1vw, 0.75rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  padding: 0 6px 6px;
+}
+
+.drink-card--recommended {
+  border-color: #e8a317;
+  position: relative;
+}
+
+.drink-card__rec-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  font-size: clamp(0.5rem, 0.8vw, 0.6rem);
+  font-weight: 700;
+  color: #fff;
+  background: #e8a317;
+  border-radius: 4px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+/* ════════════════════════════════════════════════════════
+   RECOMMENDED BANNER (Step5)
+   ════════════════════════════════════════════════════════ */
+
+.recommended-banner {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.2vw, 0.75rem);
+  padding: clamp(8px, 1.2vw, 14px);
+  background: rgba(24, 68, 171, 0.06);
+  border: 1px solid rgba(24, 68, 171, 0.20);
+  border-radius: clamp(8px, 1vw, 12px);
+  margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
+  flex-wrap: wrap;
+}
+
+.recommended-banner__label {
+  font-size: clamp(0.65rem, 1.1vw, 0.8rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.recommended-banner .topping-item {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+/* ════════════════════════════════════════════════════════
+   COST ON CARDS
+   ════════════════════════════════════════════════════════ */
+
+.milk-card__cost,
+.sweetener-card__cost {
+  display: block;
+  text-align: center;
+  font-size: clamp(0.65rem, 1vw, 0.8rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  padding: 0 6px 4px;
+}
+
+.qty-cost {
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: clamp(0.375rem, 0.8vw, 0.625rem);
+}
+
+.topping-item__cost {
+  font-size: clamp(0.55rem, 0.9vw, 0.7rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.topping-item.selected .topping-item__cost {
+  color: rgba(255,255,255,0.9);
+}
+
+.topping-item__badge {
+  font-size: clamp(0.45rem, 0.7vw, 0.55rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(24, 68, 171, 0.12);
+}
+
+.topping-item.selected .topping-item__badge {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+.topping-selection-summary {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.375rem, 0.8vw, 0.75rem);
+  padding: clamp(6px, 1vw, 10px) clamp(10px, 1.5vw, 16px);
+  background: var(--color-primary-light);
+  border: 1px solid rgba(24, 68, 171, 0.15);
+  border-radius: clamp(8px, 1vw, 12px);
+  margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
+  font-size: clamp(0.65rem, 1.1vw, 0.8rem);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.topping-selection-summary__extra {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* ════════════════════════════════════════════════════════
+   COST BREAKDOWN (Step6)
+   ════════════════════════════════════════════════════════ */
+
+.cost-breakdown {
+  background: var(--color-surface-alt, #f8f9fb);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.cost-breakdown__title {
+  font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+  font-weight: 800;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+.cost-breakdown__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(4px, 0.6vw, 8px) 0;
+  font-size: clamp(0.75rem, 1.3vw, 0.9rem);
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border-soft, #eef0f3);
+}
+
+.cost-breakdown__item:last-of-type {
+  border-bottom: none;
+}
+
+.cost-breakdown__item--extra {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.cost-breakdown__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: clamp(6px, 0.8vw, 10px);
+  margin-top: clamp(4px, 0.6vw, 8px);
+  border-top: 2px solid var(--color-text);
+  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+  font-weight: 800;
+  color: var(--color-text);
 }

@@ -128,38 +128,41 @@ function animateHeroBeans(svgDoc) {
 
     const base = entrance.baseRotate || 0;
 
+    // Outer wrapper handles scroll-driven exit transforms only
     const parallaxWrapper = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'g');
     parallaxWrapper.setAttribute('data-hero-bean-parallax-wrapper', String(patternNumber));
     parallaxWrapper.style.transformBox = 'view-box';
     parallaxWrapper.style.transition = 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)';
 
+    // Inner wrapper handles entrance animation, base rotation, and float
     const wrapper = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'g');
     wrapper.setAttribute('data-hero-bean-wrapper', 'true');
     wrapper.setAttribute('data-hero-bean-pattern', String(patternNumber));
     wrapper.style.transformOrigin = 'center center';
     wrapper.style.transformBox = 'fill-box';
+
     parent.insertBefore(parallaxWrapper, rect);
     parallaxWrapper.appendChild(wrapper);
     wrapper.appendChild(rect);
 
     if (prefersReducedMotion) {
-      parallaxWrapper.style.opacity = '1';
+      wrapper.style.opacity = '1';
       wrapper.style.transform = `rotate(${base}deg)`;
       return;
     }
 
-    parallaxWrapper.style.opacity = '0';
-    parallaxWrapper.style.transform = `translate(${entrance.x}px, ${entrance.y}px)`;
+    wrapper.style.opacity = '0';
+    wrapper.style.transform = `translate(${entrance.x}px, ${entrance.y}px) rotate(${base}deg)`;
 
-    const animation = parallaxWrapper.animate(
+    const animation = wrapper.animate(
       [
         {
           opacity: 0,
-          transform: `translate(${entrance.x}px, ${entrance.y}px)`,
+          transform: `translate(${entrance.x}px, ${entrance.y}px) rotate(${base}deg)`,
         },
         {
           opacity: 1,
-          transform: 'translate(0, 0)',
+          transform: `translate(0, 0) rotate(${base}deg)`,
         },
       ],
       {
@@ -170,13 +173,10 @@ function animateHeroBeans(svgDoc) {
       }
     );
 
-    // Inner wrapper holds base rotation so beans feel scattered
-    wrapper.style.transform = `rotate(${base}deg)`;
-
     animation.finished
       .then(() => {
-        parallaxWrapper.style.opacity = '1';
-        parallaxWrapper.style.transform = 'translate(0, 0)';
+        wrapper.style.opacity = '1';
+        wrapper.style.transform = `translate(0, 0) rotate(${base}deg)`;
         animation.cancel();
         startHeroBeanFloat(wrapper, entrance);
       })
@@ -1328,13 +1328,13 @@ function DesktopHomePage() {
           }
 
           const beanWrappers = svgDoc.querySelectorAll('g[data-hero-bean-parallax-wrapper]');
-          for (const bw of beanWrappers) {
-            const pn = parseInt(bw.getAttribute('data-hero-bean-parallax-wrapper'), 10);
-            const scrollY = window.scrollY;
-            const dir = pn >= 4 && pn <= 8 ? -1 : 1;
-            const xShift = scrollY * 0.9 * dir;
-            const yShift = scrollY * 0.25;
-            bw.style.transform = `translate3d(${xShift.toFixed(1)}px, ${yShift.toFixed(1)}px, 0)`;
+          if (beanWrappers.length) {
+            const sy = window.scrollY;
+            for (const bw of beanWrappers) {
+              const pn = parseInt(bw.getAttribute('data-hero-bean-parallax-wrapper'), 10);
+              const dir = pn >= 4 && pn <= 8 ? -1 : 1;
+              bw.style.transform = `translate3d(${(sy * 0.9 * dir).toFixed(1)}px, ${(sy * 0.25).toFixed(1)}px, 0)`;
+            }
           }
         } catch {
           // Ignore loaded SVG access errors

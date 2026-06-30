@@ -38,13 +38,20 @@ export const useUserStore = create(
     skipWelcome: () =>
       set({ name: '', coffeeType: '', hasCompletedWelcome: true, skippedWelcome: true }),
 
-    /** Returns the personalised hero text: NAME + coffee suffix */
     getHeroText: () => {
       const { name, coffeeType, skippedWelcome } = get();
       if (skippedWelcome) {
         return { displayName: 'CHILLD', suffix: 'BREW' };
       }
-      const displayName = (name || 'CHILLD').toUpperCase();
+      const raw = (name || '').trim();
+      const len = raw.length;
+      let short;
+      if (len < 5) {
+        short = raw.slice(0, 2);
+      } else {
+        short = raw.slice(0, 3);
+      }
+      const displayName = (short || 'CHILLD').toUpperCase();
       const suffix = (COFFEE_SUFFIXES[coffeeType] || 'KANO').toUpperCase();
       return { displayName, suffix };
     },

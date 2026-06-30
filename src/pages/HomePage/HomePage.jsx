@@ -67,17 +67,17 @@ function animateSvgCup(svgDoc) {
 }
 
 const HERO_BEAN_ENTRANCES = {
-  4: { x: -420, y: -220, delay: 120, duration: 920, floatX: 3, floatY: -7, floatDuration: 3900, floatRotate: 3, floatScale: 0.97 },
-  5: { x: -560, y: 80, delay: 260, duration: 980, floatX: -4, floatY: 6, floatDuration: 4300, floatRotate: -4, floatScale: 1.03 },
-  6: { x: -500, y: 300, delay: 420, duration: 900, floatX: 4, floatY: -5, floatDuration: 3600, floatRotate: 2, floatScale: 0.98 },
-  7: { x: -220, y: 420, delay: 560, duration: 980, floatX: -3, floatY: -8, floatDuration: 4600, floatRotate: -3, floatScale: 1.02 },
-  8: { x: -340, y: 140, delay: 700, duration: 860, floatX: 2, floatY: 5, floatDuration: 3400, floatRotate: 4, floatScale: 0.97 },
-  9: { x: 360, y: 320, delay: 240, duration: 980, floatX: -4, floatY: -6, floatDuration: 4200, floatRotate: -2, floatScale: 1.02 },
-  10: { x: 520, y: 120, delay: 400, duration: 880, floatX: 3, floatY: 5, floatDuration: 3700, floatRotate: 3, floatScale: 0.98 },
-  11: { x: 540, y: -260, delay: 80, duration: 1040, floatX: -3, floatY: 7, floatDuration: 4500, floatRotate: -4, floatScale: 1.03 },
-  12: { x: 260, y: -300, delay: 620, duration: 820, floatX: 2, floatY: -5, floatDuration: 3300, floatRotate: 2, floatScale: 0.98 },
-  13: { x: 380, y: 180, delay: 760, duration: 860, floatX: -2, floatY: 6, floatDuration: 3800, floatRotate: -3, floatScale: 1.02 },
-  14: { x: 520, y: 240, delay: 900, duration: 900, floatX: 3, floatY: -6, floatDuration: 4100, floatRotate: 4, floatScale: 0.97 },
+  4: { x: -420, y: -220, delay: 120, duration: 920, floatX: 3, floatY: -7, floatDuration: 3900, floatRotate: 3, floatScale: 0.97, baseRotate: 12 },
+  5: { x: -560, y: 80, delay: 260, duration: 980, floatX: -4, floatY: 6, floatDuration: 4300, floatRotate: -4, floatScale: 1.03, baseRotate: -8 },
+  6: { x: -500, y: 300, delay: 420, duration: 900, floatX: 4, floatY: -5, floatDuration: 3600, floatRotate: 2, floatScale: 0.98, baseRotate: 22 },
+  7: { x: -220, y: 420, delay: 560, duration: 980, floatX: -3, floatY: -8, floatDuration: 4600, floatRotate: -3, floatScale: 1.02, baseRotate: -15 },
+  8: { x: -340, y: 140, delay: 700, duration: 860, floatX: 2, floatY: 5, floatDuration: 3400, floatRotate: 4, floatScale: 0.97, baseRotate: 5 },
+  9: { x: 360, y: 320, delay: 240, duration: 980, floatX: -4, floatY: -6, floatDuration: 4200, floatRotate: -2, floatScale: 1.02, baseRotate: -18 },
+  10: { x: 520, y: 120, delay: 400, duration: 880, floatX: 3, floatY: 5, floatDuration: 3700, floatRotate: 3, floatScale: 0.98, baseRotate: 25 },
+  11: { x: 540, y: -260, delay: 80, duration: 1040, floatX: -3, floatY: 7, floatDuration: 4500, floatRotate: -4, floatScale: 1.03, baseRotate: -10 },
+  12: { x: 260, y: -300, delay: 620, duration: 820, floatX: 2, floatY: -5, floatDuration: 3300, floatRotate: 2, floatScale: 0.98, baseRotate: 15 },
+  13: { x: 380, y: 180, delay: 760, duration: 860, floatX: -2, floatY: 6, floatDuration: 3800, floatRotate: -3, floatScale: 1.02, baseRotate: -22 },
+  14: { x: 520, y: 240, delay: 900, duration: 900, floatX: 3, floatY: -6, floatDuration: 4100, floatRotate: 4, floatScale: 0.97, baseRotate: 8 },
 };
 
 function getHeroBeanPatternNumber(node) {
@@ -90,16 +90,17 @@ function getHeroBeanPatternNumber(node) {
 }
 
 function startHeroBeanFloat(wrapper, entrance) {
+  const base = entrance.baseRotate || 0;
   const rotate = entrance.floatRotate || 0;
   const scale = entrance.floatScale || 1;
   const midRotate = Number.isFinite(rotate) ? rotate * 0.6 : 0;
   wrapper.animate(
     [
-      { transform: `translate(0, 0) rotate(0deg) scale(1)` },
-      { transform: `translate(${entrance.floatX * 0.5}px, ${entrance.floatY * 0.5}px) rotate(${midRotate}deg) scale(${1 + (scale - 1) * 0.5})` },
-      { transform: `translate(${entrance.floatX}px, ${entrance.floatY}px) rotate(${rotate}deg) scale(${scale})` },
-      { transform: `translate(${entrance.floatX * 0.5}px, ${entrance.floatY * 0.5}px) rotate(${-midRotate}deg) scale(${1 + (scale - 1) * 0.5})` },
-      { transform: 'translate(0, 0) rotate(0deg) scale(1)' },
+      { transform: `translate(0, 0) rotate(${base}deg) scale(1)` },
+      { transform: `translate(${entrance.floatX * 0.5}px, ${entrance.floatY * 0.5}px) rotate(${base + midRotate}deg) scale(${1 + (scale - 1) * 0.5})` },
+      { transform: `translate(${entrance.floatX}px, ${entrance.floatY}px) rotate(${base + rotate}deg) scale(${scale})` },
+      { transform: `translate(${entrance.floatX * 0.5}px, ${entrance.floatY * 0.5}px) rotate(${base - midRotate}deg) scale(${1 + (scale - 1) * 0.5})` },
+      { transform: `translate(0, 0) rotate(${base}deg) scale(1)` },
     ],
     {
       duration: entrance.floatDuration,
@@ -125,24 +126,32 @@ function animateHeroBeans(svgDoc) {
       return;
     }
 
+    const base = entrance.baseRotate || 0;
+
+    const parallaxWrapper = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'g');
+    parallaxWrapper.setAttribute('data-hero-bean-parallax-wrapper', String(patternNumber));
+    parallaxWrapper.style.transformBox = 'view-box';
+    parallaxWrapper.style.transition = 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)';
+
     const wrapper = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'g');
     wrapper.setAttribute('data-hero-bean-wrapper', 'true');
     wrapper.setAttribute('data-hero-bean-pattern', String(patternNumber));
     wrapper.style.transformOrigin = 'center center';
     wrapper.style.transformBox = 'fill-box';
-    parent.insertBefore(wrapper, rect);
+    parent.insertBefore(parallaxWrapper, rect);
+    parallaxWrapper.appendChild(wrapper);
     wrapper.appendChild(rect);
 
     if (prefersReducedMotion) {
-      wrapper.style.opacity = '1';
-      wrapper.style.transform = 'translate(0, 0)';
+      parallaxWrapper.style.opacity = '1';
+      wrapper.style.transform = `rotate(${base}deg)`;
       return;
     }
 
-    wrapper.style.opacity = '0';
-    wrapper.style.transform = `translate(${entrance.x}px, ${entrance.y}px)`;
+    parallaxWrapper.style.opacity = '0';
+    parallaxWrapper.style.transform = `translate(${entrance.x}px, ${entrance.y}px)`;
 
-    const animation = wrapper.animate(
+    const animation = parallaxWrapper.animate(
       [
         {
           opacity: 0,
@@ -161,10 +170,13 @@ function animateHeroBeans(svgDoc) {
       }
     );
 
+    // Inner wrapper holds base rotation so beans feel scattered
+    wrapper.style.transform = `rotate(${base}deg)`;
+
     animation.finished
       .then(() => {
-        wrapper.style.opacity = '1';
-        wrapper.style.transform = 'translate(0, 0)';
+        parallaxWrapper.style.opacity = '1';
+        parallaxWrapper.style.transform = 'translate(0, 0)';
         animation.cancel();
         startHeroBeanFloat(wrapper, entrance);
       })
@@ -1313,6 +1325,16 @@ function DesktopHomePage() {
           if (heroCupWrapper) {
             const heroShift = window.scrollY * 0.6;
             heroCupWrapper.style.transform = `translate3d(0, ${heroShift.toFixed(1)}px, 0)`;
+          }
+
+          const beanWrappers = svgDoc.querySelectorAll('g[data-hero-bean-parallax-wrapper]');
+          for (const bw of beanWrappers) {
+            const pn = parseInt(bw.getAttribute('data-hero-bean-parallax-wrapper'), 10);
+            const scrollY = window.scrollY;
+            const dir = pn >= 4 && pn <= 8 ? -1 : 1;
+            const xShift = scrollY * 0.9 * dir;
+            const yShift = scrollY * 0.25;
+            bw.style.transform = `translate3d(${xShift.toFixed(1)}px, ${yShift.toFixed(1)}px, 0)`;
           }
         } catch {
           // Ignore loaded SVG access errors

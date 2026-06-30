@@ -62,7 +62,11 @@ function animateSvgCup(svgDoc) {
     wrapper.setAttribute('data-hero-cup-parallax-wrapper', 'true');
     wrapper.style.transformBox = 'view-box';
     wrapper.style.transition = 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)';
-    wrapper.style.willChange = 'transform';
+
+    // Store cup center in SVG space for scroll parallax calculation
+    const rectY = parseFloat(cupRect.getAttribute('y') || '360');
+    const rectH = parseFloat(cupRect.getAttribute('height') || '200');
+    wrapper.setAttribute('data-hero-cup-center-y', String(rectY + rectH / 2));
     parent.insertBefore(wrapper, cupRect);
     wrapper.appendChild(cupRect);
   }
@@ -1296,9 +1300,11 @@ function DesktopHomePage() {
 
           const heroCupWrapper = svgDoc.querySelector('g[data-hero-cup-parallax-wrapper]');
           if (heroCupWrapper) {
-            const scrollY = window.scrollY;
-            const heroCupShift = scrollY * 0.6;
-            heroCupWrapper.style.transform = `translate3d(0, ${heroCupShift.toFixed(1)}px, 0)`;
+            const cupCenterY = parseFloat(heroCupWrapper.getAttribute('data-hero-cup-center-y')) || 400;
+            const heroScreenCenter = svgRect.top + cupCenterY * scale;
+            const heroDistance = viewportCenter - heroScreenCenter;
+            const heroShift = heroDistance * 1.2;
+            heroCupWrapper.style.transform = `translate3d(0, ${heroShift.toFixed(1)}px, 0)`;
           }
         } catch {
           // Ignore loaded SVG access errors

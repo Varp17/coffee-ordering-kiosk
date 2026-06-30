@@ -83,7 +83,7 @@ export default function WelcomePage() {
           <input
             type="text"
             className="welcome-input"
-            placeholder=
+            
             value={name}
             onChange={(e) => setName(e.target.value)}
             onKeyDown={handleKeyDown}

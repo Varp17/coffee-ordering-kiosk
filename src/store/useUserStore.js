@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 /**
  * Stores the user's personalisation from the Welcome page.
@@ -24,45 +23,34 @@ const COFFEE_SUFFIXES = {
 export const COFFEE_TYPES = Object.keys(COFFEE_SUFFIXES);
 
 export const useUserStore = create(
-  persist(
-    (set, get) => ({
-      name: '',
-      coffeeType: '',
-      hasCompletedWelcome: false,
-      skippedWelcome: false,
+  (set, get) => ({
+    name: '',
+    coffeeType: '',
+    hasCompletedWelcome: false,
+    skippedWelcome: false,
 
-      setName: (name) => set({ name }),
-      setCoffeeType: (coffeeType) => set({ coffeeType }),
+    setName: (name) => set({ name }),
+    setCoffeeType: (coffeeType) => set({ coffeeType }),
 
-      completeWelcome: (name, coffeeType) =>
-        set({ name, coffeeType, hasCompletedWelcome: true, skippedWelcome: false }),
+    completeWelcome: (name, coffeeType) =>
+      set({ name, coffeeType, hasCompletedWelcome: true, skippedWelcome: false }),
 
-      skipWelcome: () =>
-        set({ name: '', coffeeType: '', hasCompletedWelcome: true, skippedWelcome: true }),
+    skipWelcome: () =>
+      set({ name: '', coffeeType: '', hasCompletedWelcome: true, skippedWelcome: true }),
 
-      /** Returns the personalised hero text: NAME + coffee suffix */
-      getHeroText: () => {
-        const { name, coffeeType, skippedWelcome } = get();
-        if (skippedWelcome) {
-          return { displayName: 'CHILLD', suffix: ' BREW' };
-        }
-        const displayName = (name || 'CHILLD').toUpperCase();
-        const suffix = (COFFEE_SUFFIXES[coffeeType] || ' KANO').toUpperCase();
-        return { displayName, suffix };
-      },
+    /** Returns the personalised hero text: NAME + coffee suffix */
+    getHeroText: () => {
+      const { name, coffeeType, skippedWelcome } = get();
+      if (skippedWelcome) {
+        return { displayName: 'CHILLD', suffix: ' BREW' };
+      }
+      const displayName = (name || 'CHILLD').toUpperCase();
+      const suffix = (COFFEE_SUFFIXES[coffeeType] || ' KANO').toUpperCase();
+      return { displayName, suffix };
+    },
 
-      resetWelcome: () =>
-        set({ name: '', coffeeType: '', hasCompletedWelcome: false, skippedWelcome: false }),
-    }),
-    {
-      name: 'chilld-user',
-      partialize: ({ name, coffeeType, hasCompletedWelcome, skippedWelcome }) => ({
-        name,
-        coffeeType,
-        hasCompletedWelcome,
-        skippedWelcome,
-      }),
-    }
-  )
+    resetWelcome: () =>
+      set({ name: '', coffeeType: '', hasCompletedWelcome: false, skippedWelcome: false }),
+  })
 );
 

@@ -46,30 +46,40 @@ function injectSvgStyles(svgDoc) {
 const HERO_CONTENT_LIFT = 48;
 
 function animateSvgCup(svgDoc) {
-  // Cup is Rect 15 (filled with pattern3)
   const cupRect = svgDoc.querySelector('rect[fill^="url(#pattern3_"]');
-  if (cupRect) {
-    const currentY = parseFloat(cupRect.getAttribute('y') || '0');
-    if (Number.isFinite(currentY)) {
-      cupRect.setAttribute('y', String(currentY - HERO_CONTENT_LIFT));
-    }
+  if (!cupRect) return;
 
-    cupRect.classList.add('animated-cup');
+  const currentY = parseFloat(cupRect.getAttribute('y') || '0');
+  if (Number.isFinite(currentY)) {
+    cupRect.setAttribute('y', String(currentY - HERO_CONTENT_LIFT));
+  }
+
+  cupRect.classList.add('animated-cup');
+
+  const parent = cupRect.parentNode;
+  if (parent && !parent.getAttribute?.('data-hero-cup-parallax-wrapper')) {
+    const wrapper = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'g');
+    wrapper.setAttribute('data-hero-cup-parallax-wrapper', 'true');
+    wrapper.style.transformBox = 'view-box';
+    wrapper.style.transition = 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)';
+    wrapper.style.willChange = 'transform';
+    parent.insertBefore(wrapper, cupRect);
+    wrapper.appendChild(cupRect);
   }
 }
 
 const HERO_BEAN_ENTRANCES = {
-  4: { x: -420, y: -220, delay: 120, duration: 920, floatX: 3, floatY: -7, floatDuration: 3900 },
-  5: { x: -560, y: 80, delay: 260, duration: 980, floatX: -4, floatY: 6, floatDuration: 4300 },
-  6: { x: -500, y: 300, delay: 420, duration: 900, floatX: 4, floatY: -5, floatDuration: 3600 },
-  7: { x: -220, y: 420, delay: 560, duration: 980, floatX: -3, floatY: -8, floatDuration: 4600 },
-  8: { x: -340, y: 140, delay: 700, duration: 860, floatX: 2, floatY: 5, floatDuration: 3400 },
-  9: { x: 360, y: 320, delay: 240, duration: 980, floatX: -4, floatY: -6, floatDuration: 4200 },
-  10: { x: 520, y: 120, delay: 400, duration: 880, floatX: 3, floatY: 5, floatDuration: 3700 },
-  11: { x: 540, y: -260, delay: 80, duration: 1040, floatX: -3, floatY: 7, floatDuration: 4500 },
-  12: { x: 260, y: -300, delay: 620, duration: 820, floatX: 2, floatY: -5, floatDuration: 3300 },
-  13: { x: 380, y: 180, delay: 760, duration: 860, floatX: -2, floatY: 6, floatDuration: 3800 },
-  14: { x: 520, y: 240, delay: 900, duration: 900, floatX: 3, floatY: -6, floatDuration: 4100 },
+  4: { x: -420, y: -220, delay: 120, duration: 920, floatX: 3, floatY: -7, floatDuration: 3900, floatRotate: 3, floatScale: 0.97 },
+  5: { x: -560, y: 80, delay: 260, duration: 980, floatX: -4, floatY: 6, floatDuration: 4300, floatRotate: -4, floatScale: 1.03 },
+  6: { x: -500, y: 300, delay: 420, duration: 900, floatX: 4, floatY: -5, floatDuration: 3600, floatRotate: 2, floatScale: 0.98 },
+  7: { x: -220, y: 420, delay: 560, duration: 980, floatX: -3, floatY: -8, floatDuration: 4600, floatRotate: -3, floatScale: 1.02 },
+  8: { x: -340, y: 140, delay: 700, duration: 860, floatX: 2, floatY: 5, floatDuration: 3400, floatRotate: 4, floatScale: 0.97 },
+  9: { x: 360, y: 320, delay: 240, duration: 980, floatX: -4, floatY: -6, floatDuration: 4200, floatRotate: -2, floatScale: 1.02 },
+  10: { x: 520, y: 120, delay: 400, duration: 880, floatX: 3, floatY: 5, floatDuration: 3700, floatRotate: 3, floatScale: 0.98 },
+  11: { x: 540, y: -260, delay: 80, duration: 1040, floatX: -3, floatY: 7, floatDuration: 4500, floatRotate: -4, floatScale: 1.03 },
+  12: { x: 260, y: -300, delay: 620, duration: 820, floatX: 2, floatY: -5, floatDuration: 3300, floatRotate: 2, floatScale: 0.98 },
+  13: { x: 380, y: 180, delay: 760, duration: 860, floatX: -2, floatY: 6, floatDuration: 3800, floatRotate: -3, floatScale: 1.02 },
+  14: { x: 520, y: 240, delay: 900, duration: 900, floatX: 3, floatY: -6, floatDuration: 4100, floatRotate: 4, floatScale: 0.97 },
 };
 
 function getHeroBeanPatternNumber(node) {
@@ -82,11 +92,16 @@ function getHeroBeanPatternNumber(node) {
 }
 
 function startHeroBeanFloat(wrapper, entrance) {
+  const rotate = entrance.floatRotate || 0;
+  const scale = entrance.floatScale || 1;
+  const midRotate = Number.isFinite(rotate) ? rotate * 0.6 : 0;
   wrapper.animate(
     [
-      { transform: 'translate(0, 0)' },
-      { transform: `translate(${entrance.floatX}px, ${entrance.floatY}px)` },
-      { transform: 'translate(0, 0)' },
+      { transform: `translate(0, 0) rotate(0deg) scale(1)` },
+      { transform: `translate(${entrance.floatX * 0.5}px, ${entrance.floatY * 0.5}px) rotate(${midRotate}deg) scale(${1 + (scale - 1) * 0.5})` },
+      { transform: `translate(${entrance.floatX}px, ${entrance.floatY}px) rotate(${rotate}deg) scale(${scale})` },
+      { transform: `translate(${entrance.floatX * 0.5}px, ${entrance.floatY * 0.5}px) rotate(${-midRotate}deg) scale(${1 + (scale - 1) * 0.5})` },
+      { transform: 'translate(0, 0) rotate(0deg) scale(1)' },
     ],
     {
       duration: entrance.floatDuration,
@@ -1277,6 +1292,13 @@ function DesktopHomePage() {
 
               wrapper.style.transform = `translate3d(0, ${shift.toFixed(1)}px, 0)`;
             }
+          }
+
+          const heroCupWrapper = svgDoc.querySelector('g[data-hero-cup-parallax-wrapper]');
+          if (heroCupWrapper) {
+            const scrollY = window.scrollY;
+            const heroCupShift = scrollY * 0.6;
+            heroCupWrapper.style.transform = `translate3d(0, ${heroCupShift.toFixed(1)}px, 0)`;
           }
         } catch {
           // Ignore loaded SVG access errors

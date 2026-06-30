@@ -5,7 +5,6 @@ import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
 import MobileHomePage from './MobileHomePage';
 import { PRODUCTS } from '@/data/products';
-import { RECIPES } from '@/data/recipes';
 
 // ── HELPERS FOR SVG DOM MANIPULATION ─────────────────────────────────
 
@@ -524,23 +523,40 @@ function wrapCupElements(svgDoc, cupIndex, nextSiblingCount) {
 }
 
 // ── INFINITE TRENDING MIXES CAROUSEL ──────────────────────────────────
-// Select visually strong recipes: prioritise ones with exact media / video.
-const TRENDING_MIXES = (() => {
-  const withMedia = RECIPES.filter((r) => r.hasExactMedia || r.video);
-  // Pad with remaining recipes if we have fewer than 8
-  const rest = RECIPES.filter((r) => !r.hasExactMedia && !r.video);
-  return [...withMedia, ...rest].slice(0, 10);
-})();
-
-const MIX_LIKES_MAP = {
-  'golden-jaggery-velvet': '250 Likes',
-  'ice-mocha': '+1K Likes',
-  'hazelnut-cream-latte': '120 Likes',
-  'cold-brew-orange-burst': '80 Likes',
-  'cold-brew-mint-tonic': '95 Likes',
-  'sif-on-the-rocks': '180 Likes',
-  'vanilla-shake': '60 Likes',
-};
+const TRENDING_MIXES = [
+  {
+    id: 'rajpresso',
+    name: 'Rajpresso',
+    image: '/images/image11_366_1172.png',
+    description: 'Rajpresso',
+    tags: ['#Coffee', '#Signature'],
+    likes: '1.2K Likes',
+  },
+  {
+    id: 'vandy-mood-mocha',
+    name: 'Vandy Mood Mocha',
+    image: '/images/image12_366_1172.png',
+    description: 'Vandy Mood Mocha',
+    tags: ['#Mocha', '#Signature'],
+    likes: '890 Likes',
+  },
+  {
+    id: 'kishorappe',
+    name: 'Kishorappe',
+    image: '/images/image13_366_1172.png',
+    description: 'Kishorappe',
+    tags: ['#Coffee', '#Bold'],
+    likes: '650 Likes',
+  },
+  {
+    id: 'rishi-latte',
+    name: 'RishiLatte',
+    image: '/images/image14_366_1172.png',
+    description: 'RishiLatte',
+    tags: ['#Latte', '#Creamy'],
+    likes: '1.5K Likes',
+  },
+];
 
 function TrendingMixCards({ duplicate = false }) {
   return TRENDING_MIXES.map((mix) => (
@@ -554,7 +570,7 @@ function TrendingMixCards({ duplicate = false }) {
       <div className="trending-mix-card__image">
         <img src={mix.image} alt={duplicate ? '' : mix.name} />
         <span className="trending-mix-card__likes">
-          {MIX_LIKES_MAP[mix.id] ?? 'Trending'}
+          {mix.likes}
         </span>
       </div>
 

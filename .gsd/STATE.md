@@ -131,4 +131,22 @@
 **Verification:**
 - `npm run build`: Completed successfully in 806ms.
 
+---
 
+## Wave 6: Optimize Image Quality and Spacing
+
+**Objective:** Resolve the blurry rendering of the hero section cup image and minimize the excessive spacing in the Trending Mixes section.
+
+**Changes:**
+- Replaced 14 low-resolution embedded base64 WebP images inside `public/Homepage.svg` (such as the main cup image `image3_366_1172`) with references to the high-resolution PNG files from `public/images/`.
+- Shrunk the marquee height of the Trending Mixes section in `HomePage.css` from `5.52%` to `4.85%`.
+- Decreased the horizontal gap between trending mix cards from `5.5vw` to `3vw` and adjusted padding to `0 3vw 0 5vw`.
+- Lifted the trending mixes footer controls up by setting `top: 71.85%` (was `72.52%`) to reduce vertical whitespace below the cards.
+
+**Files Touched:**
+- `public/Homepage.svg`
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Completed successfully in 1.10s.
+- Visual check: Verified via browser subagent screenshots that the hero cup renders in crystal-clear quality and the spacing of Trending Mixes cards/controls is tightly and elegantly minimized.

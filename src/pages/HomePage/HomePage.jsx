@@ -1367,6 +1367,7 @@ function DesktopHomePage() {
             type="image/svg+xml"
             className="figma-svg-object"
             aria-label="Figma Homepage Design"
+            fetchPriority="high"
             onLoad={(e) => {
               try {
                 const svgDoc = e.target.contentDocument;

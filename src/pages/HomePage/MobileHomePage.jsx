@@ -587,6 +587,7 @@ export default function MobileHomePage() {
               key={index}
               src={`${ASSET_BASE}coffee-bean.png`}
               alt=""
+              fetchPriority="high"
               style={{
                 left: bean.x,
                 top: bean.y,
@@ -609,7 +610,6 @@ export default function MobileHomePage() {
             src={`${ASSET_BASE}cold-brew-cup.png`}
             alt="A glass of iced Chilld cold brew"
             fetchPriority="high"
-            decoding="async"
           />
           <span className="mobile-home-hero__shadow" aria-hidden="true" />
         </div>

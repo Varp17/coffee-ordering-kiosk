@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useUserStore } from '@/store/useUserStore';
 import Footer from '@/components/Footer/Footer';
+import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
 import './MobileHomePage.css';
 
 const ASSET_BASE = '/images/mobile-home/';
@@ -483,6 +484,24 @@ function PeopleSayingSection() {
   );
 }
 
+function MobileWhyChilld() {
+  return (
+    <section className="mobile-home-why-chilld" aria-label="Why CHILLD">
+      <div className="mobile-home-why-chilld__grid" data-mobile-home-reveal>
+        {WHY_CHILLD_ITEMS.map((item) => (
+          <WhyChilldCup
+            key={item.id}
+            item={item}
+            className={`mobile-home-why-chilld__item item-${item.id}`}
+            cupWrapClassName="mobile-home-why-chilld__cup-wrap"
+            cupClassName="mobile-home-why-chilld__cup"
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function MobileHomePage() {
   const navigate = useNavigate();
   const getHeroText = useUserStore((state) => state.getHeroText);
@@ -697,6 +716,7 @@ export default function MobileHomePage() {
         </div>
       </section>
 
+      <MobileWhyChilld />
       <VibeCarousel />
       <PeopleSayingSection />
       <RecipeRail />

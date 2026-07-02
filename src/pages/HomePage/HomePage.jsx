@@ -83,26 +83,6 @@ function SkippedHomeHeroOverlay() {
           fetchPriority="high"
         />
 
-        <svg
-          className="homepage-hero-running-wave"
-          viewBox="0 0 1512 320"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <defs>
-            <path
-              id="homepage-hero-running-wave-path"
-              d="M-180 124C20 78 224 33 414 28C592 24 734 55 894 94C1054 133 1214 146 1372 96C1470 65 1552 31 1692 -8"
-            />
-          </defs>
-          <path d="M0 320V122C124 77 248 38 376 28C524 16 658 34 806 74C944 111 1050 142 1186 142C1308 142 1405 100 1512 54V320H0Z" />
-          <text className="homepage-hero-running-wave__text" dy="18">
-            <textPath href="#homepage-hero-running-wave-path" startOffset="-8%">
-              Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
-              <animate attributeName="startOffset" from="-95%" to="0%" dur="22s" repeatCount="indefinite" />
-            </textPath>
-          </text>
-        </svg>
       </section>
     </div>
   );
@@ -1728,6 +1708,23 @@ function DesktopHomePage() {
                   if (wrapper) {
                     wrapper.style.display = 'none';
                   }
+                }
+
+                if (skippedWelcome) {
+                  // Hide elements in the top 1100px (Figma hero cup and beans)
+                  try {
+                    const svgRoot = svgDoc.querySelector('svg');
+                    const allNodes = svgRoot.querySelectorAll('*');
+                    allNodes.forEach(node => {
+                      try {
+                        const bbox = node.getBBox();
+                        // 1150px safely hides the cup and beans without hiding the black wave at 1185px
+                        if (bbox && bbox.y < 1150 && bbox.height > 0) {
+                          node.style.display = 'none';
+                        }
+                      } catch { /* ignore */ }
+                    });
+                  } catch { /* safety net */ }
                 }
 
                 // Also hide ALL remaining SVG elements in the cups/text Y-range (2400-3460)

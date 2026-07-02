@@ -22,13 +22,13 @@ export default function WelcomePage() {
     completeWelcome(name.trim(), selectedCoffee);
     setIsExiting(true);
     /* Short delay for exit animation */
-    setTimeout(() => navigate('/skip-home', { replace: true }), 500);
+    setTimeout(() => navigate('/', { replace: true }), 500);
   };
 
   const handleSkip = () => {
     skipWelcome();
     setIsExiting(true);
-    setTimeout(() => navigate('/skip-page-home', { replace: true }), 500);
+    setTimeout(() => navigate('/', { replace: true }), 500);
   };
 
   const handleKeyDown = (e) => {

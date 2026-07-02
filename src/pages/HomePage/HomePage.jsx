@@ -1420,13 +1420,13 @@ function DesktopHomePage() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            top: '13.6%',
-            height: '12.8%',
+            top: '12.5%',
+            height: '13.3%',
             left: 0,
             right: 0,
             padding: '0.5% 10%',
             boxSizing: 'border-box',
-            overflow: 'hidden',
+            overflow: 'visible',
           }}
         >
           {/* ── Big heading ── */}
@@ -1451,20 +1451,20 @@ function DesktopHomePage() {
             maxWidth: 780,
             height: 2,
             background: 'rgba(255,255,255,0.55)',
-            margin: '0.2vw auto 0.5vw auto',
+            margin: '0.2vw auto 0.3vw auto',
             borderRadius: 1,
           }} />
 
           {/* ── Body paragraphs ── */}
           <p style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.45rem, 0.68vw, 0.78rem)',
+            fontSize: 'clamp(0.85rem, 1.1vw, 1.05rem)',
             fontWeight: 400,
             color: '#FFFFFF',
             textAlign: 'center',
             lineHeight: 1.6,
             maxWidth: 660,
-            margin: '0 auto 0.4vw auto',
+            margin: '0 auto 0.2vw auto',
             textShadow: '0 1px 4px rgba(43,22,8,0.3)',
             userSelect: 'none',
           }}>
@@ -1474,7 +1474,7 @@ function DesktopHomePage() {
           </p>
           <p style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.5rem, 0.78vw, 0.85rem)',
+            fontSize: 'clamp(0.85rem, 1.1vw, 1.05rem)',
             fontWeight: 400,
             color: '#FFFFFF',
             textAlign: 'center',
@@ -1489,7 +1489,7 @@ function DesktopHomePage() {
           </p>
           <p style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.5rem, 0.78vw, 0.85rem)',
+            fontSize: 'clamp(0.85rem, 1.1vw, 1.05rem)',
             fontWeight: 400,
             color: '#FFFFFF',
             textAlign: 'center',
@@ -1505,7 +1505,7 @@ function DesktopHomePage() {
           {/* ── Italic quote heading ── */}
           <p style={{
             fontFamily: "'Outfit', sans-serif",
-            fontSize: 'clamp(0.6rem, 1vw, 1.15rem)',
+            fontSize: 'clamp(0.95rem, 1.3vw, 1.3rem)',
             fontWeight: 600,
             fontStyle: 'italic',
             color: '#FFFFFF',
@@ -1520,7 +1520,7 @@ function DesktopHomePage() {
 
           <p style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.5rem, 0.78vw, 0.85rem)',
+            fontSize: 'clamp(0.85rem, 1.1vw, 1.05rem)',
             fontWeight: 400,
             color: '#FFFFFF',
             textAlign: 'center',
@@ -1534,7 +1534,7 @@ function DesktopHomePage() {
           </p>
           <p style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.5rem, 0.78vw, 0.85rem)',
+            fontSize: 'clamp(0.85rem, 1.1vw, 1.05rem)',
             fontWeight: 400,
             color: '#FFFFFF',
             textAlign: 'center',
@@ -1823,20 +1823,7 @@ function DesktopHomePage() {
         />
 
         {/* Buy CHILLD Cold Brew Core Swirl Button */}
-        <Link
-          to="/menu?cat=cold-brew"
-          className="homepage-link link-swirl-buy"
-          style={{ left: '34.19%', top: '23.19%', width: '18.45%', height: '0.60%' }}
-          title="Buy Cold Brew Concentrate"
-        />
-
-        {/* Explore Recipes Swirl Button */}
-        <Link
-          to="/recipes"
-          className="homepage-link link-swirl-recipes"
-          style={{ left: '55.68%', top: '23.19%', width: '12.2%', height: '0.60%' }}
-          title="Explore Recipes"
-        />
+        
 
         {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
 

@@ -29,6 +29,7 @@ import ContactPage from '@/pages/ContactPage/ContactPage';
 import StorePage from '@/pages/StorePage/StorePage';
 import B2BPage from '@/pages/B2BPage/B2BPage';
 import { useUserStore } from '@/store/useUserStore';
+import SkipPageHome from '@/pages/skip-page-home/SkipPageHome';
 import './App.css';
 
 /* Guard: redirect to /welcome if user hasn't completed onboarding */
@@ -89,6 +90,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/store" element={<StorePage />} />
           <Route path="/b2b" element={<B2BPage />} />
+          <Route path="/skip-page-home" element={<SkipPageHome />} />
         </Route>
       </Routes>
     </Router>

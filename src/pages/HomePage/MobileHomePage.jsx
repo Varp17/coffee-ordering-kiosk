@@ -401,16 +401,7 @@ export default function MobileHomePage() {
         />
       </section>
 
-      <nav className="mobile-home-sticky" aria-label="Mobile home quick order">
-        <Link to="/menu">
-          <ShoppingBag size={17} aria-hidden="true" />
-          Shop
-        </Link>
-        <Link to="/build" className="mobile-home-sticky__primary">
-          <Coffee size={17} aria-hidden="true" />
-          Build
-        </Link>
-      </nav>
+
 
       <Footer className="footer--mobile-home" />
     </div>

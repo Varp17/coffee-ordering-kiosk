@@ -48,7 +48,7 @@ function FooterColumn({ title, links }) {
 export default function Footer({ className = '' }) {
   return (
     <footer className={`footer ${className}`.trim()}>
-      <svg className="footer-wave-svg" viewBox="0 0 1512 230" preserveAspectRatio="none">
+      <svg className="footer-wave-svg" viewBox="0 0 1512 230" preserveAspectRatio="xMidYMin slice">
         <defs>
           <path
             id="footer-wave-text-path"
@@ -95,26 +95,28 @@ export default function Footer({ className = '' }) {
 
           <div className="footer__social-row">
             <span>We&apos;re on Social Media</span>
-            <SocialIcon label="Facebook">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M14.2 8.2V6.7c0-.7.5-.9.9-.9h2.3V2h-3.2c-3.6 0-4.4 2.7-4.4 4.4v1.8H7v3.9h2.8V22h4.4v-9.9h3l.5-3.9h-3.5Z" />
-              </svg>
-            </SocialIcon>
-            <SocialIcon label="Twitter">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M21.5 6.1c-.7.3-1.4.5-2.2.6.8-.5 1.3-1.2 1.6-2.1-.8.5-1.6.8-2.5 1A3.8 3.8 0 0 0 11.8 9c0 .3 0 .6.1.9A10.9 10.9 0 0 1 4 5.8a3.8 3.8 0 0 0 1.2 5.1c-.6 0-1.2-.2-1.7-.5v.1c0 1.8 1.3 3.3 3 3.7-.3.1-.7.1-1 .1-.2 0-.5 0-.7-.1.5 1.5 1.9 2.6 3.6 2.7A7.7 7.7 0 0 1 2.7 18.5 10.8 10.8 0 0 0 8.6 20c7.1 0 11-5.9 11-11v-.5c.8-.6 1.4-1.3 1.9-2.1Z" />
-              </svg>
-            </SocialIcon>
-            <SocialIcon label="LinkedIn">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M6.7 8.8H3.1V21h3.6V8.8ZM4.9 3A2.1 2.1 0 1 0 5 7.2 2.1 2.1 0 0 0 4.9 3Zm16 11c0-3.3-1.8-5.5-4.7-5.5-1.6 0-2.8.9-3.3 1.8h-.1V8.8H9.4V21H13v-6c0-1.6.3-3.1 2.2-3.1 1.9 0 1.9 1.8 1.9 3.2V21h3.7v-7Z" />
-              </svg>
-            </SocialIcon>
-            <SocialIcon label="YouTube">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.9 4.8 12 4.8 12 4.8s-5.9 0-7.6.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2 12a29 29 0 0 0 .4 4.8 2.8 2.8 0 0 0 2 2c1.7.4 7.6.4 7.6.4s5.9 0 7.6-.4a2.8 2.8 0 0 0 2-2A29 29 0 0 0 22 12a29 29 0 0 0-.4-4.8ZM10 15.2V8.8l5.3 3.2-5.3 3.2Z" />
-              </svg>
-            </SocialIcon>
+            <div className="footer__social-links-wrap">
+              <SocialIcon label="Facebook">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14.2 8.2V6.7c0-.7.5-.9.9-.9h2.3V2h-3.2c-3.6 0-4.4 2.7-4.4 4.4v1.8H7v3.9h2.8V22h4.4v-9.9h3l.5-3.9h-3.5Z" />
+                </svg>
+              </SocialIcon>
+              <SocialIcon label="Twitter">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M21.5 6.1c-.7.3-1.4.5-2.2.6.8-.5 1.3-1.2 1.6-2.1-.8.5-1.6.8-2.5 1A3.8 3.8 0 0 0 11.8 9c0 .3 0 .6.1.9A10.9 10.9 0 0 1 4 5.8a3.8 3.8 0 0 0 1.2 5.1c-.6 0-1.2-.2-1.7-.5v.1c0 1.8 1.3 3.3 3 3.7-.3.1-.7.1-1 .1-.2 0-.5 0-.7-.1.5 1.5 1.9 2.6 3.6 2.7A7.7 7.7 0 0 1 2.7 18.5 10.8 10.8 0 0 0 8.6 20c7.1 0 11-5.9 11-11v-.5c.8-.6 1.4-1.3 1.9-2.1Z" />
+                </svg>
+              </SocialIcon>
+              <SocialIcon label="LinkedIn">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6.7 8.8H3.1V21h3.6V8.8ZM4.9 3A2.1 2.1 0 1 0 5 7.2 2.1 2.1 0 0 0 4.9 3Zm16 11c0-3.3-1.8-5.5-4.7-5.5-1.6 0-2.8.9-3.3 1.8h-.1V8.8H9.4V21H13v-6c0-1.6.3-3.1 2.2-3.1 1.9 0 1.9 1.8 1.9 3.2V21h3.7v-7Z" />
+                </svg>
+              </SocialIcon>
+              <SocialIcon label="YouTube">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.9 4.8 12 4.8 12 4.8s-5.9 0-7.6.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2 12a29 29 0 0 0 .4 4.8 2.8 2.8 0 0 0 2 2c1.7.4 7.6.4 7.6.4s5.9 0 7.6-.4a2.8 2.8 0 0 0 2-2A29 29 0 0 0 22 12a29 29 0 0 0-.4-4.8ZM10 15.2V8.8l5.3 3.2-5.3 3.2Z" />
+                </svg>
+              </SocialIcon>
+            </div>
           </div>
 
           <div className="footer__certifications" aria-label="Certifications">

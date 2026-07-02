@@ -17,7 +17,7 @@ export const WHY_CHILLD_ITEMS = [
     id: 'two',
     number: '02',
     title: 'Brewed for the Bold',
-    description: 'Your order is on no menu, it lives in your head, now in your cup',
+    description: 'Your order is on no menu, it lives in your head. now in your cup',
     rotation: '7.04deg',
     viewBox: '488 2782 238 321',
     bodyPath: 'M517.738 3094.83L502.495 2847.69C502.385 2845.91 503.836 2844.42 505.62 2844.48L706.286 2851.59C708.092 2851.65 709.44 2853.28 709.169 2855.06L672.055 3100.35C671.826 3101.87 670.494 3102.98 668.958 3102.92L520.649 3097.67C519.093 3097.61 517.833 3096.39 517.738 3094.83Z',
@@ -60,33 +60,35 @@ const WhyChilldCup = forwardRef(function WhyChilldCup({
       className={className}
       style={{ '--why-cup-rotation': item.rotation }}
     >
-      <div className={cupWrapClassName}>
-        <svg
-          viewBox={item.viewBox}
-          className={cupClassName}
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path d={item.bodyPath} fill="#1F2A44" />
-          <path d={item.lidPath} fill="#1F2A44" />
-          <text
-            x={item.text.x}
-            y={item.text.y}
-            textAnchor="middle"
-            fill="#FFFFFF"
-            fontFamily="Outfit, sans-serif"
-            fontWeight="900"
-            fontSize="48"
-            letterSpacing="-0.02em"
-            transform={item.text.transform}
+      <div className="why-chilld-cup-inner">
+        <div className={cupWrapClassName}>
+          <svg
+            viewBox={item.viewBox}
+            className={cupClassName}
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
           >
-            {item.number}
-          </text>
-        </svg>
+            <path d={item.bodyPath} fill="#1F2A44" />
+            <path d={item.lidPath} fill="#1F2A44" />
+            <text
+              x={item.text.x}
+              y={item.text.y}
+              textAnchor="middle"
+              fill="#FFFFFF"
+              fontFamily="'Antonio', sans-serif"
+              fontWeight="700"
+              fontSize="54"
+              letterSpacing="-0.02em"
+              transform={item.text.transform}
+            >
+              {item.number}
+            </text>
+          </svg>
+        </div>
+        <h3>{item.title}</h3>
+        <p>{item.description}</p>
       </div>
-      <h3>{item.title}</h3>
-      <p>{item.description}</p>
     </article>
   );
 });

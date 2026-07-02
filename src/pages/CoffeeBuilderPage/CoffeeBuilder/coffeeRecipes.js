@@ -1,7 +1,7 @@
 export const coffeeRecipes = [
   {
     name: "Golden Jaggery Velvet",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -19,7 +19,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Ice Mocha",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -37,7 +37,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Classic Cold Brew",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -55,7 +55,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Vanilla Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -73,7 +73,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Caramel Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -91,7 +91,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Cinnamon Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -109,7 +109,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Honey Coffee",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "15 gm",
@@ -127,7 +127,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Cold Brew Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "70 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "15 gm",
@@ -145,7 +145,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Cinnamon",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -163,7 +163,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Honey Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "15 gm",
@@ -181,7 +181,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Salted Caramel Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -199,7 +199,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Mocha",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -217,7 +217,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Vanilla",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -235,7 +235,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Coconut Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -253,7 +253,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Almond Mocha",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "70 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -271,7 +271,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Nutmeg Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "15 gm",
@@ -289,7 +289,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Brown Sugar",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "15 gm",
@@ -307,7 +307,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Chocolate Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -325,7 +325,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Hazelnut Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -343,7 +343,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Cold Brew Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "70 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -361,7 +361,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Salted Caramel",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -379,7 +379,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Cinnamon Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -397,7 +397,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Mocha Frappe",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "65 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -415,7 +415,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Maple Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 gm",
@@ -433,7 +433,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Spice Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 gm",
@@ -451,7 +451,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Brown Sugar Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 gm",
@@ -469,7 +469,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Salted Caramel",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 gm",
@@ -487,7 +487,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Almond Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 gm",
@@ -505,7 +505,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Cold Brew Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "70 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 gm",
@@ -523,7 +523,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Honey Spice Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -541,7 +541,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Coconut Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 gm",
@@ -559,7 +559,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Nutmeg Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -577,7 +577,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Vanilla Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 gm",
@@ -595,7 +595,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Vanilla Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -613,7 +613,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Caramel Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -631,7 +631,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Cold Brew Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "70 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -649,7 +649,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Almond Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -667,7 +667,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Brown Sugar Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -685,7 +685,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Lavender Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -703,7 +703,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Oat Nutmeg Latte (Jaggery)",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -721,7 +721,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Vanilla Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "80 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -739,7 +739,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Salted Caramel Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "80 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -757,7 +757,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Mocha Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "70 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -775,7 +775,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Almond Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -793,7 +793,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Brown Sugar Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "80 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -811,7 +811,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Lavender Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "80 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -829,7 +829,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Nutmeg Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "80 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -847,7 +847,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Cinnamon Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "80 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -865,7 +865,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Flakes Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "80 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -883,7 +883,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Coconut Honey Latte",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "80 gm",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 gm",
@@ -901,7 +901,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Hazelnut Cream Latte",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "80 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "15 gm",
@@ -919,7 +919,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Choco Almond Latte",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "70 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "15 gm",
@@ -937,7 +937,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Honey Nut Latte",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "80 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "12 gm",
@@ -955,7 +955,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Mango Cold Brew",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "75 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "15 gm",
@@ -973,7 +973,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Honey Almond",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "80 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "12 gm",
@@ -991,7 +991,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Strawberry Cream Coffee",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "75 gm",
     sweetener: "Sugar Syrup",
     sweetenerQty: "15 gm",
@@ -1009,7 +1009,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Classic Cold Brew (70:30)",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "60 ml",
     sweetener: "Sugar Syrup",
     sweetenerQty: "20 ml",
@@ -1027,7 +1027,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Sweet Cream Cold Brew",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "60 ml",
     sweetener: "Sugar Syrup",
     sweetenerQty: "25 ml",
@@ -1045,7 +1045,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Desi Jaggery Coffee",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "60 ml",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 ml",
@@ -1063,7 +1063,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Mocha",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "50 ml",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "15 ml",
@@ -1081,7 +1081,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Smoky Jaggery Latte",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "55 ml",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 ml",
@@ -1099,7 +1099,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Creamy Jaggery Latte",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "50 ml",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 ml",
@@ -1117,7 +1117,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Almond Jaggery Latte",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "60 ml",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 ml",
@@ -1135,7 +1135,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Spiced Coffee",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "45 ml",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 ml",
@@ -1153,7 +1153,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Jaggery Cocoa Latte",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "45 ml",
     sweetener: "Jaggery Syrup",
     sweetenerQty: "20 ml",
@@ -1171,7 +1171,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Salted Caramel Jaggery",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "60 ml",
     sweetener: "Jaggery Syrup + Salted Caramel",
     sweetenerQty: "15 ml + 10 ml",
@@ -1189,7 +1189,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Honey Spiced Latte",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "60 ml",
     sweetener: "Honey Spices",
     sweetenerQty: "15 ml",
@@ -1207,7 +1207,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Ice Mocha (Jaggery)",
-    concentrateType: "Coffee 50:50",
+    concentrateType: "Classic",
     concentrateQty: "60 gm",
     sweetener: "Jaggery Syrup + Cacao Powder",
     sweetenerQty: "15 gm + 5 gm",
@@ -1224,8 +1224,8 @@ export const coffeeRecipes = [
     }
   },
   {
-    name: "Sif Cold",
-    concentrateType: "Sif",
+    name: "Kaapi Cold",
+    concentrateType: "Kaapi",
     concentrateQty: "60 ml",
     sweetener: "Condensed Milk",
     sweetenerQty: "20 ml",
@@ -1261,7 +1261,7 @@ export const coffeeRecipes = [
   },
   {
     name: "Cold Brew Orange",
-    concentrateType: "Coffee 70:30",
+    concentrateType: "Bold",
     concentrateQty: "60 ml",
     sweetener: "Orange Syrup",
     sweetenerQty: "15 ml",
@@ -1358,9 +1358,9 @@ export const normalize = (value) =>
     .replace(/\s+/g, " ");
 
 const concentrateImageMap = {
-  "coffee 50:50": "/images/CofeeBuilder/50-50.png",
-  "coffee 70:30": "/images/CofeeBuilder/70-30.png",
-  "sif": "/images/CofeeBuilder/Sif.png",
+  "classic": "/images/CofeeBuilder/50-50.png",
+  "bold": "/images/CofeeBuilder/70-30.png",
+  "kaapi": "/images/CofeeBuilder/Sif.png",
   "cascara": "/images/CofeeBuilder/Cascara.png",
   "100% arabica": "/images/CofeeBuilder/100%Arabica.png",
   "60-40": "/images/CofeeBuilder/60-40.png"

@@ -6,22 +6,31 @@ import { PRODUCTS, CATEGORIES } from '@/data/products';
 import { containerVariants, itemVariants } from '@/utils/animations';
 import './MenuPage.css';
 
+const CONCENTRATE_RANK = { Classic: 0, Bold: 1, Kaapi: 2 };
+
+function rankProduct(product) {
+  return CONCENTRATE_RANK[product.concentrateType] ?? 99;
+}
+
 export default function MenuPage() {
   const [params, setParams] = useSearchParams();
-  const activeCategory = params.get('cat') || 'all';
+  const rawCategory = params.get('cat') || 'all';
+  const activeCategory = CATEGORIES.some((c) => c.id === rawCategory) ? rawCategory : 'all';
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filtered = PRODUCTS.filter((p) => {
-    const query = searchQuery.toLowerCase();
-    const catMatch = activeCategory === 'all' || p.category === activeCategory;
-    const qMatch = searchQuery
-      ? p.name.toLowerCase().includes(query) ||
-        p.description.toLowerCase().includes(query) ||
-        p.concentrateType.toLowerCase().includes(query) ||
-        p.tags.some((t) => t.toLowerCase().includes(query))
-      : true;
-    return catMatch && qMatch;
-  });
+  const filtered = PRODUCTS
+    .filter((p) => {
+      const query = searchQuery.toLowerCase();
+      const catMatch = activeCategory === 'all' || p.category === activeCategory;
+      const qMatch = searchQuery
+        ? p.name.toLowerCase().includes(query) ||
+          p.description.toLowerCase().includes(query) ||
+          p.concentrateType.toLowerCase().includes(query) ||
+          p.tags.some((t) => t.toLowerCase().includes(query))
+        : true;
+      return catMatch && qMatch;
+    })
+    .sort((a, b) => rankProduct(a) - rankProduct(b));
 
   const handleCatChange = (id) => {
     setParams(id !== 'all' ? { cat: id } : {});

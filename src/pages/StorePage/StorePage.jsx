@@ -7,7 +7,7 @@ import './StorePage.css';
 const UPCOMING_PRODUCTS = [
   {
     id: 'concentrate-classic',
-    name: 'Classic Cold Brew Concentrate',
+    name: 'Classic Concentrate',
     category: 'Concentrates',
     description: 'Our signature 24-hour slow-steeped Arabica blend. Makes 10–12 cups of smooth, rich cold brew.',
     badge: 'Best Seller',
@@ -62,9 +62,9 @@ const UPCOMING_PRODUCTS = [
   },
   {
     id: 'sif-rocks',
-    name: 'SIF on the Rocks',
+    name: 'Kaapi on the Rocks',
     category: 'Heritage',
-    description: 'South Indian Filter coffee tradition reimagined as a bold, iced concentrate serve.',
+    description: 'Kaapi coffee tradition reimagined as a bold, iced concentrate serve.',
     badge: 'Desi Classic',
     badgeColor: '#d35400',
     image: '/images/products/SIFon the Rocks (South indian filter Coffee).png',

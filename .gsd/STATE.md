@@ -143,10 +143,31 @@
 - Decreased the horizontal gap between trending mix cards from `5.5vw` to `3vw` and adjusted padding to `0 3vw 0 5vw`.
 - Lifted the trending mixes footer controls up by setting `top: 71.85%` (was `72.52%`) to reduce vertical whitespace below the cards.
 
+---
+
+## Wave 7: Seamless Curved Wave Background, Scroll Animations & Header
+
+**Objective:** Fix the layout and repeating pattern seams in the Why Chilled background section, restore the curved wave top boundary, and add a centered "Why Chilld?" title header that animates in staggered fashion with the cups, keeping everything correctly spaced and positioned below the name during scroll.
+
+**Changes:**
+- Modified [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) to set the background of `.desktop-homepage__why-chilld` to transparent, and removed the repeating seamed background-image pseudo-element.
+- Implemented `injectWhyChilldBackground` in [HomePage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.jsx) to find background wave elements using space-and-comma normalization (immunizing them to browser-specific DOM serialization), color them with `#eaf5ff`, and overlay a single stretched instance of `/Subtract%20copy.svg` with `mix-blend-mode: multiply` at `opacity: 0.42` using a seamless SVG `<clipPath>` for perfect dynamic scaling and resize.
+- Added `<h2 className="desktop-homepage__why-chilld-title">Why Chilld?</h2>` in [HomePage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.jsx) and styled it in [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) to center it below the wave curve.
+- Shifted the Why Chilled cup item positions downward and clamped scroll parallax translation `shift` to `Math.max(0, shift)` in [HomePage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.jsx) so that cups never translate upward above their layout coordinates.
+- Added staggered scroll-triggered fade-in and slide-up entrance animations for the Why Chilled title and 4 cup cards using `IntersectionObserver`.
+- Imported the **Antonio** condensed Google Font in `global.css` and updated cup number labels in [WhyChilldCup.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/WhyChilldCup/WhyChilldCup.jsx) to use it with `fontFamily="'Antonio', sans-serif"`, `fontWeight="700"`, and `fontSize="54"`.
+- Inverted the background pattern fading direction (now fading from left-to-right) by applying `transform="scale(-1, 1)"` and `x="-1512"` on the SVG background image tag.
+- Balanced the horizontal layout spacing of the cup elements symmetrically in [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) (Cup 1 at `left: 6%`, Cup 2 at `left: 27.7%`, Cup 3 at `left: 49.5%`, and Cup 4 at `right: 6%`).
+- Created `injectB2bGraffiti` in [HomePage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.jsx) which overlays the scribble pattern `/Subtract%20copy.svg` on the B2B section light blue background rect using a linear gradient mask, creating a beautiful fade-out from left (fully visible) to right (fully transparent).
+- Modified `hideStaticPlaceholders` in [HomePage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.jsx) to match and set the fill of the footer background rects at `y=7193` to `#eaf5ff` (upped light blue), removing the white/gray gap above the dark navy footer wave shape.
+- Refined the typography styles in [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) for Why Chilld cards: increased title size to `1.95rem` at `line-height: 1.1`, and changed description `font-weight` to `500` to match the elegant thin italics of the Figma design.
+- Corrected description copy punctuation (changed comma to period) in [WhyChilldCup.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/WhyChilldCup/WhyChilldCup.jsx) for the second cup card.
+
 **Files Touched:**
-- `public/Homepage.svg`
+- `src/pages/HomePage/HomePage.jsx`
 - `src/pages/HomePage/HomePage.css`
+- `src/components/WhyChilldCup/WhyChilldCup.jsx`
+- `src/styles/global.css`
 
 **Verification:**
-- `npm run build`: Completed successfully in 1.10s.
-- Visual check: Verified via browser subagent screenshots that the hero cup renders in crystal-clear quality and the spacing of Trending Mixes cards/controls is tightly and elegantly minimized.
+- `npm run build`: Production build completed successfully in 2.04s.

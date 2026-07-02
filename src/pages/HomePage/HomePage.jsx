@@ -5,6 +5,108 @@ import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
 import { PRODUCTS } from '@/data/products';
 import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
+import coffeeCup from '@/pages/SkipPageHome/assets/iced-coffee-cup.png';
+import coffeeCupBackdrop from '@/pages/SkipPageHome/assets/coffee-cup-backdrop.svg';
+
+const Dot = ({ active = false }) => (
+  <span className={active ? 'is-active' : ''} aria-hidden="true" />
+);
+
+function HeroPattern() {
+  return (
+    <svg
+      className="neha-hero__pattern"
+      viewBox="0 0 631 421"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M310 -18c36 0 58 18 51 42-7 24-54 29-57 54-3 25 35 27 31 51" />
+        <path d="M367 13c8 17 42 21 43 46 1 17-24 32-47 40-28 10-35 28-17 46 12 12 32 16 42 32" />
+        <path d="M455 -23c-10 19 2 37 26 42 27 6 43-5 55 10 13 15 1 35-16 44-18 10-36 11-41 30-6 23 17 31 37 34" />
+        <path d="M565 -3c-15 16-4 35 14 42 17 7 37 7 39 25 2 17-19 27-36 31" />
+        <path d="M316 105c18-13 42-9 52 8 10 17 3 39-17 48-20 9-13 29 6 39 21 11 23 34 4 50" />
+        <path d="M407 86c20 3 29 23 20 39-9 15-29 19-35 34-8 20 9 35 27 35 20 0 35 13 36 31" />
+        <path d="M509 86c-10 13-6 32 11 39 17 7 39 8 43 27 4 19-15 31-31 35-17 4-25 23-13 38 12 14 37 15 51 5" />
+        <path d="M601 94c-12 15-2 31 14 36 12 4 18 12 15 26" />
+        <path d="M300 200c18-5 30 9 28 25-2 16-24 20-30 36-7 18 11 33 28 30 17-3 25 15 16 30" />
+        <path d="M364 202c12 14 36 17 41 36 4 16-15 25-30 30-17 6-19 28-2 36 15 7 31-1 41 9" />
+        <path d="M443 209c18 7 37 5 47 22 10 17-4 37-20 44-18 8-10 31 8 37 19 6 22 26 6 39" />
+        <path d="M538 205c9 18 32 20 39 37 8 18-10 31-24 36-17 6-17 27-1 35 17 9 31 6 41 21" />
+        <path d="M603 236c11 7 15 22 7 33-8 12-24 13-31 25" />
+      </g>
+    </svg>
+  );
+}
+
+function SkippedHomeHeroOverlay() {
+  return (
+    <div className="homepage-skip-overlay">
+      <section className="neha-hero" aria-labelledby="neha-title">
+        <HeroPattern />
+
+        {/* Layer order: background SVG -> coffee. */}
+        <img
+          className="neha-hero__cup-backdrop"
+          src={coffeeCupBackdrop}
+          alt=""
+          aria-hidden="true"
+          width="1352"
+          height="617"
+        />
+
+        <div className="neha-hero__copy">
+          <h1 id="neha-title" className="neha-logo">
+            Neha<span>cano</span>
+          </h1>
+          <p className="neha-tagline">/ "Neha" + "Americano" /</p>
+          <h2>Code your own Coffee</h2>
+
+          <div className="hero-dots" aria-label="Slide 1 of 3">
+            <Dot active />
+            <Dot />
+            <Dot />
+          </div>
+        </div>
+
+        <img
+          className="neha-hero__coffee"
+          src={coffeeCup}
+          alt="Iced coffee"
+          width="632"
+          height="1000"
+          fetchPriority="high"
+        />
+
+        <svg
+          className="homepage-hero-running-wave"
+          viewBox="0 0 1512 320"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <path
+              id="homepage-hero-running-wave-path"
+              d="M-180 124C20 78 224 33 414 28C592 24 734 55 894 94C1054 133 1214 146 1372 96C1470 65 1552 31 1692 -8"
+            />
+          </defs>
+          <path d="M0 320V122C124 77 248 38 376 28C524 16 658 34 806 74C944 111 1050 142 1186 142C1308 142 1405 100 1512 54V320H0Z" />
+          <text className="homepage-hero-running-wave__text" dy="18">
+            <textPath href="#homepage-hero-running-wave-path" startOffset="-8%">
+              Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+              <animate attributeName="startOffset" from="-95%" to="0%" dur="22s" repeatCount="indefinite" />
+            </textPath>
+          </text>
+        </svg>
+      </section>
+    </div>
+  );
+}
 
 // ── HELPERS FOR SVG DOM MANIPULATION ─────────────────────────────────
 
@@ -448,6 +550,9 @@ function hideStaticPlaceholders(svgDoc) {
 }
 
 function injectWhyChilldBackground(svgDoc) {
+  const smoothWhyChilldWaveD =
+    'M1512 2237.6C1390 2184 1277 2129 1134 2129C1004 2129 884 2184 756 2210C626 2236 505 2235 378 2209C249 2182 124 2126 0 2069.6V2372H1512V2237.6Z';
+
   // 1. Find the wave path using robust normalization (handles any space/comma serialization)
   const wavePath = Array.from(svgDoc.querySelectorAll('path')).find(p => {
     const d = p.getAttribute('d') || '';
@@ -486,6 +591,7 @@ function injectWhyChilldBackground(svgDoc) {
   if (!wavePath || !bgRect) return;
 
   // Change fills of original background shapes to light blue (#eaf5ff)
+  wavePath.setAttribute('d', smoothWhyChilldWaveD);
   wavePath.setAttribute('fill', '#eaf5ff');
   bgRect.setAttribute('fill', '#eaf5ff');
   if (bgRect2) {
@@ -499,28 +605,31 @@ function injectWhyChilldBackground(svgDoc) {
     if (!clipPath) {
       clipPath = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'clipPath');
       clipPath.setAttribute('id', 'why-chilld-bg-clip');
-
-      const waveClone = wavePath.cloneNode(true);
-      waveClone.removeAttribute('fill');
-      waveClone.removeAttribute('style');
-      waveClone.removeAttribute('id');
-      clipPath.appendChild(waveClone);
-
-      const rectClone = bgRect.cloneNode(true);
-      rectClone.removeAttribute('fill');
-      rectClone.removeAttribute('style');
-      rectClone.removeAttribute('id');
-      clipPath.appendChild(rectClone);
-
-      if (bgRect2) {
-        const rect2Clone = bgRect2.cloneNode(true);
-        rect2Clone.removeAttribute('fill');
-        rect2Clone.removeAttribute('style');
-        rect2Clone.removeAttribute('id');
-        clipPath.appendChild(rect2Clone);
-      }
-
       defs.appendChild(clipPath);
+    }
+
+    while (clipPath.firstChild) {
+      clipPath.removeChild(clipPath.firstChild);
+    }
+
+    const waveClone = wavePath.cloneNode(true);
+    waveClone.removeAttribute('fill');
+    waveClone.removeAttribute('style');
+    waveClone.removeAttribute('id');
+    clipPath.appendChild(waveClone);
+
+    const rectClone = bgRect.cloneNode(true);
+    rectClone.removeAttribute('fill');
+    rectClone.removeAttribute('style');
+    rectClone.removeAttribute('id');
+    clipPath.appendChild(rectClone);
+
+    if (bgRect2) {
+      const rect2Clone = bgRect2.cloneNode(true);
+      rect2Clone.removeAttribute('fill');
+      rect2Clone.removeAttribute('style');
+      rect2Clone.removeAttribute('id');
+      clipPath.appendChild(rect2Clone);
     }
   }
 
@@ -1028,9 +1137,50 @@ function BentoSocialCard({ slot, post, phase, cycle }) {
   );
 }
 
+const COFFEE_HERO_ASSETS = {
+  AMERICANO: {
+    image: '/images/Images/kaffee-meister-BIeXZhg_7sw-unsplash.jpg',
+    attribution: 'Photo by Kaffee Meister on Unsplash'
+  },
+  AFFOGATO: {
+    image: '/images/Images/affogato.jpg',
+    attribution: 'designed by <a href="https://www.magnific.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">Freepik - Magnific.com</a>'
+  },
+  FRAPPE: {
+    image: '/images/Images/frappe.jpg',
+    attribution: 'designed by <a href="https://www.magnific.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">muhammad.abdullah - Magnific.com</a>'
+  },
+  LATTE: {
+    image: '/images/Images/circle-digital-marketing-agency-onzvnHqx6nc-unsplash.jpg',
+    attribution: 'designed by <a href="https://www.magnific.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">muhammad.abdullah - Magnific.com</a>'
+  },
+  VIETNAMESE: {
+    image: '/images/Images/andrew-valdivia-mMI5sdLFoHM-unsplash.jpg',
+    attribution: 'Photo by Andrew Valdivia on Unsplash'
+  },
+  CORTADO: {
+    image: '/images/Images/cortado.jpg',
+    attribution: 'designed by <a href="https://www.magnific.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">jcomp - Magnific.com</a>'
+  },
+  COLDBREW: {
+    image: '/images/Images/coldbrew.jpg',
+    attribution: 'designed by <a href="https://www.magnific.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">muhammad.abdullah - Magnific.com</a>'
+  },
+  ESPRESSO: {
+    image: '/images/Images/espresso.jpg',
+    attribution: 'designed by <a href="https://www.magnific.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">nuraghies - Magnific.com</a>'
+  }
+};
+
 function DesktopHomePage() {
   const getHeroText = useUserStore((state) => state.getHeroText);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
+  const coffeeType = useUserStore((state) => state.coffeeType);
+  const skippedWelcome = useUserStore((state) => state.skippedWelcome);
+
+  const selectedAsset = useMemo(() => {
+    return coffeeType ? COFFEE_HERO_ASSETS[coffeeType] : null;
+  }, [coffeeType]);
 
 
   const videoRef = useRef(null);
@@ -1511,6 +1661,27 @@ function DesktopHomePage() {
 
   return (
     <div className="homepage-figma-container">
+      {skippedWelcome && <SkippedHomeHeroOverlay />}
+      {!skippedWelcome && selectedAsset && (
+        <div
+          className="hero-image-attribution"
+          style={{
+            position: 'absolute',
+            left: '24px',
+            top: 'calc(7.4074vw + 24px)',
+            zIndex: 15,
+            fontSize: '11px',
+            color: 'rgba(255, 255, 255, 0.7)',
+            fontFamily: 'Outfit, sans-serif',
+            background: 'rgba(31, 42, 68, 0.85)',
+            padding: '6px 12px',
+            borderRadius: '6px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            pointerEvents: 'auto',
+          }}
+          dangerouslySetInnerHTML={{ __html: selectedAsset.attribution }}
+        />
+      )}
       {/* ── DESKTOP & MOBILE UNIFIED FIGMA SVG LAYOUT ───────────────────────── */}
       <div className="figma-svg-wrapper">
         <div className="figma-svg-content">
@@ -1534,6 +1705,16 @@ function DesktopHomePage() {
                 compactLowerHomepageSections(svgDoc);
                 injectWhyChilldBackground(svgDoc);
                 injectB2bGraffiti(svgDoc);
+
+                if (selectedAsset) {
+                  const pattern = svgDoc.getElementById('pattern3_366_1172') || svgDoc.querySelector('pattern[id^="pattern3_"]');
+                  if (pattern) {
+                    const imageNode = pattern.querySelector('image');
+                    if (imageNode) {
+                      imageNode.setAttribute('href', selectedAsset.image);
+                    }
+                  }
+                }
 
                 // Wrap the cup elements for parallax effect
                 wrapCupElements(svgDoc, 1, 2);
@@ -1793,8 +1974,8 @@ function DesktopHomePage() {
           <div
             ref={scrollVideoTriggerRef}
             className={`scroll-video-wrapper ${(scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting')
-                ? 'scroll-video-wrapper--covered'
-                : ''
+              ? 'scroll-video-wrapper--covered'
+              : ''
               }`}
             style={videoStyles}
           >
@@ -1884,13 +2065,14 @@ function DesktopHomePage() {
           </svg>
 
           {/* ── DESKTOP SVG CLICKABLE OVERLAYS (EXCLUDING HEADER) ── */}
-          {/* Code Your Own Coffee Hero Button */}
-          <Link
-            to="/build"
-            className="homepage-link link-hero-build"
-            style={{ left: '40.94%', top: '9.58%', width: '18.12%', height: '0.60%' }}
-            title="Code Your Own Coffee"
-          />
+          {!skippedWelcome && (
+            <Link
+              to="/build"
+              className="homepage-link link-hero-build"
+              style={{ left: '40.94%', top: '9.58%', width: '18.12%', height: '0.60%' }}
+              title="Code Your Own Coffee"
+            />
+          )}
 
           {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
 

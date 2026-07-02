@@ -202,6 +202,7 @@
   text-align: left;
 }
 
+.rp-section-head h1,
 .rp-section-head h2 {
   font-family: var(--font-heading, 'Outfit', sans-serif);
   font-size: clamp(1.35rem, 3vw, 1.75rem);

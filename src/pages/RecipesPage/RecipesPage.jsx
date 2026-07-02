@@ -52,7 +52,6 @@ const cardAnim = {
 
 export default function RecipesPage() {
   const [selectedConcentrate, setSelectedConcentrate] = useState('all');
-  const featuredRecipes = RECIPES.filter((r) => r.hasExactMedia || r.video).slice(0, 18);
 
   const categories = RECIPE_CATEGORIES;
 
@@ -60,171 +59,14 @@ export default function RecipesPage() {
     ? RECIPES
     : RECIPES.filter((r) => r.concentrate === selectedConcentrate);
 
-  const totalRecipes = RECIPES.length;
-  const totalConcentrates = new Set(RECIPES.map((r) => r.concentrate)).size;
-
   return (
     <main className="recipes-page">
-      {/* ── HERO ── */}
-      <section className="rp-hero">
-        <div className="rp-hero__bg" aria-hidden="true" />
-        <div className="rp-hero__glow" aria-hidden="true" />
-
-        <div className="container rp-hero__inner">
-          <motion.p
-            className="rp-hero__eyebrow"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Icon name="coffee" size={14} />
-            <span>CHILLD BREW LAB</span>
-          </motion.p>
-
-          <motion.h1
-            className="rp-hero__title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08 }}
-          >
-            Discover Signature<br />Cold Brew Recipes
-          </motion.h1>
-
-          <motion.p
-            className="rp-hero__desc"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.16 }}
-          >
-            Handcrafted recipes from our baristas and community — each one built
-            around Chilld's slow-steeped concentrates. Create your own blend or
-            find your next favourite drink.
-          </motion.p>
-
-          <motion.div
-            className="rp-hero__actions"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.24 }}
-          >
-            <Link to="/build" className="rp-btn rp-btn--primary">
-              <Icon name="coffee" size={16} />
-              <span>Create Drink</span>
-            </Link>
-            <Link to="/create-recipe" className="rp-btn rp-btn--outline">
-              <Icon name="plus" size={16} />
-              <span>Share Recipe</span>
-            </Link>
-          </motion.div>
-
-          <motion.div
-            className="rp-hero__stats"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.36 }}
-          >
-            <div className="rp-stat">
-              <strong>{totalRecipes}</strong>
-              <span>Recipes</span>
-            </div>
-            <div className="rp-stat-divider" />
-            <div className="rp-stat">
-              <strong>{totalConcentrates}</strong>
-              <span>Concentrates</span>
-            </div>
-            <div className="rp-stat-divider" />
-            <div className="rp-stat">
-              <strong>∞</strong>
-              <span>Possibilities</span>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="rp-hero__wave" aria-hidden="true">
-          <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
-            <path d="M0,55 C280,90 580,20 900,55 C1120,80 1340,35 1440,45 L1440,100 L0,100 Z" fill="#f5f9fc" />
-          </svg>
-        </div>
-      </section>
-
-      {/* ── TRENDING SLIDER (auto-scroll) ── */}
-      <section className="rp-slider-section">
-        <div className="container">
-          <div className="rp-section-head rp-section-head--stacked">
-            <div>
-              <h2>Trending Creations</h2>
-              <p className="rp-section-sub">Most loved recipes from the community this week</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Full-bleed auto-scroll marquee */}
-        <div className="rp-marquee">
-          <div className="rp-marquee__track">
-            {/* Original set */}
-            {featuredRecipes.map((recipe) => (
-              <article key={recipe.id} className="rp-slide-card">
-                <Link to={`/recipe-details/${recipe.id}`} className="rp-slide-card__link">
-                  <div className="rp-slide-card__img-wrap">
-                    <RecipeMedia
-                      recipe={recipe}
-                      alt={recipe.name}
-                      className="rp-slide-card__img"
-                    />
-                    {recipe.video && <span className="rp-slide-card__video-tag">Video</span>}
-                    <span className="rp-slide-card__likes-tag">
-                      <Icon name="heart" size={12} />
-                      <span>{recipe.likes}</span>
-                    </span>
-                  </div>
-                  <div className="rp-slide-card__body">
-                    <div className="rp-slide-card__meta">
-                      <span className="rp-slide-card__concentrate">{recipe.concentrate}</span>
-                      <span className="rp-slide-card__mood">{recipe.mood}</span>
-                    </div>
-                    <h3>{recipe.name}</h3>
-                    <p>{recipe.description}</p>
-                  </div>
-                </Link>
-              </article>
-            ))}
-            {/* Duplicate set for seamless loop */}
-            {featuredRecipes.map((recipe) => (
-              <article key={`dup-${recipe.id}`} className="rp-slide-card" aria-hidden="true">
-                <Link to={`/recipe-details/${recipe.id}`} className="rp-slide-card__link" tabIndex={-1}>
-                  <div className="rp-slide-card__img-wrap">
-                    <RecipeMedia
-                      recipe={recipe}
-                      alt={recipe.name}
-                      className="rp-slide-card__img"
-                    />
-                    {recipe.video && <span className="rp-slide-card__video-tag">Video</span>}
-                    <span className="rp-slide-card__likes-tag">
-                      <Icon name="heart" size={12} />
-                      <span>{recipe.likes}</span>
-                    </span>
-                  </div>
-                  <div className="rp-slide-card__body">
-                    <div className="rp-slide-card__meta">
-                      <span className="rp-slide-card__concentrate">{recipe.concentrate}</span>
-                      <span className="rp-slide-card__mood">{recipe.mood}</span>
-                    </div>
-                    <h3>{recipe.name}</h3>
-                    <p>{recipe.description}</p>
-                  </div>
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── FILTERABLE RECIPE GRID ── */}
       <section className="rp-grid-section">
         <div className="container">
           <div className="rp-section-head rp-section-head--stacked">
             <div>
-              <h2>Browse by Concentrate</h2>
+              <h1>Browse by Concentrate</h1>
               <p className="rp-section-sub">
                 Every recipe is crafted around a specific Chilld concentrate — pick yours
               </p>

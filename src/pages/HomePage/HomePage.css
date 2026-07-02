@@ -28,6 +28,186 @@
 }
 
 /* ── DESKTOP FIGMA SVG WRAPPER & CROP ───────────────── */
+.homepage-skip-overlay {
+  --neha-ink: #1e2944;
+  --neha-sky: #b8dffe;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  width: 100%;
+  min-height: 910px;
+  height: 71vw;
+  aspect-ratio: 1512 / 1007;
+  overflow: visible;
+  color: var(--neha-ink);
+  font-family: var(--font-heading), var(--font-body), system-ui, sans-serif;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+.homepage-skip-overlay .neha-hero {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: var(--neha-sky);
+}
+
+.homepage-skip-overlay .neha-hero__pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  color: #8eb3d5;
+  opacity: 0.24;
+}
+
+.homepage-skip-overlay .neha-hero__pattern path {
+  stroke-width: 14;
+}
+
+.homepage-skip-overlay .neha-hero__cup-backdrop {
+  position: absolute;
+  top: -6%;
+  right: -9%;
+  z-index: 1;
+  width: 108%;
+  height: auto;
+  opacity: 0.38;
+  user-select: none;
+}
+
+.homepage-skip-overlay .neha-hero__copy {
+  position: relative;
+  z-index: 7;
+  width: 42%;
+  padding: 17.8% 0 0 5.2%;
+}
+
+.homepage-skip-overlay .neha-logo,
+.homepage-skip-overlay .neha-hero__copy h2 {
+  margin: 0;
+  color: var(--neha-ink);
+}
+
+.homepage-skip-overlay .neha-logo {
+  font-size: 8rem;
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.homepage-skip-overlay .neha-logo span {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.homepage-skip-overlay .neha-tagline {
+  margin: 1rem 0 0;
+  color: var(--neha-ink);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.homepage-skip-overlay .neha-hero__copy h2 {
+  margin-top: 1.65rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+
+.homepage-skip-overlay .hero-dots {
+  display: flex;
+  gap: 0.45rem;
+  margin-top: 10.8rem;
+  margin-left: 0.85rem;
+}
+
+.homepage-skip-overlay .hero-dots span {
+  display: block;
+  width: 2.6rem;
+  height: 0.28rem;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.homepage-skip-overlay .hero-dots .is-active {
+  background: var(--neha-ink);
+}
+
+.homepage-skip-overlay .neha-hero__coffee {
+  position: absolute;
+  top: 13%;
+  left: 42.5%;
+  z-index: 4;
+  width: 47%;
+  height: auto;
+  transform: rotate(-15deg);
+  transform-origin: top left;
+  user-select: none;
+}
+
+.homepage-skip-overlay .homepage-hero-running-wave {
+  position: absolute;
+  top: clamp(520px, 100vw, 650px);
+  left: 0;
+  z-index: 8;
+  display: block;
+  width: 100%;
+  height: clamp(230px, 18vw, 300px);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.homepage-skip-overlay .homepage-hero-running-wave path {
+  fill: #120d07;
+}
+
+.homepage-skip-overlay .homepage-hero-running-wave__text {
+  fill: #FFFFFF;
+  font-family: var(--font-heading), var(--font-body), system-ui, sans-serif;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.homepage-skip-overlay .neha-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8.5%;
+  z-index: 9;
+  display: block;
+  width: 100%;
+  height: 32%;
+  pointer-events: none;
+}
+
+.homepage-skip-overlay .neha-wave path {
+  fill: var(--neha-sky);
+}
+
+@media (max-width: 1400px) {
+  .homepage-skip-overlay .neha-logo {
+    font-size: 7rem;
+  }
+
+  .homepage-skip-overlay .neha-hero__copy h2 {
+    font-size: 1.85rem;
+  }
+
+  .homepage-skip-overlay .hero-dots {
+    margin-top: 9.5rem;
+  }
+}
+
 .figma-svg-wrapper {
   position: relative;
   width: 100%;
@@ -57,6 +237,10 @@
   /* Let clicks pass through to absolute overlays */
   position: relative;
   z-index: 3;
+}
+
+.marquee-overlay-svg {
+  z-index: 90 !important;
 }
 
 .desktop-homepage__why-chilld {
@@ -2006,6 +2190,7 @@
   inset: 0;
   z-index: 4;
   pointer-events: none;
+  transform: translateY(0px);
 }
 
 .hard-part-parallax-clip {

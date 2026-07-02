@@ -8,16 +8,15 @@ import { create } from 'zustand';
  * - skippedWelcome: whether the user chose to skip onboarding
  */
 
-/* Coffee type → suffix mapping for the personalised hero text */
 const COFFEE_SUFFIXES = {
-  ESPRESSO:   'ESSO',
-  AMERICANO:  'CANO',
-  CAPPUCCINO: 'CINO',
-  LATTE:      'LATTE',
-  COLDBREW:   'BREW',
-  CORTARDO:   'TARDO',
-  FRAPPE:     'FRAPPE',
-  AFFOGATO:   'GATO',
+  AMERICANO: 'cano',
+  AFFOGATO: 'gato',
+  FRAPPE: 'appe',
+  LATTE: 'Latte',
+  VIETNAMESE: 'Viet',
+  CORTADO: 'tado',
+  COLDBREW: 'Brew',
+  ESPRESSO: 'esso',
 };
 
 export const COFFEE_TYPES = Object.keys(COFFEE_SUFFIXES);
@@ -44,14 +43,7 @@ export const useUserStore = create(
         return { displayName: 'CHILLD', suffix: 'BREW' };
       }
       const raw = (name || '').trim();
-      const len = raw.length;
-      let short;
-      if (len < 5) {
-        short = raw.slice(0, 2);
-      } else {
-        short = raw.slice(0, 3);
-      }
-      const displayName = (short || 'CHILLD').toUpperCase();
+      const displayName = (raw.slice(0, 5) || 'CHILLD').toUpperCase();
       const suffix = (COFFEE_SUFFIXES[coffeeType] || 'KANO').toUpperCase();
       return { displayName, suffix };
     },

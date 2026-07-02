@@ -1,7 +1,9 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import RecipeMedia from '@/components/RecipeMedia/RecipeMedia';
 import { RECIPES } from '@/data/recipes';
+import { getNativeDeviceMode } from '@/utils/deviceDetection';
+import MobileRecipeDetailPage from './MobileRecipeDetailsPage';
 import './recipe-details-page.css';
 
 const sideGraffiti = '/images/side-graffiti.svg';
@@ -267,7 +269,21 @@ function RecipeDetailContent({ id, location }) {
 function RecipeDetailPage() {
   const { id } = useParams();
   const location = useLocation();
+  const [deviceMode, setDeviceMode] = useState(() => getNativeDeviceMode());
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDeviceMode(getNativeDeviceMode());
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const recipeKey = location.state?.name ? `${id || 'custom'}-${location.key}` : id || 'default';
+
+  if (deviceMode === 'mobile') {
+    return <MobileRecipeDetailPage key={recipeKey} id={id} location={location} />;
+  }
 
   return <RecipeDetailContent key={recipeKey} id={id} location={location} />;
 }

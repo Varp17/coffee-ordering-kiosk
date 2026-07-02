@@ -3,25 +3,25 @@ import '../StepLayout.css';
 
 const CONCENTRATES = [
   {
-    id: 'Coffee 50:50',
-    name: 'Coffee 50:50',
+    id: 'Classic',
+    name: 'Classic',
     qty: '60 gm / 70 gm / 80 gm',
     image: '/images/CofeeBuilder/50-50.png',
     desc: 'Classic balanced blend'
   },
   {
-    id: 'Coffee 70:30',
-    name: 'Coffee 70:30',
+    id: 'Bold',
+    name: 'Bold',
     qty: '45 ml – 80 ml',
     image: '/images/CofeeBuilder/70-30.png',
     desc: 'Stronger coffee kick'
   },
   {
-    id: 'Sif',
-    name: 'Sif',
+    id: 'Kaapi',
+    name: 'Kaapi',
     qty: '60 ml',
     image: '/images/CofeeBuilder/Sif.png',
-    desc: 'South Indian Filter'
+    desc: 'Kaapi'
   },
   {
     id: 'Cascara',

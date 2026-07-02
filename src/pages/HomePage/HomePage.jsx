@@ -180,7 +180,7 @@ function animateHeroBeans(svgDoc) {
         animation.cancel();
         startHeroBeanFloat(wrapper, entrance);
       })
-      .catch(() => {});
+      .catch(() => { });
   });
 }
 
@@ -434,6 +434,193 @@ function hideStaticPlaceholders(svgDoc) {
     'rect[x="422"][y="4478"]'
   );
   if (bentoVideoPlaceholder) bentoVideoPlaceholder.remove();
+
+  // Match the footer background above the wave with the upped light blue color (#eaf5ff)
+  const footerBgRects = Array.from(svgDoc.querySelectorAll('rect')).filter(r => {
+    const transform = r.getAttribute('transform') || '';
+    const y = r.getAttribute('y') || '';
+    const normTransform = transform.trim().replace(/[\s,]+/g, ' ');
+    return normTransform.includes('translate(0 7193)') || y === '7193';
+  });
+  footerBgRects.forEach(r => {
+    r.setAttribute('fill', '#eaf5ff');
+  });
+}
+
+function injectWhyChilldBackground(svgDoc) {
+  // 1. Find the wave path using robust normalization (handles any space/comma serialization)
+  const wavePath = Array.from(svgDoc.querySelectorAll('path')).find(p => {
+    const d = p.getAttribute('d') || '';
+    const norm = d.trim().replace(/[\s,]+/g, ' ');
+    return norm.startsWith('M 1512 2237.6') || norm.startsWith('M1512 2237.6');
+  });
+
+  // 2. Find the rect below the wave using robust transform and y coordinates
+  const bgRect = Array.from(svgDoc.querySelectorAll('rect')).find(r => {
+    const transform = r.getAttribute('transform') || '';
+    const y = r.getAttribute('y');
+    const fill = r.getAttribute('fill') || '';
+
+    const normTransform = transform.trim().replace(/[\s,]+/g, ' ');
+    const hasCorrectTransform = normTransform.includes('translate(0 2372)');
+    const hasCorrectY = (y === '2372');
+    const isWhite = (fill === 'white' || fill.toUpperCase() === '#FFFFFF');
+
+    return (hasCorrectTransform || hasCorrectY) && isWhite;
+  });
+
+  // 3. Find the rect further below
+  const bgRect2 = Array.from(svgDoc.querySelectorAll('rect')).find(r => {
+    const transform = r.getAttribute('transform') || '';
+    const y = r.getAttribute('y');
+    const fill = r.getAttribute('fill') || '';
+
+    const normTransform = transform.trim().replace(/[\s,]+/g, ' ');
+    const hasCorrectTransform = normTransform.includes('translate(0 3360)');
+    const hasCorrectY = (y === '3360');
+    const isWhite = (fill === 'white' || fill.toUpperCase() === '#FFFFFF');
+
+    return (hasCorrectTransform || hasCorrectY) && isWhite;
+  });
+
+  if (!wavePath || !bgRect) return;
+
+  // Change fills of original background shapes to light blue (#eaf5ff)
+  wavePath.setAttribute('fill', '#eaf5ff');
+  bgRect.setAttribute('fill', '#eaf5ff');
+  if (bgRect2) {
+    bgRect2.setAttribute('fill', '#eaf5ff');
+  }
+
+  // Create clipPath
+  const defs = svgDoc.querySelector('defs');
+  if (defs) {
+    let clipPath = svgDoc.getElementById('why-chilld-bg-clip');
+    if (!clipPath) {
+      clipPath = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'clipPath');
+      clipPath.setAttribute('id', 'why-chilld-bg-clip');
+
+      const waveClone = wavePath.cloneNode(true);
+      waveClone.removeAttribute('fill');
+      waveClone.removeAttribute('style');
+      waveClone.removeAttribute('id');
+      clipPath.appendChild(waveClone);
+
+      const rectClone = bgRect.cloneNode(true);
+      rectClone.removeAttribute('fill');
+      rectClone.removeAttribute('style');
+      rectClone.removeAttribute('id');
+      clipPath.appendChild(rectClone);
+
+      if (bgRect2) {
+        const rect2Clone = bgRect2.cloneNode(true);
+        rect2Clone.removeAttribute('fill');
+        rect2Clone.removeAttribute('style');
+        rect2Clone.removeAttribute('id');
+        clipPath.appendChild(rect2Clone);
+      }
+
+      defs.appendChild(clipPath);
+    }
+  }
+
+  // Add the single background pattern image
+  if (!svgDoc.querySelector('[data-why-chilld-bg-pattern="true"]')) {
+    const singleBgImage = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'image');
+    singleBgImage.setAttribute('data-why-chilld-bg-pattern', 'true');
+    singleBgImage.setAttribute('href', '/Subtract%20copy.svg');
+    singleBgImage.setAttribute('x', '-1512');
+    singleBgImage.setAttribute('y', '2069.6');
+    singleBgImage.setAttribute('width', '1512');
+    singleBgImage.setAttribute('height', '1390.4'); // 3460 - 2069.6 = 1390.4
+    singleBgImage.setAttribute('transform', 'scale(-1, 1)');
+    singleBgImage.setAttribute('clip-path', 'url(#why-chilld-bg-clip)');
+    singleBgImage.setAttribute('opacity', '0.42');
+    singleBgImage.setAttribute('style', 'mix-blend-mode: multiply;');
+
+    wavePath.parentNode.insertBefore(singleBgImage, wavePath.nextSibling);
+  }
+}
+
+function injectB2bGraffiti(svgDoc) {
+  const b2bRect = svgDoc.querySelector('rect[y="6516"][fill="#E6F4FF"]');
+  if (!b2bRect) return;
+
+  const rectX = b2bRect.getAttribute('x') || '80';
+  const rectY = b2bRect.getAttribute('y') || '6516';
+  const rectW = b2bRect.getAttribute('width') || '1352';
+  const rectH = b2bRect.getAttribute('height') || '617';
+
+  const defs = svgDoc.querySelector('defs');
+  if (defs) {
+    // 1. Create linear gradient for the mask
+    let gradient = svgDoc.getElementById('b2b-graffiti-fade');
+    if (!gradient) {
+      gradient = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+      gradient.setAttribute('id', 'b2b-graffiti-fade');
+      gradient.setAttribute('x1', '0');
+      gradient.setAttribute('y1', '0');
+      gradient.setAttribute('x2', '1');
+      gradient.setAttribute('y2', '0');
+
+      const stop1 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'stop');
+      stop1.setAttribute('offset', '0%');
+      stop1.setAttribute('stop-color', 'white');
+      stop1.setAttribute('stop-opacity', '1.0');
+
+      const stop2 = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'stop');
+      stop2.setAttribute('offset', '100%');
+      stop2.setAttribute('stop-color', 'white');
+      stop2.setAttribute('stop-opacity', '0.0');
+
+      gradient.appendChild(stop1);
+      gradient.appendChild(stop2);
+      defs.appendChild(gradient);
+    }
+
+    // 2. Create mask using the gradient
+    let mask = svgDoc.getElementById('b2b-graffiti-mask');
+    if (!mask) {
+      mask = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'mask');
+      mask.setAttribute('id', 'b2b-graffiti-mask');
+
+      const maskRect = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      maskRect.setAttribute('x', rectX);
+      maskRect.setAttribute('y', rectY);
+      maskRect.setAttribute('width', rectW);
+      maskRect.setAttribute('height', rectH);
+      maskRect.setAttribute('fill', 'url(#b2b-graffiti-fade)');
+
+      const transform = b2bRect.getAttribute('transform');
+      if (transform) maskRect.setAttribute('transform', transform);
+
+      mask.appendChild(maskRect);
+      defs.appendChild(mask);
+    }
+  }
+
+  // 3. Inject the single image with the mask
+  if (!svgDoc.querySelector('[data-b2b-graffiti-overlay="true"]')) {
+    const overlayImage = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'image');
+    overlayImage.setAttribute('data-b2b-graffiti-overlay', 'true');
+    overlayImage.setAttribute('href', '/Subtract%20copy.svg');
+    overlayImage.setAttribute('x', rectX);
+    overlayImage.setAttribute('y', rectY);
+    overlayImage.setAttribute('width', rectW);
+    overlayImage.setAttribute('height', rectH);
+    overlayImage.setAttribute('mask', 'url(#b2b-graffiti-mask)');
+    overlayImage.setAttribute('opacity', '0.7');
+
+    const rx = b2bRect.getAttribute('rx');
+    const ry = b2bRect.getAttribute('ry');
+    if (rx) overlayImage.setAttribute('rx', rx);
+    if (ry) overlayImage.setAttribute('ry', ry);
+
+    const transform = b2bRect.getAttribute('transform');
+    if (transform) overlayImage.setAttribute('transform', transform);
+
+    b2bRect.parentNode.insertBefore(overlayImage, b2bRect.nextSibling);
+  }
 }
 
 function wrapCupElements(svgDoc, cupIndex, nextSiblingCount) {
@@ -455,7 +642,7 @@ function wrapCupElements(svgDoc, cupIndex, nextSiblingCount) {
 
   parent.insertBefore(parallaxWrapper, gMask);
   parallaxWrapper.appendChild(hoverWrapper);
-  
+
   // Move elements inside the hover wrapper
   hoverWrapper.appendChild(gMask);
 
@@ -874,6 +1061,7 @@ function DesktopHomePage() {
   const [scrollVideoMode, setScrollVideoMode] = useState('inline');
   const [activeBentoPostSet, setActiveBentoPostSet] = useState(0);
   const [outgoingBentoPostSet, setOutgoingBentoPostSet] = useState(null);
+  const [isWhyChilldVisible, setIsWhyChilldVisible] = useState(false);
 
   const videoStyles = {
     position: 'absolute',
@@ -1255,7 +1443,7 @@ function DesktopHomePage() {
             if (el) {
               const screenCenter = svgRect.top + cupCenters[i - 1] * scale;
               const distanceFromCenter = viewportCenter - screenCenter;
-              const shift = distanceFromCenter * cupSpeeds[i - 1];
+              const shift = Math.max(0, distanceFromCenter * cupSpeeds[i - 1]);
 
               el.style.transform = `translate3d(0, ${shift.toFixed(1)}px, 0)`;
             }
@@ -1292,6 +1480,31 @@ function DesktopHomePage() {
     };
   }, []);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsWhyChilldVisible(true);
+        }
+      },
+      {
+        threshold: 0.05,
+        rootMargin: '0px 0px -50px 0px',
+      }
+    );
+
+    const section = document.querySelector('.desktop-homepage__why-chilld');
+    if (section) {
+      observer.observe(section);
+    }
+
+    return () => {
+      if (section) {
+        observer.unobserve(section);
+      }
+    };
+  }, []);
+
   useEffect(() => () => {
     window.clearTimeout(carouselResumeTimerRef.current);
   }, []);
@@ -1319,6 +1532,8 @@ function DesktopHomePage() {
                 injectDynamicHeroText(svgDoc, displayName, suffix);
                 hideStaticPlaceholders(svgDoc);
                 compactLowerHomepageSections(svgDoc);
+                injectWhyChilldBackground(svgDoc);
+                injectB2bGraffiti(svgDoc);
 
                 // Wrap the cup elements for parallax effect
                 wrapCupElements(svgDoc, 1, 2);
@@ -1375,9 +1590,9 @@ function DesktopHomePage() {
             }}
           />
 
-          {/* ── WHY CHILLD REACT OVERLAY — solid navy numbered cups ── */}
           <section className="desktop-homepage__why-chilld" aria-label="Why CHILLD">
-            <div className="desktop-homepage__why-chilld-content">
+            <div className={`desktop-homepage__why-chilld-content${isWhyChilldVisible ? ' visible' : ''}`}>
+              <h2 className="desktop-homepage__why-chilld-title">Why Chilld?</h2>
               {WHY_CHILLD_ITEMS.map((item, index) => (
                 <WhyChilldCup
                   key={item.id}
@@ -1391,528 +1606,367 @@ function DesktopHomePage() {
             </div>
           </section>
 
-        {/* ── HARD-PART SECTION: COFFEESWIRL2, CLIPPED TO FIGMA WAVES ── */}
-        <div className="hard-part-shadow-wrapper">
-          <div className="hard-part-parallax-clip" aria-hidden="true">
-            <div
-              ref={hardPartParallaxRef}
-              className="hard-part-parallax-video"
-            >
-              <video
-                ref={hardPartVideoRef}
-                src="/Videos/coffeeswirl2.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-              />
-              <div className="hard-part-video-overlay" />
-            </div>
-          </div>
-        </div>
-
-        {/* ── HARD-PART TEXT OVERLAY — Hardcoded React matching Figma reference ── */}
-        <div
-          className="hard-part-copy-overlay"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            top: '13.6%',
-            height: '12.8%',
-            left: 0,
-            right: 0,
-            padding: '0.5% 10%',
-            boxSizing: 'border-box',
-            overflow: 'hidden',
-          }}
-        >
-          {/* ── Big heading ── */}
-          <h2 style={{
-            fontFamily: "'Outfit', sans-serif",
-            fontSize: 'clamp(1.1rem, 2.4vw, 2.8rem)',
-            fontWeight: 900,
-            color: '#FFFFFF',
-            textAlign: 'center',
-            lineHeight: 1.05,
-            letterSpacing: '-0.03em',
-            margin: '0 0 0.3vw 0',
-            textShadow: '0 2px 8px rgba(43,22,8,0.35)',
-            userSelect: 'none',
-          }}>
-            We handled the hard part, the fun part's on you
-          </h2>
-
-          {/* ── Horizontal divider ── */}
-          <div style={{
-            width: '80%',
-            maxWidth: 780,
-            height: 2,
-            background: 'rgba(255,255,255,0.55)',
-            margin: '0.2vw auto 0.5vw auto',
-            borderRadius: 1,
-          }} />
-
-          {/* ── Body paragraphs ── */}
-          <p style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.45rem, 0.68vw, 0.78rem)',
-            fontWeight: 400,
-            color: '#FFFFFF',
-            textAlign: 'center',
-            lineHeight: 1.6,
-            maxWidth: 660,
-            margin: '0 auto 0.4vw auto',
-            textShadow: '0 1px 4px rgba(43,22,8,0.3)',
-            userSelect: 'none',
-          }}>
-            We get you exceptional coffee concentrate. We take care of the nitty-gritties of sourcing, grinding and brewing.
-            After that, you are free to tailor your daily coffee to your liking. Add water, if you are in a hurry for your
-            presentation. Add syrup, milk, experiment with everyday ingredients in your kitchen, if you feel like it.
-          </p>
-          <p style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.5rem, 0.78vw, 0.85rem)',
-            fontWeight: 400,
-            color: '#FFFFFF',
-            textAlign: 'center',
-            lineHeight: 1.6,
-            maxWidth: 660,
-            margin: '0 auto 0.4vw auto',
-            textShadow: '0 1px 4px rgba(43,22,8,0.3)',
-            userSelect: 'none',
-          }}>
-            If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery, like me, but
-            enjoy the occasional pick-me-up, add a spoon less. No one's judging you.
-          </p>
-          <p style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.5rem, 0.78vw, 0.85rem)',
-            fontWeight: 400,
-            color: '#FFFFFF',
-            textAlign: 'center',
-            lineHeight: 1.6,
-            maxWidth: 660,
-            margin: '0 auto 0.5vw auto',
-            textShadow: '0 1px 4px rgba(43,22,8,0.3)',
-            userSelect: 'none',
-          }}>
-            We guarantee that it will taste good; we promise that it won't eat into your wallet.
-          </p>
-
-          {/* ── Italic quote heading ── */}
-          <p style={{
-            fontFamily: "'Outfit', sans-serif",
-            fontSize: 'clamp(0.6rem, 1vw, 1.15rem)',
-            fontWeight: 600,
-            fontStyle: 'italic',
-            color: '#FFFFFF',
-            textAlign: 'center',
-            margin: '0 0 0.4vw 0',
-            letterSpacing: '-0.01em',
-            textShadow: '0 1px 5px rgba(43,22,8,0.35)',
-            userSelect: 'none',
-          }}>
-            {"\u201CCoffee is too much work\u201D or \u201Cthis sounds difficult\u201D"}
-          </p>
-
-          <p style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.5rem, 0.78vw, 0.85rem)',
-            fontWeight: 400,
-            color: '#FFFFFF',
-            textAlign: 'center',
-            lineHeight: 1.6,
-            maxWidth: 660,
-            margin: '0 auto 0.4vw auto',
-            textShadow: '0 1px 4px rgba(43,22,8,0.3)',
-            userSelect: 'none',
-          }}>
-            If you can make lemonade or iced-water, this is a walk in the park.
-          </p>
-          <p style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(0.5rem, 0.78vw, 0.85rem)',
-            fontWeight: 400,
-            color: '#FFFFFF',
-            textAlign: 'center',
-            lineHeight: 1.6,
-            maxWidth: 660,
-            margin: '0 auto 0.5vw auto',
-            textShadow: '0 1px 4px rgba(43,22,8,0.3)',
-            userSelect: 'none',
-          }}>
-            Chilld is built for people who like things their way. From milk choices to sweetness levels, every drink is designed
-            by you. No complicated menus. Just cold coffee made for your mood, your routine, and your kind of day.
-          </p>
-
-          {/* ── CTA Buttons ── */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 'clamp(12px, 1.5vw, 24px)',
-            pointerEvents: 'auto',
-          }}>
-            <Link
-              to="/build"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 'clamp(8px, 0.7vw, 14px) clamp(18px, 1.8vw, 36px)',
-                fontFamily: "'Outfit', sans-serif",
-                fontWeight: 700,
-                fontSize: 'clamp(0.55rem, 0.8vw, 0.9rem)',
-                color: '#1a1a1a',
-                background: '#FFFFFF',
-                borderRadius: 999,
-                textDecoration: 'none',
-                border: 'none',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
-                transition: 'transform 0.2s, box-shadow 0.2s',
-                userSelect: 'none',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Buy CHILLD Cold Brew Core
-            </Link>
-            <Link
-              to="/recipes"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 'clamp(8px, 0.7vw, 14px) clamp(12px, 1vw, 20px)',
-                fontFamily: "'Outfit', sans-serif",
-                fontWeight: 600,
-                fontSize: 'clamp(0.55rem, 0.8vw, 0.9rem)',
-                color: '#FFFFFF',
-                background: 'transparent',
-                textDecoration: 'none',
-                border: 'none',
-                transition: 'opacity 0.2s',
-                userSelect: 'none',
-                whiteSpace: 'nowrap',
-                opacity: 0.9,
-              }}
-            >
-              Explore Recipes
-            </Link>
-          </div>
-        </div>
-
-        <div className="bento-video-card">
-          <video
-            ref={bentoVideoRef}
-            src="/Videos/coffeeswirl1.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            aria-label="Coffee swirl video"
-          />
-        </div>
-
-        {/* ── BENTO GRID: STATIC POSTER + ROTATING SOCIAL POSTS ── */}
-        <div className="bento-grid-hover-card bento-grid-hover-card--poster" aria-hidden="true" />
-
-        {outgoingBentoPostSet !== null && BENTO_SOCIAL_SLOTS.map((slot) => (
-          <BentoSocialCard
-            key={`bento-leave-${outgoingBentoPostSet}-${slot}`}
-            slot={slot}
-            post={BENTO_POST_SETS[outgoingBentoPostSet][slot]}
-            phase="leave"
-            cycle={outgoingBentoPostSet}
-          />
-        ))}
-
-        {BENTO_SOCIAL_SLOTS.map((slot) => (
-          <BentoSocialCard
-            key={`bento-enter-${activeBentoPostSet}-${slot}`}
-            slot={slot}
-            post={BENTO_POST_SETS[activeBentoPostSet][slot]}
-            phase="enter"
-            cycle={activeBentoPostSet}
-          />
-        ))}
-
-        {/* ── INFINITE TRENDING MIXES CAROUSEL ── */}
-        <section
-          className="trending-mixes-marquee"
-          aria-label="Trending coffee mixes"
-          onMouseEnter={pauseMixCarousel}
-          onMouseLeave={() => resumeMixCarousel()}
-          onFocusCapture={pauseMixCarousel}
-          onBlurCapture={() => resumeMixCarousel()}
-          onPointerDown={handleCarouselPointerDown}
-          onPointerUp={handleCarouselPointerUp}
-          onPointerCancel={() => resumeMixCarousel()}
-        >
-          <div className="trending-mixes-marquee__viewport">
-            <div
-              ref={carouselTrackRef}
-              className="trending-mixes-marquee__track"
-            >
+          {/* ── HARD-PART SECTION: COFFEESWIRL2, CLIPPED TO FIGMA WAVES ── */}
+          <div className="hard-part-shadow-wrapper">
+            <div className="hard-part-parallax-clip" aria-hidden="true">
               <div
-                ref={carouselFirstGroupRef}
-                className="trending-mixes-marquee__group"
+                ref={hardPartParallaxRef}
+                className="hard-part-parallax-video"
               >
-                <TrendingMixCards />
-              </div>
-
-              <div
-                className="trending-mixes-marquee__group"
-                aria-hidden="true"
-              >
-                <TrendingMixCards duplicate />
-              </div>
-
-              <div
-                className="trending-mixes-marquee__group"
-                aria-hidden="true"
-              >
-                <TrendingMixCards duplicate />
+                <video
+                  ref={hardPartVideoRef}
+                  src="/Videos/coffeeswirl2.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                />
+                <div className="hard-part-video-overlay" />
               </div>
             </div>
           </div>
-        </section>
 
-        {/* ── TRENDING MIXES CONTROLS ──
-            Keeping the arrows inside this footer keeps them fixed, centered,
-            and vertically separated from the tagline on every screen size. */}
-        <div className="trending-mixes-footer">
-          <div className="trending-mixes-navigation" aria-label="Trending mixes navigation">
-            <button
-              type="button"
-              className="trending-mixes-nav-button"
-              aria-label="Show previous mixes"
-              onClick={() => moveMixCarousel(-1)}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M14.5 5 7.5 12l7 7" />
-              </svg>
-            </button>
+          {/* ── HARD-PART TEXT OVERLAY — Clean classes matching Figma reference ── */}
+          <div className="hard-part-copy-overlay">
+            {/* ── Big heading ── */}
+            <h2 className="hard-part-heading">
+              We handled the hard part, the fun part's on you
+            </h2>
 
-            <button
-              type="button"
-              className="trending-mixes-nav-button"
-              aria-label="Show next mixes"
-              onClick={() => moveMixCarousel(1)}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m9.5 5 7 7-7 7" />
-              </svg>
-            </button>
+            {/* ── Horizontal divider ── */}
+            <div className="hard-part-divider" />
+
+            {/* ── Body paragraphs ── */}
+            <p className="hard-part-paragraph">
+              We get you exceptional coffee concentrate. We take care of the nitty-gritties of sourcing, grinding and brewing.
+              After that, you are free to tailor your daily coffee to your liking. Add water, if you are in a hurry for your
+              presentation. Add syrup, milk, experiment with everyday ingredients in your kitchen, if you feel like it.
+            </p>
+            <p className="hard-part-paragraph">
+              If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery but
+              enjoy the occasional pick-me-up, add a spoon less. No one's judging you.
+            </p>
+            <p className="hard-part-paragraph hard-part-paragraph-spaced">
+              We guarantee that it will taste good; we promise that it won't eat into your wallet.
+            </p>
+
+            {/* ── Italic quote heading ── */}
+            <p className="hard-part-quote">
+              {"\u201CCoffee is too much work\u201D"}
+            </p>
+
+            <p className="hard-part-paragraph">
+              If you can make lemonade or iced-water, this is a walk in the park.
+            </p>
+            <p className="hard-part-paragraph hard-part-paragraph-large-gap">
+              Chilld is built for people who like things their way. From milk choices to sweetness levels, every drink is designed
+              by you. No complicated menus. Just cold coffee made for your mood, your routine, and your kind of day.
+            </p>
+
+            {/* ── CTA Buttons ── */}
+            <div className="hard-part-buttons">
+              <Link to="/build" className="hard-part-btn-primary">
+                Buy CHILLD Cold Brew Core
+              </Link>
+              <Link to="/recipes" className="hard-part-btn-secondary">
+                Explore Recipes
+              </Link>
+            </div>
           </div>
 
-          <p>
-            Tag your mix with <strong>#MadeByYou</strong>
-          </p>
-
-          <Link to="/build" className="trending-mixes-create-link">
-            Create your Recipe
-          </Link>
-        </div>
-
-        {/* ── SCROLL-TRIGGERED INLINE VIDEO ── */}
-        <div
-          ref={scrollVideoTriggerRef}
-          className={`scroll-video-wrapper ${
-            (scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting')
-              ? 'scroll-video-wrapper--covered'
-              : ''
-          }`}
-          style={videoStyles}
-        >
-          <div className="video-container-inner">
+          <div className="bento-video-card">
             <video
-              ref={videoRef}
-              src="/Videos/coffee_concentrate_with_glass.mp4"
+              ref={bentoVideoRef}
+              src="/Videos/coffeeswirl1.mp4"
               autoPlay
               loop
               muted
               playsInline
               preload="auto"
-              onClick={(event) => handleVideoClick(event, videoRef)}
-              className="fullscreen-scroll-video"
+              aria-label="Coffee swirl video"
             />
-            {isPaused && scrollVideoMode === 'inline' && (
+          </div>
+
+          {/* ── BENTO GRID: STATIC POSTER + ROTATING SOCIAL POSTS ── */}
+          <div className="bento-grid-hover-card bento-grid-hover-card--poster" aria-hidden="true" />
+
+          {outgoingBentoPostSet !== null && BENTO_SOCIAL_SLOTS.map((slot) => (
+            <BentoSocialCard
+              key={`bento-leave-${outgoingBentoPostSet}-${slot}`}
+              slot={slot}
+              post={BENTO_POST_SETS[outgoingBentoPostSet][slot]}
+              phase="leave"
+              cycle={outgoingBentoPostSet}
+            />
+          ))}
+
+          {BENTO_SOCIAL_SLOTS.map((slot) => (
+            <BentoSocialCard
+              key={`bento-enter-${activeBentoPostSet}-${slot}`}
+              slot={slot}
+              post={BENTO_POST_SETS[activeBentoPostSet][slot]}
+              phase="enter"
+              cycle={activeBentoPostSet}
+            />
+          ))}
+
+          {/* ── INFINITE TRENDING MIXES CAROUSEL ── */}
+          <section
+            className="trending-mixes-marquee"
+            aria-label="Trending coffee mixes"
+            onMouseEnter={pauseMixCarousel}
+            onMouseLeave={() => resumeMixCarousel()}
+            onFocusCapture={pauseMixCarousel}
+            onBlurCapture={() => resumeMixCarousel()}
+            onPointerDown={handleCarouselPointerDown}
+            onPointerUp={handleCarouselPointerUp}
+            onPointerCancel={() => resumeMixCarousel()}
+          >
+            <div className="trending-mixes-marquee__viewport">
+              <div
+                ref={carouselTrackRef}
+                className="trending-mixes-marquee__track"
+              >
+                <div
+                  ref={carouselFirstGroupRef}
+                  className="trending-mixes-marquee__group"
+                >
+                  <TrendingMixCards />
+                </div>
+
+                <div
+                  className="trending-mixes-marquee__group"
+                  aria-hidden="true"
+                >
+                  <TrendingMixCards duplicate />
+                </div>
+
+                <div
+                  className="trending-mixes-marquee__group"
+                  aria-hidden="true"
+                >
+                  <TrendingMixCards duplicate />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── TRENDING MIXES CONTROLS ──
+            Keeping the arrows inside this footer keeps them fixed, centered,
+            and vertically separated from the tagline on every screen size. */}
+          <div className="trending-mixes-footer">
+            <div className="trending-mixes-navigation" aria-label="Trending mixes navigation">
               <button
                 type="button"
-                className="video-play-overlay"
-                aria-label="Play coffee swirl video"
-                onClick={(event) => handleVideoClick(event, videoRef)}
+                className="trending-mixes-nav-button"
+                aria-label="Show previous mixes"
+                onClick={() => moveMixCarousel(-1)}
               >
-                <svg viewBox="0 0 24 24" fill="white" width="64" height="64">
-                  <path d="M8 5v14l11-7z" />
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14.5 5 7.5 12l7 7" />
                 </svg>
               </button>
-            )}
+
+              <button
+                type="button"
+                className="trending-mixes-nav-button"
+                aria-label="Show next mixes"
+                onClick={() => moveMixCarousel(1)}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m9.5 5 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+
+            <p>
+              Tag your mix with <strong>#MadeByYou</strong>
+            </p>
+
+            <Link to="/build" className="trending-mixes-create-link">
+              Create your Recipe
+            </Link>
           </div>
-        </div>
 
-        {/* ── LOOPING WAVY MARQUEE OVERLAYS ── */}
-        <svg
-          viewBox="0 0 1512 8329"
-          className="marquee-overlay-svg"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            zIndex: 6
-          }}
-        >
-          <defs>
-            {/* Top Wave Curve aligned exactly with the SVG wave border and extended off-screen */}
-            <path
-              id="marquee-path-top"
-              d="M-150 1185 L0 1119 L63 1090.97 C126 1063.35 252 1006.65 378 979.035 C504 951 630 951 756 979.035 C882 1006.65 1008 1063.35 1134 1063.04 C1260 1063.35 1386 1006.65 1449 979.035 L1512 951 L1662 885"
-            />
-            {/* Bottom Wave Curve aligned exactly with the top border of the navy blue wave and extended off-screen */}
-            <path
-              id="marquee-path-bottom"
-              d="M-150 7202 L0 7136 L63 7107.96 C126 7080.35 252 7023.65 378 7023.97 C504 7023.65 630 7080.35 756 7107.96 C882 7136 1008 7136 1134 7107.96 C1260 7080.35 1386 7023.65 1449 6996.03 L1512 6968 L1662 6902"
-            />
-          </defs>
-
-          {/* Top Wave Text - Left-to-Right Infinite Marquee */}
-          <text
-            fill="#FFFFFF"
-            fontSize="34"
-            fontWeight="800"
-            fontFamily="var(--font-heading)"
-            letterSpacing="0.08em"
-            dy="30"
+          {/* ── SCROLL-TRIGGERED INLINE VIDEO ── */}
+          <div
+            ref={scrollVideoTriggerRef}
+            className={`scroll-video-wrapper ${(scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting')
+                ? 'scroll-video-wrapper--covered'
+                : ''
+              }`}
+            style={videoStyles}
           >
-            <textPath href="#marquee-path-top" startOffset="0%">
-              Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
-              <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
-            </textPath>
-          </text>
+            <div className="video-container-inner">
+              <video
+                ref={videoRef}
+                src="/Videos/coffee_concentrate_with_glass.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                onClick={(event) => handleVideoClick(event, videoRef)}
+                className="fullscreen-scroll-video"
+              />
+              {isPaused && scrollVideoMode === 'inline' && (
+                <button
+                  type="button"
+                  className="video-play-overlay"
+                  aria-label="Play coffee swirl video"
+                  onClick={(event) => handleVideoClick(event, videoRef)}
+                >
+                  <svg viewBox="0 0 24 24" fill="white" width="64" height="64">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </div>
 
-          {/* Bottom Wave Text - Left-to-Right Infinite Marquee */}
-          <text
-            fill="#1F2A44"
-            fontSize="34"
-            fontWeight="800"
-            fontFamily="var(--font-heading)"
-            letterSpacing="0.08em"
-            dy="-5"
+          {/* ── LOOPING WAVY MARQUEE OVERLAYS ── */}
+          <svg
+            viewBox="0 0 1512 8329"
+            className="marquee-overlay-svg"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              pointerEvents: 'none',
+              zIndex: 6
+            }}
           >
-            <textPath href="#marquee-path-bottom" startOffset="0%">
-              Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
-              <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
-            </textPath>
-          </text>
-        </svg>
+            <defs>
+              {/* Top Wave Curve aligned exactly with the SVG wave border and extended off-screen */}
+              <path
+                id="marquee-path-top"
+                d="M-150 1185 L0 1119 L63 1090.97 C126 1063.35 252 1006.65 378 979.035 C504 951 630 951 756 979.035 C882 1006.65 1008 1063.35 1134 1063.04 C1260 1063.35 1386 1006.65 1449 979.035 L1512 951 L1662 885"
+              />
+              {/* Bottom Wave Curve aligned exactly with the top border of the navy blue wave and extended off-screen */}
+              <path
+                id="marquee-path-bottom"
+                d="M-150 7202 L0 7136 L63 7107.96 C126 7080.35 252 7023.65 378 7023.97 C504 7023.65 630 7080.35 756 7107.96 C882 7136 1008 7136 1134 7107.96 C1260 7080.35 1386 7023.65 1449 6996.03 L1512 6968 L1662 6902"
+              />
+            </defs>
 
-        {/* ── DESKTOP SVG CLICKABLE OVERLAYS (EXCLUDING HEADER) ── */}
-        {/* Code Your Own Coffee Hero Button */}
-        <Link
-          to="/build"
-          className="homepage-link link-hero-build"
-          style={{ left: '40.94%', top: '9.58%', width: '18.12%', height: '0.60%' }}
-          title="Code Your Own Coffee"
-        />
+            {/* Top Wave Text - Left-to-Right Infinite Marquee */}
+            <text
+              fill="#FFFFFF"
+              fontSize="34"
+              fontWeight="800"
+              fontFamily="var(--font-heading)"
+              letterSpacing="0.08em"
+              dy="30"
+            >
+              <textPath href="#marquee-path-top" startOffset="0%">
+                Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+                <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
+              </textPath>
+            </text>
 
-        {/* Buy CHILLD Cold Brew Core Swirl Button */}
-        <Link
-          to="/menu?cat=cold-brew"
-          className="homepage-link link-swirl-buy"
-          style={{ left: '34.19%', top: '23.19%', width: '18.45%', height: '0.60%' }}
-          title="Buy Cold Brew Concentrate"
-        />
+            {/* Bottom Wave Text - Left-to-Right Infinite Marquee */}
+            <text
+              fill="#1F2A44"
+              fontSize="34"
+              fontWeight="800"
+              fontFamily="var(--font-heading)"
+              letterSpacing="0.08em"
+              dy="-5"
+            >
+              <textPath href="#marquee-path-bottom" startOffset="0%">
+                Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+                <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
+              </textPath>
+            </text>
+          </svg>
 
-        {/* Explore Recipes Swirl Button */}
-        <Link
-          to="/recipes"
-          className="homepage-link link-swirl-recipes"
-          style={{ left: '55.68%', top: '23.19%', width: '12.2%', height: '0.60%' }}
-          title="Explore Recipes"
-        />
+          {/* ── DESKTOP SVG CLICKABLE OVERLAYS (EXCLUDING HEADER) ── */}
+          {/* Code Your Own Coffee Hero Button */}
+          <Link
+            to="/build"
+            className="homepage-link link-hero-build"
+            style={{ left: '40.94%', top: '9.58%', width: '18.12%', height: '0.60%' }}
+            title="Code Your Own Coffee"
+          />
 
-        {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
+          {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
 
-        {/* Original SVG trending CTA is hidden; the live React CTA above owns this action. */}
+          {/* Original SVG trending CTA is hidden; the live React CTA above owns this action. */}
 
-        {/* B2B Call Button */}
-        <a
-          href="tel:+918693852250"
-          className="homepage-link link-b2b-call"
-          style={{ left: '7.94%', top: `calc(84.56% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '17.26%', height: '0.60%' }}
-          title="Call Us"
-        />
+          {/* B2B Call Button */}
+          <a
+            href="tel:+918693852250"
+            className="homepage-link link-b2b-call"
+            style={{ left: '7.94%', top: `calc(84.56% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '17.26%', height: '0.60%' }}
+            title="Call Us"
+          />
 
-        {/* Footer Link - Cold Brew Core */}
-        <Link
-          to="/menu?cat=cold-brew"
-          className="homepage-link link-footer-shop-1"
-          style={{ left: '55.49%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-          title="Shop Cold Brew Core"
-        />
+          {/* Footer Link - Cold Brew Core */}
+          <Link
+            to="/menu?cat=cold-brew"
+            className="homepage-link link-footer-shop-1"
+            style={{ left: '55.49%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+            title="Shop Cold Brew Core"
+          />
 
-        {/* Footer Link - Ceremonial Matcha */}
-        <Link
-          to="/menu?cat=matcha"
-          className="homepage-link link-footer-shop-2"
-          style={{ left: '55.49%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-          title="Shop Ceremonial Matcha"
-        />
+          {/* Footer Link - Ceremonial Matcha */}
+          <Link
+            to="/menu?cat=matcha"
+            className="homepage-link link-footer-shop-2"
+            style={{ left: '55.49%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+            title="Shop Ceremonial Matcha"
+          />
 
-        {/* Footer Link - Create Your Mix */}
-        <Link
-          to="/build"
-          className="homepage-link link-footer-shop-3"
-          style={{ left: '55.49%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-          title="Code Your Drink"
-        />
+          {/* Footer Link - Create Your Mix */}
+          <Link
+            to="/build"
+            className="homepage-link link-footer-shop-3"
+            style={{ left: '55.49%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+            title="Code Your Drink"
+          />
 
-        {/* Footer Link - Create Recipe */}
-        <Link
-          to="/create-recipe"
-          className="homepage-link link-footer-recipe-create"
-          style={{ left: '64.15%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
-          title="Create Recipe"
-        />
+          {/* Footer Link - Create Recipe */}
+          <Link
+            to="/create-recipe"
+            className="homepage-link link-footer-recipe-create"
+            style={{ left: '64.15%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
+            title="Create Recipe"
+          />
 
-        {/* Footer Link - Recipe Details */}
-        <Link
-          to="/recipes"
-          className="homepage-link link-footer-recipe-details"
-          style={{ left: '64.15%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
-          title="Recipes"
-        />
+          {/* Footer Link - Recipe Details */}
+          <Link
+            to="/recipes"
+            className="homepage-link link-footer-recipe-details"
+            style={{ left: '64.15%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
+            title="Recipes"
+          />
 
-        {/* Footer Link - Indiranagar */}
-        <Link
-          to="/location"
-          className="homepage-link link-footer-visit-1"
-          style={{ left: '72.75%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-          title="Indiranagar Cafe"
-        />
+          {/* Footer Link - Indiranagar */}
+          <Link
+            to="/location"
+            className="homepage-link link-footer-visit-1"
+            style={{ left: '72.75%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+            title="Indiranagar Cafe"
+          />
 
-        {/* Footer Link - Koramangala */}
-        <Link
-          to="/location"
-          className="homepage-link link-footer-visit-2"
-          style={{ left: '72.75%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-          title="Koramangala Cafe"
-        />
+          {/* Footer Link - Koramangala */}
+          <Link
+            to="/location"
+            className="homepage-link link-footer-visit-2"
+            style={{ left: '72.75%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+            title="Koramangala Cafe"
+          />
 
-        {/* Footer Link - HSR Layout */}
-        <Link
-          to="/location"
-          className="homepage-link link-footer-visit-3"
-          style={{ left: '72.75%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-          title="HSR Layout Cafe"
-        />
+          {/* Footer Link - HSR Layout */}
+          <Link
+            to="/location"
+            className="homepage-link link-footer-visit-3"
+            style={{ left: '72.75%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+            title="HSR Layout Cafe"
+          />
         </div>
       </div>
 

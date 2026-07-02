@@ -1,0 +1,478 @@
+.mobile-recipe-page {
+  background: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  font-family: "Author", "Avenir Next", "Inter", Arial, sans-serif;
+}
+
+/* ── FLOAT HERO MEDIA ── */
+.mobile-recipe-hero-media {
+  position: relative;
+  width: 100%;
+  height: 42vh;
+  background: #e6f4ff;
+  overflow: hidden;
+}
+
+.mobile-recipe-hero-media-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mobile-recipe-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(31, 42, 68, 0.3) 0%,
+    rgba(31, 42, 68, 0) 30%,
+    rgba(31, 42, 68, 0) 70%,
+    rgba(31, 42, 68, 0.45) 100%
+  );
+  pointer-events: none;
+}
+
+/* FLOATING HEADER CONTROLS */
+.mobile-recipe-floating-nav {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.mobile-recipe-circular-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1f2a44;
+  box-shadow: 0 4px 12px rgba(31, 42, 68, 0.12);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mobile-recipe-circular-btn:active {
+  transform: scale(0.9);
+  background: rgba(255, 255, 255, 1);
+}
+
+.mobile-recipe-floating-right {
+  display: flex;
+  gap: 8px;
+}
+
+.mobile-recipe-circular-btn.btn-like.active {
+  background: rgba(254, 226, 226, 0.95);
+}
+
+/* ── OVERLAPPING BOTTOM SHEET ── */
+.mobile-recipe-sheet {
+  position: relative;
+  margin-top: -24px;
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
+  padding: 20px 20px 60px 20px;
+  box-shadow: 0 -6px 20px rgba(31, 42, 68, 0.06);
+  z-index: 5;
+}
+
+.mobile-recipe-sheet-handle {
+  width: 38px;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 99px;
+  margin: -10px auto 18px auto;
+}
+
+/* BADGES */
+.mobile-recipe-meta-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.badge-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-mood {
+  background: #e6f4ff;
+  color: #1844ab;
+}
+
+.badge-base {
+  background: #fff3c4;
+  color: #b45309;
+}
+
+.badge-likes {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* TYPOGRAPHY */
+.mobile-recipe-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #1f2a44;
+  line-height: 1.15;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.mobile-recipe-author {
+  font-size: 12.5px;
+  color: #64748b;
+  margin: 0 0 16px 0;
+}
+
+/* DESCRIPTION QUOTE */
+.mobile-recipe-desc-container {
+  background: #f8fafc;
+  border-left: 3px solid #1844ab;
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 18px;
+}
+
+.mobile-recipe-desc-text {
+  font-size: 14px;
+  line-height: 1.45;
+  font-style: italic;
+  color: #334155;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* TAGS */
+.mobile-recipe-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+
+.mobile-recipe-tag {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #1844ab;
+}
+
+/* SECTION CARDS */
+.mobile-recipe-section-card {
+  border-top: 1px solid #f1f5f9;
+  padding: 20px 0;
+}
+
+.mobile-recipe-section-card.no-padding-bottom {
+  padding-bottom: 0;
+}
+
+.mobile-recipe-sec-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1f2a44;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.01em;
+}
+
+.mobile-recipe-sec-subtitle {
+  font-size: 12px;
+  color: #64748b;
+  margin: -6px 0 14px 0;
+}
+
+/* INTERACTIVE CHECKLIST */
+.mobile-recipe-ingredients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-recipe-ing-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  outline: none;
+}
+
+.mobile-recipe-ing-item.is-checked {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.ing-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.mobile-recipe-ing-item.is-checked .ing-checkbox {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.ing-text {
+  font-size: 13.5px;
+  font-weight: 550;
+  color: #1f2a44;
+  transition: all 0.2s ease;
+}
+
+.mobile-recipe-ing-item.is-checked .ing-text {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+/* VERTICAL STEP TIMELINE */
+.mobile-recipe-timeline {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-left: 6px;
+}
+
+.mobile-recipe-timeline-item {
+  display: flex;
+  gap: 14px;
+  position: relative;
+}
+
+.timeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.timeline-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1844ab, #1f2a44);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  z-index: 2;
+}
+
+.timeline-line {
+  width: 2px;
+  flex-grow: 1;
+  background: #e2e8f0;
+  margin: 4px 0;
+  z-index: 1;
+  min-height: 42px;
+}
+
+.timeline-content {
+  padding-bottom: 20px;
+  padding-top: 2px;
+}
+
+.timeline-step-title {
+  font-size: 14.5px;
+  font-weight: 750;
+  color: #1f2a44;
+  margin: 0 0 4px 0;
+}
+
+.timeline-step-desc {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #475569;
+  margin: 0;
+}
+
+/* COMMENTS */
+.mobile-recipe-comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.mobile-recipe-comment-form textarea {
+  width: 100%;
+  height: 80px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.mobile-recipe-comment-form textarea:focus {
+  border-color: #1844ab;
+}
+
+.mobile-recipe-comment-submit {
+  align-self: flex-end;
+  background: #1844ab;
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.mobile-recipe-comment-submit:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.mobile-recipe-comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-comment-bubble {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 12px 14px;
+  border-left: 3px solid #1f2a44;
+}
+
+.comment-bubble-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 11.5px;
+}
+
+.comment-bubble-header strong {
+  color: #1f2a44;
+}
+
+.comment-bubble-header time {
+  color: #94a3b8;
+}
+
+.comment-bubble-body {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #334155;
+  margin: 0;
+}
+
+/* HORIZONTAL CAROUSEL SWIPE */
+.mobile-recipe-carousel {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+  margin-right: -20px;
+  padding-right: 20px;
+}
+
+.mobile-recipe-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-related-card {
+  flex: 0 0 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  scroll-snap-align: start;
+  text-decoration: none;
+}
+
+.mobile-related-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #e6f4ff;
+}
+
+.mobile-related-card-media .related-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mobile-related-likes {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  background: rgba(31, 42, 68, 0.75);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 99px;
+}
+
+.mobile-related-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1f2a44;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-related-tags {
+  display: flex;
+  gap: 4px;
+}
+
+.mobile-related-tags span {
+  font-size: 9px;
+  font-weight: 600;
+  color: #1844ab;
+}

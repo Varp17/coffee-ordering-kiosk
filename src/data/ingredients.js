@@ -39,7 +39,7 @@ export const BUILDER_CATEGORIES = [
 export const CONCENTRATES = [
   {
     id: 'classic',
-    name: 'Classic Cold Brew',
+    name: 'Classic',
     label: 'CLASSIC CONCENTRATE',
     description: 'Smooth, balanced, 18-hour slow steep.',
     image: '/images/image1_366_1172.png',
@@ -53,7 +53,7 @@ export const CONCENTRATES = [
   },
   {
     id: 'bold',
-    name: 'Bold Cold Brew',
+    name: 'Bold',
     label: 'BOLD CONCENTRATE',
     description: 'Extra strong, intense dark roast flavor.',
     image: '/images/image10_366_1172.png',
@@ -67,7 +67,7 @@ export const CONCENTRATES = [
   },
   {
     id: 'kaapi',
-    name: 'Kaapi Cold Brew',
+    name: 'Kaapi',
     label: 'KAAPI CONCENTRATE',
     description: 'Traditional South Indian filter coffee style.',
     image: '/images/image3_366_1172.png',

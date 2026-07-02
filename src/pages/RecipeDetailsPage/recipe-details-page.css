@@ -355,11 +355,10 @@ a {
 
 .hero-drink-card img,
 .hero-drink-card video {
-  width: min(72%, 491px);
-  max-height: 83%;
-  object-fit: contain;
-  transform: translateY(3%);
-  filter: drop-shadow(0 18px 14px rgba(66, 44, 20, .14));
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .cooking-section {

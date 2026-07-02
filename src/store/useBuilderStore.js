@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 const CONCENTRATE_BASE_COST = {
-  'Coffee 50:50': 40, 'Coffee 70:30': 45, 'Sif': 35,
+  'Classic': 40, 'Bold': 45, 'Kaapi': 35,
   'Cascara': 50, '100% Arabica': 55, '60-40': 42,
 };
 

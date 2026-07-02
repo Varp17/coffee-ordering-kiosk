@@ -9,7 +9,7 @@ const recipeRows = [
   {
     "id": "golden-jaggery-velvet",
     "name": "Golden Jaggery Velvet",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -24,7 +24,7 @@ const recipeRows = [
   {
     "id": "ice-mocha",
     "name": "Ice Mocha",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -39,7 +39,7 @@ const recipeRows = [
   {
     "id": "classic-cold-brew-coffee-50-50-sugar-syrup",
     "name": "Classic Cold Brew",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -54,7 +54,7 @@ const recipeRows = [
   {
     "id": "vanilla-latte",
     "name": "Vanilla Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -69,7 +69,7 @@ const recipeRows = [
   {
     "id": "caramel-latte",
     "name": "Caramel Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -84,7 +84,7 @@ const recipeRows = [
   {
     "id": "cinnamon-latte",
     "name": "Cinnamon Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -99,7 +99,7 @@ const recipeRows = [
   {
     "id": "honey-coffee",
     "name": "Honey Coffee",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -114,7 +114,7 @@ const recipeRows = [
   {
     "id": "cold-brew-latte",
     "name": "Cold Brew Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "70 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -129,7 +129,7 @@ const recipeRows = [
   {
     "id": "oat-cinnamon",
     "name": "Oat Cinnamon",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -144,7 +144,7 @@ const recipeRows = [
   {
     "id": "oat-honey-laatte",
     "name": "Oat Honey Laatte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -159,7 +159,7 @@ const recipeRows = [
   {
     "id": "oat-salted-caramel-latte",
     "name": "Oat Salted Caramel Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -174,7 +174,7 @@ const recipeRows = [
   {
     "id": "oat-mocha",
     "name": "Oat Mocha",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -189,7 +189,7 @@ const recipeRows = [
   {
     "id": "oat-vanilla",
     "name": "Oat Vanilla",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -204,7 +204,7 @@ const recipeRows = [
   {
     "id": "oat-coconut-latte",
     "name": "Oat Coconut Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -219,7 +219,7 @@ const recipeRows = [
   {
     "id": "oat-almond-mocha",
     "name": "Oat Almond Mocha",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "70 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -234,7 +234,7 @@ const recipeRows = [
   {
     "id": "oat-nutmeg-latte-coffee-50-50-sugar-syrup",
     "name": "Oat Nutmeg Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -249,7 +249,7 @@ const recipeRows = [
   {
     "id": "oat-brown-sugar",
     "name": "Oat Brown Sugar",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -264,7 +264,7 @@ const recipeRows = [
   {
     "id": "oat-chocolate-latte",
     "name": "Oat Chocolate Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -279,7 +279,7 @@ const recipeRows = [
   {
     "id": "oat-hazelnut-latte",
     "name": "Oat Hazelnut Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -294,7 +294,7 @@ const recipeRows = [
   {
     "id": "coconut-cold-brew-latte",
     "name": "Coconut Cold Brew Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "70 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -309,7 +309,7 @@ const recipeRows = [
   {
     "id": "coconut-salted-caramel",
     "name": "Coconut Salted Caramel",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -324,7 +324,7 @@ const recipeRows = [
   {
     "id": "coconut-cinnamon-latte-coffee-50-50-sugar-syrup",
     "name": "Coconut Cinnamon Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -339,7 +339,7 @@ const recipeRows = [
   {
     "id": "coconut-mocha-frappe",
     "name": "Coconut Mocha Frappe",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "65 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -354,7 +354,7 @@ const recipeRows = [
   {
     "id": "coconut-maple-latte",
     "name": "Coconut Maple Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 gm",
@@ -369,7 +369,7 @@ const recipeRows = [
   {
     "id": "jaggery-spice-latte",
     "name": "Jaggery Spice Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 gm",
@@ -384,7 +384,7 @@ const recipeRows = [
   {
     "id": "jaggery-brown-sugar-latte",
     "name": "Jaggery Brown Sugar Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 gm",
@@ -399,7 +399,7 @@ const recipeRows = [
   {
     "id": "jaggery-salted-caramel",
     "name": "Jaggery Salted Caramel",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 gm",
@@ -414,7 +414,7 @@ const recipeRows = [
   {
     "id": "jaggery-almond-latte",
     "name": "Jaggery Almond Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 gm",
@@ -429,7 +429,7 @@ const recipeRows = [
   {
     "id": "jaggery-cold-brew-latte",
     "name": "Jaggery Cold Brew Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "70 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 gm",
@@ -444,7 +444,7 @@ const recipeRows = [
   {
     "id": "jaggery-honey-spice-latte",
     "name": "Jaggery Honey Spice Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -459,7 +459,7 @@ const recipeRows = [
   {
     "id": "jaggery-coconut-latte",
     "name": "Jaggery Coconut Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 gm",
@@ -474,7 +474,7 @@ const recipeRows = [
   {
     "id": "jaggery-nutmeg-latte",
     "name": "Jaggery Nutmeg Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -489,7 +489,7 @@ const recipeRows = [
   {
     "id": "jaggery-vanilla-latte",
     "name": "Jaggery Vanilla Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 gm",
@@ -504,7 +504,7 @@ const recipeRows = [
   {
     "id": "oat-vanilla-latte",
     "name": "Oat Vanilla Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -519,7 +519,7 @@ const recipeRows = [
   {
     "id": "oat-caramel-latte",
     "name": "Oat Caramel Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -534,7 +534,7 @@ const recipeRows = [
   {
     "id": "oat-cold-brew-latte",
     "name": "Oat Cold Brew Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "70 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -549,7 +549,7 @@ const recipeRows = [
   {
     "id": "oat-almond-latte",
     "name": "Oat Almond Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -564,7 +564,7 @@ const recipeRows = [
   {
     "id": "oat-brown-sugar-latte",
     "name": "Oat Brown Sugar Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -579,7 +579,7 @@ const recipeRows = [
   {
     "id": "oat-lavender-latte",
     "name": "Oat Lavender Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -594,7 +594,7 @@ const recipeRows = [
   {
     "id": "oat-nutmeg-latte-coffee-50-50-jaggery-syrup",
     "name": "Oat Nutmeg Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -609,7 +609,7 @@ const recipeRows = [
   {
     "id": "coconut-vanilla-latte",
     "name": "Coconut Vanilla Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "80 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -624,7 +624,7 @@ const recipeRows = [
   {
     "id": "coconut-salted-caramel-latte",
     "name": "Coconut Salted Caramel Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "80 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -639,7 +639,7 @@ const recipeRows = [
   {
     "id": "coconut-mocha-latte",
     "name": "Coconut Mocha Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "70 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -654,7 +654,7 @@ const recipeRows = [
   {
     "id": "coconut-almond-latte",
     "name": "Coconut Almond Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -669,7 +669,7 @@ const recipeRows = [
   {
     "id": "coconut-brown-sugar-latte",
     "name": "Coconut Brown Sugar Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "80 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -684,7 +684,7 @@ const recipeRows = [
   {
     "id": "coconut-lavender-latte",
     "name": "Coconut Lavender Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "80 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -699,7 +699,7 @@ const recipeRows = [
   {
     "id": "coconut-nutmeg-latte",
     "name": "Coconut Nutmeg Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "80 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -714,7 +714,7 @@ const recipeRows = [
   {
     "id": "coconut-cinnamon-latte-coffee-50-50-jaggery-syrup",
     "name": "Coconut Cinnamon Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "80 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -729,7 +729,7 @@ const recipeRows = [
   {
     "id": "coconut-flakes-latte",
     "name": "Coconut Flakes Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "80 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -744,7 +744,7 @@ const recipeRows = [
   {
     "id": "coconut-honey-latte",
     "name": "Coconut Honey Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "80 gm",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 gm",
@@ -759,7 +759,7 @@ const recipeRows = [
   {
     "id": "hazelnut-cream-latte",
     "name": "Hazelnut Cream Latte",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "80 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -774,7 +774,7 @@ const recipeRows = [
   {
     "id": "choco-almond-latte",
     "name": "Choco Almond Latte",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "70 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -789,7 +789,7 @@ const recipeRows = [
   {
     "id": "honey-nut-latte",
     "name": "Honey Nut Latte",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "80 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "12 gm",
@@ -804,7 +804,7 @@ const recipeRows = [
   {
     "id": "mango-cold-brew",
     "name": "Mango Cold Brew",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "75 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -819,7 +819,7 @@ const recipeRows = [
   {
     "id": "honey-almond",
     "name": "Honey Almond",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "80 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "12 gm",
@@ -834,7 +834,7 @@ const recipeRows = [
   {
     "id": "strawberry-cream-coffee",
     "name": "Strawberry Cream Coffee",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "75 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -849,7 +849,7 @@ const recipeRows = [
   {
     "id": "classic-cold-brew-coffee-70-30-sugar-syrup",
     "name": "Classic Cold Brew",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "60 ml",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "20 ml",
@@ -864,7 +864,7 @@ const recipeRows = [
   {
     "id": "sweet-cream-cold-brew",
     "name": "Sweet Cream Cold Brew",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "60 ml",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "25 ml",
@@ -879,7 +879,7 @@ const recipeRows = [
   {
     "id": "desi-jaggery-coffee",
     "name": "Desi Jaggery Coffee",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "60 ml",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 ml",
@@ -894,7 +894,7 @@ const recipeRows = [
   {
     "id": "jaggery-mocha",
     "name": "Jaggery Mocha",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "50 ml",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "15 ml",
@@ -909,7 +909,7 @@ const recipeRows = [
   {
     "id": "smoky-jaggery-latte",
     "name": "Smoky Jaggery Latte",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "55 ml",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 ml",
@@ -924,7 +924,7 @@ const recipeRows = [
   {
     "id": "creamy-jaggey-latte",
     "name": "Creamy Jaggey Latte",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "50 ml",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 ml",
@@ -939,7 +939,7 @@ const recipeRows = [
   {
     "id": "almond-jaggery-latte",
     "name": "Almond Jaggery Latte",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "60 ml",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 ml",
@@ -954,7 +954,7 @@ const recipeRows = [
   {
     "id": "spiced-coffee",
     "name": "Spiced Coffee",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "45 ml",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 ml",
@@ -969,7 +969,7 @@ const recipeRows = [
   {
     "id": "jaggery-cocoa-latte",
     "name": "Jaggery Cocoa Latte",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "45 ml",
     "sweetener": "Jaggery Syrup",
     "sweetenerQty": "20 ml",
@@ -984,7 +984,7 @@ const recipeRows = [
   {
     "id": "salted-caramel-jaggery",
     "name": "Salted Caramel Jaggery",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "60 gm",
     "sweetener": "Jaggery + Salted Caramel",
     "sweetenerQty": "20 gm",
@@ -999,7 +999,7 @@ const recipeRows = [
   {
     "id": "honey-spiced-latte",
     "name": "Honey Spiced Latte",
-    "concentrate": "Coffee 70:30",
+    "concentrate": "Bold",
     "concentrateQty": "60 gm",
     "sweetener": "Honey + Spices",
     "sweetenerQty": "15 gm",
@@ -1013,7 +1013,7 @@ const recipeRows = [
   },
   {
     "id": "sifon-the-rocks",
-    "name": "SIFon The Rocks",
+    "name": "Kaapi on The Rocks",
     "concentrate": "Coffee & Chicory",
     "concentrateQty": "135 gm",
     "sweetener": "Condensed Milk",
@@ -1134,7 +1134,7 @@ const recipeRows = [
   {
     "id": "ice-latte",
     "name": "Ice Latte",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "70 gm",
     "sweetener": "Sugar Syrup",
     "sweetenerQty": "15 gm",
@@ -1149,7 +1149,7 @@ const recipeRows = [
   {
     "id": "vanilla-shake",
     "name": "Vanilla Shake",
-    "concentrate": "Coffee 50:50",
+    "concentrate": "Classic",
     "concentrateQty": "60 gm",
     "sweetener": "Vanilla Syrup",
     "sweetenerQty": "20 gm",

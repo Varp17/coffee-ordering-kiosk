@@ -39,10 +39,9 @@ const galleryFor = (slug, name) => [
 
 export const CATEGORIES = [
   { id: 'all', label: 'All Products', icon: 'All' },
-  { id: 'coffee-50-50', label: 'Coffee 50:50', icon: '50' },
-  { id: 'classic-cb', label: 'Classic CB', icon: 'CB' },
-  { id: 'coffee-70-30', label: 'Coffee 70:30', icon: '70' },
-  { id: 'sif', label: 'SIF', icon: 'SF' },
+  { id: 'coffee-50-50', label: 'Classic', icon: '50' },
+  { id: 'coffee-70-30', label: 'Bold', icon: '70' },
+  { id: 'sif', label: 'Kaapi', icon: 'SF' },
   { id: 'cascara', label: 'Cascara', icon: 'CS' },
 ];
 
@@ -50,13 +49,13 @@ export const PRODUCTS = [
   {
     id: 'coffee-50-50-concentrate',
     category: 'coffee-50-50',
-    concentrateType: 'Coffee 50:50',
-    name: 'Coffee 50:50 Cold Brew Concentrate',
+    concentrateType: 'Classic',
+    name: 'Classic Concentrate',
     tagline: 'Balanced Arabica and Robusta for everyday cold coffee.',
     description:
       'A smooth, dependable cold brew concentrate designed for creamy lattes, classic cold coffee, and quick cafe-style serves at home or in-store.',
     image: PLACEHOLDER_IMAGE,
-    gallery: galleryFor('coffee-50-50', 'Coffee 50:50 Cold Brew Concentrate'),
+    gallery: galleryFor('coffee-50-50', 'Classic Concentrate'),
     basePrice: 399,
     sizes: BOTTLE_SIZES,
     badges: ['featured', 'classic'],
@@ -80,14 +79,14 @@ export const PRODUCTS = [
   },
   {
     id: 'classic-cb-concentrate',
-    category: 'classic-cb',
-    concentrateType: 'Classic CB',
-    name: 'Classic CB Cold Brew Concentrate',
+    category: 'coffee-50-50',
+    concentrateType: 'Classic',
+    name: 'Classic Concentrate',
     tagline: 'Clean, mellow, and slow-steeped for a lighter finish.',
     description:
       'A classic cold brew profile made for drinkers who want coffee clarity, low bitterness, and a flexible base for cold brew, tonics, and black serves.',
     image: PLACEHOLDER_IMAGE,
-    gallery: galleryFor('classic-cb', 'Classic CB Cold Brew Concentrate'),
+    gallery: galleryFor('classic-cb', 'Classic Concentrate'),
     basePrice: 429,
     sizes: BOTTLE_SIZES,
     badges: ['smooth', 'best-value'],
@@ -112,13 +111,13 @@ export const PRODUCTS = [
   {
     id: 'coffee-70-30-concentrate',
     category: 'coffee-70-30',
-    concentrateType: 'Coffee 70:30',
-    name: 'Coffee 70:30 Bold Cold Brew Concentrate',
+    concentrateType: 'Bold',
+    name: 'Bold Concentrate',
     tagline: 'A stronger cup with deeper body and bolder coffee notes.',
     description:
       'Built for recipes that need more punch. This bold concentrate holds its flavor in milk-heavy lattes, jaggery blends, mocha drinks, and dessert-style cold coffee.',
     image: PLACEHOLDER_IMAGE,
-    gallery: galleryFor('coffee-70-30', 'Coffee 70:30 Bold Cold Brew Concentrate'),
+    gallery: galleryFor('coffee-70-30', 'Bold Concentrate'),
     basePrice: 449,
     sizes: BOTTLE_SIZES,
     badges: ['bold', 'bestseller'],
@@ -143,13 +142,13 @@ export const PRODUCTS = [
   {
     id: 'sif-concentrate',
     category: 'sif',
-    concentrateType: 'SIF',
-    name: 'SIF Coffee Concentrate',
+    concentrateType: 'Kaapi',
+    name: 'Kaapi Concentrate',
     tagline: 'South Indian filter-inspired depth in a chilled format.',
     description:
       'A nostalgic South Indian filter coffee style concentrate with a fuller roast character, made for chilled kaapi, condensed milk serves, and rich cafe recipes.',
     image: PLACEHOLDER_IMAGE,
-    gallery: galleryFor('sif', 'SIF Coffee Concentrate'),
+    gallery: galleryFor('sif', 'Kaapi Concentrate'),
     basePrice: 459,
     sizes: BOTTLE_SIZES,
     badges: ['regional', 'rich'],

@@ -12,7 +12,7 @@ function ScrollToTop() {
 }
 import MainLayout from '@/layouts/MainLayout';
 import WelcomePage from '@/pages/WelcomePage/WelcomePage';
-import HomePage from '@/pages/HomePage/HomePage';
+import DeviceLayoutSelector from '@/components/DeviceLayoutSelector';
 import MenuPage from '@/pages/MenuPage/MenuPage';
 import ProductDetailPage from '@/pages/ProductDetailPage/ProductDetailPage';
 import CoffeeBuilderPage from '@/pages/CoffeeBuilderPage/CoffeeBuilderPage';
@@ -73,7 +73,7 @@ function App() {
             <MainLayout />
           </RequireWelcome>
         }>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<DeviceLayoutSelector />} />
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/menu/:id" element={<ProductDetailPage />} />
           <Route path="/build" element={<CoffeeBuilderPage />} />

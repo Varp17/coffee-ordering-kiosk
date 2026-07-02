@@ -1,5 +1,24 @@
+.device-layout-selector {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.site-mode-desktop {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  background: #1F2A44;
+}
+
+.site-mode-mobile {
+  overflow-x: clip;
+  background: #FFFFFF;
+}
+
 .homepage-figma-container {
   width: 100%;
+  min-width: 1280px;
   background-color: #1F2A44;
   overflow-x: hidden;
   position: relative;
@@ -38,6 +57,128 @@
   /* Let clicks pass through to absolute overlays */
   position: relative;
   z-index: 3;
+}
+
+.desktop-homepage__why-chilld {
+  position: absolute;
+  top: 25.33%;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: 16.22%;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  background: #eaf5ff;
+}
+
+.desktop-homepage__why-chilld::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  background-image: url('../../assets/why-chilld-background.svg');
+  background-repeat: repeat;
+  background-position: center 4%;
+  background-size: 760px auto;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.desktop-homepage__why-chilld-content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1360px);
+  height: 100%;
+  margin: 0 auto;
+}
+
+.desktop-homepage__why-chilld-item {
+  position: absolute;
+  display: flex;
+  width: 310px;
+  flex-direction: column;
+  align-items: center;
+  color: #1F2A44;
+  pointer-events: auto;
+  text-align: center;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.desktop-homepage__why-chilld-item.item-one {
+  top: 12.4%;
+  left: 6.2%;
+}
+
+.desktop-homepage__why-chilld-item.item-two {
+  top: 42.8%;
+  left: 30.2%;
+}
+
+.desktop-homepage__why-chilld-item.item-three {
+  top: 18.3%;
+  left: 57.6%;
+}
+
+.desktop-homepage__why-chilld-item.item-four {
+  top: 52.2%;
+  right: 5.8%;
+}
+
+.desktop-homepage__why-chilld-cup-wrap {
+  display: grid;
+  width: 100%;
+  place-items: center;
+  margin-bottom: 0.45rem;
+  transform: rotate(var(--why-cup-rotation));
+  transform-origin: 50% 78%;
+}
+
+.desktop-homepage__why-chilld-cup {
+  display: block;
+  width: 222px;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+  cursor: pointer;
+  filter: drop-shadow(0 16px 18px rgba(31, 42, 68, 0.11));
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.desktop-homepage__why-chilld-item:hover .desktop-homepage__why-chilld-cup {
+  transform: translateY(-4px) scale(1.035);
+  filter: drop-shadow(0 20px 24px rgba(31, 42, 68, 0.16));
+}
+
+.desktop-homepage__why-chilld-item h3 {
+  max-width: 330px;
+  margin: 0 0 0.18rem;
+  color: #1F2A44;
+  font-family: var(--font-heading);
+  font-size: 1.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0.98;
+  text-wrap: balance;
+  transform: rotate(var(--why-cup-rotation));
+  transform-origin: center center;
+}
+
+.desktop-homepage__why-chilld-item p {
+  max-width: 286px;
+  margin: 0;
+  color: #1F2A44;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-wrap: balance;
+  transform: rotate(var(--why-cup-rotation));
+  transform-origin: center center;
 }
 
 /* ── INTERACTIVE LINK OVERLAYS ──────────────────────── */

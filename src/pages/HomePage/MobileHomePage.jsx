@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useUserStore } from '@/store/useUserStore';
 import Footer from '@/components/Footer/Footer';
+import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
 import './MobileHomePage.css';
 
 const ASSET_BASE = '/images/mobile-home/';

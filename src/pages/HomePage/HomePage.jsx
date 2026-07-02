@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
-import MobileHomePage from './MobileHomePage';
 import { PRODUCTS } from '@/data/products';
+import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
 
 // ── HELPERS FOR SVG DOM MANIPULATION ─────────────────────────────────
 
@@ -182,71 +182,6 @@ function animateHeroBeans(svgDoc) {
       })
       .catch(() => {});
   });
-}
-
-function syncHardPartTextOverlay(svgDoc, overlaySvg) {
-  if (!overlaySvg) return;
-
-  const overlayGroup = overlaySvg.querySelector('[data-hard-part-copy]');
-  if (!overlayGroup) return;
-
-  overlayGroup.replaceChildren();
-
-  const hardPartCopyNodes = Array.from(svgDoc.querySelectorAll('path')).filter((path) => {
-    const fill = (path.getAttribute('fill') || '').toLowerCase();
-    const d = path.getAttribute('d') || '';
-    const match = d.match(/^M\s*([\d.-]+)\s+([\d.-]+)/i);
-
-    if (fill !== 'white' || !match) return false;
-
-    const yVal = parseFloat(match[2]);
-    return yVal >= 1280 && yVal <= 2010;
-  });
-
-  const hardPartCtaPill = svgDoc.querySelector('rect[x="517"][y="1932"]');
-  if (hardPartCtaPill) {
-    const clone = overlaySvg.ownerDocument.importNode(hardPartCtaPill, true);
-    clone.setAttribute('fill', '#FFFFFF');
-    clone.setAttribute('opacity', '1');
-    overlayGroup.appendChild(clone);
-  }
-
-  hardPartCopyNodes.forEach((node) => {
-    const clone = overlaySvg.ownerDocument.importNode(node, true);
-    clone.setAttribute('fill', '#FFFFFF');
-    clone.setAttribute('opacity', '0.96');
-    overlayGroup.appendChild(clone);
-  });
-
-  const hardPartCtaLabel = Array.from(svgDoc.querySelectorAll('path')).find((path) => {
-    const fill = (path.getAttribute('fill') || '').toLowerCase();
-    const d = path.getAttribute('d') || '';
-    const match = d.match(/^M\s*([\d.-]+)\s+([\d.-]+)/i);
-
-    if (fill !== 'black' || !match) return false;
-
-    const xVal = parseFloat(match[1]);
-    const yVal = parseFloat(match[2]);
-    return xVal >= 540 && xVal <= 790 && yVal >= 1940 && yVal <= 1970;
-  });
-
-  if (hardPartCtaLabel) {
-    const clone = overlaySvg.ownerDocument.importNode(hardPartCtaLabel, true);
-    clone.setAttribute('fill', '#000000');
-    clone.setAttribute('opacity', '1');
-    overlayGroup.appendChild(clone);
-  }
-
-  // Draw a white horizontal underline centered below the heading
-  const underline = overlaySvg.ownerDocument.createElementNS('http://www.w3.org/2000/svg', 'line');
-  underline.setAttribute('x1', '300');
-  underline.setAttribute('y1', '1365');
-  underline.setAttribute('x2', '1212');
-  underline.setAttribute('y2', '1365');
-  underline.setAttribute('stroke', '#FFFFFF');
-  underline.setAttribute('stroke-width', '2.5');
-  underline.setAttribute('opacity', '0.7');
-  overlayGroup.appendChild(underline);
 }
 
 const LOWER_SECTION_COMPACT_Y = 6516;
@@ -919,7 +854,6 @@ function DesktopHomePage() {
   const bentoVideoRef = useRef(null);
   const hardPartParallaxRef = useRef(null);
   const hardPartVideoRef = useRef(null);
-  const hardPartTextOverlayRef = useRef(null);
   const bentoOutgoingTimerRef = useRef(null);
   const bentoActiveSetRef = useRef(0);
   const carouselTrackRef = useRef(null);
@@ -1411,9 +1345,9 @@ function DesktopHomePage() {
                       if (bbox && bbox.y > 2400 && bbox.y < 3460 && bbox.height > 5) {
                         el.style.display = 'none';
                       }
-                    } catch (_) { /* getBBox can throw for invisible elements */ }
+                    } catch { /* getBBox can throw for invisible elements */ }
                   });
-                } catch (_) { /* safety net */ }
+                } catch { /* safety net */ }
 
                 // Shrink SVG canvas height by compact shift to prevent trailing whitespace
                 const svg = svgDoc.querySelector('svg');
@@ -1422,25 +1356,16 @@ function DesktopHomePage() {
                   svg.setAttribute('height', String(currentHeight - LOWER_SECTION_COMPACT_SHIFT));
                   svg.setAttribute('viewBox', `0 0 1512 ${currentHeight - LOWER_SECTION_COMPACT_SHIFT}`);
 
-                  // Inject light blue background and Subtract.svg watermark into the SVG DOM
+                  // Inject light blue background and faded Why CHILLD pattern into the SVG DOM.
                   const bgRect = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'rect');
                   bgRect.setAttribute('x', '0');
                   bgRect.setAttribute('y', '2110');
                   bgRect.setAttribute('width', '1512');
                   bgRect.setAttribute('height', '1350');
-                  bgRect.setAttribute('fill', '#e4edf6');
-
-                  const bgWatermark = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'image');
-                  bgWatermark.setAttribute('x', '0');
-                  bgWatermark.setAttribute('y', '2110');
-                  bgWatermark.setAttribute('width', '1512');
-                  bgWatermark.setAttribute('height', '1350');
-                  bgWatermark.setAttribute('href', '/Subtract.svg');
-                  bgWatermark.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+                  bgRect.setAttribute('fill', '#eaf5ff');
 
                   const firstChild = svg.firstChild;
                   svg.insertBefore(bgRect, firstChild);
-                  svg.insertBefore(bgWatermark, firstChild.nextSibling);
                 }
 
                 // syncHardPartTextOverlay skipped — kiosk SVG has no vector text paths; using hardcoded React overlay instead
@@ -1450,94 +1375,21 @@ function DesktopHomePage() {
             }}
           />
 
-          {/* ── WHY CHILLD REACT OVERLAY — Solid navy numbered cups (inline styles, no Tailwind) ── */}
-          <div 
-            style={{ 
-              position: 'absolute',
-              left: 0,
-              width: '100%',
-              pointerEvents: 'none',
-              top: '25.32%', 
-              height: '15.8%',
-              zIndex: 5
-            }}
-          >
-            <div style={{ position: 'relative', width: '100%', maxWidth: 1512, height: '100%', margin: '0 auto', padding: '0 16px', boxSizing: 'border-box' }}>
-
-              {/* Cup 01 */}
-              <div 
-                ref={reactCup1Ref}
-                style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pointerEvents: 'auto', left: '10%', top: '29.2%', transformOrigin: 'center center', transition: 'transform 0.3s' }}
-              >
-                <div style={{ position: 'relative', width: 220, height: 314, marginBottom: 12, filter: 'drop-shadow(0 12px 24px rgba(31,42,68,0.18))', cursor: 'pointer', transition: 'transform 0.3s' }}>
-                  <svg viewBox="113 2517 238 340" style={{ width: '100%', height: '100%' }} xmlns="http://www.w3.org/2000/svg">
-                    <path d="M190.482 2853.73L134.217 2612.59C133.811 2610.85 134.993 2609.14 136.763 2608.91L335.802 2582.43C337.594 2582.19 339.193 2583.57 339.224 2585.38L343.558 2833.42C343.584 2834.96 342.455 2836.27 340.933 2836.47L193.826 2856.04C192.282 2856.24 190.836 2855.24 190.482 2853.73Z" fill="#1F2A44" />
-                    <path d="M348.742 2544.14L350.038 2553.89C350.258 2555.54 349.095 2557.06 347.439 2557.28L118.503 2587.73C116.848 2587.95 115.327 2586.79 115.107 2585.13L113.861 2575.77C113.641 2574.11 114.804 2572.59 116.46 2572.37L138.941 2569.38C140.597 2569.16 141.761 2567.64 141.54 2565.98L140.344 2556.99C139.507 2550.7 144.793 2548.39 147.541 2548.03C196.601 2538.45 296.895 2519.01 305.588 2517.85C314.281 2516.7 316.836 2521.19 317.026 2523.58L319.468 2541.94C319.689 2543.59 321.209 2544.75 322.865 2544.53L345.346 2541.54C347.002 2541.32 348.522 2542.49 348.742 2544.14Z" fill="#1F2A44" />
-                    <text x="235" y="2724" textAnchor="middle" fill="#FFFFFF" fontFamily="Outfit, sans-serif" fontWeight="900" fontSize="48" letterSpacing="-0.02em" transform="rotate(-7.58, 235, 2724)">01</text>
-                  </svg>
-                </div>
-                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: '1.32rem', fontWeight: 900, color: '#1F2A44', lineHeight: 1.1, userSelect: 'none', marginBottom: 6, transform: 'rotate(-7.58deg)' }}>Built for the grind</h3>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', fontWeight: 700, color: '#54627d', lineHeight: 1.4, maxWidth: 210, margin: '0 auto', userSelect: 'none', transform: 'rotate(-7.58deg)' }}>
-                  Heavy monday, extra shot, light friday, one less. you run the dial
-                </p>
-              </div>
-
-              {/* Cup 02 */}
-              <div 
-                ref={reactCup2Ref}
-                style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pointerEvents: 'auto', zIndex: 20, left: '26%', top: '48.2%', transformOrigin: 'center center', transition: 'transform 0.3s' }}
-              >
-                <div style={{ position: 'relative', width: 220, height: 297, marginBottom: 12, filter: 'drop-shadow(0 12px 24px rgba(31,42,68,0.18))', cursor: 'pointer', transition: 'transform 0.3s' }}>
-                  <svg viewBox="488 2782 238 321" style={{ width: '100%', height: '100%' }} xmlns="http://www.w3.org/2000/svg">
-                    <path d="M517.738 3094.83L502.495 2847.69C502.385 2845.91 503.836 2844.42 505.62 2844.48L706.286 2851.59C708.092 2851.65 709.44 2853.28 709.169 2855.06L672.055 3100.35C671.826 3101.87 670.494 3102.98 668.958 3102.92L520.649 3097.67C519.093 3097.61 517.833 3096.39 517.738 3094.83Z" fill="#1F2A44" />
-                    <path d="M725.434 2816L725.086 2825.82C725.027 2827.49 723.626 2828.79 721.957 2828.73L491.149 2820.56C489.48 2820.5 488.175 2819.1 488.234 2817.43L488.569 2807.98C488.628 2806.32 490.029 2805.07 491.698 2805.07L514.363 2805.87C516.032 2805.93 517.433 2804.63 517.492 2802.96L517.813 2793.89C518.038 2787.54 523.635 2786.15 526.405 2786.25C576.375 2785 678.507 2782.56 687.271 2782.87C696.035 2783.18 697.805 2788.04 697.594 2790.42L696.938 2808.93C696.879 2810.6 698.184 2812 699.853 2812.06L722.519 2812.87C724.188 2812.93 725.493 2814.33 725.434 2816Z" fill="#1F2A44" />
-                    <text x="605" y="2972" textAnchor="middle" fill="#FFFFFF" fontFamily="Outfit, sans-serif" fontWeight="900" fontSize="48" letterSpacing="-0.02em" transform="rotate(7.04, 605, 2972)">02</text>
-                  </svg>
-                </div>
-                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: '1.32rem', fontWeight: 900, color: '#1F2A44', lineHeight: 1.1, userSelect: 'none', marginBottom: 6, transform: 'rotate(7.04deg)' }}>Brewed for the Bold</h3>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', fontWeight: 700, color: '#54627d', lineHeight: 1.4, maxWidth: 210, margin: '0 auto', userSelect: 'none', transform: 'rotate(7.04deg)' }}>
-                  Your order is on no menu, it lives in your head, now in your cup
-                </p>
-              </div>
-
-              {/* Cup 03 */}
-              <div 
-                ref={reactCup3Ref}
-                style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pointerEvents: 'auto', left: '58%', top: '33.0%', transformOrigin: 'center center', transition: 'transform 0.3s' }}
-              >
-                <div style={{ position: 'relative', width: 220, height: 304, marginBottom: 12, filter: 'drop-shadow(0 12px 24px rgba(31,42,68,0.18))', cursor: 'pointer', transition: 'transform 0.3s' }}>
-                  <svg viewBox="798 2582 238 329" style={{ width: '100%', height: '100%' }} xmlns="http://www.w3.org/2000/svg">
-                    <path d="M853.299 2908.25L816.079 2663.45C815.811 2661.68 817.123 2660.07 818.906 2659.97L1019.41 2649.16C1021.21 2649.06 1022.7 2650.56 1022.59 2652.36L1007.49 2899.98C1007.4 2901.52 1006.17 2902.74 1004.64 2902.82L856.451 2910.81C854.897 2910.9 853.533 2909.79 853.299 2908.25Z" fill="#1F2A44" />
-                    <path d="M1035.3 2612L1035.83 2621.81C1035.92 2623.48 1034.64 2624.9 1032.98 2624.99L802.359 2637.43C800.692 2637.52 799.267 2636.24 799.177 2634.58L798.668 2625.14C798.578 2623.47 799.857 2622.05 801.525 2621.96L824.171 2620.74C825.839 2620.65 827.118 2619.22 827.028 2617.56L826.539 2608.5C826.197 2602.15 831.647 2600.27 834.415 2600.12C884.075 2594.41 985.583 2582.88 994.34 2582.41C1003.1 2581.94 1005.29 2586.61 1005.29 2589.01L1006.29 2607.51C1006.38 2609.17 1007.81 2610.45 1009.47 2610.36L1032.12 2609.14C1033.79 2609.05 1035.21 2610.33 1035.3 2612Z" fill="#1F2A44" />
-                    <text x="918" y="2784" textAnchor="middle" fill="#FFFFFF" fontFamily="Outfit, sans-serif" fontWeight="900" fontSize="48" letterSpacing="-0.02em" transform="rotate(-3.09, 918, 2784)">03</text>
-                  </svg>
-                </div>
-                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: '1.32rem', fontWeight: 900, color: '#1F2A44', lineHeight: 1.1, userSelect: 'none', marginBottom: 6, transform: 'rotate(-3.09deg)' }}>Time is Money</h3>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', fontWeight: 700, color: '#54627d', lineHeight: 1.4, maxWidth: 210, margin: '0 auto', userSelect: 'none', transform: 'rotate(-3.09deg)' }}>
-                  Nobody ever got a promotion standing in a coffee queue
-                </p>
-              </div>
-
-              {/* Cup 04 */}
-              <div 
-                ref={reactCup4Ref}
-                style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pointerEvents: 'auto', left: '74%', top: '52.0%', transformOrigin: 'center center', transition: 'transform 0.3s' }}
-              >
-                <div style={{ position: 'relative', width: 220, height: 304, marginBottom: 12, filter: 'drop-shadow(0 12px 24px rgba(31,42,68,0.18))', cursor: 'pointer', transition: 'transform 0.3s' }}>
-                  <svg viewBox="1136 2830 243 333" style={{ width: '100%', height: '100%' }} xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1136.81 3135.28L1153.27 2888.21C1153.39 2886.43 1155.02 2885.14 1156.78 2885.43L1354.89 2918.12C1356.67 2918.41 1357.8 2920.19 1357.31 2921.93L1289.16 3160.47C1288.74 3162.62 1287.28 3163.46 1285.76 3163.21L1139.34 3139.05C1137.8 3138.8 1136.71 3137.42 1136.81 3135.87Z" fill="#1F2A44" />
-                    <path d="M1378.43 2885.26L1376.83 2894.96C1376.56 2896.6 1375 2897.72 1373.35 2897.45L1145.48 2859.85C1143.83 2859.85 1142.72 2858.02 1142.99 2856.38L1144.53 2847.05C1144.8 2845.41 1146.36 2844.29 1148 2844.56L1170.38 2848.25C1172.03 2848.53 1173.59 2847.41 1173.86 2845.76L1175.33 2836.81C1176.37 2830.55 1182.1 2829.88 1184.83 2830.33C1234.55 2835.47 1336.16 2846.11 1344.81 2847.53C1353.46 2848.96 1354.6 2854 1354.08 2856.34L1351.07 2874.62C1350.8 2876.26 1351.91 2877.82 1353.56 2878.09L1375.94 2881.78C1377.59 2882.06 1378.7 2883.61 1378.43 2885.26Z" fill="#1F2A44" />
-                    <text x="1245" y="3028" textAnchor="middle" fill="#FFFFFF" fontFamily="Outfit, sans-serif" fontWeight="900" fontSize="48" letterSpacing="-0.02em" transform="rotate(9.37, 1245, 3028)">04</text>
-                  </svg>
-                </div>
-                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: '1.32rem', fontWeight: 900, color: '#1F2A44', lineHeight: 1.1, userSelect: 'none', marginBottom: 6, transform: 'rotate(9.37deg)' }}>Money is Money</h3>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', fontWeight: 700, color: '#54627d', lineHeight: 1.4, maxWidth: 210, margin: '0 auto', userSelect: 'none', transform: 'rotate(9.37deg)' }}>
-                  Don't pay for pendant lights and latte art, just the coffee
-                </p>
-              </div>
-
+          {/* ── WHY CHILLD REACT OVERLAY — solid navy numbered cups ── */}
+          <section className="desktop-homepage__why-chilld" aria-label="Why CHILLD">
+            <div className="desktop-homepage__why-chilld-content">
+              {WHY_CHILLD_ITEMS.map((item, index) => (
+                <WhyChilldCup
+                  key={item.id}
+                  item={item}
+                  className={`desktop-homepage__why-chilld-item item-${item.id}`}
+                  cupWrapClassName="desktop-homepage__why-chilld-cup-wrap"
+                  cupClassName="desktop-homepage__why-chilld-cup"
+                  ref={[reactCup1Ref, reactCup2Ref, reactCup3Ref, reactCup4Ref][index]}
+                />
+              ))}
             </div>
-          </div>
+          </section>
 
         {/* ── HARD-PART SECTION: COFFEESWIRL2, CLIPPED TO FIGMA WAVES ── */}
         <div className="hard-part-shadow-wrapper">
@@ -2106,37 +1958,4 @@ function DesktopHomePage() {
   );
 }
 
-const MOBILE_HOME_VIEWPORT_QUERY = '(max-width: 1024px), (pointer: coarse) and (max-width: 1180px)';
-
-function useIsMobileHomeViewport() {
-  const getMatches = () => {
-    if (typeof window === 'undefined') return false;
-    return window.matchMedia(MOBILE_HOME_VIEWPORT_QUERY).matches;
-  };
-
-  const [isMobileHomeViewport, setIsMobileHomeViewport] = useState(getMatches);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-
-    const mediaQuery = window.matchMedia(MOBILE_HOME_VIEWPORT_QUERY);
-    const syncViewport = () => setIsMobileHomeViewport(mediaQuery.matches);
-
-    syncViewport();
-    mediaQuery.addEventListener?.('change', syncViewport);
-    mediaQuery.addListener?.(syncViewport);
-
-    return () => {
-      mediaQuery.removeEventListener?.('change', syncViewport);
-      mediaQuery.removeListener?.(syncViewport);
-    };
-  }, []);
-
-  return isMobileHomeViewport;
-}
-
-export default function HomePage() {
-  const isMobileHomeViewport = useIsMobileHomeViewport();
-
-  return isMobileHomeViewport ? <MobileHomePage /> : <DesktopHomePage />;
-}
+export default DesktopHomePage;

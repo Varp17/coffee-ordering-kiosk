@@ -45,7 +45,7 @@ export default function WelcomePage() {
       {/* ── GRAFFITI ARTWORK ── */}
       <div className="welcome-figma-graffiti" aria-hidden="true">
         <img
-          src="/Subtract.svg"
+          src="/wellcomesub.svg"
           alt=""
           draggable="false"
         />

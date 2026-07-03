@@ -2203,8 +2203,42 @@ function DesktopHomePage() {
                 </Link>
               </div>
             </div>
+            {/* ── BENTO GRID: CENTRAL COFFEESWIRL1 VIDEO ── */}
+            <div className="bento-video-card">
+              <video
+                ref={bentoVideoRef}
+                src="/Videos/coffeeswirl1.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                aria-label="Coffee swirl video"
+              />
+            </div>
 
-            <TestimonialsBento />
+            {/* ── BENTO GRID: STATIC POSTER + ROTATING SOCIAL POSTS ── */}
+            <div className="bento-grid-hover-card bento-grid-hover-card--poster" aria-hidden="true" />
+
+            {outgoingBentoPostSet !== null && BENTO_SOCIAL_SLOTS.map((slot) => (
+              <BentoSocialCard
+                key={`bento-leave-${outgoingBentoPostSet}-${slot}`}
+                slot={slot}
+                post={BENTO_POST_SETS[outgoingBentoPostSet][slot]}
+                phase="leave"
+                cycle={outgoingBentoPostSet}
+              />
+            ))}
+
+            {BENTO_SOCIAL_SLOTS.map((slot) => (
+              <BentoSocialCard
+                key={`bento-enter-${activeBentoPostSet}-${slot}`}
+                slot={slot}
+                post={BENTO_POST_SETS[activeBentoPostSet][slot]}
+                phase="enter"
+                cycle={activeBentoPostSet}
+              />
+            ))}
 
             {/* ── INFINITE TRENDING MIXES CAROUSEL ── */}
             <section

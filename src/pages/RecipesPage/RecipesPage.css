@@ -7,6 +7,77 @@
   min-height: 100vh;
 }
 
+.recipes-header {
+  background: transparent;
+  padding: clamp(6rem, 8vw, 8rem) 0 var(--space-6);
+  margin-bottom: var(--space-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.recipes-header__title {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: var(--text-4xl);
+  font-weight: 900;
+  color: var(--color-dark, #1f2a44);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-2);
+  text-align: left;
+}
+
+.recipes-header__sub {
+  font-size: var(--text-md);
+  color: var(--color-text-muted, #718096);
+  margin-bottom: var(--space-6);
+  text-align: left;
+}
+
+/* Recipes Search bar styled matching the menu search but light-themed */
+.recipes-search {
+  max-width: 500px;
+  margin-bottom: var(--space-2);
+}
+
+.recipes-search__wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.recipes-search__icon-wrap {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted, #a0aec0);
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.recipes-search__input {
+  width: 100%;
+  padding: var(--space-3) var(--space-5) var(--space-3) 44px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-border, #e2e8f0);
+  background: #ffffff;
+  color: var(--color-dark, #1f2a44);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  outline: none;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+}
+
+.recipes-search__input::placeholder {
+  color: var(--color-text-muted, #a0aec0);
+}
+
+.recipes-search__input:focus {
+  border-color: var(--color-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(24, 68, 171, 0.15);
+}
+
 /* ── HERO ──────────────────────────────────────────── */
 .rp-hero {
   position: relative;

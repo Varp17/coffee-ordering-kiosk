@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, CheckCircle2, ArrowRight, Bell, Sparkles, X, ShoppingBag, Package, Clock, Star } from 'lucide-react';
+import { Mail, CheckCircle2, ArrowRight, Bell, Sparkles, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import './StorePage.css';
 
@@ -113,69 +113,6 @@ export default function StorePage() {
 
   return (
     <main className="store-page">
-      {/* ── HERO ── */}
-      <section className="store-hero">
-        <div className="store-hero__bg-pattern" aria-hidden="true" />
-        <div className="store-hero__glow" aria-hidden="true" />
-
-        <div className="container store-hero__inner">
-          <motion.p
-            className="store-hero__eyebrow"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <ShoppingBag size={14} />
-            <span>CHILLD BOUTIQUE</span>
-          </motion.p>
-
-          <motion.h1
-            className="store-hero__title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Premium Cold Brew,<br />Delivered to Your Door
-          </motion.h1>
-
-          <motion.p
-            className="store-hero__desc"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Artisan concentrates, ready-to-drink blends, and curated coffee gear.
-            Launching this fall — join the early list for exclusive pricing.
-          </motion.p>
-
-          <motion.div
-            className="store-hero__stats"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-          >
-            <div className="stat-pill">
-              <Package size={14} />
-              <span><strong>6</strong> Products</span>
-            </div>
-            <div className="stat-pill">
-              <Clock size={14} />
-              <span>Fall <strong>2026</strong></span>
-            </div>
-            <div className="stat-pill">
-              <Star size={14} />
-              <span><strong>603</strong> Waitlisted</span>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="store-hero__wave" aria-hidden="true">
-          <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
-            <path d="M0,60 C320,100 620,20 960,60 C1200,90 1360,40 1440,50 L1440,100 L0,100 Z" fill="#f5f9fc" />
-          </svg>
-        </div>
-      </section>
-
       {/* ── WAITLIST CTA ── */}
       <section className="store-waitlist">
         <div className="container">

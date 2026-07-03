@@ -52,21 +52,74 @@ const cardAnim = {
 
 export default function RecipesPage() {
   const [selectedConcentrate, setSelectedConcentrate] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const categories = RECIPE_CATEGORIES;
 
-  const filteredRecipes = selectedConcentrate === 'all'
-    ? RECIPES
-    : RECIPES.filter((r) => r.concentrate === selectedConcentrate);
+  const filteredRecipes = RECIPES.filter((r) => {
+    const concentrateMatch = selectedConcentrate === 'all' || r.concentrate === selectedConcentrate;
+    const query = searchQuery.toLowerCase().trim();
+    const queryMatch = query
+      ? r.name.toLowerCase().includes(query) ||
+        r.concentrate.toLowerCase().includes(query) ||
+        (r.milk && r.milk.toLowerCase().includes(query)) ||
+        (r.topping && r.topping.toLowerCase().includes(query))
+      : true;
+    return concentrateMatch && queryMatch;
+  });
 
   return (
     <main className="recipes-page">
+      {/* ── HEADER & SEARCH ── */}
+      <header className="recipes-header">
+        <div className="container">
+          <motion.h1
+            className="recipes-header__title"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+          >
+            Chilld Coffee Recipes
+          </motion.h1>
+          <motion.p
+            className="recipes-header__sub"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.1 }}
+          >
+            Explore our collection of custom recipes crafted around Chilld concentrates.
+          </motion.p>
+
+          <motion.div
+            className="recipes-search"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.2 }}
+          >
+            <div className="recipes-search__wrapper">
+              <span className="recipes-search__icon-wrap">
+                <Icon name="search" size={16} />
+              </span>
+              <input
+                id="recipes-search"
+                type="search"
+                placeholder="Search recipes (e.g. Mocha, Latte, Jaggery...)"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="recipes-search__input"
+                aria-label="Search recipes"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </header>
+
       {/* ── FILTERABLE RECIPE GRID ── */}
       <section className="rp-grid-section">
         <div className="container">
           <div className="rp-section-head rp-section-head--stacked">
             <div>
-              <h1>Browse by Concentrate</h1>
+              <h2>Browse by Concentrate</h2>
               <p className="rp-section-sub">
                 Every recipe is crafted around a specific Chilld concentrate — pick yours
               </p>
@@ -95,7 +148,7 @@ export default function RecipesPage() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
-            key={selectedConcentrate}
+            key={`${selectedConcentrate}-${searchQuery}`}
           >
             {filteredRecipes.length > 0 ? (
               filteredRecipes.map((recipe) => (
@@ -121,7 +174,7 @@ export default function RecipesPage() {
             ) : (
               <div className="rp-grid-empty">
                 <Icon name="search" size={28} />
-                <p>No recipes found for this concentrate yet.</p>
+                <p>No recipes found matching your search criteria.</p>
                 <Link to="/create-recipe" className="rp-btn rp-btn--primary" style={{ marginTop: '1rem' }}>
                   Create One
                 </Link>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Building2, CheckCircle2, ArrowRight, Activity, Award, Briefcase, Users, Coffee, Zap, Shield, TrendingUp } from 'lucide-react';
+import { Building2, CheckCircle2, ArrowRight, Award, Briefcase, TrendingUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import './B2BPage.css';
 
@@ -29,13 +29,6 @@ const SERVICE_TIERS = [
     color: '#27ae60',
     bgColor: 'rgba(39, 174, 96, 0.08)',
   },
-];
-
-const TRUST_STATS = [
-  { icon: Users, value: '120+', label: 'Corporate Clients' },
-  { icon: Coffee, value: '2.5M', label: 'Cups Served' },
-  { icon: Zap, value: '<2min', label: 'Avg Serve Time' },
-  { icon: Shield, value: '99.8%', label: 'Uptime SLA' },
 ];
 
 const containerAnim = {
@@ -77,83 +70,6 @@ export default function B2BPage() {
 
   return (
     <main className="b2b-page">
-      {/* ── HERO ── */}
-      <section className="b2b-hero">
-        <div className="b2b-hero__bg" aria-hidden="true" />
-        <div className="b2b-hero__glow" aria-hidden="true" />
-
-        <div className="container b2b-hero__inner">
-          <motion.p
-            className="b2b-hero__eyebrow"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Building2 size={14} />
-            <span>CHILLD ENTERPRISE</span>
-          </motion.p>
-
-          <motion.h1
-            className="b2b-hero__title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08 }}
-          >
-            Coffee Infrastructure<br />for Modern Workplaces
-          </motion.h1>
-
-          <motion.p
-            className="b2b-hero__desc"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.16 }}
-          >
-            Smart self-service kiosks, wholesale concentrate supply, and custom
-            enterprise branding — calm energy, engineered for productivity.
-          </motion.p>
-
-          <motion.div
-            className="b2b-hero__cta-row"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.24 }}
-          >
-            <a href="#b2b-inquiry" className="b2b-btn b2b-btn--primary">
-              <span>Get a Quote</span>
-              <ArrowRight size={15} />
-            </a>
-            <a href="#b2b-estimator" className="b2b-btn b2b-btn--outline">
-              <Activity size={15} />
-              <span>Estimate Volume</span>
-            </a>
-          </motion.div>
-        </div>
-
-        {/* Trust bar */}
-        <motion.div
-          className="b2b-trust-bar"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.36 }}
-        >
-          {TRUST_STATS.map((stat) => (
-            <div key={stat.label} className="b2b-trust-stat">
-              <stat.icon size={18} />
-              <div>
-                <strong>{stat.value}</strong>
-                <span>{stat.label}</span>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-
-        <div className="b2b-hero__wave" aria-hidden="true">
-          <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
-            <path d="M0,60 C320,95 620,25 960,55 C1200,80 1360,40 1440,50 L1440,100 L0,100 Z" fill="#f5f9fc" />
-          </svg>
-        </div>
-      </section>
-
       {/* ── VOLUME ESTIMATOR ── */}
       <section className="b2b-estimator" id="b2b-estimator">
         <div className="container">

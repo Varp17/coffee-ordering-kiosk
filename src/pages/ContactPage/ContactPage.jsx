@@ -62,27 +62,6 @@ export default function ContactPage() {
 
   return (
     <main className="contact-landing-page">
-      {/* ── HERO BANNER ── */}
-      <section className="contact-hero">
-        <div className="contact-hero__graffiti" aria-hidden="true" />
-        <div className="container contact-hero__content">
-          <p className="contact-hero__eyebrow">CHILLD SUPPORT LAB</p>
-          <h1 className="contact-hero__title">Get In Touch</h1>
-          <p className="contact-hero__desc">
-            We are here to help. Reach out to our team for order help, partnerships, or feed us some feedback.
-          </p>
-        </div>
-        {/* Wavy Divider Transition */}
-        <div className="hero-wave-divider">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-            <path 
-              d="M0,96 C360,120 720,40 1440,80 L1440,120 L0,120 Z" 
-              fill="var(--color-background-alt, #f5f9fc)" 
-            />
-          </svg>
-        </div>
-      </section>
-
       {/* ── SPLIT MAIN CONTENT ── */}
       <section className="contact-split-section">
         <div className="container contact-split-grid">

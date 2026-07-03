@@ -1,6 +1,7 @@
 .contact-landing-page {
   padding-bottom: var(--space-12);
   background: var(--color-background-alt, #f5f9fc);
+  padding-top: clamp(6rem, 8vw, 8rem);
 }
 
 /* Hero Banner matching the Recipes page style */
@@ -81,7 +82,7 @@
 /* Split content section */
 .contact-split-section {
   padding-block: var(--space-12);
-  margin-top: -60px;
+  margin-top: 0;
   position: relative;
   z-index: 10;
 }

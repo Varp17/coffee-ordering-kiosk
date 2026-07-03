@@ -2164,8 +2164,14 @@ function DesktopHomePage() {
                     muted
                     playsInline
                     preload="auto"
+                    style={{ opacity: 0.86 }}
                   />
-                  <div className="hard-part-video-overlay" />
+                  <div
+                    className="hard-part-video-overlay"
+                    style={{
+                      background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.65) 25%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.5) 100%)'
+                    }}
+                  />
                 </div>
               </div>
             </div>

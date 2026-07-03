@@ -17,28 +17,13 @@
   }
 }
 
-.neha-hero__pattern {
+.neha-hero__subtract-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
   width: 100%;
   height: 100%;
-  color: #8eb3d5;
-  opacity: 0.24;
-}
-
-.neha-hero__pattern path {
-  stroke-width: 14;
-}
-
-.neha-hero__cup-backdrop {
-  position: absolute;
-  z-index: 1;
-  top: -4%;
-  right: -8%;
-  width: 104%;
-  height: auto;
-  opacity: 0.42;
+  object-fit: cover;
   pointer-events: none;
   user-select: none;
 }

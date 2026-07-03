@@ -7,70 +7,65 @@ import { PRODUCTS } from '@/data/products';
 import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
 import coffeeCup from '@/pages/SkipPageHome/assets/iced-coffee-cup.png';
 import coffeeCupBackdrop from '@/pages/SkipPageHome/assets/coffee-cup-backdrop.svg';
+import TestimonialsBento from '@/components/TestimonialsBento/TestimonialsBento';
+import Footer from '@/components/Footer/Footer';
 
 const Dot = ({ active = false }) => (
   <span className={active ? 'is-active' : ''} aria-hidden="true" />
 );
 
-function HeroPattern() {
-  return (
-    <svg
-      className="neha-hero__pattern"
-      viewBox="0 0 631 421"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <g
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M310 -18c36 0 58 18 51 42-7 24-54 29-57 54-3 25 35 27 31 51" />
-        <path d="M367 13c8 17 42 21 43 46 1 17-24 32-47 40-28 10-35 28-17 46 12 12 32 16 42 32" />
-        <path d="M455 -23c-10 19 2 37 26 42 27 6 43-5 55 10 13 15 1 35-16 44-18 10-36 11-41 30-6 23 17 31 37 34" />
-        <path d="M565 -3c-15 16-4 35 14 42 17 7 37 7 39 25 2 17-19 27-36 31" />
-        <path d="M316 105c18-13 42-9 52 8 10 17 3 39-17 48-20 9-13 29 6 39 21 11 23 34 4 50" />
-        <path d="M407 86c20 3 29 23 20 39-9 15-29 19-35 34-8 20 9 35 27 35 20 0 35 13 36 31" />
-        <path d="M509 86c-10 13-6 32 11 39 17 7 39 8 43 27 4 19-15 31-31 35-17 4-25 23-13 38 12 14 37 15 51 5" />
-        <path d="M601 94c-12 15-2 31 14 36 12 4 18 12 15 26" />
-        <path d="M300 200c18-5 30 9 28 25-2 16-24 20-30 36-7 18 11 33 28 30 17-3 25 15 16 30" />
-        <path d="M364 202c12 14 36 17 41 36 4 16-15 25-30 30-17 6-19 28-2 36 15 7 31-1 41 9" />
-        <path d="M443 209c18 7 37 5 47 22 10 17-4 37-20 44-18 8-10 31 8 37 19 6 22 26 6 39" />
-        <path d="M538 205c9 18 32 20 39 37 8 18-10 31-24 36-17 6-17 27-1 35 17 9 31 6 41 21" />
-        <path d="M603 236c11 7 15 22 7 33-8 12-24 13-31 25" />
-      </g>
-    </svg>
-  );
-}
+const SKIPPED_HERO_SLIDES = [
+  {
+    name: 'Vandy',
+    suffix: 'Brew',
+    formula: '/ "Vandana" + "Cold Brew" /',
+  },
+  {
+    name: 'Preri',
+    suffix: 'Appe',
+    formula: '/ "Prerita" + "Frappe" /',
+  },
+  {
+    name: 'Rishi',
+    suffix: 'Latte',
+    formula: '/ "Rishima" + "Latte" /',
+  },
+];
 
 function SkippedHomeHeroOverlay() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % SKIPPED_HERO_SLIDES.length);
+    }, 2000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const slide = SKIPPED_HERO_SLIDES[activeSlide];
+
   return (
     <div className="homepage-skip-overlay">
       <section className="neha-hero" aria-labelledby="neha-title">
-        <HeroPattern />
-
-        {/* Layer order: background SVG -> coffee. */}
         <img
-          className="neha-hero__cup-backdrop"
-          src={coffeeCupBackdrop}
+          className="neha-hero__subtract-bg"
+          src="/Subtract (1).svg"
           alt=""
           aria-hidden="true"
-          width="1352"
-          height="617"
         />
 
         <div className="neha-hero__copy">
-          <h1 id="neha-title" className="neha-logo">
-            Neha<span>cano</span>
+          <h1 id="neha-title" className="neha-logo" key={slide.name}>
+            {slide.name}<span>{slide.suffix}</span>
           </h1>
-          <p className="neha-tagline">/ "Neha" + "Americano" /</p>
+          <p className="neha-tagline">{slide.formula}</p>
           <h2>Code your own Coffee</h2>
 
-          <div className="hero-dots" aria-label="Slide 1 of 3">
-            <Dot active />
-            <Dot />
-            <Dot />
+          <div className="hero-dots" aria-label={`Slide ${activeSlide + 1} of ${SKIPPED_HERO_SLIDES.length}`}>
+            {SKIPPED_HERO_SLIDES.map((item, index) => (
+              <Dot key={item.name} active={index === activeSlide} />
+            ))}
           </div>
         </div>
 
@@ -1117,6 +1112,182 @@ function BentoSocialCard({ slot, post, phase, cycle }) {
   );
 }
 
+function SkipHomepageMiddleFlow() {
+  const whySectionRef = useRef(null);
+  const [whyVisible, setWhyVisible] = useState(false);
+
+  useEffect(() => {
+    const section = whySectionRef.current;
+    if (!section) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setWhyVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.28 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <>
+      <section className="skip-hard-part" aria-labelledby="skip-hard-part-title">
+        <video
+          className="skip-hard-part__video"
+          src="/Videos/coffeeswirl2.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        />
+        <div className="skip-hard-part__shade" />
+        <svg
+          className="skip-hard-part__top-wave"
+          viewBox="0 0 1440 340"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <path
+              id="skip-hard-part-wave-text"
+              d="M-180,250 C40,165 230,118 430,104 C600,92 740,98 900,138 C1045,174 1165,210 1340,184 C1470,164 1570,110 1660,72"
+            />
+          </defs>
+          <text className="skip-hard-part__top-wave-text" dy="38">
+            <textPath href="#skip-hard-part-wave-text" startOffset="-45%">
+              Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+              <animate attributeName="startOffset" from="-45%" to="35%" dur="34s" repeatCount="indefinite" />
+            </textPath>
+          </text>
+        </svg>
+
+        <div className="skip-hard-part__content">
+          <h2 id="skip-hard-part-title">We handled the hard part, the fun part's on you</h2>
+          <span className="skip-hard-part__rule" aria-hidden="true" />
+          <p className="skip-hard-part__intro">
+            We get you exceptional coffee concentrate. We take care of the nitty-gritties of sourcing, grinding and brewing.
+            After that, you are free to tailor your daily coffee to your liking. Add water, if you are in a hurry for your
+            presentation. Add syrup, milk, experiment with everyday ingredients in your kitchen, if you feel like it.
+          </p>
+          <p className="skip-hard-part__middle">
+            If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery but
+            enjoy the occasional pick-me-up, add a spoon less. No one's judging you.
+          </p>
+          <p className="skip-hard-part__promise">
+            We guarantee that it will taste good; we promise that it won't eat into your wallet.
+          </p>
+          <strong>"Coffee is too much work"</strong>
+          <p className="skip-hard-part__simple">
+            If you can make lemonade or iced-water, this is a walk in the park.
+          </p>
+          <p className="skip-hard-part__closing">
+            Chilld is built for people who like things their way. From milk choices to sweetness levels, every drink is designed
+            by you. No complicated menus. Just cold coffee made for your mood, your routine, and your kind of day.
+          </p>
+          <div className="skip-hard-part__actions">
+            <Link to="/build" className="skip-hard-part__primary">Buy CHILLD Cold Brew Core</Link>
+            <Link to="/recipes" className="skip-hard-part__secondary">Explore Recipes</Link>
+          </div>
+        </div>
+
+        <svg
+          className="skip-hard-part__bottom-wave"
+          viewBox="0 0 1512 220"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0 48 C176 108 348 154 524 143 C711 132 846 63 1022 70 C1210 77 1338 155 1512 197 L1512 220 L0 220 Z"
+            fill="#ffffff"
+          />
+        </svg>
+      </section>
+
+      <section
+        ref={whySectionRef}
+        className={`skip-why-chilld${whyVisible ? ' is-visible' : ''}`}
+        aria-labelledby="skip-why-chilld-title"
+      >
+        <h2 id="skip-why-chilld-title">Why Chilld?</h2>
+        <div className="skip-why-chilld__grid">
+          {WHY_CHILLD_ITEMS.map((item, index) => (
+            <WhyChilldCup
+              key={item.id}
+              item={item}
+              className={`skip-why-chilld__item skip-why-chilld__item--${item.id}`}
+              cupWrapClassName="skip-why-chilld__cup-wrap"
+              cupClassName="skip-why-chilld__cup"
+              style={{ '--why-reveal-delay': `${index * 180}ms` }}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="skip-feature-video" aria-label="Chilld cold brew concentrate video">
+        <video
+          src="/Videos/coffee_concentrate_with_glass.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+        />
+      </section>
+    </>
+  );
+}
+
+function HomepageLowerFlow() {
+  return (
+    <section className="homepage-lower-flow" aria-label="Chilld social proof and cafe offer">
+      <TestimonialsBento />
+
+      <section className="lower-flow-trending" aria-labelledby="lower-flow-trending-title">
+        <h2 id="lower-flow-trending-title">Trending Mixes</h2>
+
+        <div className="lower-flow-trending__rail" aria-label="Trending coffee mixes">
+          <TrendingMixCards />
+        </div>
+
+        <div className="lower-flow-trending__actions">
+          <div className="lower-flow-trending__arrows" aria-hidden="true">
+            <span>‹</span>
+            <span>›</span>
+          </div>
+          <p>
+            Tag your mix with <strong>#MadeByYou</strong>
+          </p>
+          <Link to="/build" className="lower-flow-trending__button">
+            Create your Recipe
+          </Link>
+        </div>
+      </section>
+
+      <section className="lower-flow-b2b" aria-labelledby="lower-flow-b2b-title">
+        <h2 id="lower-flow-b2b-title" className="sr-only">Premium Cold Brew for your Restaurant &amp; Cafe</h2>
+        <div className="lower-flow-b2b__visual">
+          <img
+            src="/images/Frame 48099161.jpg"
+            alt="Premium Cold Brew for your Restaurant and Cafe"
+            width="1352"
+            height="617"
+            loading="lazy"
+          />
+        </div>
+      </section>
+
+      <Footer className="footer--homepage-lower-flow" />
+    </section>
+  );
+}
+
 const COFFEE_HERO_ASSETS = {
   AMERICANO: {
     image: '/images/Images/kaffee-meister-BIeXZhg_7sw-unsplash.jpg',
@@ -1640,8 +1811,14 @@ function DesktopHomePage() {
   }, []);
 
   return (
-    <div className="homepage-figma-container">
-      {skippedWelcome && <SkippedHomeHeroOverlay />}
+    <div className={`homepage-figma-container${skippedWelcome ? ' homepage-figma-container--skip' : ''}`}>
+      {skippedWelcome && (
+        <div className="skip-homepage-flow">
+          <SkippedHomeHeroOverlay />
+          <SkipHomepageMiddleFlow />
+          <HomepageLowerFlow />
+        </div>
+      )}
       {!skippedWelcome && selectedAsset && (
         <div
           className="hero-image-attribution"
@@ -1663,493 +1840,461 @@ function DesktopHomePage() {
         />
       )}
       {/* ── DESKTOP & MOBILE UNIFIED FIGMA SVG LAYOUT ───────────────────────── */}
-      <div className="figma-svg-wrapper">
-        <div className="figma-svg-content">
-          <div id="hard-part" className="hard-part-anchor-target" />
-          <object
-            data="/Homepage.svg?v=1.7"
-            type="image/svg+xml"
-            className="figma-svg-object"
-            aria-label="Figma Homepage Design"
-            fetchPriority="high"
-            onLoad={(e) => {
-              try {
-                const svgDoc = e.target.contentDocument;
-                if (!svgDoc) return;
+      {!skippedWelcome && (
+        <div className="figma-svg-wrapper">
+          <div className="figma-svg-content">
+            <div id="hard-part" className="hard-part-anchor-target" />
+            <object
+              data="/Homepage.svg?v=1.7"
+              type="image/svg+xml"
+              className="figma-svg-object"
+              aria-label="Figma Homepage Design"
+              fetchPriority="high"
+              onLoad={(e) => {
+                try {
+                  const svgDoc = e.target.contentDocument;
+                  if (!svgDoc) return;
 
-                injectSvgStyles(svgDoc);
-                animateSvgCup(svgDoc);
-                animateHeroBeans(svgDoc);
-                injectDynamicHeroText(svgDoc, displayName, suffix);
-                hideStaticPlaceholders(svgDoc);
-                compactLowerHomepageSections(svgDoc);
-                injectWhyChilldBackground(svgDoc);
-                injectB2bGraffiti(svgDoc);
+                  injectSvgStyles(svgDoc);
+                  animateSvgCup(svgDoc);
+                  animateHeroBeans(svgDoc);
+                  injectDynamicHeroText(svgDoc, displayName, suffix);
+                  hideStaticPlaceholders(svgDoc);
+                  compactLowerHomepageSections(svgDoc);
+                  injectWhyChilldBackground(svgDoc);
+                  injectB2bGraffiti(svgDoc);
 
-                if (selectedAsset) {
-                  const pattern = svgDoc.getElementById('pattern3_366_1172') || svgDoc.querySelector('pattern[id^="pattern3_"]');
-                  if (pattern) {
-                    const imageNode = pattern.querySelector('image');
-                    if (imageNode) {
-                      imageNode.setAttribute('href', selectedAsset.image);
+                  if (selectedAsset) {
+                    const pattern = svgDoc.getElementById('pattern3_366_1172') || svgDoc.querySelector('pattern[id^="pattern3_"]');
+                    if (pattern) {
+                      const imageNode = pattern.querySelector('image');
+                      if (imageNode) {
+                        imageNode.setAttribute('href', selectedAsset.image);
+                      }
                     }
                   }
-                }
 
-                // Wrap the cup elements for parallax effect
-                wrapCupElements(svgDoc, 1, 2);
-                wrapCupElements(svgDoc, 2, 2);
-                wrapCupElements(svgDoc, 3, 2);
-                wrapCupElements(svgDoc, 4, 3);
+                  // Wrap the cup elements for parallax effect
+                  wrapCupElements(svgDoc, 1, 2);
+                  wrapCupElements(svgDoc, 2, 2);
+                  wrapCupElements(svgDoc, 3, 2);
+                  wrapCupElements(svgDoc, 4, 3);
 
-                // Hide the original SVG cups so they don't render behind our React overlay
-                for (let i = 1; i <= 4; i++) {
-                  const wrapper = svgDoc.querySelector(`g[data-cup-parallax-wrapper="${i}"]`);
-                  if (wrapper) {
-                    wrapper.style.display = 'none';
+                  // Hide the original SVG cups so they don't render behind our React overlay
+                  for (let i = 1; i <= 4; i++) {
+                    const wrapper = svgDoc.querySelector(`g[data-cup-parallax-wrapper="${i}"]`);
+                    if (wrapper) {
+                      wrapper.style.display = 'none';
+                    }
                   }
-                }
 
-                if (skippedWelcome) {
-                  // Hide elements in the top 1100px (Figma hero cup and beans)
+                  if (skippedWelcome) {
+                    // Hide elements in the top 1100px (Figma hero cup and beans)
+                    try {
+                      const svgRoot = svgDoc.querySelector('svg');
+                      const allNodes = svgRoot.querySelectorAll('*');
+                      allNodes.forEach(node => {
+                        try {
+                          const bbox = node.getBBox();
+                          // 1150px safely hides the cup and beans without hiding the black wave at 1185px
+                          if (bbox && bbox.y < 1150 && bbox.height > 0) {
+                            node.style.display = 'none';
+                          }
+                        } catch { /* ignore */ }
+                      });
+                    } catch { /* safety net */ }
+                  }
+
+                  // Also hide ALL remaining SVG elements in the cups/text Y-range (2400-3460)
+                  // The kiosk SVG has text labels as separate path elements, not cup-group siblings
                   try {
                     const svgRoot = svgDoc.querySelector('svg');
-                    const allNodes = svgRoot.querySelectorAll('*');
-                    allNodes.forEach(node => {
+                    const allPaths = svgRoot.querySelectorAll('path, g[mask]');
+                    allPaths.forEach(el => {
                       try {
-                        const bbox = node.getBBox();
-                        // 1150px safely hides the cup and beans without hiding the black wave at 1185px
-                        if (bbox && bbox.y < 1150 && bbox.height > 0) {
-                          node.style.display = 'none';
+                        const bbox = el.getBBox();
+                        if (bbox && bbox.y > 2400 && bbox.y < 3460 && bbox.height > 5) {
+                          el.style.display = 'none';
                         }
-                      } catch { /* ignore */ }
+                      } catch { /* getBBox can throw for invisible elements */ }
                     });
                   } catch { /* safety net */ }
+
+                  // Shrink SVG canvas height by compact shift to prevent trailing whitespace
+                  const svg = svgDoc.querySelector('svg');
+                  if (svg) {
+                    const currentHeight = parseFloat(svg.getAttribute('height') || '8329');
+                    svg.setAttribute('height', String(currentHeight - LOWER_SECTION_COMPACT_SHIFT));
+                    svg.setAttribute('viewBox', `0 0 1512 ${currentHeight - LOWER_SECTION_COMPACT_SHIFT}`);
+
+                    // Inject light blue background and faded Why CHILLD pattern into the SVG DOM.
+                    const bgRect = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    bgRect.setAttribute('x', '0');
+                    bgRect.setAttribute('y', '2000');
+                    bgRect.setAttribute('width', '1512');
+                    bgRect.setAttribute('height', '1460');
+                    bgRect.setAttribute('fill', '#eaf5ff');
+
+                    const firstChild = svg.firstChild;
+                    svg.insertBefore(bgRect, firstChild);
+                  }
+
+                  // syncHardPartTextOverlay skipped — kiosk SVG has no vector text paths; using hardcoded React overlay instead
+                } catch (err) {
+                  console.error('Error injecting dynamic assets into SVG:', err);
                 }
+              }}
+            />
 
-                // Also hide ALL remaining SVG elements in the cups/text Y-range (2400-3460)
-                // The kiosk SVG has text labels as separate path elements, not cup-group siblings
-                try {
-                  const svgRoot = svgDoc.querySelector('svg');
-                  const allPaths = svgRoot.querySelectorAll('path, g[mask]');
-                  allPaths.forEach(el => {
-                    try {
-                      const bbox = el.getBBox();
-                      if (bbox && bbox.y > 2400 && bbox.y < 3460 && bbox.height > 5) {
-                        el.style.display = 'none';
-                      }
-                    } catch { /* getBBox can throw for invisible elements */ }
-                  });
-                } catch { /* safety net */ }
+            <section className="desktop-homepage__why-chilld" aria-label="Why CHILLD">
+              <div className={`desktop-homepage__why-chilld-content${isWhyChilldVisible ? ' visible' : ''}`}>
+                <h2 className="desktop-homepage__why-chilld-title">Why Chilld?</h2>
+                {WHY_CHILLD_ITEMS.map((item, index) => (
+                  <WhyChilldCup
+                    key={item.id}
+                    item={item}
+                    className={`desktop-homepage__why-chilld-item item-${item.id}`}
+                    cupWrapClassName="desktop-homepage__why-chilld-cup-wrap"
+                    cupClassName="desktop-homepage__why-chilld-cup"
+                    ref={[reactCup1Ref, reactCup2Ref, reactCup3Ref, reactCup4Ref][index]}
+                  />
+                ))}
+              </div>
+            </section>
 
-                // Shrink SVG canvas height by compact shift to prevent trailing whitespace
-                const svg = svgDoc.querySelector('svg');
-                if (svg) {
-                  const currentHeight = parseFloat(svg.getAttribute('height') || '8329');
-                  svg.setAttribute('height', String(currentHeight - LOWER_SECTION_COMPACT_SHIFT));
-                  svg.setAttribute('viewBox', `0 0 1512 ${currentHeight - LOWER_SECTION_COMPACT_SHIFT}`);
-
-                  // Inject light blue background and faded Why CHILLD pattern into the SVG DOM.
-                  const bgRect = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                  bgRect.setAttribute('x', '0');
-                  bgRect.setAttribute('y', '2110');
-                  bgRect.setAttribute('width', '1512');
-                  bgRect.setAttribute('height', '1350');
-                  bgRect.setAttribute('fill', '#eaf5ff');
-
-                  const firstChild = svg.firstChild;
-                  svg.insertBefore(bgRect, firstChild);
-                }
-
-                // syncHardPartTextOverlay skipped — kiosk SVG has no vector text paths; using hardcoded React overlay instead
-              } catch (err) {
-                console.error('Error injecting dynamic assets into SVG:', err);
-              }
-            }}
-          />
-
-          <section className="desktop-homepage__why-chilld" aria-label="Why CHILLD">
-            <div className={`desktop-homepage__why-chilld-content${isWhyChilldVisible ? ' visible' : ''}`}>
-              <h2 className="desktop-homepage__why-chilld-title">Why Chilld?</h2>
-              {WHY_CHILLD_ITEMS.map((item, index) => (
-                <WhyChilldCup
-                  key={item.id}
-                  item={item}
-                  className={`desktop-homepage__why-chilld-item item-${item.id}`}
-                  cupWrapClassName="desktop-homepage__why-chilld-cup-wrap"
-                  cupClassName="desktop-homepage__why-chilld-cup"
-                  ref={[reactCup1Ref, reactCup2Ref, reactCup3Ref, reactCup4Ref][index]}
-                />
-              ))}
+            {/* ── HARD-PART SECTION: COFFEESWIRL2, CLIPPED TO FIGMA WAVES ── */}
+            <div className="hard-part-shadow-wrapper">
+              <div className="hard-part-parallax-clip" aria-hidden="true">
+                <div
+                  ref={hardPartParallaxRef}
+                  className="hard-part-parallax-video"
+                >
+                  <video
+                    ref={hardPartVideoRef}
+                    src="/Videos/coffeeswirl2.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                  />
+                  <div className="hard-part-video-overlay" />
+                </div>
+              </div>
             </div>
-          </section>
 
-          {/* ── HARD-PART SECTION: COFFEESWIRL2, CLIPPED TO FIGMA WAVES ── */}
-          <div className="hard-part-shadow-wrapper">
-            <div className="hard-part-parallax-clip" aria-hidden="true">
-              <div
-                ref={hardPartParallaxRef}
-                className="hard-part-parallax-video"
-              >
+            {/* ── HARD-PART TEXT OVERLAY — Clean classes matching Figma reference ── */}
+            <div className="hard-part-copy-overlay">
+              {/* ── Big heading ── */}
+              <h2 className="hard-part-heading">
+                We handled the hard part, the fun part's on you
+              </h2>
+
+              {/* ── Horizontal divider ── */}
+              <div className="hard-part-divider" />
+
+              {/* ── Body paragraphs ── */}
+              <p className="hard-part-paragraph">
+                We get you exceptional coffee concentrate. We take care of the nitty-gritties of sourcing, grinding and brewing.
+                After that, you are free to tailor your daily coffee to your liking. Add water, if you are in a hurry for your
+                presentation. Add syrup, milk, experiment with everyday ingredients in your kitchen, if you feel like it.
+              </p>
+              <p className="hard-part-paragraph">
+                If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery but
+                enjoy the occasional pick-me-up, add a spoon less. No one's judging you.
+              </p>
+              <p className="hard-part-paragraph hard-part-paragraph-spaced">
+                We guarantee that it will taste good; we promise that it won't eat into your wallet.
+              </p>
+
+              {/* ── Italic quote heading ── */}
+              <p className="hard-part-quote">
+                {"\u201CCoffee is too much work\u201D"}
+              </p>
+
+              <p className="hard-part-paragraph">
+                If you can make lemonade or iced-water, this is a walk in the park.
+              </p>
+              <p className="hard-part-paragraph hard-part-paragraph-large-gap">
+                Chilld is built for people who like things their way. From milk choices to sweetness levels, every drink is designed
+                by you. No complicated menus. Just cold coffee made for your mood, your routine, and your kind of day.
+              </p>
+
+              {/* ── CTA Buttons ── */}
+              <div className="hard-part-buttons">
+                <Link to="/build" className="hard-part-btn-primary">
+                  Buy CHILLD Cold Brew Core
+                </Link>
+                <Link to="/recipes" className="hard-part-btn-secondary">
+                  Explore Recipes
+                </Link>
+              </div>
+            </div>
+
+            <TestimonialsBento />
+
+            {/* ── INFINITE TRENDING MIXES CAROUSEL ── */}
+            <section
+              className="trending-mixes-marquee"
+              aria-label="Trending coffee mixes"
+              onMouseEnter={pauseMixCarousel}
+              onMouseLeave={() => resumeMixCarousel()}
+              onFocusCapture={pauseMixCarousel}
+              onBlurCapture={() => resumeMixCarousel()}
+              onPointerDown={handleCarouselPointerDown}
+              onPointerUp={handleCarouselPointerUp}
+              onPointerCancel={() => resumeMixCarousel()}
+            >
+              <div className="trending-mixes-marquee__viewport">
+                <div
+                  ref={carouselTrackRef}
+                  className="trending-mixes-marquee__track"
+                >
+                  <div
+                    ref={carouselFirstGroupRef}
+                    className="trending-mixes-marquee__group"
+                  >
+                    <TrendingMixCards />
+                  </div>
+
+                  <div
+                    className="trending-mixes-marquee__group"
+                    aria-hidden="true"
+                  >
+                    <TrendingMixCards duplicate />
+                  </div>
+
+                  <div
+                    className="trending-mixes-marquee__group"
+                    aria-hidden="true"
+                  >
+                    <TrendingMixCards duplicate />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ── TRENDING MIXES CONTROLS ──
+            Keeping the arrows inside this footer keeps them fixed, centered,
+            and vertically separated from the tagline on every screen size. */}
+            <div className="trending-mixes-footer">
+              <div className="trending-mixes-navigation" aria-label="Trending mixes navigation">
+                <button
+                  type="button"
+                  className="trending-mixes-nav-button"
+                  aria-label="Show previous mixes"
+                  onClick={() => moveMixCarousel(-1)}
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M14.5 5 7.5 12l7 7" />
+                  </svg>
+                </button>
+
+                <button
+                  type="button"
+                  className="trending-mixes-nav-button"
+                  aria-label="Show next mixes"
+                  onClick={() => moveMixCarousel(1)}
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m9.5 5 7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+
+              <p>
+                Tag your mix with <strong>#MadeByYou</strong>
+              </p>
+
+              <Link to="/build" className="trending-mixes-create-link">
+                Create your Recipe
+              </Link>
+            </div>
+
+            {/* ── SCROLL-TRIGGERED INLINE VIDEO ── */}
+            <div
+              ref={scrollVideoTriggerRef}
+              className={`scroll-video-wrapper ${(scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting')
+                ? 'scroll-video-wrapper--covered'
+                : ''
+                }`}
+              style={videoStyles}
+            >
+              <div className="video-container-inner">
                 <video
-                  ref={hardPartVideoRef}
-                  src="/Videos/coffeeswirl2.mp4"
+                  ref={videoRef}
+                  src="/Videos/coffee_concentrate_with_glass.mp4"
                   autoPlay
                   loop
                   muted
                   playsInline
                   preload="auto"
-                />
-                <div className="hard-part-video-overlay" />
-              </div>
-            </div>
-          </div>
-
-          {/* ── HARD-PART TEXT OVERLAY — Clean classes matching Figma reference ── */}
-          <div className="hard-part-copy-overlay">
-            {/* ── Big heading ── */}
-            <h2 className="hard-part-heading">
-              We handled the hard part, the fun part's on you
-            </h2>
-
-            {/* ── Horizontal divider ── */}
-            <div className="hard-part-divider" />
-
-            {/* ── Body paragraphs ── */}
-            <p className="hard-part-paragraph">
-              We get you exceptional coffee concentrate. We take care of the nitty-gritties of sourcing, grinding and brewing.
-              After that, you are free to tailor your daily coffee to your liking. Add water, if you are in a hurry for your
-              presentation. Add syrup, milk, experiment with everyday ingredients in your kitchen, if you feel like it.
-            </p>
-            <p className="hard-part-paragraph">
-              If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery but
-              enjoy the occasional pick-me-up, add a spoon less. No one's judging you.
-            </p>
-            <p className="hard-part-paragraph hard-part-paragraph-spaced">
-              We guarantee that it will taste good; we promise that it won't eat into your wallet.
-            </p>
-
-            {/* ── Italic quote heading ── */}
-            <p className="hard-part-quote">
-              {"\u201CCoffee is too much work\u201D"}
-            </p>
-
-            <p className="hard-part-paragraph">
-              If you can make lemonade or iced-water, this is a walk in the park.
-            </p>
-            <p className="hard-part-paragraph hard-part-paragraph-large-gap">
-              Chilld is built for people who like things their way. From milk choices to sweetness levels, every drink is designed
-              by you. No complicated menus. Just cold coffee made for your mood, your routine, and your kind of day.
-            </p>
-
-            {/* ── CTA Buttons ── */}
-            <div className="hard-part-buttons">
-              <Link to="/build" className="hard-part-btn-primary">
-                Buy CHILLD Cold Brew Core
-              </Link>
-              <Link to="/recipes" className="hard-part-btn-secondary">
-                Explore Recipes
-              </Link>
-            </div>
-          </div>
-
-          <div className="bento-video-card">
-            <video
-              ref={bentoVideoRef}
-              src="/Videos/coffeeswirl1.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              aria-label="Coffee swirl video"
-            />
-          </div>
-
-          {/* ── BENTO GRID: STATIC POSTER + ROTATING SOCIAL POSTS ── */}
-          <div className="bento-grid-hover-card bento-grid-hover-card--poster" aria-hidden="true" />
-
-          {outgoingBentoPostSet !== null && BENTO_SOCIAL_SLOTS.map((slot) => (
-            <BentoSocialCard
-              key={`bento-leave-${outgoingBentoPostSet}-${slot}`}
-              slot={slot}
-              post={BENTO_POST_SETS[outgoingBentoPostSet][slot]}
-              phase="leave"
-              cycle={outgoingBentoPostSet}
-            />
-          ))}
-
-          {BENTO_SOCIAL_SLOTS.map((slot) => (
-            <BentoSocialCard
-              key={`bento-enter-${activeBentoPostSet}-${slot}`}
-              slot={slot}
-              post={BENTO_POST_SETS[activeBentoPostSet][slot]}
-              phase="enter"
-              cycle={activeBentoPostSet}
-            />
-          ))}
-
-          {/* ── INFINITE TRENDING MIXES CAROUSEL ── */}
-          <section
-            className="trending-mixes-marquee"
-            aria-label="Trending coffee mixes"
-            onMouseEnter={pauseMixCarousel}
-            onMouseLeave={() => resumeMixCarousel()}
-            onFocusCapture={pauseMixCarousel}
-            onBlurCapture={() => resumeMixCarousel()}
-            onPointerDown={handleCarouselPointerDown}
-            onPointerUp={handleCarouselPointerUp}
-            onPointerCancel={() => resumeMixCarousel()}
-          >
-            <div className="trending-mixes-marquee__viewport">
-              <div
-                ref={carouselTrackRef}
-                className="trending-mixes-marquee__track"
-              >
-                <div
-                  ref={carouselFirstGroupRef}
-                  className="trending-mixes-marquee__group"
-                >
-                  <TrendingMixCards />
-                </div>
-
-                <div
-                  className="trending-mixes-marquee__group"
-                  aria-hidden="true"
-                >
-                  <TrendingMixCards duplicate />
-                </div>
-
-                <div
-                  className="trending-mixes-marquee__group"
-                  aria-hidden="true"
-                >
-                  <TrendingMixCards duplicate />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ── TRENDING MIXES CONTROLS ──
-            Keeping the arrows inside this footer keeps them fixed, centered,
-            and vertically separated from the tagline on every screen size. */}
-          <div className="trending-mixes-footer">
-            <div className="trending-mixes-navigation" aria-label="Trending mixes navigation">
-              <button
-                type="button"
-                className="trending-mixes-nav-button"
-                aria-label="Show previous mixes"
-                onClick={() => moveMixCarousel(-1)}
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M14.5 5 7.5 12l7 7" />
-                </svg>
-              </button>
-
-              <button
-                type="button"
-                className="trending-mixes-nav-button"
-                aria-label="Show next mixes"
-                onClick={() => moveMixCarousel(1)}
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m9.5 5 7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-
-            <p>
-              Tag your mix with <strong>#MadeByYou</strong>
-            </p>
-
-            <Link to="/build" className="trending-mixes-create-link">
-              Create your Recipe
-            </Link>
-          </div>
-
-          {/* ── SCROLL-TRIGGERED INLINE VIDEO ── */}
-          <div
-            ref={scrollVideoTriggerRef}
-            className={`scroll-video-wrapper ${(scrollVideoMode === 'fullscreen' || scrollVideoMode === 'exiting')
-              ? 'scroll-video-wrapper--covered'
-              : ''
-              }`}
-            style={videoStyles}
-          >
-            <div className="video-container-inner">
-              <video
-                ref={videoRef}
-                src="/Videos/coffee_concentrate_with_glass.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                onClick={(event) => handleVideoClick(event, videoRef)}
-                className="fullscreen-scroll-video"
-              />
-              {isPaused && scrollVideoMode === 'inline' && (
-                <button
-                  type="button"
-                  className="video-play-overlay"
-                  aria-label="Play coffee swirl video"
                   onClick={(event) => handleVideoClick(event, videoRef)}
-                >
-                  <svg viewBox="0 0 24 24" fill="white" width="64" height="64">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </button>
-              )}
+                  className="fullscreen-scroll-video"
+                />
+                {isPaused && scrollVideoMode === 'inline' && (
+                  <button
+                    type="button"
+                    className="video-play-overlay"
+                    aria-label="Play coffee swirl video"
+                    onClick={(event) => handleVideoClick(event, videoRef)}
+                  >
+                    <svg viewBox="0 0 24 24" fill="white" width="64" height="64">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* ── LOOPING WAVY MARQUEE OVERLAYS ── */}
-          <svg
-            viewBox="0 0 1512 8329"
-            className="marquee-overlay-svg"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              pointerEvents: 'none',
-              zIndex: 6
-            }}
-          >
-            <defs>
-              {/* Top Wave Curve aligned exactly with the SVG wave border and extended off-screen */}
-              <path
-                id="marquee-path-top"
-                d="M-150 1185 L0 1119 L63 1090.97 C126 1063.35 252 1006.65 378 979.035 C504 951 630 951 756 979.035 C882 1006.65 1008 1063.35 1134 1063.04 C1260 1063.35 1386 1006.65 1449 979.035 L1512 951 L1662 885"
-              />
-              {/* Bottom Wave Curve aligned exactly with the top border of the navy blue wave and extended off-screen */}
-              <path
-                id="marquee-path-bottom"
-                d="M-150 7202 L0 7136 L63 7107.96 C126 7080.35 252 7023.65 378 7023.97 C504 7023.65 630 7080.35 756 7107.96 C882 7136 1008 7136 1134 7107.96 C1260 7080.35 1386 7023.65 1449 6996.03 L1512 6968 L1662 6902"
-              />
-            </defs>
-
-            {/* Top Wave Text - Left-to-Right Infinite Marquee */}
-            <text
-              fill="#FFFFFF"
-              fontSize="34"
-              fontWeight="800"
-              fontFamily="var(--font-heading)"
-              letterSpacing="0.08em"
-              dy="30"
+            {/* ── LOOPING WAVY MARQUEE OVERLAYS ── */}
+            <svg
+              viewBox="0 0 1512 8329"
+              className="marquee-overlay-svg"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                pointerEvents: 'none',
+                zIndex: 6
+              }}
             >
-              <textPath href="#marquee-path-top" startOffset="0%">
-                Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
-                <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
-              </textPath>
-            </text>
+              <defs>
+                {/* Top Wave Curve aligned exactly with the SVG wave border and extended off-screen */}
+                <path
+                  id="marquee-path-top"
+                  d="M-150 1185 L0 1119 L63 1090.97 C126 1063.35 252 1006.65 378 979.035 C504 951 630 951 756 979.035 C882 1006.65 1008 1063.35 1134 1063.04 C1260 1063.35 1386 1006.65 1449 979.035 L1512 951 L1662 885"
+                />
+                {/* Bottom Wave Curve aligned exactly with the top border of the navy blue wave and extended off-screen */}
+                <path
+                  id="marquee-path-bottom"
+                  d="M-150 7202 L0 7136 L63 7107.96 C126 7080.35 252 7023.65 378 7023.97 C504 7023.65 630 7080.35 756 7107.96 C882 7136 1008 7136 1134 7107.96 C1260 7080.35 1386 7023.65 1449 6996.03 L1512 6968 L1662 6902"
+                />
+              </defs>
 
-            {/* Bottom Wave Text - Left-to-Right Infinite Marquee */}
-            <text
-              fill="#1F2A44"
-              fontSize="34"
-              fontWeight="800"
-              fontFamily="var(--font-heading)"
-              letterSpacing="0.08em"
-              dy="-5"
-            >
-              <textPath href="#marquee-path-bottom" startOffset="0%">
-                Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
-                <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
-              </textPath>
-            </text>
-          </svg>
+              {/* Top Wave Text - Left-to-Right Infinite Marquee */}
+              <text
+                fill="#FFFFFF"
+                fontSize="34"
+                fontWeight="800"
+                fontFamily="var(--font-heading)"
+                letterSpacing="0.08em"
+                dy="30"
+              >
+                <textPath href="#marquee-path-top" startOffset="0%">
+                  Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+                  <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
+                </textPath>
+              </text>
 
-          {/* ── DESKTOP SVG CLICKABLE OVERLAYS (EXCLUDING HEADER) ── */}
-          {!skippedWelcome && (
+              {/* Bottom Wave Text - Left-to-Right Infinite Marquee */}
+              <text
+                fill="#1F2A44"
+                fontSize="34"
+                fontWeight="800"
+                fontFamily="var(--font-heading)"
+                letterSpacing="0.08em"
+                dy="-5"
+              >
+                <textPath href="#marquee-path-bottom" startOffset="0%">
+                  Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+                  <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
+                </textPath>
+              </text>
+            </svg>
+
+            {/* ── DESKTOP SVG CLICKABLE OVERLAYS (EXCLUDING HEADER) ── */}
+            {!skippedWelcome && (
+              <Link
+                to="/build"
+                className="homepage-link link-hero-build"
+                style={{ left: '40.94%', top: '9.58%', width: '18.12%', height: '0.60%' }}
+                title="Code Your Own Coffee"
+              />
+            )}
+
+            {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
+
+            {/* Original SVG trending CTA is hidden; the live React CTA above owns this action. */}
+
+            {/* B2B Call Button */}
+            <a
+              href="tel:+918693852250"
+              className="homepage-link link-b2b-call"
+              style={{ left: '7.94%', top: `calc(84.56% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '17.26%', height: '0.60%' }}
+              title="Call Us"
+            />
+
+            {/* Footer Link - Cold Brew Core */}
+            <Link
+              to="/menu?cat=cold-brew"
+              className="homepage-link link-footer-shop-1"
+              style={{ left: '55.49%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+              title="Shop Cold Brew Core"
+            />
+
+            {/* Footer Link - Ceremonial Matcha */}
+            <Link
+              to="/menu?cat=matcha"
+              className="homepage-link link-footer-shop-2"
+              style={{ left: '55.49%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+              title="Shop Ceremonial Matcha"
+            />
+
+            {/* Footer Link - Create Your Mix */}
             <Link
               to="/build"
-              className="homepage-link link-hero-build"
-              style={{ left: '40.94%', top: '9.58%', width: '18.12%', height: '0.60%' }}
-              title="Code Your Own Coffee"
+              className="homepage-link link-footer-shop-3"
+              style={{ left: '55.49%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+              title="Code Your Drink"
             />
-          )}
 
-          {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
+            {/* Footer Link - Create Recipe */}
+            <Link
+              to="/create-recipe"
+              className="homepage-link link-footer-recipe-create"
+              style={{ left: '64.15%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
+              title="Create Recipe"
+            />
 
-          {/* Original SVG trending CTA is hidden; the live React CTA above owns this action. */}
+            {/* Footer Link - Recipe Details */}
+            <Link
+              to="/recipes"
+              className="homepage-link link-footer-recipe-details"
+              style={{ left: '64.15%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
+              title="Recipes"
+            />
 
-          {/* B2B Call Button */}
-          <a
-            href="tel:+918693852250"
-            className="homepage-link link-b2b-call"
-            style={{ left: '7.94%', top: `calc(84.56% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '17.26%', height: '0.60%' }}
-            title="Call Us"
-          />
+            {/* Footer Link - Indiranagar */}
+            <Link
+              to="/location"
+              className="homepage-link link-footer-visit-1"
+              style={{ left: '72.75%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+              title="Indiranagar Cafe"
+            />
 
-          {/* Footer Link - Cold Brew Core */}
-          <Link
-            to="/menu?cat=cold-brew"
-            className="homepage-link link-footer-shop-1"
-            style={{ left: '55.49%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-            title="Shop Cold Brew Core"
-          />
+            {/* Footer Link - Koramangala */}
+            <Link
+              to="/location"
+              className="homepage-link link-footer-visit-2"
+              style={{ left: '72.75%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+              title="Koramangala Cafe"
+            />
 
-          {/* Footer Link - Ceremonial Matcha */}
-          <Link
-            to="/menu?cat=matcha"
-            className="homepage-link link-footer-shop-2"
-            style={{ left: '55.49%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-            title="Shop Ceremonial Matcha"
-          />
-
-          {/* Footer Link - Create Your Mix */}
-          <Link
-            to="/build"
-            className="homepage-link link-footer-shop-3"
-            style={{ left: '55.49%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-            title="Code Your Drink"
-          />
-
-          {/* Footer Link - Create Recipe */}
-          <Link
-            to="/create-recipe"
-            className="homepage-link link-footer-recipe-create"
-            style={{ left: '64.15%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
-            title="Create Recipe"
-          />
-
-          {/* Footer Link - Recipe Details */}
-          <Link
-            to="/recipes"
-            className="homepage-link link-footer-recipe-details"
-            style={{ left: '64.15%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '10.5%', height: '0.36%', borderRadius: '0' }}
-            title="Recipes"
-          />
-
-          {/* Footer Link - Indiranagar */}
-          <Link
-            to="/location"
-            className="homepage-link link-footer-visit-1"
-            style={{ left: '72.75%', top: `calc(93.65% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-            title="Indiranagar Cafe"
-          />
-
-          {/* Footer Link - Koramangala */}
-          <Link
-            to="/location"
-            className="homepage-link link-footer-visit-2"
-            style={{ left: '72.75%', top: `calc(94.13% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-            title="Koramangala Cafe"
-          />
-
-          {/* Footer Link - HSR Layout */}
-          <Link
-            to="/location"
-            className="homepage-link link-footer-visit-3"
-            style={{ left: '72.75%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
-            title="HSR Layout Cafe"
-          />
+            {/* Footer Link - HSR Layout */}
+            <Link
+              to="/location"
+              className="homepage-link link-footer-visit-3"
+              style={{ left: '72.75%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
+              title="HSR Layout Cafe"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
-      {typeof document !== 'undefined' && createPortal(
+      {!skippedWelcome && typeof document !== 'undefined' && createPortal(
         <section
           className={`scroll-video-stage scroll-video-stage--${scrollVideoMode}`}
           aria-label="Fullscreen coffee swirl video"

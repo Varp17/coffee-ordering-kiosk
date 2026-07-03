@@ -1,0 +1,237 @@
+.testimonials-bento-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3.4rem 3rem 4.25rem;
+  background: #eaf5ff;
+}
+
+.testimonials-bento-heading {
+  margin: 0 0 2.15rem;
+  color: #1f2a44;
+  font-family: var(--font-heading);
+  font-size: clamp(1.45rem, 2.35vw, 2.85rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.05;
+  text-align: center;
+}
+
+.testimonials-bento-grid {
+  display: grid;
+  width: min(100%, 1120px);
+  grid-template-columns: 220px minmax(340px, 1fr) minmax(160px, 230px);
+  grid-template-rows: 340px 112px 112px;
+  gap: 14px;
+}
+
+.bento-card {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.bento-left-art {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+.bento-left-art img,
+.bento-ad img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bento-amazon {
+  grid-column: 1;
+  grid-row: 3;
+  min-height: 112px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  background: #1f2a44;
+  color: #ffffff;
+  text-align: center;
+}
+
+.bento-amazon strong {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.bento-amazon__stars {
+  margin-top: 0.35rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+}
+
+.bento-amazon span:last-child {
+  margin-top: 0.25rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.bento-video {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  width: 100%;
+  min-height: 466px;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.bento-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bento-video__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-top: 17px solid transparent;
+  border-bottom: 17px solid transparent;
+  border-left: 26px solid #ffffff;
+  filter: drop-shadow(0 5px 18px rgba(0, 0, 0, 0.28));
+  transform: translate(-35%, -50%);
+}
+
+.bento-facebook {
+  grid-column: 3;
+  grid-row: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.bento-facebook p {
+  margin: 0;
+  color: #1f2a44;
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.bento-ad {
+  grid-column: 3;
+  grid-row: 2 / 4;
+}
+
+.bento-social {
+  min-height: 112px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.1rem 1.25rem 0.95rem;
+  animation: reviewSwap 0.45s ease both;
+}
+
+.bento-twitter {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.bento-reddit {
+  grid-column: 2;
+  grid-row: 3;
+  width: calc(50% - 7px);
+  justify-self: end;
+}
+
+.bento-twitter {
+  width: calc(50% - 7px);
+  justify-self: start;
+}
+
+.social-body {
+  margin: 0;
+  color: #1f2a44;
+  font-size: clamp(0.78rem, 0.95vw, 1rem);
+  font-weight: 700;
+  line-height: 1.38;
+}
+
+.social-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #8eb3d5;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.social-logo {
+  font-family: var(--font-heading);
+  font-weight: 900;
+}
+
+.social-logo--x {
+  color: #8eb3d5;
+  font-size: 1rem;
+}
+
+.social-logo--reddit {
+  color: #ff4500;
+}
+
+.social-logo--facebook {
+  color: #0b55c7;
+}
+
+@keyframes reviewSwap {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .testimonials-bento-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+
+  .bento-left-art,
+  .bento-amazon,
+  .bento-video,
+  .bento-facebook,
+  .bento-ad,
+  .bento-twitter,
+  .bento-reddit {
+    grid-column: auto;
+    grid-row: auto;
+    width: auto;
+    justify-self: stretch;
+  }
+
+  .bento-video {
+    grid-column: 1 / -1;
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 640px) {
+  .testimonials-bento-section {
+    padding-inline: 1.2rem;
+  }
+
+  .testimonials-bento-grid {
+    grid-template-columns: 1fr;
+  }
+}

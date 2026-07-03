@@ -53,12 +53,13 @@ const WhyChilldCup = forwardRef(function WhyChilldCup({
   className,
   cupWrapClassName,
   cupClassName,
+  style,
 }, ref) {
   return (
     <article
       ref={ref}
       className={className}
-      style={{ '--why-cup-rotation': item.rotation }}
+      style={{ '--why-cup-rotation': item.rotation, ...style }}
     >
       <div className="why-chilld-cup-inner">
         <div className={cupWrapClassName}>

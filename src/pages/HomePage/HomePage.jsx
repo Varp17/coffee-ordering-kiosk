@@ -5,8 +5,7 @@ import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
 import { PRODUCTS } from '@/data/products';
 import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
-import coffeeCup from '@/pages/SkipPageHome/assets/iced-coffee-cup.png';
-import coffeeCupBackdrop from '@/pages/SkipPageHome/assets/coffee-cup-backdrop.svg';
+const coffeeCup = '/images/iced-coffee-cup.png';
 import TestimonialsBento from '@/components/TestimonialsBento/TestimonialsBento';
 import Footer from '@/components/Footer/Footer';
 
@@ -1114,7 +1113,15 @@ function BentoSocialCard({ slot, post, phase, cycle }) {
 
 function SkipHomepageMiddleFlow() {
   const whySectionRef = useRef(null);
+  const featureVideoSectionRef = useRef(null);
+  const featureVideoRef = useRef(null);
+  const featureVideoExpandedRef = useRef(false);
+  const featureVideoLastScrollYRef = useRef(0);
+  const featureVideoScrollDirectionRef = useRef('down');
+  const featureVideoScrollCountRef = useRef(0);
+  const featureVideoDismissedRef = useRef(false);
   const [whyVisible, setWhyVisible] = useState(false);
+  const [featureVideoExpanded, setFeatureVideoExpanded] = useState(false);
 
   useEffect(() => {
     const section = whySectionRef.current;
@@ -1132,6 +1139,155 @@ function SkipHomepageMiddleFlow() {
 
     observer.observe(section);
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = featureVideoSectionRef.current;
+    const video = featureVideoRef.current;
+    if (!section || !video) return undefined;
+
+    const collapseVideo = () => {
+      const scrollDirection = featureVideoScrollDirectionRef.current;
+      featureVideoExpandedRef.current = false;
+      featureVideoScrollCountRef.current = 0;
+      featureVideoDismissedRef.current = true;
+      video.muted = true;
+      setFeatureVideoExpanded(false);
+
+      if (scrollDirection === 'down') {
+        window.setTimeout(() => {
+          const lowerFlow = document.querySelector('[data-homepage-lower-flow-start="true"]');
+          if (!lowerFlow) return;
+
+          const lowerFlowTop = lowerFlow.getBoundingClientRect().top + window.scrollY;
+          const revealOffset = Math.min(window.innerHeight * 0.62, 580);
+
+          window.scrollTo({
+            top: Math.max(0, lowerFlowTop - revealOffset),
+            behavior: 'smooth',
+          });
+        }, 120);
+      } else if (scrollDirection === 'up') {
+        window.requestAnimationFrame(() => {
+          document.querySelector('[data-homepage-feature-video-return="true"]')?.scrollIntoView({
+            block: 'center',
+            behavior: 'smooth',
+          });
+        });
+      }
+    };
+
+    const expandVideo = () => {
+      if (featureVideoExpandedRef.current || featureVideoDismissedRef.current) return;
+
+      featureVideoExpandedRef.current = true;
+      featureVideoScrollCountRef.current = 0;
+      setFeatureVideoExpanded(true);
+
+      try {
+        video.currentTime = 0;
+        video.muted = false;
+        video.volume = 1;
+        video.play();
+      } catch {
+        // Autoplay can be blocked in some browser states; the layout interaction should still work.
+      }
+    };
+
+    const shouldExpandVideo = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      if (featureVideoScrollDirectionRef.current === 'up') {
+        return rect.bottom >= viewportHeight * 0.82 && rect.top <= viewportHeight * 0.45;
+      }
+
+      return rect.top <= viewportHeight * 0.38 && rect.bottom >= viewportHeight * 0.72;
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          featureVideoDismissedRef.current = false;
+          return;
+        }
+
+        if (shouldExpandVideo()) {
+          expandVideo();
+        }
+      },
+      {
+        rootMargin: '0px',
+        threshold: 0.35,
+      }
+    );
+
+    const countExpandedScroll = (direction) => {
+      featureVideoScrollDirectionRef.current = direction;
+      featureVideoScrollCountRef.current += 1;
+
+      if (featureVideoScrollCountRef.current >= 4) {
+        collapseVideo();
+      }
+    };
+
+    const handleWheel = (event) => {
+      const nextScrollY = window.scrollY;
+      const direction = event.deltaY < 0 ? 'up' : 'down';
+      featureVideoScrollDirectionRef.current = direction;
+      featureVideoLastScrollYRef.current = nextScrollY;
+
+      if (!featureVideoExpandedRef.current) {
+        window.requestAnimationFrame(() => {
+          if (shouldExpandVideo()) {
+            expandVideo();
+          }
+        });
+        return;
+      }
+
+      event.preventDefault();
+      countExpandedScroll(direction);
+    };
+
+    const handleTouchMove = (event) => {
+      const nextScrollY = window.scrollY;
+      const direction = nextScrollY < featureVideoLastScrollYRef.current ? 'up' : 'down';
+      featureVideoLastScrollYRef.current = nextScrollY;
+
+      if (!featureVideoExpandedRef.current) {
+        window.requestAnimationFrame(() => {
+          if (shouldExpandVideo()) {
+            expandVideo();
+          }
+        });
+        return;
+      }
+
+      event.preventDefault();
+      countExpandedScroll(direction);
+    };
+
+    const handleVideoClick = () => {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    };
+
+    featureVideoLastScrollYRef.current = window.scrollY;
+    observer.observe(section);
+    video.addEventListener('click', handleVideoClick);
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    return () => {
+      observer.disconnect();
+      video.removeEventListener('click', handleVideoClick);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
   }, []);
 
   return (
@@ -1157,11 +1313,15 @@ function SkipHomepageMiddleFlow() {
           <defs>
             <path
               id="skip-hard-part-wave-text"
-              d="M-180,250 C40,165 230,118 430,104 C600,92 740,98 900,138 C1045,174 1165,210 1340,184 C1470,164 1570,110 1660,72"
+              d="M-220,295 C40,175 220,95 430,85 S770,95 930,135 S1220,205 1460,185 S1740,120 1980,70"
+            />
+            <path
+              id="skip-hard-part-wave-text-offset"
+              d="M-220,335 C40,215 220,135 430,125 S770,135 930,175 S1220,245 1460,225 S1740,160 1980,110"
             />
           </defs>
-          <text className="skip-hard-part__top-wave-text" dy="38">
-            <textPath href="#skip-hard-part-wave-text" startOffset="-45%">
+          <text className="skip-hard-part__top-wave-text">
+            <textPath href="#skip-hard-part-wave-text-offset" startOffset="-8%">
               Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
               <animate attributeName="startOffset" from="-45%" to="35%" dur="34s" repeatCount="indefinite" />
             </textPath>
@@ -1204,7 +1364,7 @@ function SkipHomepageMiddleFlow() {
           aria-hidden="true"
         >
           <path
-            d="M0 48 C176 108 348 154 524 143 C711 132 846 63 1022 70 C1210 77 1338 155 1512 197 L1512 220 L0 220 Z"
+            d="M0 46 C178 96 348 138 532 137 C724 136 850 82 1026 82 C1210 82 1336 130 1512 176 L1512 220 L0 220 Z"
             fill="#ffffff"
           />
         </svg>
@@ -1214,6 +1374,7 @@ function SkipHomepageMiddleFlow() {
         ref={whySectionRef}
         className={`skip-why-chilld${whyVisible ? ' is-visible' : ''}`}
         aria-labelledby="skip-why-chilld-title"
+        data-homepage-feature-video-return="true"
       >
         <h2 id="skip-why-chilld-title">Why Chilld?</h2>
         <div className="skip-why-chilld__grid">
@@ -1230,8 +1391,13 @@ function SkipHomepageMiddleFlow() {
         </div>
       </section>
 
-      <section className="skip-feature-video" aria-label="Chilld cold brew concentrate video">
+      <section
+        ref={featureVideoSectionRef}
+        className={`skip-feature-video${featureVideoExpanded ? ' is-expanded' : ''}`}
+        aria-label="Chilld cold brew concentrate video"
+      >
         <video
+          ref={featureVideoRef}
           src="/Videos/coffee_concentrate_with_glass.mp4"
           autoPlay
           loop
@@ -1246,14 +1412,21 @@ function SkipHomepageMiddleFlow() {
 
 function HomepageLowerFlow() {
   return (
-    <section className="homepage-lower-flow" aria-label="Chilld social proof and cafe offer">
+    <section
+      className="homepage-lower-flow"
+      aria-label="Chilld social proof and cafe offer"
+      data-homepage-lower-flow-start="true"
+    >
       <TestimonialsBento />
 
       <section className="lower-flow-trending" aria-labelledby="lower-flow-trending-title">
         <h2 id="lower-flow-trending-title">Trending Mixes</h2>
 
         <div className="lower-flow-trending__rail" aria-label="Trending coffee mixes">
-          <TrendingMixCards />
+          <div className="lower-flow-trending__track">
+            <TrendingMixCards />
+            <TrendingMixCards duplicate />
+          </div>
         </div>
 
         <div className="lower-flow-trending__actions">

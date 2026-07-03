@@ -5,7 +5,7 @@ import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
 import { PRODUCTS } from '@/data/products';
 import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
-const coffeeCup = '/images/iced-coffee-cup.png';
+const coffeeCup = '/images/iced-coffee-cup.webp';
 import TestimonialsBento from '@/components/TestimonialsBento/TestimonialsBento';
 import Footer from '@/components/Footer/Footer';
 

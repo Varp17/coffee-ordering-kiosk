@@ -1376,6 +1376,13 @@ function SkipHomepageMiddleFlow() {
         aria-labelledby="skip-why-chilld-title"
         data-homepage-feature-video-return="true"
       >
+        <div className="welcome-figma-graffiti" aria-hidden="true">
+          <img
+            src="/wellcomesub.svg"
+            alt=""
+            draggable="false"
+          />
+        </div>
         <h2 id="skip-why-chilld-title">Why Chilld?</h2>
         <div className="skip-why-chilld__grid">
           {WHY_CHILLD_ITEMS.map((item, index) => (
@@ -2120,6 +2127,13 @@ function DesktopHomePage() {
             />
 
             <section className="desktop-homepage__why-chilld" aria-label="Why CHILLD">
+              <div className="welcome-figma-graffiti" aria-hidden="true">
+                <img
+                  src="/wellcomesub.svg"
+                  alt=""
+                  draggable="false"
+                />
+              </div>
               <div className={`desktop-homepage__why-chilld-content${isWhyChilldVisible ? ' visible' : ''}`}>
                 <h2 className="desktop-homepage__why-chilld-title">Why Chilld?</h2>
                 {WHY_CHILLD_ITEMS.map((item, index) => (

@@ -1,7 +1,7 @@
 # CHILLD Coffee — Project Information
 
 ## Overview
-A React-based coffee ordering kiosk application with a 6-step interactive coffee recipe builder, menu browsing, cart management, OTP-based authentication, and order placement. Built with Vite + React 19 + Zustand.
+A React-based coffee ordering kiosk application with a 6-step interactive coffee recipe builder, menu browsing, cart management, OTP-based authentication, order placement, and a rich animated homepage. Built with Vite + React 19 + Zustand.
 
 ---
 
@@ -13,10 +13,11 @@ A React-based coffee ordering kiosk application with a 6-step interactive coffee
 | **Build** | Vite 8 |
 | **State** | Zustand 5 (with `persist` middleware) |
 | **Routing** | React Router DOM 7 |
-| **Animation** | Framer Motion 12, Three.js (R3F) |
+| **Animation** | Framer Motion 12, Three.js (R3F via `@react-three/fiber` 9 + `@react-three/drei` 10 + `three` 0.184) |
+| **3D Physics** | `@react-three/rapier` 2 |
 | **Icons** | Lucide React |
 | **Notifications** | react-hot-toast 2 |
-| **CSS** | Global design system, mobile-first fluid `clamp()` |
+| **CSS** | Global design system with CSS custom properties, `clamp()` fluid sizing, Scroll-driven animations |
 | **Backend** | REST API (Node.js, deployed on Render) |
 | **Auth** | JWT + refresh token, OTP-based phone login |
 | **Storage** | localStorage (cart, auth, user preferences) |
@@ -27,14 +28,14 @@ A React-based coffee ordering kiosk application with a 6-step interactive coffee
 
 ```
 src/
-├── App.jsx                    # Router setup, welcome guard
-├── App.css
+├── App.jsx                    # Router setup, Toaster config, welcome guard
+├── App.css                    # Empty — delegates to styles/global.css
 ├── index.css                  # Empty — delegates to styles/global.css
 ├── main.jsx                   # Entry point
 ├── styles/
-│   └── global.css             # Design tokens, CSS reset, utilities, animations
+│   └── global.css             # Design tokens, CSS reset, utilities, keyframe animations
 ├── layouts/
-│   └── MainLayout.jsx         # Navbar + BottomNav + Footer wrapper
+│   └── MainLayout.jsx         # Navbar + <main> + Footer + BottomNav wrapper
 ├── data/
 │   ├── recipes.js             # 62 recipe catalog (full menu)
 │   ├── products.js            # Product data for store
@@ -48,12 +49,16 @@ src/
 ├── store/
 │   ├── useAuthStore.js        # Auth state (phone, OTP, login status) — persisted
 │   ├── useCartStore.js        # Cart items, add/remove/qty — persisted ("chilld-cart")
-│   ├── useUserStore.js        # Welcome onboarding (name, coffeeType) — persisted
+│   ├── useUserStore.js        # Welcome onboarding (name, coffeeType, skippedWelcome) — persisted
 │   ├── useOrderStore.js       # Order tracking state
 │   └── useBuilderStore.js     # Coffee Builder state (6 steps, costs, recipes)
 ├── pages/
 │   ├── WelcomePage/           # Onboarding flow (name + coffee preference)
-│   ├── HomePage/              # Main landing page
+│   ├── HomePage/              # Main landing — two sub-entries:
+│   │   ├── HomePage.jsx       #   Desktop layout (welcome flow / skip flow)
+│   │   ├── HomePage.css       #   Desktop styles (~3157 lines)
+│   │   ├── MobileHomePage.jsx #   Mobile-first layout (<768px)
+│   │   └── MobileHomePage.css #   Mobile styles
 │   ├── MenuPage/              # Product listing
 │   ├── ProductDetailPage/     # Product detail + add to cart
 │   ├── CoffeeBuilderPage/     # 6-step recipe builder (core feature)
@@ -77,38 +82,61 @@ src/
 │   ├── ProfilePage/
 │   ├── CreateRecipePage/
 │   ├── RecipeDetailsPage/
+│   │   ├── RecipeDetailsPage.jsx
+│   │   ├── MobileRecipeDetailsPage.css
+│   │   └── recipe-details-page.css
 │   ├── RecipesPage/
 │   ├── ContactPage/
 │   ├── StorePage/
 │   └── B2BPage/
 ├── components/
-│   ├── Navbar/
-│   ├── BottomNav/
-│   ├── Footer/
-│   ├── CartDrawer/
-│   ├── StepProgressBar/
-│   ├── SizeSelector/
-│   ├── ProductCard/
-│   ├── IngredientCard/
-│   ├── RecipeMedia/
-│   ├── SkippedWelcomeHero/
-│   ├── CoffeeCupVisualizer/
-│   ├── OTPInput/
-│   └── Logo/
+│   ├── Navbar/                # Main site navigation
+│   ├── BottomNav/             # Mobile bottom navigation bar
+│   ├── Footer/                # Footer with links + social icons
+│   ├── CartDrawer/             # Slide-in cart drawer with qty controls
+│   ├── DeviceLayoutSelector/  # Binary desktop/mobile render selector
+│   ├── StepProgressBar/       # 6-step builder progress indicator
+│   ├── SizeSelector/          # Drink size picker
+│   ├── ProductCard/           # Menu product card
+│   ├── IngredientCard/        # Builder ingredient selection card
+│   ├── RecipeMedia/           # Recipe image/video display
+│   ├── SkippedWelcomeHero/    # Hero for skipped-welcome flow
+│   ├── CoffeeCupVisualizer/   # Three.js 3D cup visualization
+│   ├── OTPInput/              # Digit-by-digit OTP input
+│   ├── Logo/                  # Brand logo component
+│   ├── WhyChilldCup/          # "Why Chilld" cup cards (used in all three layouts)
+│   └── TestimonialsBento/     # Testimonial/bento grid component
 └── utils/
-    ├── coffeeBuilder.js        # formatPrice, etc.
+    ├── coffeeBuilder.js        # formatPrice, utility helpers
     ├── apiResponse.js          # Response unwrapping helpers
-    └── animations.js           # Shared Framer Motion variants
+    ├── animations.js           # Shared Framer Motion variants
+    └── deviceDetection.js      # getNativeDeviceMode() with 768px breakpoint
 ```
 
 ---
 
-## Routing (`App.jsx`)
+## Device Detection & Layout Switching
+
+### `src/utils/deviceDetection.js`
+```js
+export function getNativeDeviceMode() {
+  return window.innerWidth < 768 ? 'mobile' : 'desktop';
+}
+```
+
+### `src/components/DeviceLayoutSelector.jsx`
+- Listens to window resize events
+- Renders `<MobileHomePage />` when `activeMode === 'mobile'`, otherwise renders `<HomePage />` (desktop)
+- CSS classes: `site-mode-mobile`, `site-mode-desktop` control overflow/background
+
+---
+
+## Routing (`src/App.jsx`)
 
 | Path | Component | Guard |
 |------|-----------|-------|
 | `/welcome` | WelcomePage | None (before onboarding) |
-| `/` | HomePage | RequireWelcome |
+| `/` | DeviceLayoutSelector | RequireWelcome |
 | `/menu` | MenuPage | RequireWelcome |
 | `/menu/:id` | ProductDetailPage | RequireWelcome |
 | `/build` | CoffeeBuilderPage | RequireWelcome |
@@ -125,7 +153,78 @@ src/
 | `/store` | StorePage | RequireWelcome |
 | `/b2b` | B2BPage | RequireWelcome |
 
-**Guard Logic**: `RequireWelcome` checks `useUserStore.hasCompletedWelcome`. If `false`, redirects to `/welcome`.
+**Guard Logic**: `RequireWelcome` checks `useUserStore.hasCompletedWelcome`. If `false`, redirects to `/welcome`. All guarded routes render inside `<MainLayout>`.
+
+---
+
+## HomePage Architecture — Three Layouts
+
+The homepage has three distinct render paths depending on device and user state:
+
+### 1. Desktop Welcome Flow (`!skippedWelcome`, viewport ≥768px)
+Uses `/Homepage.svg?v=1.7` as the main canvas via `<object>`, with React components positioned absolutely over it.
+
+**JSX structure:**
+```
+<div class="homepage-figma-container">
+  <div class="figma-svg-wrapper">          <!-- aspect-ratio 1512/8069, clip-path inset header -->
+    <div class="figma-svg-content">         <!-- Absolute positioned, extra height for SVG -->
+      <object class="figma-svg-object" />   <!-- Homepage.svg with onLoad DOM injection -->
+      <section class="desktop-homepage__why-chilld">  <!-- Absolute, 4 WhyChilldCups -->
+      <div class="hard-part-shadow-wrapper">          <!-- Parallax video + clip-path wave -->
+      <div class="hard-part-copy-overlay">            <!-- "We handled the hard part" + CTA buttons -->
+    </div>
+    <div class="bento-video-card">          <!-- coffeeswirl1.mp4 -->
+    <div class="bento-social-grid">         <!-- Auto-rotating social posts -->
+    <div class="trending-mixes-marquee">    <!-- Infinite scroll trending cards -->
+    <div class="wavy-marquee-overlay">       <!-- Top/bottom scrolling SVG marquees -->
+    <div class="homepage-link overlays">     <!-- Clickable zones over SVG elements -->
+  </div>
+</div>
+```
+
+**SVG DOM manipulation (in `onLoad`):**
+- `injectSvgStyles` — injects CSS animations/hover effects into SVG
+- `animateSvgCup` — slides hero cup up with parallax wrapper
+- `animateHeroBeans` — animated coffee bean entrance + floating
+- `injectDynamicHeroText` — typesets user name + drink name with typing effect
+- `hideStaticPlaceholders` — removes SVG elements overlapping React overlays
+- `compactLowerHomepageSections` — shifts lower SVG content up by 260px
+- `injectWhyChilldBackground` — pattern + clip-path for Why Chilld
+- `injectB2bGraffiti` — masked graffiti overlay for B2B section
+- `wrapCupElements` — parallax + hover wrappers around SVG cups
+
+### 2. Desktop Skip Flow (`skippedWelcome`, viewport ≥768px)
+A simpler scrollable layout rendered when the user skipped welcome onboarding.
+
+**Sequence:**
+1. `<SkippedHomeHeroOverlay>` — Full-viewport animated hero (Vandy Brew / Preri Appe / Rishi Latte slides, auto-rotating every 2s)
+2. `<SkipHomepageMiddleFlow>` — Hard part section (full-width video, wave overlays, copy, CTAs) → Why Chilld (4 WhyChilldCups with staggered reveal) → Feature video (expandable to fullscreen)
+3. `<HomepageLowerFlow>` — TestimonialsBento → Trending Mixes carousel → B2B promo → Footer
+
+### 3. Mobile Layout (viewport <768px)
+Rendered by `<MobileHomePage>` — a fully independent CSS-animated mobile layout.
+
+**Sections:**
+1. Mobile Hero — dynamic name/drink heading, floating coffee beans, cup image, CTA buttons
+2. Scrolling marquee — "Great coffee, made easy"
+3. Story section — background video + copy + story bullets
+4. Why Chilld — grid of 4 WhyChilldCup components
+5. Process — "Pour. Mix. Chill." video + copy
+6. Social Proof — 7 review cards (Facebook, Amazon, Twitter/X, Reddit, Google Maps)
+7. Popular Drinks — horizontal scrolling drink cards
+8. Core — "One bottle. Many cups." benefits + CTA
+9. Footer
+
+---
+
+## Global Responsiveness
+
+- **Desktop containers**: No `min-width` constraints — `.homepage-figma-container` and `.skip-homepage-flow` scale to 100% viewport width
+- **Overflow**: `overflow-x: clip` on all top-level wrappers prevents horizontal overflow
+- **Fluid units**: Layout uses `clamp()`, `%`, `vw`, and `dvw` throughout
+- **CSS clip-path**: Hard-part section uses percentage-based polygon matching Figma wave boundaries
+- **Device breakpoint**: 768px (mobile vs desktop switch)
 
 ---
 
@@ -254,21 +353,20 @@ warnings[]
 - Body: Inter (weights 300-600)
 - Fluid sizing via `clamp()`: `--text-xs` to `--text-hero`
 
-### Layout
-- Container: max 1280px, fluid padding
-- Nav height: 70px, Bottom nav: 64px
-- `page-wrapper` padding accounts for nav + bottom nav
-- Sticky footer via flexbox (min-height: 100vh)
-
-### Design Tokens
-- Spacing: `--space-1` (0.25rem) to `--space-24` (6rem)
+### Spacing
+- `--space-1` (0.25rem) to `--space-24` (6rem)
 - Radii: `--radius-sm` (8px) to `--radius-2xl` (32px)
 - Shadows: `--shadow-sm` through `--shadow-xl`
-- Z-indices: base(1) → nav(500)
-- CSS class utilities: `.btn`, `.btn-primary`, `.btn-outline`, `.glass`, `.glass-dark`, `.skeleton`, `.animate-on-scroll`
+- Container: max 1280px, fluid padding
+- Nav height: 70px, Bottom nav: 64px
+
+### Layout
+- `page-wrapper` padding accounts for nav + bottom nav
+- Sticky footer via flexbox (min-height: 100vh)
+- CSS class utilities: `.btn`, `.btn-primary`, `.btn-outline`, `.btn-dark`, `.glass`, `.glass-dark`, `.skeleton`, `.animate-on-scroll`
 
 ### Keyframe Animations
-- `steam-rise`, `float`, `marquee`, `pulse-glow`, `spin`, `bounce-dot`, `ripple`, `shimmer`, `confetti-fall`, `pour-drop`, `number-appear`, `fade-in-up`
+`steam-rise`, `float`, `marquee`, `pulse-glow`, `spin`, `bounce-dot`, `ripple`, `shimmer`, `confetti-fall`, `pour-drop`, `number-appear`, `fade-in-up`, `scroll-video-stage-enter`, `scroll-video-stage-exit`
 
 ---
 
@@ -320,13 +418,70 @@ warnings[]
 - Hover/active effects
 
 ### CoffeeCupVisualizer
-- Three.js / React Three Fiber 3D visualization
+- Three.js / React Three Fiber 3D visualization with Rapier physics
 - Animated coffee cup (steam, contents)
 
 ### OTPInput
 - Digit-by-digit OTP entry field
 - Auto-focus, paste support
 - Used in AuthPage
+
+### WhyChilldCup
+- Reusable cup card used in all three homepage layouts (desktop welcome, desktop skip, mobile)
+- Receives rotation, reveal delay, and visibility via props
+- Includes cup SVG, title, and description
+
+### SkippedWelcomeHero
+- Full-viewport hero for skip flow
+- Rotates through slides (Vandy Brew, Preri Appe, Rishi Latte) every 2s
+- Animated SVG wave at bottom
+
+### TestimonialsBento
+- Bento-grid testimonial cards
+- Used in skip flow's HomepageLowerFlow
+
+---
+
+## CSS Organization (`src/pages/HomePage/HomePage.css`)
+
+The desktop CSS is ~3157 lines organized into these major sections:
+
+| Lines | Section |
+|-------|---------|
+| 1–35 | Top-level layout: device-layout-selector, site-mode-desktop, homepage-figma-container, skip-homepage-flow |
+| 41–190 | Skip overlay hero: .homepage-skip-overlay, neha-hero, copy, logo, dots, wave |
+| 193–570 | Skip flow: skip-hard-part, skip-why-chilld, skip-feature-video |
+| 585–616 | Figma SVG wrapper: figma-svg-wrapper, figma-svg-content, figma-svg-object |
+| 621–832 | Desktop why-chilld section: absolute-positioned cups, titles, hover effects |
+| 834–867 | Interactive link overlays |
+| 868–949 | Floating bean particles |
+| 950–1002 | Looping wavy marquees |
+| 1003–1423 | Responsive: `@media (max-width: 1024px)` — mobile/tablet adaptations |
+| 1424–1488 | Personalized name overlay |
+| 1489–1982 | Bento grid: rotating social posts with enter/leave animations |
+| 1983–2588 | Infinite trending mixes carousel |
+| 2589–2774 | Scroll-triggered fullscreen video |
+| 2775–3157 | Hard-part section: parallax clip-path, video overlay, copy overlay, CTA buttons |
+
+---
+
+## Recent UI Changes (HomePage)
+
+### Buttons (hard-part section & skip-hard-part section)
+- Desktop welcome flow primary button: "Cold Brew Concentrate" → `/build`
+- Desktop welcome flow secondary button: "Explore Recipes" → `/recipes`
+- Skip flow: "Buy CHILLD Cold Brew Core" / "Explore Recipes"
+- Both desktop buttons share identical styling: white background, dark text, pill shape (`border-radius: 999px`), shadow
+- **Click effect**: Blue (`#2563eb`) wave sweeps left-to-right across the button via `linear-gradient` + `background-position` transition; text turns white while held
+- **Hover**: lift (`translateY(-2px) scale(1.02)`) + enhanced shadow
+
+### Background SVG Removal
+- `.welcome-figma-graffiti` background SVG removed from both `desktop-homepage__why-chilld` and `skip-why-chilld` sections
+
+### Global Responsiveness
+- Removed `min-width: 1280px` from `.homepage-figma-container` and `.skip-homepage-flow`
+- Changed `overflow-x: auto` to `overflow-x: clip` on `.site-mode-desktop`
+- All containers now scale to 100% viewport width without overflow or horizontal scrollbars
 
 ---
 
@@ -358,3 +513,7 @@ npm run preview   # Preview production build
 8. **No browser alerts**: All messages use inline banners or react-hot-toast
 9. **Path aliases**: `@/` maps to `src/`
 10. **CSS custom properties**: Full design token system in `:root`
+11. **Three React render paths**: Desktop welcome (SVG canvas), Desktop skip (scrollable), Mobile (independent)
+12. **prefers-reduced-motion**: Media query support throughout all animations
+13. **IntersectionObserver**: Used for reveal animations, scroll-triggered video expansion
+14. **requestAnimationFrame**: Scroll-driven parallax and infinite carousel animation

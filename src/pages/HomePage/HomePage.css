@@ -6,7 +6,7 @@
 
 .site-mode-desktop {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: clip;
   overflow-y: visible;
   background: #EBF5FF;
 }
@@ -18,20 +18,19 @@
 
 .homepage-figma-container {
   width: 100%;
-  min-width: 1280px;
+  max-width: 100%;
   background-color: #EBF5FF;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
   padding-top: calc(var(--nav-height) + var(--announcement-bar-height));
-  /* Account for combined fixed header height (112px) */
   box-sizing: border-box;
 }
 
 .skip-homepage-flow {
   position: relative;
   width: 100%;
-  min-width: 1280px;
-  overflow: hidden;
+  max-width: 100%;
+  overflow-x: clip;
   background: #EBF5FF;
 }
 

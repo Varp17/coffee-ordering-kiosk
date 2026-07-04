@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
   Coffee,
@@ -14,7 +14,7 @@ import './MobileHomePage.css';
 
 const ASSET_BASE = '/images/mobile-home/';
 
-const beanClasses = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'];
+const beanClasses = ['one', 'two', 'three', 'four', 'seven', 'eight', 'nine', 'ten'];
 
 const storyNotes = [
   'Source, roast, grind, and slow-brew handled for you.',
@@ -59,7 +59,7 @@ const popularDrinks = [
 
 const benefits = ['8-10 serves per bottle', 'Ready in under a minute', 'Milk, tonic, ice, and mixers'];
 
-function MobileButton({ to, href, children, variant = 'primary', className = '', icon: Icon }) {
+function MobileButton({ to, href, children, variant = 'primary', className = '', icon: Icon, onClick }) {
   const classes = `mobile-home-button mobile-home-button--${variant} ${className}`.trim();
   const content = (
     <>
@@ -68,6 +68,14 @@ function MobileButton({ to, href, children, variant = 'primary', className = '',
       <ArrowRight size={16} aria-hidden="true" />
     </>
   );
+
+  if (onClick) {
+    return (
+      <button className={classes} onClick={(e) => { e.preventDefault(); onClick(); }}>
+        {content}
+      </button>
+    );
+  }
 
   if (href) {
     return (
@@ -98,31 +106,84 @@ export default function MobileHomePage() {
   const getHeroText = useUserStore((state) => state.getHeroText);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
   const heroLabel = `${displayName} ${suffix}`.trim();
+  const whySectionRef = useRef(null);
+  const [whyCupsVisible, setWhyCupsVisible] = useState(false);
+  const navigate = useNavigate();
+  const [cupSlam, setCupSlam] = useState(false);
+  const [typedChars, setTypedChars] = useState(0);
+  const fullName = `${displayName} ${suffix}`.trim();
+
+  const triggerCupSlam = (to) => {
+    setCupSlam(true);
+    setTimeout(() => {
+      setCupSlam(false);
+      navigate(to);
+    }, 500);
+  };
+
+  useEffect(() => {
+    if (typedChars < fullName.length) {
+      const timer = setTimeout(() => setTypedChars(typedChars + 1), 80 + Math.random() * 40);
+      return () => clearTimeout(timer);
+    }
+  }, [typedChars, fullName.length]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setTypedChars(1), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const section = whySectionRef.current;
+    if (!section) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setWhyCupsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.28, rootMargin: '0px 0px -12% 0px' }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  const nameLen = displayName.length;
+  const visibleName = fullName.slice(0, Math.min(typedChars, nameLen));
+  const visibleSuffix = fullName.slice(nameLen, Math.min(typedChars, fullName.length));
 
   return (
     <div className="mobile-home" data-testid="mobile-home-page">
       <section className="mobile-home-hero" aria-labelledby="mobile-home-title">
         <h1 className="mobile-home-hero__title" id="mobile-home-title" aria-label={`${heroLabel} cold brew`}>
-          <span className="mobile-home-hero__name">{displayName}</span>
-          <span className="mobile-home-hero__suffix">{suffix}</span>
+          <span className="mobile-home-hero__name">{visibleName}</span>
+          <span className="mobile-home-hero__suffix">{visibleSuffix}</span>
+          {typedChars < fullName.length && <span className="mobile-home-hero__cursor" aria-hidden="true">|</span>}
         </h1>
 
         <div className="mobile-home-hero__beans" aria-hidden="true">
           {beanClasses.map((beanClass) => (
-            <img
+            <div
               key={beanClass}
-              className={`mobile-home-hero__bean mobile-home-hero__bean--${beanClass}`}
-              src={`${ASSET_BASE}coffee-bean.png`}
-              alt=""
-              fetchPriority="high"
-              decoding="async"
-            />
+              className={`mobile-home-hero__bean-item mobile-home-hero__bean-item--${beanClass}`}
+            >
+              <img
+                className={`mobile-home-hero__bean mobile-home-hero__bean--${beanClass}`}
+                src={`${ASSET_BASE}coffee-bean.png`}
+                alt=""
+                fetchPriority="high"
+                decoding="async"
+              />
+            </div>
           ))}
         </div>
 
         <div className="mobile-home-hero__cup-stage">
           <img
-            className="mobile-home-hero__cup"
+            className={`mobile-home-hero__cup${cupSlam ? ' mobile-home-hero__cup--slam' : ''}`}
             src={`${ASSET_BASE}cold-brew-cup.png`}
             alt="Iced Chilld cold brew in a clear cup"
             fetchPriority="high"
@@ -131,10 +192,10 @@ export default function MobileHomePage() {
         </div>
 
         <div className="mobile-home-hero__actions" aria-label="Primary actions">
-          <MobileButton to="/build" icon={Coffee}>
+          <MobileButton icon={Coffee} onClick={() => triggerCupSlam('/build')}>
             Create Your Drink
           </MobileButton>
-          <MobileButton to="/menu" variant="secondary" icon={ShoppingBag}>
+          <MobileButton variant="secondary" icon={ShoppingBag} onClick={() => triggerCupSlam('/menu')}>
             Shop Cold Brew
           </MobileButton>
         </div>
@@ -181,16 +242,21 @@ export default function MobileHomePage() {
         </div>
       </section>
 
-      <section className="mobile-home-why-chilld" aria-labelledby="mobile-home-cups-title">
+      <section
+        ref={whySectionRef}
+        className={`mobile-home-why-chilld${whyCupsVisible ? ' is-visible' : ''}`}
+        aria-labelledby="mobile-home-cups-title"
+      >
         <SectionHeading id="mobile-home-cups-title" eyebrow="Why Chilld" title="Small cups. Big reasons." />
         <div className="mobile-home-why-chilld__grid">
-          {WHY_CHILLD_ITEMS.map((item) => (
+          {WHY_CHILLD_ITEMS.map((item, index) => (
             <WhyChilldCup
               key={item.id}
               item={item}
               className={`mobile-home-why-chilld__item item-${item.id}`}
               cupWrapClassName="mobile-home-why-chilld__cup-wrap"
               cupClassName="mobile-home-why-chilld__cup"
+              style={{ '--why-cup-delay': `${index * 140}ms` }}
             />
           ))}
         </div>
@@ -230,7 +296,7 @@ export default function MobileHomePage() {
           {/* Card 2: Swirl Video */}
           <article className="mobile-home-review-card mobile-home-review-card--video">
             <video
-              src={`${ASSET_BASE}coffeeswirl.mp4`}
+              src="/Videos/coffeeswirl1.mp4"
               autoPlay
               muted
               loop
@@ -308,9 +374,6 @@ export default function MobileHomePage() {
               <img src={`${ASSET_BASE}cold-brew-cup.png`} alt="Iced Coffee" className="google-promo-image" />
             </div>
             <div className="google-comment-part">
-              <p className="mobile-home-review-card__body">
-                Finally a coffee brand that doesn't judge my weird combinations.
-              </p>
               <div className="mobile-home-review-card__footer">
                 <span className="mobile-home-review-card__handle">Khushi P.</span>
                 <span className="mobile-home-review-card__brand mobile-home-review-card__brand--google">
@@ -325,7 +388,6 @@ export default function MobileHomePage() {
               </div>
             </div>
           </article>
-
         </div>
       </section>
 

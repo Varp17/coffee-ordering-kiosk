@@ -1287,30 +1287,19 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-.google-promo-image {
+.google-promo-media {
   position: absolute;
-  right: clamp(0.6rem, 4vw, 1.5rem);
-  bottom: clamp(-1.2rem, -3vw, -0.65rem);
-  width: clamp(7rem, 31vw, 10rem);
+  right: clamp(0.1rem, 2.3vw, 0.8rem);
+  bottom: clamp(-0.9rem, -2.4vw, -0.4rem);
+  display: block;
+  width: clamp(8.4rem, 38vw, 12rem);
+  aspect-ratio: 1;
   height: auto;
-  object-fit: contain;
+  border: 0;
+  background: transparent;
+  object-fit: cover;
+  object-position: 50% 52%;
   filter: drop-shadow(0 10px 12px rgba(3, 12, 35, 0.2));
-  backface-visibility: visible;
-  transform: perspective(44rem) rotateX(0deg);
-  transform-origin: 50% 50%;
-  transform-style: preserve-3d;
-  animation: mobile-home-google-cup-x-spin 6.4s linear infinite;
-  will-change: transform;
-}
-
-@keyframes mobile-home-google-cup-x-spin {
-  0% {
-    transform: perspective(44rem) rotateX(0deg);
-  }
-
-  100% {
-    transform: perspective(44rem) rotateX(360deg);
-  }
 }
 
 .google-comment-part {
@@ -1545,8 +1534,4 @@
     scale: 1;
   }
 
-  .google-promo-image {
-    animation: none;
-    transform: perspective(44rem) rotateX(0deg);
-  }
 }

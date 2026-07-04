@@ -365,13 +365,24 @@ export default function MobileHomePage() {
             </div>
           </article>
 
-          {/* Card 7: Google Maps Card with image */}
+          {/* Card 7: Google Maps Card with video */}
           <article className="mobile-home-review-card mobile-home-review-card--google">
             <div className="mobile-home-review-card__google-promo">
               <span className="google-eyebrow">CHILLD COFFEE</span>
               <h3>Coffee should look like this.</h3>
               <p>Water shouldn't.</p>
-              <img src={`${ASSET_BASE}cold-brew-cup.png`} alt="Iced Coffee" className="google-promo-image" />
+              <video
+                className="google-promo-media"
+                src="/Videos/google-review-cup.mp4?v=20260705"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                width="320"
+                height="320"
+                aria-label="Iced coffee cup"
+              />
             </div>
             <div className="google-comment-part">
               <div className="mobile-home-review-card__footer">

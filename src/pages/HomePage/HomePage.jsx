@@ -686,7 +686,7 @@ function injectB2bGraffiti(svgDoc) {
   if (!svgDoc.querySelector('[data-b2b-graffiti-overlay="true"]')) {
     const overlayImage = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'image');
     overlayImage.setAttribute('data-b2b-graffiti-overlay', 'true');
-    overlayImage.setAttribute('href', '/Subtract%20copy.svg');
+    overlayImage.setAttribute('href', '/images/mobile-home/Subtract.svg');
     overlayImage.setAttribute('x', rectX);
     overlayImage.setAttribute('y', rectY);
     overlayImage.setAttribute('width', rectW);
@@ -1444,14 +1444,44 @@ function HomepageLowerFlow() {
       </section>
 
       <section className="lower-flow-b2b" aria-labelledby="lower-flow-b2b-title">
-        <h2 id="lower-flow-b2b-title" className="sr-only">Premium Cold Brew for your Restaurant &amp; Cafe</h2>
-        <div className="lower-flow-b2b__visual">
+        <div className="lower-flow-b2b__content">
+          <h2 id="lower-flow-b2b-title">Premium Cold Brew for your Restaurant &amp; Cafe</h2>
+          <p>Tailored Solutions for Cloud Kitchens, bars, restaurants and caterers</p>
+
+          <dl className="lower-flow-b2b__stats" aria-label="Cold brew business benefits">
+            <div>
+              <dt>&lt;72h</dt>
+              <dd>Freshly Brewed</dd>
+            </div>
+            <div>
+              <dt>0</dt>
+              <dd>Zero Capex</dd>
+            </div>
+            <div>
+              <dt>Many</dt>
+              <dd>Menu Uses</dd>
+            </div>
+            <div>
+              <dt>NO</dt>
+              <dd>Special Manpower</dd>
+            </div>
+          </dl>
+
+          <div className="lower-flow-b2b__cta">
+            <h3>Request a free tasting session</h3>
+            <p>No commitment. We'll demo recipes tailored to your menu.</p>
+            <a href="tel:+918693852250">Call +91 86938 52250</a>
+          </div>
+        </div>
+
+        <div className="lower-flow-b2b__visual" aria-hidden="true">
           <img
-            src="/images/Frame 48099161.jpg"
-            alt="Premium Cold Brew for your Restaurant and Cafe"
-            width="1352"
-            height="617"
+            src="/images/CPB.png"
+            alt=""
+            width="1080"
+            height="1080"
             loading="lazy"
+            decoding="async"
           />
         </div>
       </section>

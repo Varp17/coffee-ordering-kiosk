@@ -2433,37 +2433,153 @@
 }
 
 .lower-flow-b2b {
-  display: block;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(28rem, 0.9fr);
+  min-height: clamp(25rem, 40.8vw, 38.5rem);
+  align-items: stretch;
   width: min(100% - 10rem, 1352px);
   margin: 0 auto 4.6rem;
-  overflow: hidden;
+  isolation: isolate;
+  overflow: clip;
   border-radius: 0;
-  background: transparent;
+  background: #e6f4ff;
   box-shadow: 0 18px 50px rgba(31, 42, 68, 0.08);
 }
 
-.lower-flow-b2b .sr-only {
+.lower-flow-b2b::before {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  z-index: 0;
+  inset: 0;
+  background: url('/images/mobile-home/Subtract.svg') center / cover no-repeat;
+  content: "";
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.lower-flow-b2b__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(1.4rem, 2.4vw, 2.35rem);
+  padding: clamp(2rem, 3.4vw, 3.5rem) clamp(2rem, 3vw, 3rem);
+}
+
+.lower-flow-b2b__content h2,
+.lower-flow-b2b__cta h3 {
+  margin: 0;
+  color: #1844ab;
+  font-family: var(--font-heading);
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.lower-flow-b2b__content h2 {
+  max-width: 38rem;
+  font-size: clamp(2.35rem, 3.2vw, 3.25rem);
+  line-height: 1.18;
+  text-wrap: balance;
+}
+
+.lower-flow-b2b__content>p,
+.lower-flow-b2b__cta p {
+  margin: 0;
+  color: #172033;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.lower-flow-b2b__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, max-content));
+  gap: clamp(1.5rem, 3.2vw, 3.3rem);
+  margin: 0;
+}
+
+.lower-flow-b2b__stats div {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.lower-flow-b2b__stats dt,
+.lower-flow-b2b__stats dd {
+  margin: 0;
+}
+
+.lower-flow-b2b__stats dt {
+  color: #1844ab;
+  font-family: var(--font-heading);
+  font-size: clamp(1.65rem, 2.2vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.lower-flow-b2b__stats dd {
+  color: #172033;
+  font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.lower-flow-b2b__cta {
+  display: grid;
+  gap: 0.78rem;
+  max-width: 42rem;
+}
+
+.lower-flow-b2b__cta h3 {
+  font-size: clamp(1.65rem, 2.1vw, 2.35rem);
+  line-height: 1.1;
+}
+
+.lower-flow-b2b__cta a {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 2.2rem;
+  background: #1844ab;
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 16px 28px rgba(24, 68, 171, 0.24);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lower-flow-b2b__cta a:hover,
+.lower-flow-b2b__cta a:focus-visible {
+  background: #0a2f83;
+  box-shadow: 0 19px 34px rgba(24, 68, 171, 0.3);
+  transform: translateY(-2px);
 }
 
 .lower-flow-b2b__visual {
-  display: block;
-  width: 100%;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  overflow: visible;
 }
 
 .lower-flow-b2b__visual img {
+  position: absolute;
+  right: clamp(1rem, 1.8vw, 2rem);
+  bottom: clamp(-9.5rem, -8vw, -5.75rem);
   display: block;
-  width: 100%;
+  width: clamp(34rem, 44vw, 46rem);
+  max-width: none;
   height: auto;
-  object-fit: cover;
-  object-position: center;
+  filter: drop-shadow(0 28px 34px rgba(31, 42, 68, 0.22));
 }
 
 .footer--homepage-lower-flow {
@@ -2475,6 +2591,32 @@
 }
 
 @media (max-width: 1024px) {
+  .lower-flow-b2b {
+    grid-template-columns: minmax(0, 1fr);
+    width: min(100% - 2rem, 1352px);
+    min-height: auto;
+  }
+
+  .lower-flow-b2b__content {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .lower-flow-b2b__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem 2rem;
+    max-width: 30rem;
+  }
+
+  .lower-flow-b2b__visual {
+    min-height: clamp(18rem, 54vw, 30rem);
+  }
+
+  .lower-flow-b2b__visual img {
+    right: 0.5rem;
+    bottom: clamp(-4.5rem, -7vw, -3rem);
+    width: clamp(26rem, 66vw, 36rem);
+  }
+
   .trending-mixes-marquee {
     top: calc(66.72% - 15px);
     height: calc(5.98% + 15px);

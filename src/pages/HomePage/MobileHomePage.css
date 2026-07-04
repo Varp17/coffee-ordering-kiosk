@@ -729,21 +729,35 @@
 }
 
 .mobile-home-core {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(8.5rem, 0.72fr);
-  gap: 0.5rem;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) minmax(8.25rem, 0.74fr);
+  gap: 0;
+  align-items: stretch;
+  isolation: isolate;
   overflow: clip;
-  padding: 1.35rem 1rem;
+  min-block-size: clamp(17.5rem, 74vw, 22.5rem);
+  padding: 1.45rem 0 0.9rem 1rem;
   border-block-start: 1px solid rgba(24, 68, 171, 0.08);
-  background:
-    linear-gradient(135deg, rgba(24, 68, 171, 0.055) 25%, transparent 25% 50%, rgba(24, 68, 171, 0.055) 50% 75%, transparent 75%) 0 0 / 1.05rem 1.05rem,
-    linear-gradient(180deg, #f7fbff 0%, #eaf6ff 100%);
+  background: linear-gradient(180deg, #f7fbff 0%, #eaf6ff 100%);
   color: var(--mobile-home-ink);
 }
 
+.mobile-home-core::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: url('/images/mobile-home/Subtract.svg') center / clamp(36rem, 185vw, 52rem) auto no-repeat;
+  content: "";
+  pointer-events: none;
+}
+
 .mobile-home-core__copy {
+  position: relative;
+  z-index: 1;
+  align-self: center;
   min-inline-size: 0;
+  padding-block-end: 0.3rem;
 }
 
 .mobile-home-core__copy>p:not(.mobile-home-eyebrow),
@@ -777,9 +791,24 @@
   color: #9fd7ff;
 }
 
-.mobile-home-core__image {
+.mobile-home-core__media {
+  position: relative;
+  z-index: 1;
+  align-self: stretch;
   justify-self: end;
-  inline-size: min(100%, 10.5rem);
+  inline-size: 100%;
+  min-block-size: clamp(15.5rem, 62vw, 19rem);
+  pointer-events: none;
+}
+
+.mobile-home-core__image {
+  position: absolute;
+  inset-inline-end: clamp(0.35rem, 2vw, 0.8rem);
+  inset-block-end: clamp(-1.1rem, -3vw, -0.35rem);
+  max-inline-size: none;
+  inline-size: clamp(18rem, 74vw, 23.5rem);
+  block-size: auto;
+  justify-self: end;
   filter: drop-shadow(0 20px 24px rgba(4, 14, 47, 0.34));
 }
 
@@ -1165,12 +1194,19 @@
   }
 
   .mobile-home-core {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(6.9rem, 0.64fr);
+    min-block-size: 17rem;
+    padding-inline-start: 0.72rem;
+  }
+
+  .mobile-home-core__media {
+    min-block-size: 14.75rem;
   }
 
   .mobile-home-core__image {
-    justify-self: center;
-    inline-size: min(72%, 10rem);
+    inset-inline-end: 0.35rem;
+    inset-block-end: -0.8rem;
+    inline-size: 17.25rem;
   }
 }
 

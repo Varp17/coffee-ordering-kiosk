@@ -26,27 +26,6 @@ const marqueeItems = ['Great coffee, made easy', 'Great coffee, made easy', 'Gre
 
 
 
-const reviewCards = [
-  {
-    kind: 'quote',
-    title: 'Have a latte must try.',
-    text: 'A perfect morning latte, fast and smooth.',
-    meta: '@living_learned',
-  },
-  {
-    kind: 'stat',
-    title: '4.8/5',
-    text: 'Average rating from Chilld regulars.',
-    meta: '128+ reviews',
-  },
-  {
-    kind: 'quote',
-    title: 'No menu stress.',
-    text: 'Finally a coffee brand that understands custom drinks.',
-    meta: 'Khushi P.',
-  },
-];
-
 const popularDrinks = [
   {
     name: 'Mint Tonic',
@@ -392,13 +371,17 @@ export default function MobileHomePage() {
             Shop cold brew
           </MobileButton>
         </div>
-        <img
-          className="mobile-home-core__image"
-          src={`${ASSET_BASE}cold-brew-bottles.png`}
-          alt="Chilld cold brew concentrate bottles"
-          loading="lazy"
-          decoding="async"
-        />
+        <div className="mobile-home-core__media" aria-hidden="true">
+          <img
+            className="mobile-home-core__image"
+            src="/images/CPB.png"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width="1080"
+            height="1080"
+          />
+        </div>
       </section>
 
 

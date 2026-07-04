@@ -1,5 +1,7 @@
 # CHILLD Coffee — Project Information
 
+> **Agent instructions**: Before working on this project, first check the `.agents/` folder (if present) for skills, knowledge files, and context that may override or supplement this document. If `.agents/` does not exist, rely solely on this file and the codebase.
+
 ## Overview
 A React-based coffee ordering kiosk application with a 6-step interactive coffee recipe builder, menu browsing, cart management, OTP-based authentication, order placement, and a rich animated homepage. Built with Vite + React 19 + Zustand.
 

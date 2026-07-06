@@ -231,7 +231,7 @@
   height: clamp(310px, 28vw, 520px);
   opacity: 1;
   pointer-events: none;
-  transform: translateY(68%);
+  transform: translateY(4%);
 }
 
 .footer__watermark svg {
@@ -490,6 +490,8 @@
   }
 
   .footer__copyright {
+    position: relative;
+    z-index: 2;
     width: auto;
     margin: 0.8rem 0 0.2rem;
     font-size: 0.64rem;
@@ -501,15 +503,21 @@
   }
 
   .footer__watermark {
-    right: -20%;
-    bottom: -5%;
-    left: -20%;
-    height: 7.5rem;
-    opacity: 0.03;
+    right: -4%;
+    bottom: 0;
+    left: -4%;
+    height: clamp(120px, 28vw, 200px);
+    opacity: 0.12;
+    transform: translateY(4%);
+    pointer-events: none;
+    z-index: 0;
   }
 
   .footer__watermark svg {
-    height: 130%;
+    width: 100%;
+    height: 190%;
+    object-fit: cover;
+    object-position: left bottom;
   }
 }
 

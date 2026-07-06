@@ -174,6 +174,13 @@ import coffeeCup from '@/public/images/iced-coffee-cup.png';
 
 The section is in `HomePage.jsx` inside `SkipHomepageMiddleFlow()`.
 
+It has been successfully matched to the Figma design:
+- Video and shade height is dynamic (`bottom: 0`) instead of fixed `1622px` to prevent text overflowing and rendering invisibly on the next white section.
+- Text sizes, families, weights, and max-widths are aligned with the desktop layout (`.hard-part-paragraph`, `.hard-part-heading`, `.hard-part-divider`).
+- The quote styling uses curly quotes `“Coffee is too much work”` and Outfit font.
+- CTA buttons match the design: "Cold Brew Concentrate" (white solid) and "Explore Recipes" (white outline).
+- Video/texture filters match the desktop layout (`filter: saturate(1.08) contrast(1.08) brightness(0.74)` with `opacity: 0.78`).
+
 Current video:
 
 ```jsx
@@ -194,45 +201,23 @@ Current concept:
 - The video is rectangular.
 - A CSS mask shapes the visible top edge into a curve.
 - An SVG text path overlays curved marquee text near the top edge.
-- User wants the text to follow the masked video wave exactly.
-- User wants the curve above and the text under/following the curve.
+- The text follows the masked video wave exactly.
+- The curve is smooth, and the text sits under/following the curve.
 
-Current hard-part height was increased a lot:
-
-- `.skip-hard-part`
-- `.skip-hard-part__video`
-- `.skip-hard-part__shade`
-- Height currently around `1622px`.
-
-Current vertical position:
+Current Y-position:
 
 - `.skip-hard-part { margin-top: -272px; }`
 
-Current top-wave SVG:
-
-- Uses `viewBox="0 0 1440 340"`.
-- Current text path and offset path exist in `HomePage.jsx`.
-- The mask in CSS should use the same curve and same `1440 x 340` top-band geometry to prevent mismatch.
-
-Important: the user has repeatedly said:
-
-- Masked video top wave should follow the same curvature as the text.
-- Text should start/end with the curve.
-- Text should be under the curve.
-- Curve should be smooth, not bumpy.
-- The top edge should cover the bottom of the glass/cup.
-
 ## Current Hard-Part Text Style
 
-The hard-part content was updated to match a reference screenshot:
+The hard-part content was fully updated to match the Figma mockup:
 
-- Large bold headline.
+- Clean regular text and matching sizes.
 - Centered divider line.
-- Large white paragraphs.
-- Quote text changed to `"Coffee is too much work"`.
-- Big CTA buttons.
+- Custom curly quotes for `"Coffee is too much work"`.
+- Action buttons matched exactly to the designs.
 
-Added paragraph classes:
+Paragraph classes:
 
 - `.skip-hard-part__intro`
 - `.skip-hard-part__middle`

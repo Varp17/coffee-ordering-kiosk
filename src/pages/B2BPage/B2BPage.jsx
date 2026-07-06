@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Building2, CheckCircle2, ArrowRight, Award, Briefcase, TrendingUp } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -47,6 +47,46 @@ export default function B2BPage() {
   const [solution, setSolution] = useState('kiosk');
   const [employeesCount, setEmployeesCount] = useState(50);
   const [submitted, setSubmitted] = useState(false);
+  const tiersGridRef = useRef(null);
+
+  useEffect(() => {
+    const grid = tiersGridRef.current;
+    if (!grid) return;
+
+    let intervalId;
+    let direction = 1; // 1 = right, -1 = left
+
+    const autoScroll = () => {
+      if (window.innerWidth > 800) return;
+
+      const maxScroll = grid.scrollWidth - grid.clientWidth;
+      if (maxScroll <= 0) return;
+
+      let nextScrollLeft = grid.scrollLeft + (1.2 * direction);
+
+      if (nextScrollLeft >= maxScroll) {
+        nextScrollLeft = maxScroll;
+        direction = -1;
+      } else if (nextScrollLeft <= 0) {
+        nextScrollLeft = 0;
+        direction = 1;
+      }
+
+      grid.scrollLeft = nextScrollLeft;
+    };
+
+    intervalId = setInterval(autoScroll, 30);
+
+    const stopScroll = () => clearInterval(intervalId);
+    grid.addEventListener('touchstart', stopScroll, { passive: true });
+    grid.addEventListener('wheel', stopScroll, { passive: true });
+
+    return () => {
+      clearInterval(intervalId);
+      grid.removeEventListener('touchstart', stopScroll);
+      grid.removeEventListener('wheel', stopScroll);
+    };
+  }, []);
 
   const estimatedCupsPerMonth = employeesCount * 15;
   const concentrateLitresNeeded = Math.ceil(estimatedCupsPerMonth * 0.15);
@@ -144,6 +184,7 @@ export default function B2BPage() {
           </div>
 
           <motion.div
+            ref={tiersGridRef}
             className="b2b-tiers-grid"
             variants={containerAnim}
             initial="hidden"

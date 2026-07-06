@@ -375,17 +375,52 @@
 }
 
 @media (max-width: 640px) {
+  .b2b-page {
+    padding-top: calc(var(--nav-height) + var(--space-4));
+  }
+
   .estimator-card {
-    padding: 1.5rem;
+    padding: 1.15rem;
+    border-radius: 14px;
   }
 
   .estimator-card__header {
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .estimator-slider {
+    margin-bottom: var(--space-4);
   }
 
   .estimator-results {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.35rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .estimator-metric {
+    padding: 0.42rem;
+    gap: 2px;
+    border-radius: 8px;
+  }
+
+  .estimator-metric__label {
+    font-size: 8px;
+  }
+
+  .estimator-metric__value {
+    font-size: 0.88rem;
+  }
+
+  .estimator-rec {
+    padding: 0.65rem var(--space-3);
+    border-radius: 8px;
+  }
+  
+  .estimator-rec__value {
+    font-size: 0.82rem;
   }
 }
 
@@ -419,10 +454,76 @@
 }
 
 @media (max-width: 800px) {
+  .b2b-tiers {
+    padding-block: var(--space-4) var(--space-6);
+  }
+
+  .b2b-section-head {
+    margin-bottom: var(--space-3);
+  }
+
+  .b2b-section-head h2 {
+    font-size: 1.25rem;
+  }
+
+  .b2b-section-head p {
+    font-size: 0.78rem;
+  }
+
   .b2b-tiers-grid {
-    grid-template-columns: 1fr;
-    max-width: 440px;
-    margin-inline: auto;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    gap: var(--space-3);
+    padding-bottom: var(--space-3);
+    margin-inline: calc(var(--space-4) * -1);
+    padding-inline: var(--space-4);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .b2b-tiers-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .b2b-tier-card {
+    flex: 0 0 240px;
+    scroll-snap-align: start;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .b2b-tier-card__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    margin-bottom: var(--space-3);
+  }
+
+  .b2b-tier-card__icon svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .b2b-tier-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .b2b-tier-card p {
+    font-size: 0.74rem;
+    margin-bottom: var(--space-3);
+    line-height: 1.4;
+  }
+
+  .b2b-tier-card__highlights {
+    padding-top: var(--space-2);
+    gap: 6px;
+  }
+
+  .b2b-tier-card__highlights li {
+    font-size: 0.72rem;
+    gap: 6px;
   }
 }
 
@@ -675,6 +776,23 @@
 
   .b2b-form-card__left,
   .b2b-form-card__right {
-    padding: 1.75rem;
+    padding: 1.25rem;
+  }
+
+  .b2b-form {
+    gap: var(--space-3);
+  }
+
+  .b2b-field input,
+  .b2b-field select {
+    height: 38px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+  }
+
+  .b2b-submit {
+    height: 40px;
+    border-radius: 8px;
+    font-size: 0.85rem;
   }
 }

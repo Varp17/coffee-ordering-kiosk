@@ -11,6 +11,7 @@
   background: var(--footer-bg);
   color: var(--footer-ink);
   isolation: isolate;
+  overflow: hidden;
 }
 
 .footer-wave-svg {
@@ -21,8 +22,8 @@
 }
 
 .footer-wave-svg__text {
-  font-size: 32px;
-  letter-spacing: 0;
+  font-size: clamp(16px, 2.1vw, 32px);
+  letter-spacing: 0.06em;
 }
 
 .footer__inner {
@@ -230,6 +231,7 @@
   height: clamp(310px, 28vw, 520px);
   opacity: 1;
   pointer-events: none;
+  transform: translateY(68%);
 }
 
 .footer__watermark svg {
@@ -335,15 +337,15 @@
   }
 
   .footer-wave-svg {
-    height: clamp(6.2rem, 10vw, 8.2rem);
+    height: clamp(110px, 20vw, 180px);
     margin-bottom: -0.15rem;
   }
 
   .footer-wave-svg__text {
-    font-size: 21px;
+    font-size: clamp(20px, 5.5vw, 28px);
     font-weight: 900;
-    letter-spacing: 0;
-    transform: translateY(0.8rem);
+    letter-spacing: 0.06em;
+    transform: none;
   }
 
   .footer__inner {

@@ -620,6 +620,37 @@
 
 /* ── RESPONSIVE ───────────────────────────────────── */
 @media (max-width: 600px) {
+  .recipes-header {
+    padding-block: var(--space-4) var(--space-2);
+    margin-bottom: var(--space-1);
+  }
+
+  .recipes-header__title {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-1);
+    letter-spacing: 0;
+  }
+
+  .recipes-header__sub {
+    font-size: 0.82rem;
+    line-height: 1.4;
+    margin-bottom: var(--space-3);
+  }
+
+  .recipes-search {
+    margin-bottom: var(--space-1);
+    max-width: 100%;
+  }
+
+  .recipes-search__input {
+    padding: var(--space-2) var(--space-4) var(--space-2) 36px;
+    font-size: 0.8rem;
+  }
+  
+  .recipes-search__icon-wrap {
+    left: 12px;
+  }
+
   .rp-hero__actions {
     flex-direction: column;
   }
@@ -635,11 +666,21 @@
   .rp-section-head {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: 4px;
+    margin-bottom: var(--space-2);
+  }
+
+  .rp-section-head h2 {
+    font-size: 1.15rem;
+  }
+
+  .rp-section-sub {
+    font-size: 0.76rem;
+    margin-top: 2px;
   }
 
   .rp-slider-section {
-    padding-block: 2rem 1.5rem;
+    padding-block: 1.5rem 1rem;
   }
 
   .rp-marquee {
@@ -696,15 +737,15 @@
   }
 
   .rp-grid-section {
-    padding-block: 1.5rem 3rem;
+    padding-block: 1rem 2.5rem;
   }
 
   .rp-filter-bar {
-    gap: 0.45rem;
+    gap: 0.35rem;
     flex-wrap: nowrap;
     overflow-x: auto;
-    margin-bottom: 1.2rem;
-    padding-bottom: 0.7rem;
+    margin-bottom: var(--space-3);
+    padding-bottom: 0.5rem;
     scrollbar-width: none;
   }
 
@@ -714,13 +755,13 @@
 
   .rp-filter-chip {
     flex: 0 0 auto;
-    padding: 0.42rem 0.8rem;
-    font-size: 0.72rem;
+    padding: 0.38rem 0.75rem;
+    font-size: 0.7rem;
   }
 
   .rp-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .rp-grid-card {
@@ -733,39 +774,41 @@
   }
 
   .rp-grid-card__badge {
-    bottom: 0.45rem;
-    left: 0.45rem;
-    max-width: calc(100% - 0.9rem);
-    padding: 3px 6px;
+    bottom: 0.35rem;
+    left: 0.35rem;
+    max-width: calc(100% - 0.7rem);
+    padding: 2px 5px;
     border-radius: 999px;
-    font-size: 0.56rem;
+    font-size: 0.52rem;
     letter-spacing: 0;
   }
 
   .rp-grid-card__body {
-    padding: 0.62rem;
+    padding: 0.45rem;
+    gap: 0.25rem;
   }
 
   .rp-grid-card__body h3 {
     display: -webkit-box;
-    min-height: 2.55em;
+    min-height: 2.4em;
     overflow: hidden;
-    font-size: 0.82rem;
-    line-height: 1.28;
+    font-size: 0.78rem;
+    line-height: 1.2;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     line-clamp: 2;
+    margin-bottom: 1px;
   }
 
   .rp-grid-card__body p {
-    font-size: 0.68rem;
-    line-height: 1.35;
-    margin-bottom: 0.5rem;
+    font-size: 0.65rem;
+    line-height: 1.3;
+    margin-bottom: 0.25rem;
   }
 
   .rp-grid-card__foot {
-    padding-top: 0.45rem;
-    font-size: 0.62rem;
+    padding-top: 0.35rem;
+    font-size: 0.58rem;
   }
 
   .rp-grid-card__author {

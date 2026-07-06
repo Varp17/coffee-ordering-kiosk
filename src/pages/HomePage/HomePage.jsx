@@ -302,7 +302,24 @@ const HERO_TEXT_LAYOUT = {
 function fitHeroText(textElem) {
   const { maxTextWidth, maxFontSize, minFontSize } = HERO_TEXT_LAYOUT;
 
-  textElem.setAttribute('font-size', String(maxFontSize));
+  const textContent = textElem.textContent || '';
+  const charCount = textContent.replace(/\s/g, '').length;
+
+  // Limit maximum font size for short text to prevent it from being too tall and touching the header
+  let allowedMaxFontSize = maxFontSize;
+  if (charCount <= 5) {
+    allowedMaxFontSize = 230;
+  } else if (charCount === 6) {
+    allowedMaxFontSize = 260;
+  } else if (charCount === 7) {
+    allowedMaxFontSize = 290;
+  } else if (charCount === 8) {
+    allowedMaxFontSize = 320;
+  } else if (charCount === 9) {
+    allowedMaxFontSize = 350;
+  }
+
+  textElem.setAttribute('font-size', String(allowedMaxFontSize));
 
   const measuredWidth = textElem.getComputedTextLength();
 
@@ -310,7 +327,7 @@ function fitHeroText(textElem) {
 
   const fittedFontSize = Math.max(
     minFontSize,
-    Math.min(maxFontSize, maxFontSize * (maxTextWidth / measuredWidth))
+    Math.min(allowedMaxFontSize, allowedMaxFontSize * (maxTextWidth / measuredWidth))
   );
 
   textElem.setAttribute('font-size', fittedFontSize.toFixed(2));
@@ -1118,7 +1135,8 @@ function SkipHomepageMiddleFlow() {
   const featureVideoExpandedRef = useRef(false);
   const featureVideoLastScrollYRef = useRef(0);
   const featureVideoScrollDirectionRef = useRef('down');
-  const featureVideoScrollCountRef = useRef(0);
+  const featureVideoScrollDeltaRef = useRef(0);
+  const touchStartYRef = useRef(null);
   const featureVideoDismissedRef = useRef(false);
   const [whyVisible, setWhyVisible] = useState(false);
   const [featureVideoExpanded, setFeatureVideoExpanded] = useState(false);
@@ -1146,34 +1164,42 @@ function SkipHomepageMiddleFlow() {
     const video = featureVideoRef.current;
     if (!section || !video) return undefined;
 
-    const collapseVideo = () => {
+    const collapseVideo = (wasNaturalEnd = false) => {
       const scrollDirection = featureVideoScrollDirectionRef.current;
       featureVideoExpandedRef.current = false;
-      featureVideoScrollCountRef.current = 0;
+      featureVideoScrollDeltaRef.current = 0;
       featureVideoDismissedRef.current = true;
       video.muted = true;
+      video.loop = true;
+      try {
+        video.play();
+      } catch (e) {
+        console.error(e);
+      }
       setFeatureVideoExpanded(false);
 
-      if (scrollDirection === 'down') {
-        window.setTimeout(() => {
-          const lowerFlow = document.querySelector('[data-homepage-lower-flow-start="true"]');
-          if (!lowerFlow) return;
+      if (!wasNaturalEnd) {
+        if (scrollDirection === 'down') {
+          window.setTimeout(() => {
+            const lowerFlow = document.querySelector('[data-homepage-lower-flow-start="true"]');
+            if (!lowerFlow) return;
 
-          const lowerFlowTop = lowerFlow.getBoundingClientRect().top + window.scrollY;
-          const revealOffset = Math.min(window.innerHeight * 0.62, 580);
+            const lowerFlowTop = lowerFlow.getBoundingClientRect().top + window.scrollY;
+            const revealOffset = Math.min(window.innerHeight * 0.62, 580);
 
-          window.scrollTo({
-            top: Math.max(0, lowerFlowTop - revealOffset),
-            behavior: 'smooth',
+            window.scrollTo({
+              top: Math.max(0, lowerFlowTop - revealOffset),
+              behavior: 'smooth',
+            });
+          }, 120);
+        } else if (scrollDirection === 'up') {
+          window.requestAnimationFrame(() => {
+            document.querySelector('[data-homepage-feature-video-return="true"]')?.scrollIntoView({
+              block: 'center',
+              behavior: 'smooth',
+            });
           });
-        }, 120);
-      } else if (scrollDirection === 'up') {
-        window.requestAnimationFrame(() => {
-          document.querySelector('[data-homepage-feature-video-return="true"]')?.scrollIntoView({
-            block: 'center',
-            behavior: 'smooth',
-          });
-        });
+        }
       }
     };
 
@@ -1181,11 +1207,12 @@ function SkipHomepageMiddleFlow() {
       if (featureVideoExpandedRef.current || featureVideoDismissedRef.current) return;
 
       featureVideoExpandedRef.current = true;
-      featureVideoScrollCountRef.current = 0;
+      featureVideoScrollDeltaRef.current = 0;
       setFeatureVideoExpanded(true);
 
       try {
-        video.currentTime = 0;
+        video.loop = false;
+        // Keep the playback continuous during expansion by not resetting currentTime to 0
         video.muted = false;
         video.volume = 1;
         video.play();
@@ -1222,15 +1249,6 @@ function SkipHomepageMiddleFlow() {
       }
     );
 
-    const countExpandedScroll = (direction) => {
-      featureVideoScrollDirectionRef.current = direction;
-      featureVideoScrollCountRef.current += 1;
-
-      if (featureVideoScrollCountRef.current >= 4) {
-        collapseVideo();
-      }
-    };
-
     const handleWheel = (event) => {
       const nextScrollY = window.scrollY;
       const direction = event.deltaY < 0 ? 'up' : 'down';
@@ -1247,7 +1265,21 @@ function SkipHomepageMiddleFlow() {
       }
 
       event.preventDefault();
-      countExpandedScroll(direction);
+
+      // Accumulate scroll delta
+      featureVideoScrollDeltaRef.current += event.deltaY;
+      const wheelThreshold = 240;
+      if (Math.abs(featureVideoScrollDeltaRef.current) >= wheelThreshold) {
+        const netDirection = featureVideoScrollDeltaRef.current > 0 ? 'down' : 'up';
+        featureVideoScrollDirectionRef.current = netDirection;
+        collapseVideo(false);
+      }
+    };
+
+    const handleTouchStart = (event) => {
+      if (event.touches.length > 0) {
+        touchStartYRef.current = event.touches[0].clientY;
+      }
     };
 
     const handleTouchMove = (event) => {
@@ -1265,7 +1297,22 @@ function SkipHomepageMiddleFlow() {
       }
 
       event.preventDefault();
-      countExpandedScroll(direction);
+
+      if (event.touches.length > 0 && touchStartYRef.current !== null) {
+        const currentY = event.touches[0].clientY;
+        const deltaY = touchStartYRef.current - currentY;
+        const touchThreshold = 100;
+
+        if (Math.abs(deltaY) >= touchThreshold) {
+          const netDirection = deltaY > 0 ? 'down' : 'up';
+          featureVideoScrollDirectionRef.current = netDirection;
+          collapseVideo(false);
+        }
+      }
+    };
+
+    const handleTouchEnd = () => {
+      touchStartYRef.current = null;
     };
 
     const handleVideoClick = () => {
@@ -1276,17 +1323,29 @@ function SkipHomepageMiddleFlow() {
       }
     };
 
+    const handleEnded = () => {
+      if (featureVideoExpandedRef.current) {
+        collapseVideo(true);
+      }
+    };
+
     featureVideoLastScrollYRef.current = window.scrollY;
     observer.observe(section);
     video.addEventListener('click', handleVideoClick);
+    video.addEventListener('ended', handleEnded);
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
       observer.disconnect();
       video.removeEventListener('click', handleVideoClick);
+      video.removeEventListener('ended', handleEnded);
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
 
@@ -1343,7 +1402,7 @@ function SkipHomepageMiddleFlow() {
           <p className="skip-hard-part__promise">
             We guarantee that it will taste good; we promise that it won't eat into your wallet.
           </p>
-          <strong>"Coffee is too much work"</strong>
+          <p className="skip-hard-part__quote">{"\u201CCoffee is too much work\u201D"}</p>
           <p className="skip-hard-part__simple">
             If you can make lemonade or iced-water, this is a walk in the park.
           </p>
@@ -1352,7 +1411,7 @@ function SkipHomepageMiddleFlow() {
             by you. No complicated menus. Just cold coffee made for your mood, your routine, and your kind of day.
           </p>
           <div className="skip-hard-part__actions">
-            <Link to="/build" className="skip-hard-part__primary">Buy CHILLD Cold Brew Core</Link>
+            <Link to="/build" className="skip-hard-part__primary">Cold Brew Concentrate</Link>
             <Link to="/recipes" className="skip-hard-part__secondary">Explore Recipes</Link>
           </div>
         </div>
@@ -1400,7 +1459,7 @@ function SkipHomepageMiddleFlow() {
           ref={featureVideoRef}
           src="/Videos/coffee_concentrate_with_glass.mp4"
           autoPlay
-          loop
+          loop={!featureVideoExpanded}
           muted
           playsInline
           preload="metadata"
@@ -1542,6 +1601,9 @@ function DesktopHomePage() {
   const scrollVideoFullscreenRef = useRef(null);
   const scrollVideoModeRef = useRef('inline');
   const scrollVideoExitTimerRef = useRef(null);
+  const scrollVideoDismissedRef = useRef(false);
+  const scrollVideoWheelDeltaRef = useRef(0);
+  const scrollVideoTouchStartYRef = useRef(null);
   const bentoVideoRef = useRef(null);
   const hardPartParallaxRef = useRef(null);
   const hardPartVideoRef = useRef(null);
@@ -1582,6 +1644,15 @@ function DesktopHomePage() {
     if (scrollVideoModeRef.current === nextMode) return;
     scrollVideoModeRef.current = nextMode;
     setScrollVideoMode(nextMode);
+  };
+
+  const dismissScrollVideo = () => {
+    scrollVideoDismissedRef.current = true;
+    updateScrollVideoMode('exiting');
+    window.clearTimeout(scrollVideoExitTimerRef.current);
+    scrollVideoExitTimerRef.current = window.setTimeout(() => {
+      updateScrollVideoMode('after');
+    }, 560);
   };
 
   const handleVideoClick = (event, targetVideoRef = videoRef) => {
@@ -1691,29 +1762,22 @@ function DesktopHomePage() {
       const triggerTop = trigger.getBoundingClientRect().top;
       const viewportHeight = window.innerHeight;
       const enterLine = viewportHeight * 0.45;
-      const exitLine = viewportHeight * 0.40;
 
-      if (triggerTop > enterLine) {
-        window.clearTimeout(scrollVideoExitTimerRef.current);
+      // If we scroll back up above the trigger, reset dismissal and set to inline
+      if (triggerTop > enterLine + 50) {
+        scrollVideoDismissedRef.current = false;
         updateScrollVideoMode('inline');
         return;
       }
 
-      if (triggerTop > exitLine) {
-        window.clearTimeout(scrollVideoExitTimerRef.current);
-        updateScrollVideoMode('fullscreen');
+      if (scrollVideoDismissedRef.current) {
+        updateScrollVideoMode('after');
         return;
       }
 
-      if (
-        scrollVideoModeRef.current !== 'exiting' &&
-        scrollVideoModeRef.current !== 'after'
-      ) {
-        updateScrollVideoMode('exiting');
-        window.clearTimeout(scrollVideoExitTimerRef.current);
-        scrollVideoExitTimerRef.current = window.setTimeout(() => {
-          updateScrollVideoMode('after');
-        }, 560);
+      // Trigger fullscreen when trigger reaches enterLine
+      if (scrollVideoModeRef.current === 'inline' && triggerTop <= enterLine) {
+        updateScrollVideoMode('fullscreen');
       }
     };
 
@@ -1750,13 +1814,86 @@ function DesktopHomePage() {
       inlineVideo.play().catch(() => { });
     }
     if (fullscreenVideo) {
-      fullscreenVideo.muted = true;
+      if (scrollVideoMode === 'fullscreen') {
+        // Sync currentTime from inline video to fullscreen video for continuous playback
+        if (inlineVideo) {
+          fullscreenVideo.currentTime = inlineVideo.currentTime;
+        }
+        fullscreenVideo.muted = false;
+        fullscreenVideo.volume = 1;
+        scrollVideoWheelDeltaRef.current = 0;
+        scrollVideoTouchStartYRef.current = null;
+      } else {
+        // Sync currentTime back from fullscreen video to inline video when exiting
+        if (inlineVideo) {
+          inlineVideo.currentTime = fullscreenVideo.currentTime;
+        }
+        fullscreenVideo.muted = true;
+      }
       fullscreenVideo.play().catch(() => { });
     }
     pauseResetTimer = window.setTimeout(() => setIsPaused(false), 0);
 
     return () => window.clearTimeout(pauseResetTimer);
   }, [scrollVideoMode]);
+
+  // ended event is handled via the onEnded prop on the video tag directly
+
+  // Fullscreen video scroll-lock and delta-based exit listeners
+  useEffect(() => {
+    const handleFullscreenWheel = (event) => {
+      if (scrollVideoModeRef.current !== 'fullscreen') return;
+
+      // Lock scroll while fullscreen video is active
+      event.preventDefault();
+
+      // Accumulate wheel scroll delta
+      scrollVideoWheelDeltaRef.current += event.deltaY;
+      const wheelThreshold = 240;
+      if (Math.abs(scrollVideoWheelDeltaRef.current) >= wheelThreshold) {
+        dismissScrollVideo();
+      }
+    };
+
+    const handleFullscreenTouchStart = (event) => {
+      if (scrollVideoModeRef.current !== 'fullscreen') return;
+      if (event.touches.length > 0) {
+        scrollVideoTouchStartYRef.current = event.touches[0].clientY;
+      }
+    };
+
+    const handleFullscreenTouchMove = (event) => {
+      if (scrollVideoModeRef.current !== 'fullscreen') return;
+
+      // Lock swipe scroll while fullscreen video is active
+      event.preventDefault();
+
+      if (event.touches.length > 0 && scrollVideoTouchStartYRef.current !== null) {
+        const currentY = event.touches[0].clientY;
+        const deltaY = scrollVideoTouchStartYRef.current - currentY;
+        const touchThreshold = 100;
+        if (Math.abs(deltaY) >= touchThreshold) {
+          dismissScrollVideo();
+        }
+      }
+    };
+
+    const handleFullscreenTouchEnd = () => {
+      scrollVideoTouchStartYRef.current = null;
+    };
+
+    window.addEventListener('wheel', handleFullscreenWheel, { passive: false });
+    window.addEventListener('touchstart', handleFullscreenTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleFullscreenTouchMove, { passive: false });
+    window.addEventListener('touchend', handleFullscreenTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener('wheel', handleFullscreenWheel);
+      window.removeEventListener('touchstart', handleFullscreenTouchStart);
+      window.removeEventListener('touchmove', handleFullscreenTouchMove);
+      window.removeEventListener('touchend', handleFullscreenTouchEnd);
+    };
+  }, []);
 
   // Each set replaces the social cards every 4.8 seconds. The prior set is kept
   // for a short moment so it can slide out while the next set slides in.
@@ -2022,7 +2159,7 @@ function DesktopHomePage() {
           <HomepageLowerFlow />
         </div>
       )}
-      {!skippedWelcome && selectedAsset && (
+      {/* {!skippedWelcome && selectedAsset && (
         <div
           className="hero-image-attribution"
           style={{
@@ -2041,7 +2178,7 @@ function DesktopHomePage() {
           }}
           dangerouslySetInnerHTML={{ __html: selectedAsset.attribution }}
         />
-      )}
+      )} */}
       {/* ── DESKTOP & MOBILE UNIFIED FIGMA SVG LAYOUT ───────────────────────── */}
       {!skippedWelcome && (
         <div className="figma-svg-wrapper">
@@ -2550,10 +2687,11 @@ function DesktopHomePage() {
             ref={scrollVideoFullscreenRef}
             src="/Videos/coffee_concentrate_with_glass.mp4"
             autoPlay
-            loop
-            muted
+            loop={false}
+            muted={scrollVideoMode !== 'fullscreen'}
             playsInline
             preload="auto"
+            onEnded={dismissScrollVideo}
             className="scroll-video-stage__video"
             onClick={(event) => handleVideoClick(event, scrollVideoFullscreenRef)}
           />

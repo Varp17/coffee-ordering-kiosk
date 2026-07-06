@@ -97,6 +97,20 @@ export default function ProductDetailPage() {
         </button>
 
         <div className="product-detail__grid">
+          {/* Mobile Header (visible only on mobile) */}
+          <div className="product-detail__header product-detail__header--mobile">
+            <span className="product-detail__category">{product.concentrateType}</span>
+            <h1 className="product-detail__title">{product.name}</h1>
+            <p className="product-detail__tagline">{product.tagline}</p>
+            {rating && (
+              <div className="product-detail__rating" aria-label={`${rating} out of 5 from ${product.reviews.count} reviews`}>
+                <Star size={16} fill="currentColor" />
+                <strong>{rating.toFixed(1)}</strong>
+                <span>{product.reviews.count} reviews</span>
+              </div>
+            )}
+          </div>
+
           {/* ── PRODUCT IMAGES & SPECS ── */}
           <div className="product-detail__image-area">
             <motion.div
@@ -164,55 +178,20 @@ export default function ProductDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <span className="product-detail__category">{product.concentrateType}</span>
-              <h1 className="product-detail__title">{product.name}</h1>
-              <p className="product-detail__tagline">{product.tagline}</p>
-              {rating && (
-                <div className="product-detail__rating" aria-label={`${rating} out of 5 from ${product.reviews.count} reviews`}>
-                  <Star size={16} fill="currentColor" />
-                  <strong>{rating.toFixed(1)}</strong>
-                  <span>{product.reviews.count} reviews</span>
-                </div>
-              )}
+              <div className="product-detail__header product-detail__header--desktop">
+                <span className="product-detail__category">{product.concentrateType}</span>
+                <h1 className="product-detail__title">{product.name}</h1>
+                <p className="product-detail__tagline">{product.tagline}</p>
+                {rating && (
+                  <div className="product-detail__rating" aria-label={`${rating} out of 5 from ${product.reviews.count} reviews`}>
+                    <Star size={16} fill="currentColor" />
+                    <strong>{rating.toFixed(1)}</strong>
+                    <span>{product.reviews.count} reviews</span>
+                  </div>
+                )}
+              </div>
               <p className="product-detail__desc">{product.description}</p>
             </motion.div>
-
-            <div className="product-detail__section product-detail__ingredients">
-              <h3 className="section-title-small">Product Details</h3>
-              <div className="product-detail__facts">
-                <div>
-                  <span>Roast</span>
-                  <strong>{product.roast}</strong>
-                </div>
-                <div>
-                  <span>Profile</span>
-                  <strong>{product.beanProfile}</strong>
-                </div>
-                <div>
-                  <span>Best Mix</span>
-                  <strong>{product.brewRatio}</strong>
-                </div>
-              </div>
-              <div className="ingredients-pills">
-                {product.ingredients.map((ing) => (
-                  <span key={ing} className="ingredient-pill">
-                    {ing}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {product.reviews && (
-              <div className="product-detail__section product-detail__reviews">
-                <h3 className="section-title-small">Reviews</h3>
-                <p>{product.reviews.summary}</p>
-                <div className="review-quotes">
-                  {product.reviews.quotes.map((quote) => (
-                    <span key={quote}>{quote}</span>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* ── BOTTLE SIZE SELECTOR ── */}
             <div className="product-detail__section">
@@ -248,6 +227,45 @@ export default function ProductDetailPage() {
                       </button>
                     );
                   })}
+                </div>
+              </div>
+            )}
+
+            {/* ── PRODUCT DETAILS ── */}
+            <div className="product-detail__section product-detail__ingredients">
+              <h3 className="section-title-small">Product Details</h3>
+              <div className="product-detail__facts">
+                <div>
+                  <span>Roast</span>
+                  <strong>{product.roast}</strong>
+                </div>
+                <div>
+                  <span>Profile</span>
+                  <strong>{product.beanProfile}</strong>
+                </div>
+                <div>
+                  <span>Best Mix</span>
+                  <strong>{product.brewRatio}</strong>
+                </div>
+              </div>
+              <div className="ingredients-pills">
+                {product.ingredients.map((ing) => (
+                  <span key={ing} className="ingredient-pill">
+                    {ing}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* ── REVIEWS ── */}
+            {product.reviews && (
+              <div className="product-detail__section product-detail__reviews">
+                <h3 className="section-title-small">Reviews</h3>
+                <p>{product.reviews.summary}</p>
+                <div className="review-quotes">
+                  {product.reviews.quotes.map((quote) => (
+                    <span key={quote}>{quote}</span>
+                  ))}
                 </div>
               </div>
             )}

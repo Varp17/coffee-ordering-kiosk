@@ -7,6 +7,7 @@ import BottomNav from '@/components/BottomNav/BottomNav';
 export default function MainLayout({ children }) {
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const isProductDetail = location.pathname.startsWith('/menu/') && location.pathname !== '/menu';
 
   useEffect(() => {
     if (location.hash) {
@@ -26,7 +27,7 @@ export default function MainLayout({ children }) {
     <div className="main-layout">
       <Navbar />
       <main>{children || <Outlet />}</main>
-      {!isHome && <Footer />}
+      {!isHome && !isProductDetail && <Footer />}
       {!isHome && <BottomNav />}
     </div>
   );

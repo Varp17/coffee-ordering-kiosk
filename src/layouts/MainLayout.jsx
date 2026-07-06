@@ -28,7 +28,7 @@ export default function MainLayout({ children }) {
       <Navbar />
       <main>{children || <Outlet />}</main>
       {!isHome && !isProductDetail && <Footer />}
-      {!isHome && <BottomNav />}
+      <BottomNav />
     </div>
   );
 }

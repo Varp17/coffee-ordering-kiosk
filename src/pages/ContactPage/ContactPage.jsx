@@ -62,18 +62,6 @@ export default function ContactPage() {
 
   return (
     <main className="contact-landing-page">
-      {/* ── HERO BANNER ── */}
-      <section className="contact-hero">
-        <div className="contact-hero__graffiti" />
-        <div className="container contact-hero__content">
-          <span className="contact-hero__eyebrow">GET IN TOUCH</span>
-          <h1 className="contact-hero__title">Contact Us</h1>
-          <p className="contact-hero__desc">
-            Have questions about our cold brew concentrates or want to partner with us? We&apos;d love to hear from you.
-          </p>
-        </div>
-      </section>
-
       {/* ── SPLIT MAIN CONTENT ── */}
       <section className="contact-split-section">
         <div className="container contact-split-grid">

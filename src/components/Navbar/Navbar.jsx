@@ -114,7 +114,6 @@ export default function Navbar() {
                 <span className="navbar__cart-count">{totalItems}</span>
               </button>
 
-              {/* Build your brew capsule — COMMENTED OUT (kiosk-only feature)
               <Link to="/build" className="navbar__build-pill">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
                   <path d="M6 8h12M7 8V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2" />
@@ -123,7 +122,6 @@ export default function Navbar() {
                 </svg>
                 <span>Create Your Drink</span>
               </Link>
-              */}
 
               {/* Hamburger (mobile) */}
               <button

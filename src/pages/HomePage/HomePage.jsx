@@ -5,79 +5,140 @@ import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
 import { PRODUCTS } from '@/data/products';
 import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
-const coffeeCup = '/images/iced-coffee-cup.webp';
+const coffeeCup = '/images/Images/cortado-removebg-preview.png';
 import TestimonialsBento from '@/components/TestimonialsBento/TestimonialsBento';
 import Footer from '@/components/Footer/Footer';
 
-const Dot = ({ active = false }) => (
-  <span className={active ? 'is-active' : ''} aria-hidden="true" />
-);
+
+
 
 const SKIPPED_HERO_SLIDES = [
   {
     name: 'Vandy',
     suffix: 'Brew',
     formula: '/ "Vandana" + "Cold Brew" /',
+    image: '/images/Images/coldbrew-removebg-preview.png',
   },
   {
     name: 'Preri',
     suffix: 'Appe',
     formula: '/ "Prerita" + "Frappe" /',
+    image: '/images/Images/frappe-removebg-preview.png',
   },
   {
     name: 'Rishi',
     suffix: 'Latte',
     formula: '/ "Rishima" + "Latte" /',
+    image: coffeeCup,
   },
 ];
 
 function SkippedHomeHeroOverlay() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const svgDocRef = useRef(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveSlide((current) => (current + 1) % SKIPPED_HERO_SLIDES.length);
-    }, 2000);
+    }, 4000); // 4 seconds to allow the typing effect to finish
 
     return () => window.clearInterval(timer);
   }, []);
 
-  const slide = SKIPPED_HERO_SLIDES[activeSlide];
+  useEffect(() => {
+    if (svgDocRef.current) {
+      const slide = SKIPPED_HERO_SLIDES[activeSlide];
+      injectDynamicHeroText(svgDocRef.current, slide.name, slide.suffix);
+      const pattern = svgDocRef.current.getElementById('pattern3_366_1172') || svgDocRef.current.querySelector('pattern[id^="pattern3_"]');
+      if (pattern) {
+        const imageNode = pattern.querySelector('image');
+        if (imageNode) {
+          imageNode.setAttribute('href', slide.image);
+          imageNode.setAttributeNS('http://www.w3.org/1999/xlink', 'href', slide.image);
+
+          // Force pattern repaint
+          const cupRect = svgDocRef.current.querySelector(`rect[fill="url(#${pattern.id})"]`) || svgDocRef.current.querySelector('rect[fill^="url(#pattern3_"]');
+          if (cupRect) {
+            const currentFill = cupRect.getAttribute('fill');
+            cupRect.setAttribute('fill', 'none');
+            // Force layout
+            void cupRect.offsetHeight;
+            cupRect.setAttribute('fill', currentFill);
+          }
+        }
+      }
+    }
+  }, [activeSlide]);
 
   return (
-    <div className="homepage-skip-overlay">
-      <section className="neha-hero" aria-labelledby="neha-title">
-        <img
-          className="neha-hero__subtract-bg"
-          src="/Subtract (1).svg"
-          alt=""
-          aria-hidden="true"
-        />
+    <div
+      className="homepage-skip-overlay-svg"
+      style={{
+        position: 'relative',
+        width: '100%',
+        aspectRatio: '1512 / 1038', // 1150 height - 112 header = 1038 height
+        overflow: 'hidden',
+        marginTop: '-7.4074vw', // Shift up to hide empty space
+        clipPath: 'inset(7.4074vw 0 0 0)',
+        zIndex: 2,
+      }}
+    >
+      <object
+        className="figma-svg-object"
+        data="/Homepage.svg?v=1.7"
+        type="image/svg+xml"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: 'auto',
+          display: 'block',
+          pointerEvents: 'none'
+        }}
+        onLoad={(e) => {
+          try {
+            const svgDoc = e.target.contentDocument;
+            if (!svgDoc) return;
+            svgDocRef.current = svgDoc;
 
-        <div className="neha-hero__copy">
-          <h1 id="neha-title" className="neha-logo" key={slide.name}>
-            {slide.name}<span>{slide.suffix}</span>
-          </h1>
-          <p className="neha-tagline">{slide.formula}</p>
-          <h2>Code your own Coffee</h2>
+            injectSvgStyles(svgDoc);
+            animateSvgCup(svgDoc);
+            animateHeroBeans(svgDoc);
+            hideStaticPlaceholders(svgDoc);
 
-          <div className="hero-dots" aria-label={`Slide ${activeSlide + 1} of ${SKIPPED_HERO_SLIDES.length}`}>
-            {SKIPPED_HERO_SLIDES.map((item, index) => (
-              <Dot key={item.name} active={index === activeSlide} />
-            ))}
-          </div>
-        </div>
+            // Wrap cups (even though we don't show the lower ones, we want the hero one wrapped correctly)
+            wrapCupElements(svgDoc, 1, 2);
 
-        <img
-          className="neha-hero__coffee"
-          src={coffeeCup}
-          alt="Iced coffee"
-          width="632"
-          height="1000"
-          fetchPriority="high"
-        />
+            // Set initial slide
+            const slide = SKIPPED_HERO_SLIDES[activeSlide];
+            injectDynamicHeroText(svgDoc, slide.name, slide.suffix);
+            const pattern = svgDoc.getElementById('pattern3_366_1172') || svgDoc.querySelector('pattern[id^="pattern3_"]');
+            if (pattern) {
+              const imageNode = pattern.querySelector('image');
+              if (imageNode) {
+                imageNode.setAttribute('href', slide.image);
+              }
+            }
 
-      </section>
+            // Hide everything below the hero
+            const svgRoot = svgDoc.querySelector('svg');
+            if (svgRoot) {
+              const allNodes = svgRoot.querySelectorAll('*');
+              allNodes.forEach(node => {
+                try {
+                  const bbox = node.getBBox();
+                  if (bbox && bbox.y >= 1150 && bbox.height > 0) {
+                    node.style.display = 'none';
+                  }
+                } catch { /* ignore */ }
+              });
+            }
+          } catch (err) {
+            console.error('Error in SkippedHomeHeroOverlay onLoad:', err);
+          }
+        }}
+      />
     </div>
   );
 }
@@ -143,17 +204,17 @@ function animateSvgCup(svgDoc) {
 }
 
 const HERO_BEAN_ENTRANCES = {
-  4: { x: -420, y: -220, delay: 120, duration: 920, floatX: 3, floatY: -7, floatDuration: 3900, floatRotate: 3, floatScale: 0.97, baseRotate: 12 },
-  5: { x: -560, y: 80, delay: 260, duration: 980, floatX: -4, floatY: 6, floatDuration: 4300, floatRotate: -4, floatScale: 1.03, baseRotate: -8 },
-  6: { x: -500, y: 300, delay: 420, duration: 900, floatX: 4, floatY: -5, floatDuration: 3600, floatRotate: 2, floatScale: 0.98, baseRotate: 22 },
-  7: { x: -220, y: 420, delay: 560, duration: 980, floatX: -3, floatY: -8, floatDuration: 4600, floatRotate: -3, floatScale: 1.02, baseRotate: -15 },
-  8: { x: -340, y: 140, delay: 700, duration: 860, floatX: 2, floatY: 5, floatDuration: 3400, floatRotate: 4, floatScale: 0.97, baseRotate: 5 },
-  9: { x: 360, y: 320, delay: 240, duration: 980, floatX: -4, floatY: -6, floatDuration: 4200, floatRotate: -2, floatScale: 1.02, baseRotate: -18 },
-  10: { x: 520, y: 120, delay: 400, duration: 880, floatX: 3, floatY: 5, floatDuration: 3700, floatRotate: 3, floatScale: 0.98, baseRotate: 25 },
-  11: { x: 540, y: -260, delay: 80, duration: 1040, floatX: -3, floatY: 7, floatDuration: 4500, floatRotate: -4, floatScale: 1.03, baseRotate: -10 },
-  12: { x: 260, y: -300, delay: 620, duration: 820, floatX: 2, floatY: -5, floatDuration: 3300, floatRotate: 2, floatScale: 0.98, baseRotate: 15 },
-  13: { x: 380, y: 180, delay: 760, duration: 860, floatX: -2, floatY: 6, floatDuration: 3800, floatRotate: -3, floatScale: 1.02, baseRotate: -22 },
-  14: { x: 520, y: 240, delay: 900, duration: 900, floatX: 3, floatY: -6, floatDuration: 4100, floatRotate: 4, floatScale: 0.97, baseRotate: 8 },
+  4: { x: -420, y: -220, delay: 120, duration: 920, floatX: 3, floatY: -7, floatDuration: 3900, floatRotate: 3, floatScale: 0.97, baseRotate: 45 },
+  5: { x: -560, y: 80, delay: 260, duration: 980, floatX: -4, floatY: 6, floatDuration: 4300, floatRotate: -4, floatScale: 1.03, baseRotate: -65 },
+  6: { x: -500, y: 300, delay: 420, duration: 900, floatX: 4, floatY: -5, floatDuration: 3600, floatRotate: 2, floatScale: 0.98, baseRotate: 112 },
+  7: { x: -220, y: 420, delay: 560, duration: 980, floatX: -3, floatY: -8, floatDuration: 4600, floatRotate: -3, floatScale: 1.02, baseRotate: -135 },
+  8: { x: -340, y: 140, delay: 700, duration: 860, floatX: 2, floatY: 5, floatDuration: 3400, floatRotate: 4, floatScale: 0.97, baseRotate: 175 },
+  9: { x: 360, y: 320, delay: 240, duration: 980, floatX: -4, floatY: -6, floatDuration: 4200, floatRotate: -2, floatScale: 1.02, baseRotate: -25 },
+  10: { x: 520, y: 120, delay: 400, duration: 880, floatX: 3, floatY: 5, floatDuration: 3700, floatRotate: 3, floatScale: 0.98, baseRotate: 80 },
+  11: { x: 540, y: -260, delay: 80, duration: 1040, floatX: -3, floatY: 7, floatDuration: 4500, floatRotate: -4, floatScale: 1.03, baseRotate: -105 },
+  12: { x: 260, y: -300, delay: 620, duration: 820, floatX: 2, floatY: -5, floatDuration: 3300, floatRotate: 2, floatScale: 0.98, baseRotate: 155 },
+  13: { x: 380, y: 180, delay: 760, duration: 860, floatX: -2, floatY: 6, floatDuration: 3800, floatRotate: -3, floatScale: 1.02, baseRotate: -165 },
+  14: { x: 520, y: 240, delay: 900, duration: 900, floatX: 3, floatY: -6, floatDuration: 4100, floatRotate: 4, floatScale: 0.97, baseRotate: 15 },
 };
 
 function getHeroBeanPatternNumber(node) {
@@ -1130,16 +1191,7 @@ function BentoSocialCard({ slot, post, phase, cycle }) {
 
 function SkipHomepageMiddleFlow() {
   const whySectionRef = useRef(null);
-  const featureVideoSectionRef = useRef(null);
-  const featureVideoRef = useRef(null);
-  const featureVideoExpandedRef = useRef(false);
-  const featureVideoLastScrollYRef = useRef(0);
-  const featureVideoScrollDirectionRef = useRef('down');
-  const featureVideoScrollDeltaRef = useRef(0);
-  const touchStartYRef = useRef(null);
-  const featureVideoDismissedRef = useRef(false);
   const [whyVisible, setWhyVisible] = useState(false);
-  const [featureVideoExpanded, setFeatureVideoExpanded] = useState(false);
 
   useEffect(() => {
     const section = whySectionRef.current;
@@ -1159,195 +1211,6 @@ function SkipHomepageMiddleFlow() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const section = featureVideoSectionRef.current;
-    const video = featureVideoRef.current;
-    if (!section || !video) return undefined;
-
-    const collapseVideo = (wasNaturalEnd = false) => {
-      const scrollDirection = featureVideoScrollDirectionRef.current;
-      featureVideoExpandedRef.current = false;
-      featureVideoScrollDeltaRef.current = 0;
-      featureVideoDismissedRef.current = true;
-      video.muted = true;
-      video.loop = true;
-      try {
-        video.play();
-      } catch (e) {
-        console.error(e);
-      }
-      setFeatureVideoExpanded(false);
-
-      if (!wasNaturalEnd) {
-        if (scrollDirection === 'down') {
-          window.setTimeout(() => {
-            const lowerFlow = document.querySelector('[data-homepage-lower-flow-start="true"]');
-            if (!lowerFlow) return;
-
-            const lowerFlowTop = lowerFlow.getBoundingClientRect().top + window.scrollY;
-            const revealOffset = Math.min(window.innerHeight * 0.62, 580);
-
-            window.scrollTo({
-              top: Math.max(0, lowerFlowTop - revealOffset),
-              behavior: 'smooth',
-            });
-          }, 120);
-        } else if (scrollDirection === 'up') {
-          window.requestAnimationFrame(() => {
-            document.querySelector('[data-homepage-feature-video-return="true"]')?.scrollIntoView({
-              block: 'center',
-              behavior: 'smooth',
-            });
-          });
-        }
-      }
-    };
-
-    const expandVideo = () => {
-      if (featureVideoExpandedRef.current || featureVideoDismissedRef.current) return;
-
-      featureVideoExpandedRef.current = true;
-      featureVideoScrollDeltaRef.current = 0;
-      setFeatureVideoExpanded(true);
-
-      try {
-        video.loop = false;
-        // Keep the playback continuous during expansion by not resetting currentTime to 0
-        video.muted = false;
-        video.volume = 1;
-        video.play();
-      } catch {
-        // Autoplay can be blocked in some browser states; the layout interaction should still work.
-      }
-    };
-
-    const shouldExpandVideo = () => {
-      const rect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-
-      if (featureVideoScrollDirectionRef.current === 'up') {
-        return rect.bottom >= viewportHeight * 0.82 && rect.top <= viewportHeight * 0.45;
-      }
-
-      return rect.top <= viewportHeight * 0.38 && rect.bottom >= viewportHeight * 0.72;
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          featureVideoDismissedRef.current = false;
-          return;
-        }
-
-        if (shouldExpandVideo()) {
-          expandVideo();
-        }
-      },
-      {
-        rootMargin: '0px',
-        threshold: 0.35,
-      }
-    );
-
-    const handleWheel = (event) => {
-      const nextScrollY = window.scrollY;
-      const direction = event.deltaY < 0 ? 'up' : 'down';
-      featureVideoScrollDirectionRef.current = direction;
-      featureVideoLastScrollYRef.current = nextScrollY;
-
-      if (!featureVideoExpandedRef.current) {
-        window.requestAnimationFrame(() => {
-          if (shouldExpandVideo()) {
-            expandVideo();
-          }
-        });
-        return;
-      }
-
-      event.preventDefault();
-
-      // Accumulate scroll delta
-      featureVideoScrollDeltaRef.current += event.deltaY;
-      const wheelThreshold = 240;
-      if (Math.abs(featureVideoScrollDeltaRef.current) >= wheelThreshold) {
-        const netDirection = featureVideoScrollDeltaRef.current > 0 ? 'down' : 'up';
-        featureVideoScrollDirectionRef.current = netDirection;
-        collapseVideo(false);
-      }
-    };
-
-    const handleTouchStart = (event) => {
-      if (event.touches.length > 0) {
-        touchStartYRef.current = event.touches[0].clientY;
-      }
-    };
-
-    const handleTouchMove = (event) => {
-      const nextScrollY = window.scrollY;
-      const direction = nextScrollY < featureVideoLastScrollYRef.current ? 'up' : 'down';
-      featureVideoLastScrollYRef.current = nextScrollY;
-
-      if (!featureVideoExpandedRef.current) {
-        window.requestAnimationFrame(() => {
-          if (shouldExpandVideo()) {
-            expandVideo();
-          }
-        });
-        return;
-      }
-
-      event.preventDefault();
-
-      if (event.touches.length > 0 && touchStartYRef.current !== null) {
-        const currentY = event.touches[0].clientY;
-        const deltaY = touchStartYRef.current - currentY;
-        const touchThreshold = 100;
-
-        if (Math.abs(deltaY) >= touchThreshold) {
-          const netDirection = deltaY > 0 ? 'down' : 'up';
-          featureVideoScrollDirectionRef.current = netDirection;
-          collapseVideo(false);
-        }
-      }
-    };
-
-    const handleTouchEnd = () => {
-      touchStartYRef.current = null;
-    };
-
-    const handleVideoClick = () => {
-      if (video.paused) {
-        video.play();
-      } else {
-        video.pause();
-      }
-    };
-
-    const handleEnded = () => {
-      if (featureVideoExpandedRef.current) {
-        collapseVideo(true);
-      }
-    };
-
-    featureVideoLastScrollYRef.current = window.scrollY;
-    observer.observe(section);
-    video.addEventListener('click', handleVideoClick);
-    video.addEventListener('ended', handleEnded);
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-    return () => {
-      observer.disconnect();
-      video.removeEventListener('click', handleVideoClick);
-      video.removeEventListener('ended', handleEnded);
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, []);
 
   return (
     <>
@@ -1381,7 +1244,7 @@ function SkipHomepageMiddleFlow() {
           </defs>
           <text className="skip-hard-part__top-wave-text">
             <textPath href="#skip-hard-part-wave-text-offset" startOffset="-8%">
-              Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+              100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting…
               <animate attributeName="startOffset" from="-45%" to="35%" dur="34s" repeatCount="indefinite" />
             </textPath>
           </text>
@@ -1451,15 +1314,13 @@ function SkipHomepageMiddleFlow() {
       </section>
 
       <section
-        ref={featureVideoSectionRef}
-        className={`skip-feature-video${featureVideoExpanded ? ' is-expanded' : ''}`}
+        className="skip-feature-video"
         aria-label="Chilld cold brew concentrate video"
       >
         <video
-          ref={featureVideoRef}
           src="/Videos/coffee_concentrate_with_glass.mp4"
           autoPlay
-          loop={!featureVideoExpanded}
+          loop
           muted
           playsInline
           preload="metadata"
@@ -1494,7 +1355,7 @@ function HomepageLowerFlow() {
             <span>›</span>
           </div>
           <p>
-            Tag your mix with <strong>#MadeByYou</strong>
+            Tag your mix with <strong>#ChilldByYou</strong>
           </p>
           <Link to="/build" className="lower-flow-trending__button">
             Create your Recipe
@@ -1752,6 +1613,20 @@ function DesktopHomePage() {
     };
   }, []);
 
+  // Control the fullscreen video playback based on its visibility mode
+  useEffect(() => {
+    const video = scrollVideoFullscreenRef.current;
+    if (!video) return;
+
+    if (scrollVideoMode === 'fullscreen') {
+      video.currentTime = 0;
+      video.muted = false;
+      video.play().catch(() => { });
+    } else {
+      video.pause();
+    }
+  }, [scrollVideoMode]);
+
   // The inline video becomes a true viewport layer when the user reaches it.
   // Scroll remains enabled: moving beyond the video triggers a short exit animation.
   useEffect(() => {
@@ -1760,6 +1635,7 @@ function DesktopHomePage() {
       if (!trigger) return;
 
       const triggerTop = trigger.getBoundingClientRect().top;
+      const triggerBottom = trigger.getBoundingClientRect().bottom;
       const viewportHeight = window.innerHeight;
       const enterLine = viewportHeight * 0.45;
 
@@ -1775,8 +1651,8 @@ function DesktopHomePage() {
         return;
       }
 
-      // Trigger fullscreen when trigger reaches enterLine
-      if (scrollVideoModeRef.current === 'inline' && triggerTop <= enterLine) {
+      // Trigger fullscreen when trigger reaches enterLine, but ensure it hasn't been scrolled past completely
+      if (scrollVideoModeRef.current === 'inline' && triggerTop <= enterLine && triggerBottom >= viewportHeight * 0.2) {
         updateScrollVideoMode('fullscreen');
       }
     };
@@ -2491,6 +2367,69 @@ function DesktopHomePage() {
               </Link>
             </div>
 
+            <div
+              className="b2b-svg-mask"
+              style={{
+                position: 'absolute',
+                top: '73%',
+                left: 0,
+                width: '100%',
+                height: '14%',
+                backgroundColor: '#EBF5FF',
+                zIndex: 10,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <section
+                className="lower-flow-b2b"
+                aria-labelledby="lower-flow-b2b-title"
+                style={{ position: 'relative', margin: '0 auto', width: 'min(100% - 10rem, 1352px)' }}
+              >
+                <div className="lower-flow-b2b__content">
+                  <h2 id="lower-flow-b2b-title">Premium Cold Brew for your Restaurant &amp; Cafe</h2>
+                  <p>Tailored Solutions for Cloud Kitchens, bars, restaurants and caterers</p>
+
+                  <dl className="lower-flow-b2b__stats" aria-label="Cold brew business benefits">
+                    <div>
+                      <dt>&lt;72h</dt>
+                      <dd>Freshly Brewed</dd>
+                    </div>
+                    <div>
+                      <dt>0</dt>
+                      <dd>Zero Capex</dd>
+                    </div>
+                    <div>
+                      <dt>Many</dt>
+                      <dd>Menu Uses</dd>
+                    </div>
+                    <div>
+                      <dt>NO</dt>
+                      <dd>Special Manpower</dd>
+                    </div>
+                  </dl>
+
+                  <div className="lower-flow-b2b__cta">
+                    <h3>Request a free tasting session</h3>
+                    <p>No commitment. We'll demo recipes tailored to your menu.</p>
+                    <a href="tel:+918693852250">Call +91 86938 52250</a>
+                  </div>
+                </div>
+
+                <div className="lower-flow-b2b__visual" aria-hidden="true">
+                  <img
+                    src="/images/CPB.png"
+                    alt=""
+                    width="1080"
+                    height="1080"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </section>
+            </div>
+
             {/* ── SCROLL-TRIGGERED INLINE VIDEO ── */}
             <div
               ref={scrollVideoTriggerRef}
@@ -2564,7 +2503,7 @@ function DesktopHomePage() {
                 dy="30"
               >
                 <textPath href="#marquee-path-top" startOffset="0%">
-                  Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+                  100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting…
                   <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
                 </textPath>
               </text>
@@ -2579,7 +2518,7 @@ function DesktopHomePage() {
                 dy="-5"
               >
                 <textPath href="#marquee-path-bottom" startOffset="0%">
-                  Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+                  100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting…
                   <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
                 </textPath>
               </text>
@@ -2598,14 +2537,6 @@ function DesktopHomePage() {
             {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
 
             {/* Original SVG trending CTA is hidden; the live React CTA above owns this action. */}
-
-            {/* B2B Call Button */}
-            <a
-              href="tel:+918693852250"
-              className="homepage-link link-b2b-call"
-              style={{ left: '7.94%', top: `calc(84.56% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '17.26%', height: '0.60%' }}
-              title="Call Us"
-            />
 
             {/* Footer Link - Cold Brew Core */}
             <Link
@@ -2686,7 +2617,6 @@ function DesktopHomePage() {
           <video
             ref={scrollVideoFullscreenRef}
             src="/Videos/coffee_concentrate_with_glass.mp4"
-            autoPlay
             loop={false}
             muted={scrollVideoMode !== 'fullscreen'}
             playsInline

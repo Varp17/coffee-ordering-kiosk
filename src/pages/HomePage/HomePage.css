@@ -140,14 +140,16 @@
 
 .homepage-skip-overlay .neha-hero__coffee {
   position: absolute;
-  top: 13%;
-  left: 42.5%;
+  top: 48%;
+  left: 72%;
   z-index: 12;
-  width: 47%;
+  width: 38%;
   height: auto;
-  transform: rotate(-15deg);
-  transform-origin: top left;
+  transform: translate(-50%, -50%) rotate(-6deg);
+  transform-origin: center center;
   user-select: none;
+  filter: drop-shadow(15px 25px 40px rgba(31, 42, 68, 0.25));
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .homepage-skip-overlay .homepage-hero-running-wave {

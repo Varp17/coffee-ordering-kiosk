@@ -62,6 +62,18 @@ export default function ContactPage() {
 
   return (
     <main className="contact-landing-page">
+      {/* ── HERO BANNER ── */}
+      <section className="contact-hero">
+        <div className="contact-hero__graffiti" />
+        <div className="container contact-hero__content">
+          <span className="contact-hero__eyebrow">GET IN TOUCH</span>
+          <h1 className="contact-hero__title">Contact Us</h1>
+          <p className="contact-hero__desc">
+            Have questions about our cold brew concentrates or want to partner with us? We&apos;d love to hear from you.
+          </p>
+        </div>
+      </section>
+
       {/* ── SPLIT MAIN CONTENT ── */}
       <section className="contact-split-section">
         <div className="container contact-split-grid">
@@ -102,8 +114,7 @@ export default function ContactPage() {
                 </div>
                 <div className="channel-details">
                   <h3>Direct Support</h3>
-                  <p><a href="mailto:support@chilldcoffee.com">support@chilldcoffee.com</a></p>
-                  <p><a href="mailto:partners@chilldcoffee.com">partners@chilldcoffee.com</a></p>
+                  <p><a href="mailto:vibe@chilld.in">vibe@chilld.in</a></p>
                 </div>
               </div>
 
@@ -114,7 +125,7 @@ export default function ContactPage() {
                 </div>
                 <div className="channel-details">
                   <h3>Call Support</h3>
-                  <p>+91 (80) 4567-8910</p>
+                  <p><a href="tel:+919819927327">+91 98199 27327</a></p>
                   <p>Mon - Sat, 9:00 AM - 6:00 PM</p>
                 </div>
               </div>

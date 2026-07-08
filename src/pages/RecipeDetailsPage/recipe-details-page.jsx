@@ -145,7 +145,7 @@ function RecipeDetailContent({ id, location }) {
             <button className="icon-button basket-button" type="button" aria-label="Basket has 3 items">
               <Icon name="bag" size={19} /><span>3</span>
             </button>
-            <Link className="create-drink-button" to="/build"><Icon name="coffee" size={18} /> Create Your Drink</Link>
+            {/* <Link className="create-drink-button" to="/build"><Icon name="coffee" size={18} /> Create Your Drink</Link> — kiosk-only */}
             <button className="mobile-menu-button" type="button" onClick={() => setMobileNavOpen((open) => !open)} aria-label="Toggle menu">
               <Icon name={mobileNavOpen ? 'close' : 'menu'} size={24} />
             </button>

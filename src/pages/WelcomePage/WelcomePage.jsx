@@ -88,6 +88,7 @@ export default function WelcomePage() {
             onKeyDown={handleKeyDown}
             maxLength={20}
             autoFocus
+            placeholder="E.g. Hari, Harry, Haria"
             id="welcome-name-input"
           />
         </motion.div>

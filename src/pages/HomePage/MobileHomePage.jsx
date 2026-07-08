@@ -14,6 +14,49 @@ import './MobileHomePage.css';
 
 const ASSET_BASE = '/images/mobile-home/';
 
+const COFFEE_CUP_IMAGES = {
+  AMERICANO: {
+    url: '/images/iced-coffee-cup.webp',
+    mobileScale: 0.78,
+    mobileY: -35,
+  },
+  AFFOGATO: {
+    url: '/images/affogato.png',
+    mobileScale: 0.60,
+    mobileY: -50,
+  },
+  FRAPPE: {
+    url: '/images/frappe.webp',
+    mobileScale: 0.78,
+    mobileY: -38,
+  },
+  LATTE: {
+    url: '/images/LATTEeee.png',
+    mobileScale: 0.54,
+    mobileY: -55,
+  },
+  VIETNAMESE: {
+    url: '/images/VIETNAMESE.png',
+    mobileScale: 0.54,
+    mobileY: -55,
+  },
+  CORTADO: {
+    url: '/images/CATARDO.png',
+    mobileScale: 0.50,
+    mobileY: -60,
+  },
+  COLDBREW: {
+    url: '/images/COLD BREW.png',
+    mobileScale: 0.54,
+    mobileY: -55,
+  },
+  ESPRESSO: {
+    url: '/images/expresso.webp',
+    mobileScale: 0.48,
+    mobileY: -60,
+  },
+};
+
 const beanClasses = ['one', 'two', 'three', 'four', 'seven', 'eight', 'nine', 'ten'];
 
 const storyNotes = [
@@ -104,6 +147,7 @@ function SectionHeading({ eyebrow, title, id, children }) {
 
 export default function MobileHomePage() {
   const getHeroText = useUserStore((state) => state.getHeroText);
+  const coffeeType = useUserStore((state) => state.coffeeType);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
   const heroLabel = `${displayName} ${suffix}`.trim();
   const whySectionRef = useRef(null);
@@ -182,21 +226,31 @@ export default function MobileHomePage() {
         </div>
 
         <div className="mobile-home-hero__cup-stage">
-          <img
-            className={`mobile-home-hero__cup${cupSlam ? ' mobile-home-hero__cup--slam' : ''}`}
-            src={`${ASSET_BASE}cold-brew-cup.png`}
-            alt="Iced Chilld cold brew in a clear cup"
-            fetchPriority="high"
-            decoding="async"
-          />
+          {(() => {
+            const cupConfig = COFFEE_CUP_IMAGES[coffeeType] || { url: `${ASSET_BASE}cold-brew-cup.png`, mobileScale: 1.0, mobileY: 0 };
+            return (
+              <img
+                className={`mobile-home-hero__cup${cupSlam ? ' mobile-home-hero__cup--slam' : ''}`}
+                src={cupConfig.url}
+                style={{
+                  transform: `scale(${cupConfig.mobileScale || 1.0}) translateY(${cupConfig.mobileY || 0}px)`,
+                  transformOrigin: 'center bottom',
+                }}
+                alt="Iced Chilld cold brew in a clear cup"
+                fetchPriority="high"
+                decoding="async"
+              />
+            );
+          })()}
         </div>
 
         <div className="mobile-home-hero__actions" aria-label="Primary actions">
-          <MobileButton icon={Coffee} onClick={() => triggerCupSlam('/build')}>
-            Create Your Drink
+          {/* <MobileButton icon={Coffee} onClick={() => triggerCupSlam('/build')}>Create Your Drink</MobileButton> — kiosk-only */}
+          <MobileButton icon={Coffee} onClick={() => triggerCupSlam('/menu')}>
+            Shop Concentrates
           </MobileButton>
-          <MobileButton variant="secondary" icon={ShoppingBag} onClick={() => triggerCupSlam('/menu')}>
-            Shop Cold Brew
+          <MobileButton variant="secondary" icon={ShoppingBag} onClick={() => triggerCupSlam('/recipes')}>
+            Explore Recipes
           </MobileButton>
         </div>
       </section>
@@ -278,8 +332,9 @@ export default function MobileHomePage() {
           <p className="mobile-home-eyebrow">How they make it</p>
           <h2 id="mobile-home-process-title">Pour. Mix. Chill.</h2>
           <p>Concentrate, ice, milk or tonic. A premium cold coffee is ready before the ice settles.</p>
-          <MobileButton to="/build" variant="dark" icon={Coffee}>
-            Open builder
+          {/* <MobileButton to="/build" variant="dark" icon={Coffee}>Open builder</MobileButton> — kiosk-only */}
+          <MobileButton to="/menu" variant="dark" icon={Coffee}>
+            Shop Concentrates
           </MobileButton>
         </div>
       </section>

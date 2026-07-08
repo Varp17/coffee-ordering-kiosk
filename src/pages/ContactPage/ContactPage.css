@@ -1,12 +1,12 @@
 .contact-landing-page {
   padding-bottom: var(--space-12);
   background: var(--color-background-alt, #f5f9fc);
-  padding-top: clamp(6rem, 8vw, 8rem);
+  padding-top: 0;
 }
 
 @media (max-width: 768px) {
   .contact-landing-page {
-    padding-top: calc(var(--nav-height) + var(--space-2));
+    padding-top: 0;
     padding-bottom: var(--space-4);
   }
   .contact-split-section {
@@ -19,7 +19,8 @@
   position: relative;
   background: var(--color-dark, #1f2a44);
   color: #ffffff;
-  padding-block: var(--space-16) var(--space-28);
+  padding-top: clamp(8rem, 10vw, 10rem);
+  padding-bottom: var(--space-20);
   overflow: hidden;
 }
 

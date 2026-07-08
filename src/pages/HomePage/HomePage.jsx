@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useUserStore } from '@/store/useUserStore';
 import './HomePage.css';
+import { heathergreenBase64 } from './heathergreenBase64';
 import { PRODUCTS } from '@/data/products';
 import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
-const coffeeCup = '/images/Images/cortado-removebg-preview.png';
+const coffeeCup = '/images/LATTEeee.png';
 import TestimonialsBento from '@/components/TestimonialsBento/TestimonialsBento';
 import Footer from '@/components/Footer/Footer';
 
@@ -17,13 +18,13 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Vandy',
     suffix: 'Brew',
     formula: '/ "Vandana" + "Cold Brew" /',
-    image: '/images/Images/coldbrew-removebg-preview.png',
+    image: '/images/COLD BREW.png',
   },
   {
     name: 'Preri',
     suffix: 'Appe',
     formula: '/ "Prerita" + "Frappe" /',
-    image: '/images/Images/frappe-removebg-preview.png',
+    image: '/images/frappe.webp',
   },
   {
     name: 'Rishi',
@@ -32,6 +33,76 @@ const SKIPPED_HERO_SLIDES = [
     image: coffeeCup,
   },
 ];
+
+const COFFEE_CUP_IMAGES = {
+  AMERICANO: {
+    url: '/images/iced-coffee-cup.webp',
+    scale: 0.78,
+    yOffset: -150,
+    mobileScale: 0.78,
+    mobileY: -35,
+  },
+  AFFOGATO: {
+    url: '/images/affogato.png',
+    scale: 0.60,
+    yOffset: -240,
+    mobileScale: 0.60,
+    mobileY: -50,
+  },
+  FRAPPE: {
+    url: '/images/frappe.webp',
+    scale: 0.78,
+    yOffset: -160,
+    mobileScale: 0.78,
+    mobileY: -38,
+  },
+  LATTE: {
+    url: '/images/LATTEeee.png',
+    scale: 0.54,
+    yOffset: -300,
+    mobileScale: 0.54,
+    mobileY: -55,
+  },
+  VIETNAMESE: {
+    url: '/images/VIETNAMESE.png',
+    scale: 0.54,
+    yOffset: -300,
+    mobileScale: 0.54,
+    mobileY: -55,
+  },
+  CORTADO: {
+    url: '/images/CATARDO.png',
+    scale: 0.50,
+    yOffset: -320,
+    mobileScale: 0.50,
+    mobileY: -60,
+  },
+  COLDBREW: {
+    url: '/images/COLD BREW.png',
+    scale: 0.54,
+    yOffset: -290,
+    mobileScale: 0.54,
+    mobileY: -55,
+  },
+  ESPRESSO: {
+    url: '/images/expresso.webp',
+    scale: 0.48,
+    yOffset: -320,
+    mobileScale: 0.48,
+    mobileY: -60,
+  },
+};
+
+function getCupConfigByUrl(imageUrl) {
+  if (!imageUrl) return null;
+  for (const key of Object.keys(COFFEE_CUP_IMAGES)) {
+    const cfg = COFFEE_CUP_IMAGES[key];
+    if (cfg.url === imageUrl) {
+      return cfg;
+    }
+  }
+  return { url: imageUrl, scale: 1.0, xOffset: 0, yOffset: 0 };
+}
 
 function SkippedHomeHeroOverlay() {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -49,22 +120,18 @@ function SkippedHomeHeroOverlay() {
     if (svgDocRef.current) {
       const slide = SKIPPED_HERO_SLIDES[activeSlide];
       injectDynamicHeroText(svgDocRef.current, slide.name, slide.suffix);
+      const config = getCupConfigByUrl(slide.image) || { url: slide.image, scale: 1.0, xOffset: 0, yOffset: 0 };
+      updateSvgHeroCupImage(svgDocRef.current, config);
+
+      // Force pattern repaint
       const pattern = svgDocRef.current.getElementById('pattern3_366_1172') || svgDocRef.current.querySelector('pattern[id^="pattern3_"]');
       if (pattern) {
-        const imageNode = pattern.querySelector('image');
-        if (imageNode) {
-          imageNode.setAttribute('href', slide.image);
-          imageNode.setAttributeNS('http://www.w3.org/1999/xlink', 'href', slide.image);
-
-          // Force pattern repaint
-          const cupRect = svgDocRef.current.querySelector(`rect[fill="url(#${pattern.id})"]`) || svgDocRef.current.querySelector('rect[fill^="url(#pattern3_"]');
-          if (cupRect) {
-            const currentFill = cupRect.getAttribute('fill');
-            cupRect.setAttribute('fill', 'none');
-            // Force layout
-            void cupRect.offsetHeight;
-            cupRect.setAttribute('fill', currentFill);
-          }
+        const cupRect = svgDocRef.current.querySelector(`rect[fill="url(#${pattern.id})"]`) || svgDocRef.current.querySelector('rect[fill^="url(#pattern3_"]');
+        if (cupRect) {
+          const currentFill = cupRect.getAttribute('fill');
+          cupRect.setAttribute('fill', 'none');
+          void cupRect.offsetHeight;
+          cupRect.setAttribute('fill', currentFill);
         }
       }
     }
@@ -85,7 +152,7 @@ function SkippedHomeHeroOverlay() {
     >
       <object
         className="figma-svg-object"
-        data="/Homepage.svg?v=1.7"
+        data="/Homepage.svg?v=1.8"
         type="image/svg+xml"
         style={{
           position: 'absolute',
@@ -113,13 +180,8 @@ function SkippedHomeHeroOverlay() {
             // Set initial slide
             const slide = SKIPPED_HERO_SLIDES[activeSlide];
             injectDynamicHeroText(svgDoc, slide.name, slide.suffix);
-            const pattern = svgDoc.getElementById('pattern3_366_1172') || svgDoc.querySelector('pattern[id^="pattern3_"]');
-            if (pattern) {
-              const imageNode = pattern.querySelector('image');
-              if (imageNode) {
-                imageNode.setAttribute('href', slide.image);
-              }
-            }
+            const config = getCupConfigByUrl(slide.image) || { url: slide.image, scale: 1.0, xOffset: 0, yOffset: 0 };
+            updateSvgHeroCupImage(svgDoc, config);
 
             // Hide everything below the hero
             const svgRoot = svgDoc.querySelector('svg');
@@ -148,19 +210,26 @@ function SkippedHomeHeroOverlay() {
 function injectSvgStyles(svgDoc) {
   const styleElem = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
   styleElem.textContent = `
+    @font-face {
+      font-family: 'Heathergreen';
+      src: url('${heathergreenBase64}') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     @keyframes slide-up {
       from {
-        transform: translateY(900px);
+        transform: translateY(900px) scale(0.65);
         opacity: 0;
       }
       to {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         opacity: 1;
       }
     }
 
     .animated-cup {
-      animation: slide-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: slide-up 1.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       transform-origin: center bottom;
     }
 
@@ -180,6 +249,67 @@ function injectSvgStyles(svgDoc) {
 }
 
 const HERO_CONTENT_LIFT = 48;
+
+function updateSvgHeroCupImage(svgDoc, cupConfig) {
+  if (!svgDoc || !cupConfig) return;
+
+  // Safely unpack the contentDocument if passed an object element ref
+  const doc = svgDoc.contentDocument || svgDoc;
+  if (!doc || typeof doc.getElementById !== 'function') return;
+
+  const imageUrl = cupConfig.url || cupConfig; // fallback if just a string
+  const scale = cupConfig.scale !== undefined ? cupConfig.scale : 1.0;
+  const xOffset = cupConfig.xOffset !== undefined ? cupConfig.xOffset : 0;
+  const yOffset = cupConfig.yOffset !== undefined ? cupConfig.yOffset : 0;
+
+  // Find the target image element in defs
+  const imageNode = doc.getElementById('image3_366_1172') || doc.querySelector('image[id^="image3_"]');
+  if (imageNode) {
+    // Append unique query parameter to bypass browser image cache inside SVG
+    const uniqueUrl = `${imageUrl}?t=${Date.now()}`;
+
+    // Set both null namespace and xlink namespace attributes for cross-browser compatibility
+    imageNode.setAttribute('href', uniqueUrl);
+    imageNode.setAttributeNS('http://www.w3.org/1999/xlink', 'href', uniqueUrl);
+    imageNode.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', uniqueUrl);
+
+    // Set geometry attributes directly on the image node to scale and translate it!
+    const newWidth = 654 * scale;
+    const newHeight = 980 * scale;
+    const newX = (654 - newWidth) / 2 + xOffset;
+    const newY = (980 - newHeight) + yOffset;
+
+    imageNode.setAttribute('width', newWidth.toString());
+    imageNode.setAttribute('height', newHeight.toString());
+    imageNode.setAttribute('x', newX.toString());
+    imageNode.setAttribute('y', newY.toString());
+    imageNode.setAttribute('preserveAspectRatio', 'none');
+  }
+
+  // Restore the original use tag transform to prevent duplicate scale or interference
+  const pattern = doc.getElementById('pattern3_366_1172') || doc.querySelector('pattern[id^="pattern3_"]');
+  if (pattern) {
+    const useNode = pattern.querySelector('use');
+    if (useNode) {
+      useNode.setAttribute('transform', 'scale(0.00152911 0.00102041)');
+    }
+
+    // Force pattern repaint by toggling the fill of the cup rect
+    const cupRect = doc.querySelector(`rect[fill="url(#${pattern.id})"]`) || doc.querySelector('rect[fill^="url(#pattern3_"]');
+    if (cupRect) {
+      const currentFill = cupRect.getAttribute('fill');
+      cupRect.setAttribute('fill', 'none');
+      try {
+        if (cupRect.offsetHeight !== undefined) {
+          void cupRect.offsetHeight;
+        } else {
+          cupRect.getBoundingClientRect();
+        }
+      } catch { /* ignore */ }
+      cupRect.setAttribute('fill', currentFill);
+    }
+  }
+}
 
 function animateSvgCup(svgDoc) {
   const cupRect = svgDoc.querySelector('rect[fill^="url(#pattern3_"]');
@@ -205,11 +335,11 @@ function animateSvgCup(svgDoc) {
 
 const HERO_BEAN_ENTRANCES = {
   4: { x: -420, y: -220, delay: 120, duration: 920, floatX: 3, floatY: -7, floatDuration: 3900, floatRotate: 3, floatScale: 0.97, baseRotate: 45 },
-  5: { x: -560, y: 80, delay: 260, duration: 980, floatX: -4, floatY: 6, floatDuration: 4300, floatRotate: -4, floatScale: 1.03, baseRotate: -65 },
+  5: { x: -560, y: 80, delay: 260, duration: 980, floatX: -4, floatY: 6, floatDuration: 4300, floatRotate: -4, floatScale: 1.03, baseRotate: -25 },
   6: { x: -500, y: 300, delay: 420, duration: 900, floatX: 4, floatY: -5, floatDuration: 3600, floatRotate: 2, floatScale: 0.98, baseRotate: 112 },
   7: { x: -220, y: 420, delay: 560, duration: 980, floatX: -3, floatY: -8, floatDuration: 4600, floatRotate: -3, floatScale: 1.02, baseRotate: -135 },
   8: { x: -340, y: 140, delay: 700, duration: 860, floatX: 2, floatY: 5, floatDuration: 3400, floatRotate: 4, floatScale: 0.97, baseRotate: 175 },
-  9: { x: 360, y: 320, delay: 240, duration: 980, floatX: -4, floatY: -6, floatDuration: 4200, floatRotate: -2, floatScale: 1.02, baseRotate: -25 },
+  9: { x: 360, y: 320, delay: 240, duration: 980, floatX: -4, floatY: -6, floatDuration: 4200, floatRotate: -2, floatScale: 1.02, baseRotate: 15 },
   10: { x: 520, y: 120, delay: 400, duration: 880, floatX: 3, floatY: 5, floatDuration: 3700, floatRotate: 3, floatScale: 0.98, baseRotate: 80 },
   11: { x: 540, y: -260, delay: 80, duration: 1040, floatX: -3, floatY: 7, floatDuration: 4500, floatRotate: -4, floatScale: 1.03, baseRotate: -105 },
   12: { x: 260, y: -300, delay: 620, duration: 820, floatX: 2, floatY: -5, floatDuration: 3300, floatRotate: 2, floatScale: 0.98, baseRotate: 155 },
@@ -278,8 +408,14 @@ function animateHeroBeans(svgDoc) {
     wrapper.style.transformOrigin = 'center center';
     wrapper.style.transformBox = 'fill-box';
 
+    const positionWrapper = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'g');
+    if (patternNumber === 5) {
+      positionWrapper.setAttribute('transform', 'translate(-100, -300)');
+    }
+
     parent.insertBefore(parallaxWrapper, rect);
-    parallaxWrapper.appendChild(wrapper);
+    parallaxWrapper.appendChild(positionWrapper);
+    positionWrapper.appendChild(wrapper);
     wrapper.appendChild(rect);
 
     if (prefersReducedMotion) {
@@ -355,43 +491,30 @@ function compactLowerHomepageSections(svgDoc) {
 const HERO_TEXT_LAYOUT = {
   centerX: 756,
   baselineY: 340 - HERO_CONTENT_LIFT,
-  maxTextWidth: 1100,
-  maxFontSize: 400,
-  minFontSize: 140,
+  maxTextWidth: 920, // Constrained width to keep text clear of the left/right beans
+  maxFontSize: 270,  // Prevents short words from becoming too giant
+  minFontSize: 110,
 };
 
 function fitHeroText(textElem) {
-  const { maxTextWidth, maxFontSize, minFontSize } = HERO_TEXT_LAYOUT;
-
   const textContent = textElem.textContent || '';
   const charCount = textContent.replace(/\s/g, '').length;
 
-  // Limit maximum font size for short text to prevent it from being too tall and touching the header
-  let allowedMaxFontSize = maxFontSize;
-  if (charCount <= 5) {
-    allowedMaxFontSize = 230;
-  } else if (charCount === 6) {
-    allowedMaxFontSize = 260;
-  } else if (charCount === 7) {
-    allowedMaxFontSize = 290;
-  } else if (charCount === 8) {
-    allowedMaxFontSize = 320;
-  } else if (charCount === 9) {
-    allowedMaxFontSize = 350;
-  }
+  if (charCount <= 0) return;
 
-  textElem.setAttribute('font-size', String(allowedMaxFontSize));
+  // Set the standard tall font size from the Figma design (260px height)
+  textElem.setAttribute('font-size', '260');
 
-  const measuredWidth = textElem.getComputedTextLength();
+  // Estimate natural width: ~86px per character + letter-spacing (5px per char) + dx gap (0px)
+  const naturalWidth = charCount * 86 + (charCount * 5) + 0;
 
-  if (!Number.isFinite(measuredWidth) || measuredWidth <= 0) return;
+  // Calculate target textLength: stretch it by 15% (1.15) if it is small,
+  // but clamp it between 760px and 930px so it never overflows or touches the beans
+  const targetWidth = Math.min(930, Math.max(760, naturalWidth * 1.15));
 
-  const fittedFontSize = Math.max(
-    minFontSize,
-    Math.min(allowedMaxFontSize, allowedMaxFontSize * (maxTextWidth / measuredWidth))
-  );
-
-  textElem.setAttribute('font-size', fittedFontSize.toFixed(2));
+  // Set SVG text stretching attributes
+  textElem.setAttribute('textLength', targetWidth.toFixed(2));
+  textElem.setAttribute('lengthAdjust', 'spacingAndGlyphs');
 }
 
 function updateDynamicHeroText(svgDoc, displayName, suffix) {
@@ -433,9 +556,8 @@ function injectDynamicHeroText(svgDoc, displayName, suffix) {
     textElem.setAttribute('x', String(HERO_TEXT_LAYOUT.centerX));
     textElem.setAttribute('y', String(HERO_TEXT_LAYOUT.baselineY));
     textElem.setAttribute('text-anchor', 'middle');
-    textElem.setAttribute('font-family', 'Outfit, Inter, sans-serif');
-    textElem.setAttribute('font-weight', '900');
-    textElem.setAttribute('letter-spacing', '-0.018em');
+    textElem.setAttribute('font-family', 'Heathergreen');
+    textElem.setAttribute('letter-spacing', '5px'); // spacious letter spacing
     textElem.setAttribute('transform', 'scale(1,1.42)');
 
     const nameSpan = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
@@ -445,7 +567,7 @@ function injectDynamicHeroText(svgDoc, displayName, suffix) {
     const drinkSpan = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'tspan');
     drinkSpan.setAttribute('data-hero-part', 'drink');
     drinkSpan.setAttribute('fill', '#B9E0FF');
-    drinkSpan.setAttribute('dx', '0.09em');
+    drinkSpan.setAttribute('dx', '0'); // no space between name and drink suffix
 
     textElem.appendChild(nameSpan);
     textElem.appendChild(drinkSpan);
@@ -583,6 +705,12 @@ function hideStaticPlaceholders(svgDoc) {
     });
   }
 
+  // Hide the original static B2B elements to prevent leakage under the React B2B card
+  const b2bRect = svgDoc.querySelector('rect[y="6516"][fill="#E6F4FF"]');
+  if (b2bRect && b2bRect.parentNode) {
+    b2bRect.parentNode.style.display = 'none';
+  }
+
   // Remove the black bento-video placeholder. coffeeswirl1.mp4 replaces it.
   const bentoVideoPlaceholder = svgDoc.querySelector(
     'rect[x="422"][y="4478"]'
@@ -596,9 +724,77 @@ function hideStaticPlaceholders(svgDoc) {
     const normTransform = transform.trim().replace(/[\s,]+/g, ' ');
     return normTransform.includes('translate(0 7193)') || y === '7193';
   });
-  footerBgRects.forEach(r => {
-    r.setAttribute('fill', '#eaf5ff');
+
+  const wavePath = Array.from(svgDoc.querySelectorAll('path')).find(p => {
+    const d = p.getAttribute('d') || '';
+    return d.startsWith('M0 7396');
   });
+
+  footerBgRects.forEach(r => {
+    r.setAttribute('fill', '#e6f4ff');
+    if (wavePath && r.parentNode === wavePath.parentNode) {
+      r.parentNode.insertBefore(r, wavePath);
+    }
+  });
+}
+
+function moveHeroCtaButton(svgDoc) {
+  // Translate the static "Code Your Own Coffee" button elements upward by 230px.
+  // To avoid double translation, we identify all matched button elements (by absolute coordinates,
+  // path coordinates, or group translation values) and only apply the translation to the top-most elements.
+  const allElements = Array.from(svgDoc.querySelectorAll('rect, path, g, text, svg'));
+
+  const buttonElements = allElements.filter(el => {
+    const xAttr = el.getAttribute('x');
+    const yAttr = el.getAttribute('y');
+    const x = xAttr ? parseFloat(xAttr) : null;
+    const y = yAttr ? parseFloat(yAttr) : null;
+
+    if (x !== null && y !== null) {
+      if (y >= 750 && y <= 850 && x >= 550 && x <= 950) {
+        return true;
+      }
+    }
+
+    const d = el.getAttribute('d') || '';
+    const match = d.match(/^M\s*([\d.-]+)\s+([\d.-]+)/i);
+    if (match) {
+      const px = parseFloat(match[1]);
+      const py = parseFloat(match[2]);
+      if (py >= 750 && py <= 850 && px >= 550 && px <= 950) {
+        return true;
+      }
+    }
+
+    const transform = el.getAttribute('transform') || '';
+    const transMatch = transform.match(/translate\(\s*([\d.-]+)\s+([\d.-]+)\)/i);
+    if (transMatch) {
+      const tx = parseFloat(transMatch[1]);
+      const ty = parseFloat(transMatch[2]);
+      if (ty >= 750 && ty <= 850 && tx >= 550 && tx <= 950) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+
+  for (const el of buttonElements) {
+    let hasMatchedAncestor = false;
+    let parent = el.parentNode;
+    while (parent && parent !== svgDoc) {
+      if (buttonElements.includes(parent)) {
+        hasMatchedAncestor = true;
+        break;
+      }
+      parent = parent.parentNode;
+    }
+
+    if (!hasMatchedAncestor) {
+      const currentTransform = el.getAttribute('transform') || '';
+      el.setAttribute('transform', `${currentTransform} translate(0, -230)`.trim());
+    }
+  }
 }
 
 function injectWhyChilldBackground(svgDoc) {
@@ -644,10 +840,10 @@ function injectWhyChilldBackground(svgDoc) {
 
   // Change fills of original background shapes to light blue (#eaf5ff)
   wavePath.setAttribute('d', smoothWhyChilldWaveD);
-  wavePath.setAttribute('fill', '#eaf5ff');
-  bgRect.setAttribute('fill', '#eaf5ff');
+  wavePath.setAttribute('fill', '#e6f4ff');
+  bgRect.setAttribute('fill', '#e6f4ff');
   if (bgRect2) {
-    bgRect2.setAttribute('fill', '#eaf5ff');
+    bgRect2.setAttribute('fill', '#e6f4ff');
   }
 
   // Create clipPath
@@ -1235,11 +1431,11 @@ function SkipHomepageMiddleFlow() {
           <defs>
             <path
               id="skip-hard-part-wave-text"
-              d="M-220,295 C40,175 220,95 430,85 S770,95 930,135 S1220,205 1460,185 S1740,120 1980,70"
+              d="M-220,220 C0,100 200,70 350,70 C550,70 700,220 850,220 C1050,220 1250,70 1400,70 C1550,70 1800,220 1980,220"
             />
             <path
               id="skip-hard-part-wave-text-offset"
-              d="M-220,335 C40,215 220,135 430,125 S770,135 930,175 S1220,245 1460,225 S1740,160 1980,110"
+              d="M-220,260 C0,140 200,110 350,110 C550,110 700,260 850,260 C1050,260 1250,110 1400,110 C1550,110 1800,260 1980,260"
             />
           </defs>
           <text className="skip-hard-part__top-wave-text">
@@ -1274,7 +1470,8 @@ function SkipHomepageMiddleFlow() {
             by you. No complicated menus. Just cold coffee made for your mood, your routine, and your kind of day.
           </p>
           <div className="skip-hard-part__actions">
-            <Link to="/build" className="skip-hard-part__primary">Cold Brew Concentrate</Link>
+            <Link to="/menu" className="skip-hard-part__primary">Cold Brew Concentrate</Link>
+            {/* <Link to="/build" className="skip-hard-part__primary">Code Your Own Coffee</Link> — kiosk-only */}
             <Link to="/recipes" className="skip-hard-part__secondary">Explore Recipes</Link>
           </div>
         </div>
@@ -1357,33 +1554,36 @@ function HomepageLowerFlow() {
           <p>
             Tag your mix with <strong>#ChilldByYou</strong>
           </p>
-          <Link to="/build" className="lower-flow-trending__button">
-            Create your Recipe
+          {/* <Link to="/build" className="lower-flow-trending__button">Create your Recipe</Link> — kiosk-only */}
+          <Link to="/recipes" className="lower-flow-trending__button">
+            Explore Recipes
           </Link>
         </div>
       </section>
 
       <section className="lower-flow-b2b" aria-labelledby="lower-flow-b2b-title">
         <div className="lower-flow-b2b__content">
-          <h2 id="lower-flow-b2b-title">Premium Cold Brew for your Restaurant &amp; Cafe</h2>
-          <p>Tailored Solutions for Cloud Kitchens, bars, restaurants and caterers</p>
+          <h2 id="lower-flow-b2b-title">B2B - The Cold Brew Factory for your Restaurant &amp; Cafe</h2>
+          <p>
+            Authentic taste, Consistent quality, Customised blends for HoReCa clients. More than 70% of your clients are drinking cold beverages. Unleash the creativity of your chefs with an operationally easy core.
+          </p>
 
           <dl className="lower-flow-b2b__stats" aria-label="Cold brew business benefits">
             <div>
-              <dt>&lt;72h</dt>
-              <dd>Freshly Brewed</dd>
+              <dt>&lt;48h</dt>
+              <dd>Fresh Brew</dd>
             </div>
             <div>
               <dt>0</dt>
               <dd>Zero Capex</dd>
             </div>
             <div>
-              <dt>Many</dt>
-              <dd>Menu Uses</dd>
+              <dt>2L</dt>
+              <dd>Small MOQ</dd>
             </div>
             <div>
-              <dt>NO</dt>
-              <dd>Special Manpower</dd>
+              <dt>₹₹₹</dt>
+              <dd>Low TCO</dd>
             </div>
           </dl>
 
@@ -1396,7 +1596,7 @@ function HomepageLowerFlow() {
 
         <div className="lower-flow-b2b__visual" aria-hidden="true">
           <img
-            src="/images/CPB.png"
+            src="/images/COFFEBOTTLES.png"
             alt=""
             width="1080"
             height="1080"
@@ -1483,6 +1683,18 @@ function DesktopHomePage() {
   const reactCup2Ref = useRef(null);
   const reactCup3Ref = useRef(null);
   const reactCup4Ref = useRef(null);
+
+  const svgObjectRef = useRef(null);
+
+  useEffect(() => {
+    if (svgObjectRef.current) {
+      const svgDoc = svgObjectRef.current.contentDocument;
+      if (svgDoc) {
+        const cupConfig = COFFEE_CUP_IMAGES[coffeeType] || { url: '/images/iced-coffee-cup.webp', scale: 1.0, xOffset: 0, yOffset: 0 };
+        updateSvgHeroCupImage(svgDoc, cupConfig);
+      }
+    }
+  }, [coffeeType]);
 
   const [isPaused, setIsPaused] = useState(false);
   const [scrollVideoMode, setScrollVideoMode] = useState('inline');
@@ -2061,7 +2273,8 @@ function DesktopHomePage() {
           <div className="figma-svg-content">
             <div id="hard-part" className="hard-part-anchor-target" />
             <object
-              data="/Homepage.svg?v=1.7"
+              ref={svgObjectRef}
+              data="/Homepage.svg?v=1.8"
               type="image/svg+xml"
               className="figma-svg-object"
               aria-label="Figma Homepage Design"
@@ -2076,19 +2289,14 @@ function DesktopHomePage() {
                   animateHeroBeans(svgDoc);
                   injectDynamicHeroText(svgDoc, displayName, suffix);
                   hideStaticPlaceholders(svgDoc);
+                  moveHeroCtaButton(svgDoc);
                   compactLowerHomepageSections(svgDoc);
                   injectWhyChilldBackground(svgDoc);
                   injectB2bGraffiti(svgDoc);
 
-                  if (selectedAsset) {
-                    const pattern = svgDoc.getElementById('pattern3_366_1172') || svgDoc.querySelector('pattern[id^="pattern3_"]');
-                    if (pattern) {
-                      const imageNode = pattern.querySelector('image');
-                      if (imageNode) {
-                        imageNode.setAttribute('href', selectedAsset.image);
-                      }
-                    }
-                  }
+                  // Update the hero cup image based on coffeeType
+                  const cupConfig = COFFEE_CUP_IMAGES[coffeeType] || { url: '/images/iced-coffee-cup.webp', scale: 1.0, xOffset: 0, yOffset: 0 };
+                  updateSvgHeroCupImage(svgDoc, cupConfig);
 
                   // Wrap the cup elements for parallax effect
                   wrapCupElements(svgDoc, 1, 2);
@@ -2149,7 +2357,7 @@ function DesktopHomePage() {
                     bgRect.setAttribute('y', '2000');
                     bgRect.setAttribute('width', '1512');
                     bgRect.setAttribute('height', '1460');
-                    bgRect.setAttribute('fill', '#eaf5ff');
+                    bgRect.setAttribute('fill', '#e6f4ff');
 
                     const firstChild = svg.firstChild;
                     svg.insertBefore(bgRect, firstChild);
@@ -2231,7 +2439,7 @@ function DesktopHomePage() {
 
               {/* ── Italic quote heading ── */}
               <p className="hard-part-quote">
-                {"\u201CCoffee is too much work\u201D"}
+                {"\u201CCoffee is too much work?\u201D"}
               </p>
 
               <p className="hard-part-paragraph">
@@ -2244,9 +2452,10 @@ function DesktopHomePage() {
 
               {/* ── CTA Buttons ── */}
               <div className="hard-part-buttons">
-                <Link to="/build" className="hard-part-btn-primary">
+                <Link to="/menu" className="hard-part-btn-primary">
                   Cold Brew Concentrate
                 </Link>
+                {/* <Link to="/build" className="hard-part-btn-primary">Code Your Own Coffee</Link> — kiosk-only */}
                 <Link to="/recipes" className="hard-part-btn-secondary">
                   Explore Recipes
                 </Link>
@@ -2359,11 +2568,12 @@ function DesktopHomePage() {
               </div>
 
               <p>
-                Tag your mix with <strong>#MadeByYou</strong>
+                Tag your mix with <strong>#ChilldByYou</strong>
               </p>
 
-              <Link to="/build" className="trending-mixes-create-link">
-                Create your Recipe
+              {/* <Link to="/build" className="trending-mixes-create-link">Create your Recipe</Link> — kiosk-only */}
+              <Link to="/recipes" className="trending-mixes-create-link">
+                Explore Recipes
               </Link>
             </div>
 
@@ -2371,11 +2581,10 @@ function DesktopHomePage() {
               className="b2b-svg-mask"
               style={{
                 position: 'absolute',
-                top: '73%',
+                top: '77.5%',
                 left: 0,
                 width: '100%',
-                height: '14%',
-                backgroundColor: '#EBF5FF',
+                height: '10.9%',
                 zIndex: 10,
                 display: 'flex',
                 alignItems: 'center',
@@ -2388,25 +2597,27 @@ function DesktopHomePage() {
                 style={{ position: 'relative', margin: '0 auto', width: 'min(100% - 10rem, 1352px)' }}
               >
                 <div className="lower-flow-b2b__content">
-                  <h2 id="lower-flow-b2b-title">Premium Cold Brew for your Restaurant &amp; Cafe</h2>
-                  <p>Tailored Solutions for Cloud Kitchens, bars, restaurants and caterers</p>
+                  <h2 id="lower-flow-b2b-title">B2B - The Cold Brew Factory for your Restaurant &amp; Cafe</h2>
+                  <p>
+                    Authentic taste, Consistent quality, Customised blends for HoReCa clients. More than 70% of your clients are drinking cold beverages. Unleash the creativity of your chefs with an operationally easy core.
+                  </p>
 
                   <dl className="lower-flow-b2b__stats" aria-label="Cold brew business benefits">
                     <div>
-                      <dt>&lt;72h</dt>
-                      <dd>Freshly Brewed</dd>
+                      <dt>&lt;48h</dt>
+                      <dd>Fresh Brew</dd>
                     </div>
                     <div>
                       <dt>0</dt>
                       <dd>Zero Capex</dd>
                     </div>
                     <div>
-                      <dt>Many</dt>
-                      <dd>Menu Uses</dd>
+                      <dt>2L</dt>
+                      <dd>Small MOQ</dd>
                     </div>
                     <div>
-                      <dt>NO</dt>
-                      <dd>Special Manpower</dd>
+                      <dt>₹₹₹</dt>
+                      <dd>Low TCO</dd>
                     </div>
                   </dl>
 
@@ -2419,7 +2630,7 @@ function DesktopHomePage() {
 
                 <div className="lower-flow-b2b__visual" aria-hidden="true">
                   <img
-                    src="/images/CPB.png"
+                    src="/images/COFFEBOTTLES.png"
                     alt=""
                     width="1080"
                     height="1080"
@@ -2496,14 +2707,14 @@ function DesktopHomePage() {
               {/* Top Wave Text - Left-to-Right Infinite Marquee */}
               <text
                 fill="#FFFFFF"
-                fontSize="34"
-                fontWeight="800"
-                fontFamily="var(--font-heading)"
-                letterSpacing="0.08em"
-                dy="30"
+                fontSize="48"
+                fontWeight="normal"
+                fontFamily="Heathergreen"
+                letterSpacing="0.04em"
+                dy="34"
               >
                 <textPath href="#marquee-path-top" startOffset="0%">
-                  100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting…
+                  Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
                   <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
                 </textPath>
               </text>
@@ -2511,28 +2722,20 @@ function DesktopHomePage() {
               {/* Bottom Wave Text - Left-to-Right Infinite Marquee */}
               <text
                 fill="#1F2A44"
-                fontSize="34"
-                fontWeight="800"
-                fontFamily="var(--font-heading)"
-                letterSpacing="0.08em"
+                fontSize="48"
+                fontWeight="normal"
+                fontFamily="Heathergreen"
+                letterSpacing="0.04em"
                 dy="-5"
               >
                 <textPath href="#marquee-path-bottom" startOffset="0%">
-                  100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting…
+                  Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
                   <animate attributeName="startOffset" from="-100%" to="0%" dur="22s" repeatCount="indefinite" />
                 </textPath>
               </text>
             </svg>
 
             {/* ── DESKTOP SVG CLICKABLE OVERLAYS (EXCLUDING HEADER) ── */}
-            {!skippedWelcome && (
-              <Link
-                to="/build"
-                className="homepage-link link-hero-build"
-                style={{ left: '40.94%', top: '9.58%', width: '18.12%', height: '0.60%' }}
-                title="Code Your Own Coffee"
-              />
-            )}
 
             {/* Static Figma mix-card link overlays removed: the live carousel cards above own all interaction. */}
 
@@ -2554,13 +2757,14 @@ function DesktopHomePage() {
               title="Shop Ceremonial Matcha"
             />
 
-            {/* Footer Link - Create Your Mix */}
+            {/* Footer Link - Create Your Mix — kiosk-only
             <Link
               to="/build"
               className="homepage-link link-footer-shop-3"
               style={{ left: '55.49%', top: `calc(94.61% - ${LOWER_SECTION_COMPACT_SHIFT_PERCENT})`, width: '13.23%', height: '0.36%', borderRadius: '0' }}
               title="Code Your Drink"
             />
+            */}
 
             {/* Footer Link - Create Recipe */}
             <Link

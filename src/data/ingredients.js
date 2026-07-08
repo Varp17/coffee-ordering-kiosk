@@ -169,7 +169,7 @@ export const MILKS = [
     id: 'coconut',
     name: 'Coconut Milk',
     label: 'COCONUT CREAM',
-    description: 'Tropical and creamy — pairs beautifully with chai and matcha.',
+    description: 'Tropical and creamy — pairs beautifully with your favourite cold brew blend.',
     image: 'https://images.unsplash.com/photo-1590080875515-bfde9b2a5d8e?w=600&q=85&auto=format&fit=crop',
     color: '#f5e6c8',
     fat: 'MEDIUM',

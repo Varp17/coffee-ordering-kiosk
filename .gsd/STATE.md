@@ -171,3 +171,20 @@
 
 **Verification:**
 - `npm run build`: Production build completed successfully in 2.04s.
+
+---
+
+## Wave 8: Update Recipes Page Headline, Subheadline and Verify Fonts
+
+**Objective:** Check page fonts and update the Recipes page headline and subheadline according to the user's requirements.
+
+**Changes:**
+- Modified [RecipesPage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/RecipesPage/RecipesPage.jsx) to change the main title to "One Cold Brew, Many Vibes" and subheadline to "Why invent when prompting can do? Get inspired or just copy, do what you like with our collection of cold brew recipes created by the enthu types."
+- Verified that active fonts match the design tokens ('Outfit' for headers, 'Inter' for body and subheads) and Google Fonts loading is fully functional.
+
+**Files Touched:**
+- `src/pages/RecipesPage/RecipesPage.jsx`
+
+**Verification:**
+- `npm run build`: Production build completed successfully in 2.06s with zero errors.
+- Visual check: Navigated to `/recipes` via browser subagent and verified the headline, subheadline, and font loading match the layout specifications.

@@ -3,10 +3,10 @@ import Logo from '@/components/Logo/Logo';
 import './Footer.css';
 
 const shopLinks = [
-  { label: 'All Products', to: '/menu' },
+  { label: 'Products', to: '/menu' },
   { label: 'Store (Soon)', to: '/store' },
   { label: 'B2B (Soon)', to: '/b2b' },
-  { label: 'Create Your Drink', to: '/build' },
+  /* { label: 'Create Your Drink', to: '/build' }, // kiosk-only */
   { label: 'Cart', to: '/checkout' },
 ];
 

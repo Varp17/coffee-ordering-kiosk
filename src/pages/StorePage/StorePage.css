@@ -710,20 +710,25 @@
   .store-page {
     padding-top: calc(var(--nav-height) + var(--space-4));
   }
+
   .store-waitlist {
     padding-bottom: var(--space-4);
   }
+
   .waitlist-card {
     padding: 1.15rem;
     border-radius: 12px;
     gap: var(--space-4);
   }
+
   .waitlist-card__left h2 {
     font-size: 0.95rem;
   }
+
   .waitlist-card__left p {
     font-size: 0.75rem;
   }
+
   .waitlist-input-wrap,
   .waitlist-btn {
     height: 38px;
@@ -740,11 +745,11 @@
   .catalog-header {
     margin-bottom: var(--space-4);
   }
-  
+
   .catalog-header h2 {
     font-size: 1.25rem;
   }
-  
+
   .catalog-header p {
     font-size: 0.78rem;
   }

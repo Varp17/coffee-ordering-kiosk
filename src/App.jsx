@@ -76,7 +76,7 @@ function App() {
           <Route path="/" element={<DeviceLayoutSelector />} />
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/menu/:id" element={<ProductDetailPage />} />
-          <Route path="/build" element={<CoffeeBuilderPage />} />
+          {/* <Route path="/build" element={<CoffeeBuilderPage />} /> kiosk-only */}
           <Route path="/location" element={<LocationPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/auth" element={<AuthPage />} />

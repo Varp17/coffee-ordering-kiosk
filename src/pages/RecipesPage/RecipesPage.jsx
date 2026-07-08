@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import RecipeMedia from '@/components/RecipeMedia/RecipeMedia';
 import { RECIPES } from '@/data/recipes';
 import './RecipesPage.css';
@@ -33,12 +33,16 @@ function Icon({ name, size = 20, stroke = 'currentColor' }) {
 }
 
 const RECIPE_CATEGORIES = [
-  { id: 'all', label: 'All Recipes' },
-  ...Array.from(new Set(RECIPES.map((r) => r.concentrate))).map((c) => ({
-    id: c,
-    label: c,
-  })),
+  { id: 'all', label: 'All Recipes', description: 'Explore our complete selection of cold brew recipes tailored to every preference.' },
+  { id: 'Classic', label: 'Classic', description: 'A 100% arabica coffee. Smooth, balanced, subtle. Ideal for those who like it black' },
+  { id: 'Bold', label: 'Bold', description: 'A heady mix of arabica and robusta. Flavour plus strength. Recommended for milky, juicy or sweet recipes' },
+  { id: 'Coffee & Chicory', label: 'Kaapi', description: 'Contains more than a dash of chicory if you long for that bitter after taste of south Indian filter.' }
 ];
+
+const getConcentrateLabel = (concentrate) => {
+  if (concentrate === 'Coffee & Chicory') return 'Kaapi';
+  return concentrate;
+};
 
 const containerAnim = {
   hidden: {},
@@ -53,8 +57,13 @@ const cardAnim = {
 export default function RecipesPage() {
   const [selectedConcentrate, setSelectedConcentrate] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [hoveredCategory, setHoveredCategory] = useState(null);
 
   const categories = RECIPE_CATEGORIES;
+
+  const activeCatId = hoveredCategory || selectedConcentrate;
+  const activeCat = categories.find((c) => c.id === activeCatId);
+  const activeDescription = activeCat ? activeCat.description : '';
 
   const filteredRecipes = RECIPES.filter((r) => {
     const concentrateMatch = selectedConcentrate === 'all' || r.concentrate === selectedConcentrate;
@@ -79,7 +88,7 @@ export default function RecipesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
           >
-            Chilld Coffee Recipes
+            One Cold Brew, Many Vibes
           </motion.h1>
           <motion.p
             className="recipes-header__sub"
@@ -87,7 +96,7 @@ export default function RecipesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
           >
-            Explore our collection of custom recipes crafted around Chilld concentrates.
+            Why invent when prompting can do? Get inspired or just copy, do what you like with our collection of cold brew recipes created by the enthu types.
           </motion.p>
 
           <motion.div
@@ -119,15 +128,15 @@ export default function RecipesPage() {
         <div className="container">
           <div className="rp-section-head rp-section-head--stacked">
             <div>
-              <h2>Browse by Concentrate</h2>
+              <h2>Browse by Cold Brew variety</h2>
               <p className="rp-section-sub">
-                Every recipe is crafted around a specific Chilld concentrate — pick yours
+                All men were born equal (really?). Not all cold brew was made equal. Check the recipes that go best with your type of coffee.
               </p>
             </div>
           </div>
 
           {/* Filter tabs */}
-          <div className="rp-filter-bar" role="tablist" aria-label="Filter by concentrate">
+          <div className="rp-filter-bar" role="tablist" aria-label="Filter by cold brew variety">
             {categories.map((cat) => (
               <button
                 key={cat.id}
@@ -135,10 +144,31 @@ export default function RecipesPage() {
                 aria-selected={selectedConcentrate === cat.id}
                 className={`rp-filter-chip ${selectedConcentrate === cat.id ? 'rp-filter-chip--active' : ''}`}
                 onClick={() => setSelectedConcentrate(cat.id)}
+                onMouseEnter={() => setHoveredCategory(cat.id)}
+                onMouseLeave={() => setHoveredCategory(null)}
               >
                 {cat.label}
               </button>
             ))}
+          </div>
+
+          {/* Category description display with smooth height/opacity transition */}
+          <div className="rp-category-desc-container">
+            <AnimatePresence mode="wait">
+              {activeDescription && (
+                <motion.div
+                  key={activeCatId}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  className="rp-category-description"
+                >
+                  <span className="rp-category-description__label">{activeCat.label}:</span>
+                  <span className="rp-category-description__text">{activeDescription}</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Grid */}
@@ -156,7 +186,7 @@ export default function RecipesPage() {
                   <Link to={`/recipe-details/${recipe.id}`}>
                     <div className="rp-grid-card__img-wrap">
                       <RecipeMedia recipe={recipe} alt={recipe.name} className="rp-grid-card__img" />
-                      <span className="rp-grid-card__badge">{recipe.concentrate}</span>
+                      <span className="rp-grid-card__badge">{getConcentrateLabel(recipe.concentrate)}</span>
                     </div>
                     <div className="rp-grid-card__body">
                       <h3>{recipe.name}</h3>

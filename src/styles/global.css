@@ -4,7 +4,7 @@
    ===================================================== */
 
 /* --- Google Fonts Pre-load (backup if HTML link fails) --- */
-@import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=IBM+Plex+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
 
 @font-face {
   font-family: 'Heathergreen';
@@ -17,8 +17,8 @@
 @font-face {
   font-family: 'Author';
   src: url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-Variable.woff2') format('woff2'),
-       url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-Variable.woff') format('woff'),
-       url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-Variable.ttf') format('truetype');
+    url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-Variable.woff') format('woff'),
+    url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-Variable.ttf') format('truetype');
   font-weight: 200 700;
   font-display: swap;
   font-style: normal;
@@ -27,8 +27,8 @@
 @font-face {
   font-family: 'Author';
   src: url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-VariableItalic.woff2') format('woff2'),
-       url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-VariableItalic.woff') format('woff'),
-       url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-VariableItalic.ttf') format('truetype');
+    url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-VariableItalic.woff') format('woff'),
+    url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-VariableItalic.ttf') format('truetype');
   font-weight: 200 700;
   font-display: swap;
   font-style: italic;
@@ -189,7 +189,8 @@ ol {
   --container-2xl: 1440px;
   --nav-height: 70px;
   --bottom-nav-height: 64px;
-  --announcement-bar-height: 0px; /* Hidden for now. To be used when we have a promo (40px) */
+  --announcement-bar-height: 0px;
+  /* Hidden for now. To be used when we have a promo (40px) */
 }
 
 /* =====================================================
@@ -513,11 +514,11 @@ h6 {
   min-height: 100vh;
 }
 
-.main-layout > main {
+.main-layout>main {
   flex: 1 0 auto;
 }
 
-.main-layout > .footer {
+.main-layout>.footer {
   flex-shrink: 0;
 }
 
@@ -529,6 +530,7 @@ h6 {
   padding-top: calc(var(--nav-height) + var(--announcement-bar-height));
   padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
 }
+
 @media (min-width: 769px) {
   .page-wrapper {
     padding-bottom: 0;

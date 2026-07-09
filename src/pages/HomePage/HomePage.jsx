@@ -349,7 +349,7 @@ function SkipHomepageMiddleFlow() {
           </defs>
           <text className="skip-hard-part__top-wave-text" dy="0.85em">
             <textPath href="#skip-hard-part-wave-text" startOffset="-8%">
-              Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......Great coffee, made easy.......
+              100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting…
               <animate attributeName="startOffset" from="-45%" to="35%" dur="34s" repeatCount="indefinite" />
             </textPath>
           </text>
@@ -459,27 +459,27 @@ function HomepageLowerFlow() {
 
       <section className="lower-flow-b2b" aria-labelledby="lower-flow-b2b-title">
         <div className="lower-flow-b2b__content">
-          <h2 id="lower-flow-b2b-title">Premium Cold Brew for your Restaurant &amp; Café</h2>
+          <h2 id="lower-flow-b2b-title">B2B - The Cold Brew Factory for your Restaurant &amp; Cafe</h2>
           <p>
-            Tailored Solutions for Cloud Kitchens, bars, restaurants and caterers
+            Authentic taste, Consistent quality, Customised blends for HoReCa clients. More than 70% of your clients are drinking cold beverages. Unleash the creativity of your chefs with an operationally easy core.
           </p>
 
           <dl className="lower-flow-b2b__stats" aria-label="Cold brew business benefits">
             <div>
-              <dt>&lt;72h</dt>
-              <dd>Freshly Brewed</dd>
+              <dt>&lt;48h</dt>
+              <dd>Fresh Brew</dd>
             </div>
             <div>
               <dt>0</dt>
               <dd>Zero Capex</dd>
             </div>
             <div>
-              <dt>∞</dt>
-              <dd>Menu Uses</dd>
+              <dt>2L</dt>
+              <dd>Small MOQ</dd>
             </div>
             <div>
-              <dt>NO</dt>
-              <dd>Special Manpower</dd>
+              <dt>₹₹₹</dt>
+              <dd>Low TCO</dd>
             </div>
           </dl>
 
@@ -487,7 +487,7 @@ function HomepageLowerFlow() {
             <h3>Request a free tasting session</h3>
             <p>No commitment. We'll demo recipes tailored to your menu.</p>
             <a href="tel:+918693852250">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
               <span>Call +91 86938 52250</span>
             </a>
           </div>

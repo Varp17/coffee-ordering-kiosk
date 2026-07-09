@@ -57,13 +57,13 @@
   position: absolute;
   top: 60px;
   left: 50%;
-  transform: translate(-50%, 0) scaleX(1.18);
+  transform: translate(-50%, 0) scaleY(1.15);
   transform-origin: center top;
   font-family: 'Heathergreen', sans-serif;
   font-size: 26rem;
   font-weight: normal;
   line-height: 0.85;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
   margin: 0;
   white-space: nowrap;
   z-index: 2;
@@ -144,7 +144,7 @@
   min-width: 15rem;
   min-height: 3.2rem;
   padding: 0.75rem 1.25rem;
-  background: #FFFFFF;
+  background: none;
   color: #1F2A44;
   border-radius: 9999px;
   font-family: 'Outfit', sans-serif;

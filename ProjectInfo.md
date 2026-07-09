@@ -485,6 +485,36 @@ The desktop CSS is ~3157 lines organized into these major sections:
 - Changed `overflow-x: auto` to `overflow-x: clip` on `.site-mode-desktop`
 - All containers now scale to 100% viewport width without overflow or horizontal scrollbars
 
+### Custom Brand Wave Curve
+- Replaced wave text content with custom copy: `"100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting…"`
+- Changed wave text font-family to `'Outfit', sans-serif` with font-weight `800` (bold) and reduced size slightly (`clamp(24px, 2.2vw, 34px)`) for a cleaner look.
+- Adjusted text baseline vertical alignment offset `dy` from `0.85em` to `0.35em` to keep the Outfit font centered along the wave curve.
+- Resized the wave curve and mask height in `HomePage.css` from `clamp(220px, 18vw, 300px)` to `clamp(160px, 15.2vw, 230px)` to match Figma's exact `1512x230` aspect ratio and prevent excessive vertical stretching on wider viewports.
+- Made the negative margin-top responsive using `margin-top: calc(-1 * clamp(160px, 15.2vw, 230px))` to eliminate spacing gaps.
+
+### Video Section Vignette & Layout Spacing
+- Added `background-color: #000000;` directly behind the `.skip-hard-part__video` element to prevent the parent section's light background color (`#EBF5FF`) from bleeding through the video's opacity.
+- Changed the background gradient of the `.skip-hard-part__shade` to apply a dark black fade *only from the top side* to transparent at the bottom (`linear-gradient(180deg, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.75) ...)`).
+- Reduced block-padding of `.skip-feature-video` container from `10.6rem 8.4rem` to a responsive `clamp(1.5rem, 4vw, 4rem)` to minimize spacing on tablet/mobile screens.
+- Reset the transform on `.skip-feature-video video` from `scale(1.12)` to `scale(1)` and centered it using flex layout, restoring the correct left/right spacing/padding on all screens.
+
+### B2B Section Copy & Infographic Stats
+- Changed headline to `"B2B - The Cold Brew Factory for your Restaurant & Cafe"`.
+- Updated paragraph text to highlight HoReCa clients and cold beverage demand.
+- Updated infographic stats:
+  - Stat 1: `<48h` / `Fresh Brew` (was `<72h` / `Freshly Brewed`)
+  - Stat 2: `0` / `Zero Capex` (remains same)
+  - Stat 3: `2L` / `Small MOQ` (was `∞` / `Menu Uses`)
+  - Stat 4: `₹₹₹` / `Low TCO` (was `NO` / `Special Manpower`)
+
+### Menu/Products Page Header Spacing
+- Reduced top-padding of `.menu-page__header` from `clamp(6rem, 8vw, 8rem)` to `clamp(1.5rem, 3vw, 2.5rem)` in `MenuPage.css` to reduce the large gap above the "Cold Brew Concentrates" title.
+
+### Hero Cup Scaling & Title Vertical Stretch
+- Rescaled all coffee cups (Americano, Frappe/PreriAppe, Affogato, etc.) in `COFFEE_CUP_IMAGES` config from `scale: 1.0` to `scale: 1.12 - 1.15` and `maxHeight` up to `72dvh - 78dvh` so that all cups look large and overlap the name text.
+- Added `scaleY(1.3)` to `.homepage-react-hero__title` to vertically stretch the `'Heathergreen'` name, creating a tall, condensed design look.
+- Optimized the name font size scaling steps in `HomePage.jsx` to dynamically scale down as name length increases.
+
 ---
 
 ## Build & Deploy

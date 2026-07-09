@@ -4,7 +4,7 @@
    ===================================================== */
 
 /* --- Google Fonts Pre-load (backup if HTML link fails) --- */
-@import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=IBM+Plex+Sans:wght@500&display=swap');
 
 @font-face {
   font-family: 'Heathergreen';
@@ -12,6 +12,26 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+@font-face {
+  font-family: 'Author';
+  src: url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-Variable.woff2') format('woff2'),
+       url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-Variable.woff') format('woff'),
+       url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-Variable.ttf') format('truetype');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Author';
+  src: url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-VariableItalic.woff2') format('woff2'),
+       url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-VariableItalic.woff') format('woff'),
+       url('/fonts/Author_Complete/Fonts/WEB/fonts/Author-VariableItalic.ttf') format('truetype');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: italic;
 }
 
 /* --- Reset --- */
@@ -62,6 +82,8 @@ input,
 textarea,
 select {
   font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0;
 }
 
 ul,
@@ -99,7 +121,7 @@ ol {
   --color-card-hover: var(--color-surface-alt);
 
   /* Typography */
-  --font-heading: 'Outfit', system-ui, sans-serif;
+  --font-heading: 'Author', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 
   /* Font sizes — fluid */

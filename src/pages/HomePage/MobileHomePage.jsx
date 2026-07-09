@@ -149,13 +149,13 @@ export default function MobileHomePage() {
   const getHeroText = useUserStore((state) => state.getHeroText);
   const coffeeType = useUserStore((state) => state.coffeeType);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
-  const heroLabel = `${displayName} ${suffix}`.trim();
+  const heroLabel = `${displayName}${suffix}`;
   const whySectionRef = useRef(null);
   const [whyCupsVisible, setWhyCupsVisible] = useState(false);
   const navigate = useNavigate();
   const [cupSlam, setCupSlam] = useState(false);
   const [typedChars, setTypedChars] = useState(0);
-  const fullName = `${displayName} ${suffix}`.trim();
+  const fullName = `${displayName}${suffix}`;
 
   const triggerCupSlam = (to) => {
     setCupSlam(true);

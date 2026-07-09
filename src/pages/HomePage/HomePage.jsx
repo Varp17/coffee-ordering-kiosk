@@ -229,13 +229,8 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
   }, [activeSlide, coffeeType, displayName, skippedWelcome, suffix]);
 
   const titleFontSize = useMemo(() => {
-    const totalLength = (heroState.name || '').length + (heroState.suffix || '').length;
-    if (totalLength > 15) return 'clamp(10rem, 15vw, 13rem)';
-    if (totalLength > 12) return 'clamp(13rem, 19vw, 17rem)';
-    if (totalLength > 9) return 'clamp(16rem, 23vw, 21rem)';
-    if (totalLength > 7) return 'clamp(18rem, 26vw, 24rem)';
-    return 'clamp(20rem, 29vw, 27rem)';
-  }, [heroState.name, heroState.suffix]);
+    return 'clamp(3.5rem, 6.5vw, 5.625rem)';
+  }, []);
 
   return (
     <section
@@ -246,7 +241,7 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
         id="homepage-react-hero-title"
         className="homepage-react-hero__title"
         style={{ fontSize: titleFontSize }}
-        aria-label={`${heroState.name} ${heroState.suffix}`}
+        aria-label={`${heroState.name}${heroState.suffix}`}
       >
         <span className="homepage-react-hero__name">{heroState.name}</span>
         <span className="homepage-react-hero__suffix">{heroState.suffix}</span>
@@ -460,7 +455,7 @@ function SkipHomepageMiddleFlow() {
         aria-labelledby="skip-why-chilld-title"
       >
         <div className="skip-why-chilld__background" aria-hidden="true">
-          <img src="/Subtract.svg" alt="" />
+          <img src="/images/WhyChilldSubtract.svg" alt="" />
         </div>
         <h2 id="skip-why-chilld-title">Why Chilld?</h2>
         <div className="skip-why-chilld__grid">

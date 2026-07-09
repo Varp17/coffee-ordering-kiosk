@@ -122,7 +122,7 @@ export default function Footer({ className = '' }) {
           <div className="footer__certifications" aria-label="Certifications">
             <div className="footer__cert footer__cert--fssai">
               <img src="/images/fssai.png" alt="FSSAI licensed" className="footer__cert-img" />
-              <span>LIC NO. 21526004000813</span>
+              <span>LIC NO. 11526997000706</span>
             </div>
             <div className="footer__cert footer__cert--dpiit">
               <img src="/images/image2_366_1172.png" alt="DPIIT Startup India registered" className="footer__cert-img" />

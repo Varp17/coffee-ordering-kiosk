@@ -33,72 +33,72 @@ const SKIPPED_HERO_SLIDES = [
 const COFFEE_CUP_IMAGES = {
   AMERICANO: {
     url: '/images/iced-coffee-cup.webp',
-    scale: 1.0,
+    scale: 1.15,
     yOffset: 0,
-    maxHeight: '66dvh',
+    maxHeight: '75dvh',
     ctaTop: '54%',
     width: 634,
     height: 1024,
   },
   AFFOGATO: {
     url: '/images/affogato.png',
-    scale: 1.0,
+    scale: 1.15,
     yOffset: 0,
-    maxHeight: '64dvh',
+    maxHeight: '74dvh',
     ctaTop: '56%',
     width: 1080,
     height: 1080,
   },
   FRAPPE: {
     url: '/images/frappe.webp',
-    scale: 1.0,
+    scale: 1.15,
     yOffset: 0,
-    maxHeight: '66dvh',
+    maxHeight: '75dvh',
     ctaTop: '49%',
     width: 1080,
     height: 1080,
   },
   LATTE: {
     url: coffeeCup,
-    scale: 1.0,
+    scale: 1.12,
     yOffset: 0,
-    maxHeight: '76dvh',
+    maxHeight: '78dvh',
     ctaTop: '59%',
     width: 1632,
     height: 2582,
   },
   VIETNAMESE: {
     url: '/images/VIETNAMESE.png',
-    scale: 1.0,
+    scale: 1.12,
     yOffset: 0,
-    maxHeight: '72dvh',
+    maxHeight: '76dvh',
     ctaTop: '58%',
     width: 1080,
     height: 1080,
   },
   CORTADO: {
     url: '/images/CATARDO.png',
-    scale: 1.0,
+    scale: 1.12,
     yOffset: 0,
-    maxHeight: '72dvh',
+    maxHeight: '76dvh',
     ctaTop: '59%',
     width: 1080,
     height: 1080,
   },
   COLDBREW: {
     url: '/images/COLD BREW.png',
-    scale: 1.0,
+    scale: 1.12,
     yOffset: 0,
-    maxHeight: '74dvh',
+    maxHeight: '77dvh',
     ctaTop: '59%',
     width: 1632,
     height: 2582,
   },
   ESPRESSO: {
     url: '/images/expresso.webp',
-    scale: 1.0,
+    scale: 1.15,
     yOffset: 0,
-    maxHeight: '62dvh',
+    maxHeight: '72dvh',
     ctaTop: '56%',
     width: 1080,
     height: 1080,
@@ -107,9 +107,9 @@ const COFFEE_CUP_IMAGES = {
 
 const FALLBACK_CUP = {
   url: '/images/iced-coffee-cup.webp',
-  scale: 1,
+  scale: 1.12,
   yOffset: 70,
-  maxHeight: '66dvh',
+  maxHeight: '75dvh',
   ctaTop: '54%',
   width: 634,
   height: 1024,
@@ -230,8 +230,10 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
 
   const titleFontSize = useMemo(() => {
     const totalLength = (heroState.name || '').length + (heroState.suffix || '').length;
-    if (totalLength > 12) return 'clamp(11rem, 16vw, 15rem)';
-    if (totalLength > 9) return 'clamp(14rem, 20vw, 19rem)';
+    if (totalLength > 15) return 'clamp(8rem, 11vw, 10rem)';
+    if (totalLength > 12) return 'clamp(11rem, 15vw, 14rem)';
+    if (totalLength > 9) return 'clamp(13rem, 18vw, 16rem)';
+    if (totalLength > 7) return 'clamp(15rem, 21vw, 19rem)';
     return 'clamp(17rem, 24vw, 23rem)';
   }, [heroState.name, heroState.suffix]);
 

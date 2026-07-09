@@ -42,9 +42,9 @@ const COFFEE_CUP_IMAGES = {
   },
   AFFOGATO: {
     url: '/images/affogato.png',
-    scale: 1.15,
+    scale: 1.10,
     yOffset: 0,
-    maxHeight: '74dvh',
+    maxHeight: '70dvh',
     ctaTop: '56%',
     width: 1080,
     height: 1080,

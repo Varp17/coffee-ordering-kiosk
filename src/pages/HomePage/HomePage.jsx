@@ -309,6 +309,8 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
 function SkipHomepageMiddleFlow() {
   const whySectionRef = useRef(null);
   const [whyVisible, setWhyVisible] = useState(false);
+  const videoSentinelRef = useRef(null);
+  const [videoExpanded, setVideoExpanded] = useState(false);
 
   useEffect(() => {
     const section = whySectionRef.current;
@@ -325,6 +327,67 @@ function SkipHomepageMiddleFlow() {
     );
 
     observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = whySectionRef.current;
+    if (!section) return undefined;
+
+    const items = section.querySelectorAll('.skip-why-chilld__item');
+
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const totalRange = viewportHeight + rect.height;
+      const currentScroll = viewportHeight - rect.top;
+      const progress = Math.max(0, Math.min(1, currentScroll / totalRange));
+
+      items.forEach((item) => {
+        let range = 150;
+        let distortion = 0;
+        let isOdd = false;
+
+        if (item.classList.contains('skip-why-chilld__item--one')) {
+          range = 140;
+          distortion = 12;
+          isOdd = true;
+        } else if (item.classList.contains('skip-why-chilld__item--three')) {
+          range = 130;
+          distortion = -15;
+          isOdd = true;
+        } else if (item.classList.contains('skip-why-chilld__item--two')) {
+          range = 150;
+          distortion = -10;
+        } else if (item.classList.contains('skip-why-chilld__item--four')) {
+          range = 160;
+          distortion = 18;
+        }
+
+        const direction = isOdd ? 1 : -1;
+        const parallaxY = (progress - 0.5) * range * direction + distortion;
+        item.style.setProperty('--why-cup-parallax-y', `${parallaxY}px`);
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [whyVisible]);
+
+  useEffect(() => {
+    const sentinel = videoSentinelRef.current;
+    if (!sentinel) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setVideoExpanded(entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: '0px 0px -20% 0px' }
+    );
+
+    observer.observe(sentinel);
     return () => observer.disconnect();
   }, []);
 
@@ -387,7 +450,7 @@ function SkipHomepageMiddleFlow() {
         </div>
 
         <svg className="skip-hard-part__bottom-wave" viewBox="0 0 1512 220" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0 46 C178 96 348 138 532 137 C724 136 850 82 1026 82 C1210 82 1336 130 1512 176 L1512 220 L0 220 Z" fill="#ffffff" />
+          <path d="M0 46 C178 96 348 138 532 137 C724 136 850 82 1026 82 C1210 82 1336 130 1512 176 L1512 220 L0 220 Z" fill="#EBF5FF" />
         </svg>
       </section>
 
@@ -397,7 +460,7 @@ function SkipHomepageMiddleFlow() {
         aria-labelledby="skip-why-chilld-title"
       >
         <div className="skip-why-chilld__background" aria-hidden="true">
-          <img src="/Subtract (2).svg" alt="" />
+          <img src="/Subtract.svg" alt="" />
         </div>
         <h2 id="skip-why-chilld-title">Why Chilld?</h2>
         <div className="skip-why-chilld__grid">
@@ -414,7 +477,11 @@ function SkipHomepageMiddleFlow() {
         </div>
       </section>
 
-      <section className="skip-feature-video" aria-label="Chilld cold brew concentrate video">
+      <div ref={videoSentinelRef} aria-hidden="true" />
+      <section
+        className={`skip-feature-video${videoExpanded ? ' is-expanded' : ''}`}
+        aria-label="Chilld cold brew concentrate video"
+      >
         <video
           src="/Videos/coffee_concentrate_with_glass.mp4"
           autoPlay

@@ -460,7 +460,7 @@ function SkipHomepageMiddleFlow() {
         aria-labelledby="skip-why-chilld-title"
       >
         <div className="skip-why-chilld__background" aria-hidden="true">
-          <img src="/Subtract.svg" alt="" />
+          <img src="/images/WhyChilldSubtract.svg" alt="" />
         </div>
         <h2 id="skip-why-chilld-title">Why Chilld?</h2>
         <div className="skip-why-chilld__grid">

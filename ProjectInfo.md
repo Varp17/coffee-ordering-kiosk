@@ -512,8 +512,13 @@ The desktop CSS is ~3157 lines organized into these major sections:
 
 ### Hero Cup Scaling & Title Vertical Stretch
 - Rescaled all coffee cups (Americano, Frappe/PreriAppe, Affogato, etc.) in `COFFEE_CUP_IMAGES` config from `scale: 1.0` to `scale: 1.12 - 1.15` and `maxHeight` up to `72dvh - 78dvh` so that all cups look large and overlap the name text.
-- Added `scaleY(1.3)` to `.homepage-react-hero__title` to vertically stretch the `'Heathergreen'` name, creating a tall, condensed design look.
-- Optimized the name font size scaling steps in `HomePage.jsx` to dynamically scale down as name length increases.
+- Changed the `.homepage-react-hero__title` transform from `scaleY(1.3)` to `scale(1.08, 1.3)` to vertically stretch and slightly widen the `'Heathergreen'` name, creating a tall, condensed, and powerful design look.
+- Optimized and enlarged the dynamic font size scaling rules in `HomePage.jsx` based on name length to ensure a bolder, more prominent hero title:
+  - Total length > 15: `clamp(10rem, 15vw, 13rem)` (was `clamp(8rem, 11vw, 10rem)`)
+  - Total length > 12: `clamp(13rem, 19vw, 17rem)` (was `clamp(11rem, 15vw, 14rem)`)
+  - Total length > 9: `clamp(16rem, 23vw, 21rem)` (was `clamp(13rem, 18vw, 16rem)`)
+  - Total length > 7: `clamp(18rem, 26vw, 24rem)` (was `clamp(15rem, 21vw, 19rem)`)
+  - Otherwise (default): `clamp(20rem, 29vw, 27rem)` (was `clamp(17rem, 24vw, 23rem)`)
 
 ---
 

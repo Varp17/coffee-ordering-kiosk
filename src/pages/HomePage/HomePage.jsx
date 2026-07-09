@@ -230,11 +230,11 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
 
   const titleFontSize = useMemo(() => {
     const totalLength = (heroState.name || '').length + (heroState.suffix || '').length;
-    if (totalLength > 15) return 'clamp(8rem, 11vw, 10rem)';
-    if (totalLength > 12) return 'clamp(11rem, 15vw, 14rem)';
-    if (totalLength > 9) return 'clamp(13rem, 18vw, 16rem)';
-    if (totalLength > 7) return 'clamp(15rem, 21vw, 19rem)';
-    return 'clamp(17rem, 24vw, 23rem)';
+    if (totalLength > 15) return 'clamp(10rem, 15vw, 13rem)';
+    if (totalLength > 12) return 'clamp(13rem, 19vw, 17rem)';
+    if (totalLength > 9) return 'clamp(16rem, 23vw, 21rem)';
+    if (totalLength > 7) return 'clamp(18rem, 26vw, 24rem)';
+    return 'clamp(20rem, 29vw, 27rem)';
   }, [heroState.name, heroState.suffix]);
 
   return (

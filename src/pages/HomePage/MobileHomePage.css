@@ -699,6 +699,7 @@
   width: 86px;
   max-width: 100%;
   height: auto;
+  object-fit: contain;
   overflow: visible;
   filter: drop-shadow(0 8px 12px rgba(31, 42, 68, 0.1));
 }

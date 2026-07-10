@@ -120,9 +120,8 @@ ol {
   --color-card-bg: var(--color-surface);
   --color-card-hover: var(--color-surface-alt);
 
-  /* Typography */
   --font-heading: 'Author', sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-body: 'Author', sans-serif;
 
   /* Font sizes — fluid */
   --text-xs: clamp(0.7rem, 1.8vw, 0.75rem);

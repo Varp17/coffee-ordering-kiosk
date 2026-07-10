@@ -52,7 +52,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -62,7 +62,7 @@
 }
 
 .store-hero__title {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 5.5vw, 3.25rem);
   font-weight: 900;
   line-height: 1.12;
@@ -160,7 +160,7 @@
 }
 
 .waitlist-card__left h2 {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 800;
   color: #1f2a44;
@@ -275,7 +275,7 @@
 }
 
 .catalog-header h2 {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 800;
   color: #1f2a44;
@@ -432,7 +432,7 @@
   top: 14px;
   right: 14px;
   color: #fff;
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -467,7 +467,7 @@
   border: none;
   border-radius: 12px;
   padding: 10px 20px;
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
@@ -489,7 +489,7 @@
 }
 
 .catalog-card__category {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -499,7 +499,7 @@
 }
 
 .catalog-card__name {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 700;
   color: #1f2a44;
@@ -524,7 +524,7 @@
 }
 
 .catalog-card__price {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 800;
   color: #1f2a44;
@@ -602,7 +602,7 @@
 }
 
 .store-modal__cat {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -613,7 +613,7 @@
 }
 
 .store-modal h2 {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.15rem;
   font-weight: 800;
   color: #1f2a44;
@@ -689,7 +689,7 @@
 }
 
 .store-modal__success h3 {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.15rem;
   font-weight: 800;
   color: #1f2a44;

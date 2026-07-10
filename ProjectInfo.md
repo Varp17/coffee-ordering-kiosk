@@ -351,8 +351,11 @@ warnings[]
 - Text: `#1F2A44`, Muted: `#4A5568`
 
 ### Typography
-- Headings: Outfit (weights 300-900)
-- Body: Inter (weights 300-600)
+- **Entire site**: Author (variable font, weight range 200–700)
+- **Fallbacks stripped**: All hardcoded `'Outfit'` and `'Inter'` fallbacks removed from `HomePage.css`, `ContactPage.css`, `StorePage.css`, `B2BPage.css`, `RecipeDetailsPage/*.css`
+- **One exception**: HeroTitle uses `'Heathergreen'` (desktop + mobile skip flow)
+- `--font-body: 'Author', sans-serif`
+- `--font-heading: 'Author', sans-serif`
 - Fluid sizing via `clamp()`: `--text-xs` to `--text-hero`
 
 ### Spacing
@@ -432,6 +435,7 @@ warnings[]
 - Reusable cup card used in all three homepage layouts (desktop welcome, desktop skip, mobile)
 - Receives rotation, reveal delay, and visibility via props
 - Includes cup SVG, title, and description
+- Cup fill uses SVG `<pattern>` with PNG images (`WhyChilldCup3.png`, `WhyChilldCup4.png`) via `preserveAspectRatio="xMidYMid meet"`; per-cup `patternScale`, `patternX`, `patternY` controls for image positioning
 
 ### SkippedWelcomeHero
 - Full-viewport hero for skip flow
@@ -446,28 +450,53 @@ warnings[]
 
 ## CSS Organization (`src/pages/HomePage/HomePage.css`)
 
-The desktop CSS is ~3157 lines organized into these major sections:
+The desktop CSS is ~4165 lines organized into these major sections:
 
 | Lines | Section |
 |-------|---------|
 | 1–35 | Top-level layout: device-layout-selector, site-mode-desktop, homepage-figma-container, skip-homepage-flow |
 | 41–190 | Skip overlay hero: .homepage-skip-overlay, neha-hero, copy, logo, dots, wave |
-| 193–570 | Skip flow: skip-hard-part, skip-why-chilld, skip-feature-video |
-| 585–616 | Figma SVG wrapper: figma-svg-wrapper, figma-svg-content, figma-svg-object |
-| 621–832 | Desktop why-chilld section: absolute-positioned cups, titles, hover effects |
-| 834–867 | Interactive link overlays |
-| 868–949 | Floating bean particles |
-| 950–1002 | Looping wavy marquees |
-| 1003–1423 | Responsive: `@media (max-width: 1024px)` — mobile/tablet adaptations |
-| 1424–1488 | Personalized name overlay |
-| 1489–1982 | Bento grid: rotating social posts with enter/leave animations |
-| 1983–2588 | Infinite trending mixes carousel |
-| 2589–2774 | Scroll-triggered fullscreen video |
-| 2775–3157 | Hard-part section: parallax clip-path, video overlay, copy overlay, CTA buttons |
+| 193–570 | Skip flow: skip-hard-part (media wrapper, video, shade, waves, content, CTA), skip-why-chilld (4 grid cups with parallax), skip-feature-video (expandable fullscreen) |
+| 570–700 | Skip flow extras: .skip-hard-part__media (overflow hidden container), .skip-hard-part__video (object-position parallax), .skip-hard-part__shade (vignette mask), top-wave (wavy marquee text), bottom-wave, content (h2, p, quote, actions) |
+| 701–870 | Skip flow responsive: .skip-why-chilld (item grid positions), .skip-feature-video (.is-expanded fullscreen) |
+| 871–1230 | Figma SVG wrapper + Desktop why-chilld + skip-hard-part content (h2, p, rule, quote, strong, closing, actions, primary/secondary buttons) |
+| 1231–1420 | Floating bean particles, looping wavy marquees, B2B section |
+| 1421–2000 | Responsive: `@media (max-width: 1024px)` — mobile/tablet adaptations |
+| 2001–2600 | Bento grid: rotating social posts with enter/leave animations |
+| 2601–3400 | Infinite trending mixes carousel + scroll-triggered fullscreen video |
+| 3401–4165 | B2B section, lower flow, footer, responsive overrides |
 
 ---
 
-## Recent UI Changes (HomePage)
+## Recent UI Changes
+
+### Recipes Page — Header Marquee & Search Bar Position
+- **Infinite-loop marquee**: Added in `recipes-header` with horizontally scrolling cards (200px desktop, 140px mobile) showing recipe image, name, and likes. Animation speed: 200s desktop / 150s mobile, pauses on hover.
+- **Search bar**: Moved out of `recipes-header` into `rp-grid-section`, positioned between the category description and the recipe grid (reverted from earlier inline filter-bar placement).
+- **Compact marquee card**: New `.rp-marquee-card` CSS with 200px width, 120px image height, 12px border-radius, smooth hover lift effect.
+- **Fonts**: All heading font-family references changed from `var(--font-heading, 'Outfit', sans-serif)` to direct `'Author', sans-serif`.
+
+### Espresso Hero Image & Cup Size
+- **Image**: Switched desktop and mobile espresso config from `/images/expresso.webp` to `/images/Esspresso.png`.
+- **Scale**: Desktop scale increased `1.15 → 1.25`, mobile scale `0.48 → 0.55`; `maxHeight` bumped to `76dvh`.
+
+### Skip Flow Hero Title — Uppercase
+- Added `.homepage-react-hero--skipped .homepage-react-hero__title { text-transform: uppercase; }` so the hero name/suffix appears in all caps only when coming from skip/welcome bypass.
+
+### Feature Video (Below Why Chilld)
+- Reduced side gaps: `width: min(100% - 10rem, …) → min(100% - 3rem, …)` (~24px per side vs ~80px).
+- Border-radius scaled: `46px → 24px`.
+
+### Hard Part Section — Parallax & Spacing
+- **Parallax technique**: Changed from `transform: translateY()` (which caused empty gaps/overflow) to `object-position` animation. The video stays at 100% bounds while `object-position` shifts from 50%→5% as user scrolls, creating a smooth upward rush effect. Video is wrapped in `.skip-hard-part__media` with `overflow: hidden` for containment.
+- **Paragraph spacing**: Reduced throughout:
+  - All paragraph bottom margins: `2.4rem → 1.4rem`
+  - Heading bottom margin: `2rem → 1.2rem`
+  - Rule top/bottom: `1rem auto 3rem → 0.6rem auto 1.8rem`
+  - Actions margin-top: `3.5rem → 1.8rem`
+  - Closing margin-bottom: `3.5rem → 2rem`
+  - Quote/strong top margins: `0.5rem → 0.3rem`
+- **Top wave marquee text**: Font-weight `800 → 600`, font-size bumped `+2px` (`clamp(26px, 2.2vw, 36px)`), responsive also aligned.
 
 ### Buttons (hard-part section & skip-hard-part section)
 - Desktop welcome flow primary button: "Cold Brew Concentrate" → `/build`

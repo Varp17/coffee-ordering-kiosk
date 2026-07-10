@@ -22,12 +22,12 @@
   background:
     radial-gradient(
       88% 110% at 25% 68%,
-      #18A5F1 0%,
-      #138EEA 24%,
-      #1C67D2 54%,
+      #1595DD 0%,
+      #107ED5 24%,
+      #1858BF 54%,
       rgba(28, 73, 171, 0) 79%
     ),
-    linear-gradient(112deg, #0D84ED 0%, #165ED0 48%, #1B45AA 100%);
+    linear-gradient(112deg, #0A75D8 0%, #1250BC 48%, #153C96 100%);
 }
 
 /* ── Exact exported Figma graffiti artwork ───────────── */
@@ -161,19 +161,19 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
-  max-width: 560px;
+  gap: 8px;
+  max-width: 620px;
 }
 
 .welcome-pill {
-  padding: 8px 18px;
+  padding: 6px 14px;
   border: 1.5px solid rgba(255, 255, 255, 0.45);
   border-radius: var(--radius-full);
   background: transparent;
   color: #FFFFFF;
-  font-family: var(--font-heading);
-  font-size: clamp(0.7rem, 1.4vw, 0.8rem);
-  font-weight: 700;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: clamp(0.75rem, 1.5vw, 0.95rem);
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
@@ -248,12 +248,12 @@
   }
 
   .welcome-pills {
-    gap: 8px;
+    gap: 6px;
   }
 
   .welcome-pill {
-    padding: 7px 14px;
-    font-size: 0.7rem;
+    padding: 5px 10px;
+    font-size: 0.65rem;
   }
 
   .welcome-cta {

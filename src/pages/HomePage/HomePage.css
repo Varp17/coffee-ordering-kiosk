@@ -63,7 +63,7 @@
   font-size: 26rem;
   font-weight: normal;
   line-height: 0.85;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
   margin: 0;
   white-space: nowrap;
   z-index: 2;
@@ -689,7 +689,7 @@
 }
 
 .skip-hard-part__content p {
-  font-family: 'Inter', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-size: clamp(1.0rem, 1.15vw, 1.35rem);
   font-weight: 400;
   color: #FFFFFF;
@@ -702,7 +702,7 @@
 
 .skip-hard-part__content strong {
   display: block;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-size: clamp(1.2rem, 1.45vw, 1.85rem);
   font-weight: 600;
   font-style: italic;
@@ -714,7 +714,7 @@
 }
 
 .skip-hard-part__quote {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-size: clamp(1.2rem, 1.45vw, 1.85rem);
   font-weight: 600;
   font-style: italic;
@@ -3806,7 +3806,7 @@
 }
 
 .hard-part-paragraph {
-  font-family: 'Inter', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-size: clamp(1.0rem, 1.15vw, 1.35rem);
   font-weight: 400;
   color: #FFFFFF;

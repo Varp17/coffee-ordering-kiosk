@@ -49,21 +49,22 @@ const COFFEE_CUP_IMAGES = {
     width: 1080,
     height: 1080,
   },
+
   FRAPPE: {
     url: '/images/frappe.webp',
-    scale: 1.30,
-    yOffset: 40,
-    maxHeight: '75dvh',
-    ctaTop: '49%',
-    width: 1080,
-    height: 1080,
+    scale: 1.6,
+    yOffset: 240,
+    maxHeight: '77dvh',
+    ctaTop: '50%',
+    width: 1980,
+    height: 1480,
   },
   LATTE: {
     url: coffeeCup,
     scale: 1.12,
     yOffset: 0,
     maxHeight: '78dvh',
-    ctaTop: '59%',
+    ctaTop: '54%',
     width: 1632,
     height: 2582,
   },
@@ -365,7 +366,26 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
           fetchPriority="high"
         />
         <div className="homepage-react-hero__glass-headline">
-          Code Your<br />Own Coffee
+          <svg
+            className="glass-headline-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ flexShrink: 0 }}
+          >
+            {/* Takeaway cup lid */}
+            <path d="M6 9h12" />
+            <path d="M5 6h14a1 1 0 0 1 1 1v2H4V7a1 1 0 0 1 1-1z" />
+            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+            {/* Takeaway cup body */}
+            <path d="M6 9l1.8 11.5c.1.9.9 1.5 1.7 1.5h5c.8 0 1.5-.6 1.7-1.5L18 9" />
+          </svg>
+          <span>Code Your Own Coffee</span>
         </div>
         {/* <Link to="/build" className="homepage-react-hero__cup-cta">
           <span>Code Your Own Coffee</span>

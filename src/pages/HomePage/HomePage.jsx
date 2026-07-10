@@ -559,7 +559,7 @@ function SkipHomepageMiddleFlow() {
 
   return (
     <>
-      <section ref={hardPartRef} className="skip-hard-part" aria-labelledby="skip-hard-part-title">
+      <section ref={hardPartRef} id="hard-part" className="skip-hard-part" aria-labelledby="skip-hard-part-title">
         <div className="skip-hard-part__media">
           <video
             className="skip-hard-part__video"
@@ -602,14 +602,13 @@ function SkipHomepageMiddleFlow() {
 
         <div className="skip-hard-part__content">
           <h2 id="skip-hard-part-title">We handled the hard part, the fun part's on you</h2>
-          <span className="skip-hard-part__rule" aria-hidden="true" />
           <p className="skip-hard-part__intro">
-            We get you exceptional coffee concentrate. We take care of the nitty-gritties of sourcing, grinding and brewing.
-            After that, you are free to tailor your daily coffee to your liking. Add water, if you are in a hurry for your
+            We get you exceptional coffee concentrate. We take care of the nitty-gritties of sourcing, grinding and brewing.<br />
+            After that, you are free to tailor your daily coffee to your liking. Add water, if you are in a hurry for your<br />
             presentation. Add syrup, milk, experiment with everyday ingredients in your kitchen, if you feel like it.
           </p>
           <p className="skip-hard-part__middle">
-            If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery but
+            If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery but<br />
             enjoy the occasional pick-me-up, add a spoon less. No one's judging you.
           </p>
           <p className="skip-hard-part__promise">

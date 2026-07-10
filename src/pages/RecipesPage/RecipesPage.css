@@ -259,8 +259,8 @@
 /* ── HEADER MARQUEE ───────────────────────────────── */
 .recipes-header__marquee {
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
   margin-top: var(--space-4);
 }
 
@@ -385,8 +385,8 @@
 .rp-marquee {
   overflow: hidden;
   padding-block: 4px 8px;
-  mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
 }
 
 .rp-marquee__track {
@@ -462,6 +462,7 @@
   top: 12px;
   right: 12px;
   background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   padding: 4px 10px;
   border-radius: 100px;
@@ -566,7 +567,7 @@
   }
 
   .rp-category-desc-container {
-    min-height: auto;
+    min-height: 0;
   }
 }
 
@@ -858,8 +859,8 @@
 
   .rp-marquee {
     padding-block: 0.25rem 0.55rem;
-    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
   }
 
   .rp-marquee__track {

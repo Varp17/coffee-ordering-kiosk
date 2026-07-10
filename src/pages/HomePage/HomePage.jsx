@@ -231,6 +231,40 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
 
   const fullName = `${heroState.name}${heroState.suffix}`;
 
+  const formulaDetails = useMemo(() => {
+    if (!skippedWelcome) return null;
+    if (heroState.name === 'Vandy') {
+      return {
+        inputName: 'Vandana',
+        inputCoffee: 'Cold Brew',
+        heroName: 'Vandy',
+        heroSuffix: 'Brew',
+      };
+    }
+    if (heroState.name === 'Preri') {
+      return {
+        inputName: 'Prerita',
+        inputCoffee: 'Frappe',
+        heroName: 'Preri',
+        heroSuffix: 'Appe',
+      };
+    }
+    if (heroState.name === 'Rishi') {
+      return {
+        inputName: 'Rishima',
+        inputCoffee: 'Latte',
+        heroName: 'Rishi',
+        heroSuffix: 'Latte',
+      };
+    }
+    return {
+      inputName: heroState.name,
+      inputCoffee: heroState.drinkLabel || 'Cold Brew',
+      heroName: heroState.name,
+      heroSuffix: heroState.suffix,
+    };
+  }, [skippedWelcome, heroState]);
+
   useEffect(() => {
     if (skippedWelcome) return;
     if (typedChars < fullName.length) {
@@ -274,6 +308,31 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
             <span className="homepage-react-hero__suffix">{visibleSuffix}</span>
             {typedChars < fullName.length && <span className="homepage-react-hero__cursor" aria-hidden="true">|</span>}
           </>
+        )}
+
+        {skippedWelcome && formulaDetails && (
+          <span className="homepage-react-hero__formula-text" role="note">
+            <span className="formula-text__name">{formulaDetails.inputName}</span>
+            <span className="formula-text__operator">+</span>
+            <span className="formula-text__coffee">{formulaDetails.inputCoffee}</span>
+
+            <span className="homepage-react-hero__formula-tooltip" role="tooltip">
+              <span className="formula-tooltip__title">Hero Title Naming Logic</span>
+              <span className="formula-tooltip__math">
+                <span className="math-input">{formulaDetails.inputName}</span>
+                <span className="math-operator">+</span>
+                <span className="math-input">{formulaDetails.inputCoffee}</span>
+              </span>
+              <span className="formula-tooltip__arrow">➔</span>
+              <span className="formula-tooltip__result">
+                <span className="result-name">{formulaDetails.heroName}</span>
+                <span className="result-suffix">{formulaDetails.heroSuffix}</span>
+              </span>
+              <span className="formula-tooltip__desc">
+                We take your name and blend it with your favorite coffee type to generate your custom <strong>Hero Title</strong>!
+              </span>
+            </span>
+          </span>
         )}
       </h1>
 

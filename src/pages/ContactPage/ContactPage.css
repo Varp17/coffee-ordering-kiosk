@@ -46,7 +46,7 @@
 }
 
 .contact-hero__eyebrow {
-  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-family: var(--font-heading);
   font-size: var(--text-xs);
   font-weight: 700;
   color: var(--color-accent, #c67c4e);
@@ -56,7 +56,7 @@
 }
 
 .contact-hero__title {
-  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.25rem, 6vw, 3.5rem);
   font-weight: 900;
   margin-bottom: var(--space-4);
@@ -163,7 +163,7 @@
 }
 
 .contact-info-block h2 {
-  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-family: var(--font-heading);
   font-size: var(--text-xl, 24px);
   font-weight: 800;
   color: var(--color-text, #1f2a44);
@@ -204,7 +204,7 @@
 }
 
 .channel-details h3 {
-  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-family: var(--font-heading);
   font-size: var(--text-sm, 15px);
   font-weight: 700;
   color: var(--color-text, #1f2a44);
@@ -274,7 +274,7 @@
 }
 
 .form-title {
-  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-family: var(--font-heading);
   font-size: var(--text-md, 20px);
   font-weight: 800;
   color: var(--color-text, #1f2a44);
@@ -296,7 +296,7 @@
 }
 
 .form-label {
-  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-family: var(--font-heading);
   font-size: var(--text-xs, 13px);
   font-weight: 700;
   color: var(--color-text, #1f2a44);
@@ -326,7 +326,7 @@
   width: 100%;
   border: none;
   background: transparent;
-  font-family: var(--font-body), 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: var(--text-sm, 14px);
   color: var(--color-text, #1f2a44);
   outline: none;
@@ -385,14 +385,14 @@
 }
 
 .success-title {
-  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-family: var(--font-heading);
   font-size: var(--text-xl, 22px);
   font-weight: 800;
   color: var(--color-text, #1f2a44);
 }
 
 .success-text {
-  font-family: var(--font-body), 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: var(--text-sm, 14px);
   color: var(--color-text-muted, #718096);
   line-height: 1.6;

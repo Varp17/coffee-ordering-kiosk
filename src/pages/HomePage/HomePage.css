@@ -176,7 +176,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
   border-radius: 9999px;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Author', sans-serif;
   font-weight: 700;
   font-size: 1.4rem;
   text-decoration: none;
@@ -204,7 +204,7 @@
   /* Brand primary blue */
   border-radius: 9999px;
   padding: 0.6rem 1.6rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Author', sans-serif;
   font-weight: 500;
   font-size: clamp(1.1rem, 1.35vw, 1.35rem);
   line-height: 1;
@@ -706,7 +706,7 @@
 
 .skip-hard-part__top-wave-text {
   fill: #ffffff;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Author', sans-serif;
   font-size: clamp(26px, 2.2vw, 36px);
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -819,7 +819,7 @@
   justify-content: center;
   border-radius: 999px;
   padding: clamp(12px, 1.1vw, 20px) clamp(24px, 2.2vw, 44px);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Author', sans-serif;
   font-weight: 700;
   font-size: clamp(0.95rem, 1.1vw, 1.25rem);
   text-decoration: none;
@@ -2049,11 +2049,7 @@
   z-index: 5;
   pointer-events: none;
 
-  font-family:
-    'Outfit',
-    'Inter',
-    sans-serif;
-
+  font-family: 'Author', sans-serif;
   text-transform: uppercase;
 }
 
@@ -3869,7 +3865,7 @@
 }
 
 .hard-part-paragraph {
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'Author', sans-serif;
   font-size: clamp(1.0rem, 1.15vw, 1.35rem);
   font-weight: 400;
   color: #FFFFFF;
@@ -3891,7 +3887,7 @@
 }
 
 .hard-part-quote {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Author', sans-serif;
   font-size: clamp(1.2rem, 1.45vw, 1.85rem);
   font-weight: 600;
   font-style: italic;
@@ -3918,7 +3914,7 @@
   align-items: center;
   justify-content: center;
   padding: clamp(12px, 1.1vw, 20px) clamp(24px, 2.2vw, 44px);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Author', sans-serif;
   font-weight: 700;
   font-size: clamp(0.95rem, 1.1vw, 1.25rem);
   color: #1a1a1a;
@@ -4001,7 +3997,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Author', sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: normal;
@@ -4077,7 +4073,7 @@
 }
 
 .formula-tooltip__title {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Author', sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -4117,7 +4113,7 @@
 }
 
 .formula-tooltip__result {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Author', sans-serif;
   font-size: 1.25rem;
   font-weight: 800;
   text-align: center;

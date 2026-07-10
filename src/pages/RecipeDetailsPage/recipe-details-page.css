@@ -42,7 +42,7 @@ a {
   min-width: 320px;
   overflow: hidden;
   background: #fff;
-  font-family: "Author", "Avenir Next", "Inter", Arial, sans-serif;
+  font-family: 'Author', sans-serif;
 }
 
 .recipe-container {

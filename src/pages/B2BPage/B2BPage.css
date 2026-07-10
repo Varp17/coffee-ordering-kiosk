@@ -52,7 +52,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -62,7 +62,7 @@
 }
 
 .b2b-hero__title {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 5.5vw, 3.25rem);
   font-weight: 900;
   line-height: 1.12;
@@ -97,7 +97,7 @@
   gap: 7px;
   padding: 10px 22px;
   border-radius: 12px;
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 0.88rem;
   cursor: pointer;
@@ -163,7 +163,7 @@
 }
 
 .b2b-trust-stat strong {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 900;
   color: #fff;
@@ -235,7 +235,7 @@
 }
 
 .estimator-card__header h2 {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.15rem;
   font-weight: 800;
   color: #1f2a44;
@@ -267,7 +267,7 @@
 }
 
 .estimator-slider__label strong {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 800;
   color: #1f2a44;
@@ -336,7 +336,7 @@
 }
 
 .estimator-metric__label {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -345,7 +345,7 @@
 }
 
 .estimator-metric__value {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.35rem;
   font-weight: 900;
   color: var(--color-primary, #1844AB);
@@ -368,7 +368,7 @@
 }
 
 .estimator-rec__value {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--color-accent, #c67c4e);
@@ -435,7 +435,7 @@
 }
 
 .b2b-section-head h2 {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: clamp(1.4rem, 3vw, 1.85rem);
   font-weight: 800;
   color: #1f2a44;
@@ -552,7 +552,7 @@
 }
 
 .b2b-tier-card h3 {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.05rem;
   font-weight: 700;
   color: #1f2a44;
@@ -624,7 +624,7 @@
 }
 
 .b2b-form-card__left h2 {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: 900;
   margin-bottom: 0.75rem;
@@ -678,7 +678,7 @@
 }
 
 .b2b-field label {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -743,7 +743,7 @@
 }
 
 .b2b-success h3 {
-  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.15rem;
   font-weight: 800;
   color: #1f2a44;

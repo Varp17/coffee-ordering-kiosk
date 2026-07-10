@@ -21,7 +21,7 @@
   display: grid;
   width: min(100%, 1120px);
   grid-template-columns: 220px minmax(340px, 1fr) minmax(160px, 230px);
-  grid-template-rows: 340px 112px 112px;
+  grid-template-rows: 120px 332px 112px;
   gap: 14px;
 }
 
@@ -110,22 +110,16 @@
 .bento-facebook {
   grid-column: 3;
   grid-row: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1rem;
-}
-
-.bento-facebook p {
-  margin: 0;
-  color: #1f2a44;
-  font-size: 0.74rem;
-  font-weight: 800;
-  line-height: 1.35;
 }
 
 .bento-ad {
   grid-column: 3;
-  grid-row: 2 / 4;
+  grid-row: 2;
+}
+
+.bento-google {
+  grid-column: 3;
+  grid-row: 3;
 }
 
 .bento-social {
@@ -189,6 +183,10 @@
   color: #0b55c7;
 }
 
+.social-logo--google {
+  color: #34a853;
+}
+
 @keyframes reviewSwap {
   from {
     opacity: 0;
@@ -212,6 +210,7 @@
   .bento-video,
   .bento-facebook,
   .bento-ad,
+  .bento-google,
   .bento-twitter,
   .bento-reddit {
     grid-column: auto;

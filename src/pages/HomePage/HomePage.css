@@ -92,8 +92,15 @@
 }
 
 @keyframes homepage-hero-cursor-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .homepage-react-hero__beans-svg {
@@ -162,7 +169,8 @@
   min-width: 15rem;
   min-height: 3.2rem;
   padding: 0.75rem 1.25rem;
-  background: rgba(24, 68, 171, 0.85); /* brand primary blue with transparency */
+  background: rgba(24, 68, 171, 0.85);
+  /* brand primary blue with transparency */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -188,14 +196,21 @@
   top: calc(var(--hero-cta-top, 52%) - 15%);
   transform: translate(-50%, -50%);
   z-index: 10;
-  text-align: center;
-  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: #ffffff;
+  color: var(--color-primary, #1844AB);
+  /* Brand primary blue */
+  border-radius: 9999px;
+  padding: 0.6rem 1.6rem;
   font-family: 'Outfit', sans-serif;
-  font-weight: 700;
-  font-size: calc(clamp(1.1rem, 1.6vw, 2.0rem) * var(--hero-cup-scale, 1));
-  line-height: 1.15;
+  font-weight: 500;
+  font-size: clamp(1.1rem, 1.35vw, 1.35rem);
+  line-height: 1;
   pointer-events: none;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(31, 42, 68, 0.15);
 }
 
 .homepage-react-hero__dots {
@@ -722,7 +737,7 @@
 .skip-hard-part__content h2 {
   font-family: 'Author', sans-serif;
   font-size: clamp(2.0rem, 3.0vw, 3.6rem);
-  font-weight: 900;
+  font-weight: 500;
   color: #FFFFFF;
   text-align: center;
   line-height: 1.05;
@@ -742,7 +757,7 @@
 }
 
 .skip-hard-part__content p {
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'Author', sans-serif;
   font-size: clamp(1.0rem, 1.15vw, 1.35rem);
   font-weight: 400;
   color: #FFFFFF;
@@ -755,7 +770,7 @@
 
 .skip-hard-part__content strong {
   display: block;
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'Author', sans-serif;
   font-size: clamp(1.2rem, 1.45vw, 1.85rem);
   font-weight: 600;
   font-style: italic;
@@ -767,7 +782,7 @@
 }
 
 .skip-hard-part__quote {
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'Author', sans-serif;
   font-size: clamp(1.2rem, 1.45vw, 1.85rem);
   font-weight: 600;
   font-style: italic;
@@ -881,7 +896,7 @@
   color: #1f2a44;
   font-family: var(--font-heading);
   font-size: clamp(2.35rem, 3vw, 3.55rem);
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0;
   line-height: 1.05;
   text-align: center;
@@ -4022,7 +4037,8 @@
 }
 
 .formula-text__coffee {
-  color: #2b6cb0; /* highly legible medium-blue that matches the light-blue theme */
+  color: #2b6cb0;
+  /* highly legible medium-blue that matches the light-blue theme */
 }
 
 /* Tooltip container and display */
@@ -4146,18 +4162,18 @@
     font-size: 1.1rem;
     justify-content: center;
   }
-  
+
   .homepage-react-hero__formula-tooltip {
     left: 50%;
     transform: translateX(-50%) translateY(10px);
     bottom: calc(100% + 8px);
   }
-  
+
   .homepage-react-hero__formula-text:hover .homepage-react-hero__formula-tooltip,
   .homepage-react-hero__formula-text:focus-within .homepage-react-hero__formula-tooltip {
     transform: translateX(-50%) translateY(0);
   }
-  
+
   .homepage-react-hero__formula-tooltip::after {
     left: 50%;
     transform: translateX(-50%);

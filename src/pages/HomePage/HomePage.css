@@ -707,8 +707,8 @@
 .skip-hard-part__top-wave-text {
   fill: #ffffff;
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(24px, 2.2vw, 34px);
-  font-weight: 800;
+  font-size: clamp(26px, 2.2vw, 36px);
+  font-weight: 600;
   letter-spacing: 0.05em;
 }
 
@@ -3978,8 +3978,8 @@
   }
 
   .skip-hard-part__top-wave-text {
-    font-size: clamp(24px, 7vw, 32px);
-    font-weight: normal;
+    font-size: clamp(26px, 7vw, 34px);
+    font-weight: 600;
   }
 
   .skip-hard-part__bottom-wave {

@@ -94,12 +94,12 @@ const COFFEE_CUP_IMAGES = {
     width: 1632,
     height: 2582,
   },
-    ESPRESSO: {
-      url: '/images/Esspresso.png',
-    scale: 1.15,
+  ESPRESSO: {
+    url: '/images/Esspresso.png',
+    scale: 1.25,
     yOffset: 0,
-    maxHeight: '72dvh',
-    ctaTop: '56%',
+    maxHeight: '76dvh',
+    ctaTop: '54%',
     width: 1080,
     height: 1080,
   },

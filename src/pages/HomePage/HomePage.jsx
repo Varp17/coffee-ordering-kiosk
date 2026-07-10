@@ -51,8 +51,8 @@ const COFFEE_CUP_IMAGES = {
   },
   FRAPPE: {
     url: '/images/frappe.webp',
-    scale: 1.15,
-    yOffset: 0,
+    scale: 1.30,
+    yOffset: 40,
     maxHeight: '75dvh',
     ctaTop: '49%',
     width: 1080,
@@ -364,12 +364,12 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
           decoding="async"
           fetchPriority="high"
         />
-        {!skippedWelcome && (
-          <Link to="/build" className="homepage-react-hero__cup-cta">
-            <Coffee size={18} aria-hidden="true" />
-            <span>Code Your Own Coffee</span>
-          </Link>
-        )}
+        <div className="homepage-react-hero__glass-headline">
+          Code Your<br />Own Coffee
+        </div>
+        {/* <Link to="/build" className="homepage-react-hero__cup-cta">
+          <span>Code Your Own Coffee</span>
+        </Link> */}
       </div>
 
       {skippedWelcome && (
@@ -395,6 +395,43 @@ function SkipHomepageMiddleFlow() {
   const [whyVisible, setWhyVisible] = useState(false);
   const videoSentinelRef = useRef(null);
   const [videoExpanded, setVideoExpanded] = useState(false);
+
+  const [waveAnim, setWaveAnim] = useState({ from: '0%', to: '-50%' });
+  const topWavePathRef = useRef(null);
+  const topWaveTextRef = useRef(null);
+
+  useEffect(() => {
+    const measureWave = () => {
+      if (!topWavePathRef.current || !topWaveTextRef.current) return;
+      try {
+        const pathLength = topWavePathRef.current.getTotalLength();
+        const textLength = topWaveTextRef.current.getComputedTextLength();
+        const repetitions = 5;
+        const oneRepetitionLength = textLength / repetitions;
+        const shiftPercent = (oneRepetitionLength / pathLength) * 100;
+        setWaveAnim({
+          from: '0%',
+          to: `-${shiftPercent}%`
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    measureWave();
+    window.addEventListener('resize', measureWave);
+
+    if (document.fonts) {
+      document.fonts.ready.then(measureWave);
+    }
+
+    const timer = setTimeout(measureWave, 500);
+
+    return () => {
+      window.removeEventListener('resize', measureWave);
+      clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     const section = whySectionRef.current;
@@ -492,14 +529,26 @@ function SkipHomepageMiddleFlow() {
         <svg className="skip-hard-part__top-wave" viewBox="0 0 1512 230" preserveAspectRatio="none" aria-hidden="true">
           <defs>
             <path
+              ref={topWavePathRef}
               id="skip-hard-part-wave-text"
               d="M -180 236 C -120 236, -60 181.3, 0 208 L 63 179.96 C 126 152.35, 252 95.65, 378 95.97 C 504 95.65, 630 152.35, 756 179.96 C 882 208, 1008 208, 1134 179.96 C 1260 152.35, 1386 95.65, 1449 68.03 L 1512 40 C 1572 13.3, 1632 -14, 1692 -14"
             />
           </defs>
           <text className="skip-hard-part__top-wave-text" dy="0.85em">
-            <textPath href="#skip-hard-part-wave-text" startOffset="-8%">
-              100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting…
-              <animate attributeName="startOffset" from="-45%" to="35%" dur="34s" repeatCount="indefinite" />
+            <textPath
+              ref={topWaveTextRef}
+              href="#skip-hard-part-wave-text"
+              startOffset="0%"
+            >
+              100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… •
+              <animate
+                key={`${waveAnim.from}-${waveAnim.to}`}
+                attributeName="startOffset"
+                from={waveAnim.from}
+                to={waveAnim.to}
+                dur="34s"
+                repeatCount="indefinite"
+              />
             </textPath>
           </text>
         </svg>

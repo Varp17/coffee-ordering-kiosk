@@ -296,8 +296,12 @@ export default function ProductDetailPage() {
                 <span className="price-val">{formatPrice(totalPrice)}</span>
               </div>
 
-              <button className="btn btn-primary order-add-btn" onClick={handleAddToCart}>
-                <ShoppingBag size={16} className="order-add-btn__icon" /> Add to Cart
+              <button 
+                className="btn btn-primary order-add-btn disabled" 
+                disabled={true} 
+                style={{ opacity: 0.6, cursor: 'not-allowed' }}
+              >
+                We will be live soon to place order
               </button>
             </div>
           </div>

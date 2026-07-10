@@ -128,13 +128,17 @@ export default function RecipesPage() {
       {/* ── FILTERABLE RECIPE GRID ── */}
       <section className="rp-grid-section">
         <div className="container">
-          <div className="rp-section-head rp-section-head--stacked">
+          <div className="rp-section-head" style={{ flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
             <div>
               <h2>Browse by Cold Brew variety</h2>
               <p className="rp-section-sub">
                 All men were born equal (really?). Not all cold brew was made equal. Check the recipes that go best with your type of coffee.
               </p>
             </div>
+            <Link to="/create-recipe" className="rp-btn rp-btn--primary">
+              <Icon name="plus" size={16} />
+              <span>Create Recipe</span>
+            </Link>
           </div>
 
           {/* Controls Row: Filter Tabs + Search */}

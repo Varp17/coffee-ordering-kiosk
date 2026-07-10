@@ -164,12 +164,13 @@ export default function Step6Review() {
             <span className="price-label">Total</span>
             <span className="price-value">{formatPrice(totalCost)}</span>
           </div>
-          <div className="action-buttons-group">
-            <button className="btn btn-outline" onClick={() => handleAddToCart(false)}>
-              Add to Cart
-            </button>
-            <button className="btn btn-primary" onClick={() => handleAddToCart(true)}>
-              Order Now <Sparkles size={16} style={{ marginLeft: 6 }} />
+          <div className="action-buttons-group" style={{ width: '100%' }}>
+            <button 
+              className="btn btn-primary disabled" 
+              disabled={true} 
+              style={{ opacity: 0.6, cursor: 'not-allowed', width: '100%', justifyContent: 'center' }}
+            >
+              We will be live soon to place order
             </button>
           </div>
         </div>

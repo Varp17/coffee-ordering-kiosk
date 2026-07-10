@@ -172,20 +172,27 @@ export default function CheckoutPage() {
               </div>
             </div>
 
+            <div className="delivery-notice-banner" style={{
+              background: '#FFF5F5',
+              border: '1px solid #FEB2B2',
+              color: '#C53030',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              marginBottom: '16px',
+              fontSize: '0.95rem',
+              fontWeight: '600',
+              lineHeight: '1.4',
+              textAlign: 'center'
+            }}>
+              📍 Delivery is only available in Mumbai and will be available soon.
+            </div>
+
             <button
-              className={`btn btn-primary place-order-btn ${items.length === 0 || !selectedLocation ? 'disabled' : ''}`}
-              onClick={handlePlaceOrder}
-              disabled={items.length === 0 || !selectedLocation}
+              className="btn btn-primary place-order-btn disabled"
+              style={{ opacity: 0.6, cursor: 'not-allowed' }}
+              disabled={true}
             >
-              {isLoggedIn ? (
-                <>
-                  <CreditCard size={18} style={{ marginRight: 8 }} /> Proceed to Payment
-                </>
-              ) : (
-                <>
-                  <User size={18} style={{ marginRight: 8 }} /> Login to Place Order
-                </>
-              )}
+              Ordering Temporarily Unavailable
             </button>
           </div>
         </div>

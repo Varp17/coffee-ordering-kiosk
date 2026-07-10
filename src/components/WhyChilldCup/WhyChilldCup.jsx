@@ -20,9 +20,11 @@ export const WHY_CHILLD_ITEMS = [
     lidPath: 'M348.742 2544.14L350.038 2553.89C350.258 2555.54 349.095 2557.06 347.439 2557.28L118.503 2587.73C116.848 2587.95 115.327 2586.79 115.107 2585.13L113.861 2575.77C113.641 2574.11 114.804 2572.59 116.46 2572.37L138.941 2569.38C140.597 2569.16 141.761 2567.64 141.54 2565.98L140.344 2556.99C139.507 2550.7 144.793 2548.39 147.541 2548.03C196.601 2538.45 296.895 2519.01 305.588 2517.85C314.281 2516.7 316.836 2521.19 317.026 2523.58L319.468 2541.94C319.689 2543.59 321.209 2544.75 322.865 2544.53L345.346 2541.54C347.002 2541.32 348.522 2542.49 348.742 2544.14Z',
     text: { x: 235, y: 2724, transform: 'rotate(-7.58, 235, 2724)' },
     image: '/images/image5_366_1172.png',
-    patternScale: 2.0,
-    patternX: 3,
-    patternY: 350,
+    patternScale: 2.8,
+    patternX: -104,
+    patternY: -590,
+    lidColor: '#B89047',
+    textXOffset: '12px',
   },
   {
     id: 'two',
@@ -32,12 +34,14 @@ export const WHY_CHILLD_ITEMS = [
     rotation: '7.04deg',
     viewBox: '488 2782 238 321',
     bodyPath: 'M517.738 3094.83L502.495 2847.69C502.385 2845.91 503.836 2844.42 505.62 2844.48L706.286 2851.59C708.092 2851.65 709.44 2853.28 709.169 2855.06L672.055 3100.35C671.826 3101.87 670.494 3102.98 668.958 3102.92L520.649 3097.67C519.093 3097.61 517.833 3096.39 517.738 3094.83Z',
-    lidPath: 'M725.434 2816L725.086 2825.82C725.027 2827.49 723.626 2828.79 721.957 2828.73L491.149 2820.56C489.48 2820.5 488.175 2819.1 488.234 2817.43L488.569 2807.98C488.628 2806.32 490.029 2805.07 491.698 2805.07L514.363 2805.87C516.032 2805.93 517.433 2804.63 517.492 2802.96L517.813 2793.89C518.038 2787.54 523.635 2786.15 526.405 2786.25C576.375 2785 678.507 2782.56 687.271 2782.87C696.035 2783.18 697.805 2788.04 697.594 2790.42L696.938 2808.93C696.879 2810.6 698.184 2812 699.853 2812.06L722.519 2812.87C724.188 2812.93 725.493 2814.33 725.434 2816Z',
+    lidPath: 'M725.434 2816L725.086 2825.82C725.027 2827.49 723.626 2828.79 721.957 2828.73L491.149 2820.56C489.48 2820.5 488.175 2819.1 488.234 2817.43L488.569 2807.98C488.628 2806.32 490.029 2805.07 491.698 2805.07L514.363 2805.87C516.032 2805.93 517.433 2804.63 517.492 2802.96L517.813 2793.89C518.038 2797.54 523.635 2786.15 526.405 2786.25C576.375 2785 678.507 2782.56 687.271 2782.87C696.035 2783.18 697.805 2788.04 697.594 2790.42L696.938 2808.93C696.879 2810.6 698.184 2812 699.853 2812.06L722.519 2812.87C724.188 2812.93 725.493 2814.33 725.434 2816Z',
     text: { x: 605, y: 2972, transform: 'rotate(7.04, 605, 2972)' },
     image: '/images/image6_366_1172.png',
-    patternScale: 2,
-    patternX: 19,
-    patternY: 100,
+    patternScale: 3.2,
+    patternX: -285,
+    patternY: 470,
+    lidColor: '#1F2A44',
+    textXOffset: '-12px',
   },
   {
     id: 'three',
@@ -50,9 +54,12 @@ export const WHY_CHILLD_ITEMS = [
     lidPath: 'M1035.3 2612L1035.83 2621.81C1035.92 2623.48 1034.64 2624.9 1032.98 2624.99L802.359 2637.43C800.692 2637.52 799.267 2636.24 799.177 2634.58L798.668 2625.14C798.578 2623.47 799.857 2622.05 801.525 2621.96L824.171 2620.74C825.839 2620.65 827.118 2619.22 827.028 2617.56L826.539 2608.5C826.197 2602.15 831.647 2600.27 834.415 2600.12C884.075 2594.41 985.583 2582.88 994.34 2582.41C1003.1 2581.94 1005.29 2586.61 1005.29 2589.01L1006.29 2607.51C1006.38 2609.17 1007.81 2610.45 1009.47 2610.36L1032.12 2609.14C1033.79 2609.05 1035.21 2610.33 1035.3 2612Z',
     text: { x: 918, y: 2784, transform: 'rotate(-3.09, 918, 2784)' },
     image: '/images/WhyChilldCup3.png',
-    patternScale: 3.05,
-    patternX: 470,
-    patternY: -690,
+    transform: 'rotate(-2)',
+    patternScale: 3.8,
+    patternX: -420,
+    patternY: -250.9,
+    lidColor: '#BFC1C2',
+    textXOffset: '5px',
   },
   {
     id: 'four',
@@ -63,11 +70,14 @@ export const WHY_CHILLD_ITEMS = [
     viewBox: '1136 2830 243 333',
     bodyPath: 'M1136.81 3135.28L1153.27 2888.21C1153.39 2886.43 1155.02 2885.14 1156.78 2885.43L1354.89 2918.12C1356.67 2918.41 1357.8 2920.19 1357.31 2921.93L1289.16 3160.47C1288.74 3162.62 1287.28 3163.46 1285.76 3163.21L1139.34 3139.05C1137.8 3138.8 1136.71 3137.42 1136.81 3135.87Z',
     lidPath: 'M1378.43 2885.26L1376.83 2894.96C1376.56 2896.6 1375 2897.72 1373.35 2897.45L1145.48 2859.85C1143.83 2859.85 1142.72 2858.02 1142.99 2856.38L1144.53 2847.05C1144.8 2845.41 1146.36 2844.29 1148 2844.56L1170.38 2848.25C1172.03 2848.53 1173.59 2847.41 1173.86 2845.76L1175.33 2836.81C1176.37 2830.55 1182.1 2829.88 1184.83 2830.33C1234.55 2835.47 1336.16 2846.11 1344.81 2847.53C1353.46 2848.96 1354.6 2854 1354.08 2856.34L1351.07 2874.62C1350.8 2876.26 1351.91 2877.82 1353.56 2878.09L1375.94 2881.78C1377.59 2882.06 1378.7 2883.61 1378.43 2885.26Z',
-    text: { x: 1245, y: 3028, transform: 'rotate(9.37, 1245, 3028)' },
-    image: '/images/WhyChilldCup4.png',
-    patternScale: 2,
-    patternX: 30,
-    patternY: 30
+    text: { x: 1205, y: 3098, transform: 'rotate(9.37, 1245, 3028)' },
+    image: '/images/WhyChilldCup3.png',
+    transform: 'rotate(2)',
+    patternScale: 3.8,
+    patternX: 785,
+    patternY: -92,
+    lidColor: '#E2E8F0',
+    textXOffset: '-22px',
   },
 ];
 
@@ -84,12 +94,17 @@ const WhyChilldCup = forwardRef(function WhyChilldCup({
   const s = item.patternScale;
   const tx = item.patternX;
   const ty = item.patternY;
+  const rot = item.transform ? item.transform.replace('deg', '') : '';
 
   return (
     <article
       ref={ref}
       className={className}
-      style={{ '--why-cup-rotation': item.rotation, ...style }}
+      style={{
+        '--why-cup-rotation': item.rotation,
+        '--why-text-x': item.textXOffset || '0px',
+        ...style
+      }}
     >
       <div className="why-chilld-cup-inner">
         <div className={cupWrapClassName}>
@@ -106,7 +121,7 @@ const WhyChilldCup = forwardRef(function WhyChilldCup({
                 patternUnits="userSpaceOnUse"
                 width={vw}
                 height={vh}
-                patternTransform={`translate(${tx}, ${ty}) scale(${s})`}
+                patternTransform={`translate(${tx}, ${ty}) scale(${s}) ${rot}`}
               >
                 <image
                   href={item.image}
@@ -116,13 +131,20 @@ const WhyChilldCup = forwardRef(function WhyChilldCup({
                 />
               </pattern>
             </defs>
+            {/* Render body filled with image */}
             <path d={item.bodyPath} fill={`url(#${patternId})`} />
-            <path d={item.lidPath} fill="#1F2A44" />
 
+            {/* Render image inside the lid path */}
+            <path d={item.lidPath} fill={`url(#${patternId})`} />
+
+            {/* Overlay the semi-transparent lid color on top of the lid image */}
+            <path d={item.lidPath} fill={item.lidColor || '#1F2A44'} opacity={0.6} style={{ mixBlendMode: 'multiply' }} />
           </svg>
         </div>
-        <h3>{item.title}</h3>
-        <p>{item.description}</p>
+        <div className="why-chilld-cup-text">
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+        </div>
       </div>
     </article>
   );

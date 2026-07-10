@@ -36,23 +36,13 @@ export default function ProductCard({ product, compact = false }) {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    setIsAdding(true);
-    addItem({
-      id: product.id,
-      name: product.name,
-      price,
-      size: selectedSize?.id,
-      image,
-      category: product.category,
-    });
-    toast.success(`${product.name} added to cart!`, {
+    toast.error('We will be live soon to place orders! ☕', {
       style: {
         background: '#1F2A44',
         color: '#fff',
         fontFamily: 'Outfit, sans-serif',
       },
     });
-    setTimeout(() => setIsAdding(false), 600);
   };
 
   return (

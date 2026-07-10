@@ -2,40 +2,49 @@
 // CHILLD COFFEE - Concentrate Product Catalog
 // =====================================================
 
-const PLACEHOLDER_IMAGE = '/images/products/coffee-concentrate-bottle.png';
+const CLASSIC_IMAGE = '/images/Classic-concentrate.png';
+const KAPPI_IMAGE = '/images/Kappi-concentrate.png';
+const BOLD_IMAGE = '/bold-concentrate-bottle.png';
+const PLACEHOLDER_IMAGE = '/bold-concentrate-bottle.png';
 
 const BOTTLE_SIZES = [
   { id: '250ml', label: '250 ml', ml: 250, modifier: 0 },
-  { id: '500ml', label: '500 ml', ml: 500, modifier: 300 },
-  { id: '1000ml', label: '1 L', ml: 1000, modifier: 700 },
 ];
 
-const galleryFor = (slug, name) => [
-  {
-    id: `${slug}-front`,
-    label: 'Bottle front',
-    src: PLACEHOLDER_IMAGE,
-    alt: `${name} bottle front`,
-  },
-  {
-    id: `${slug}-label`,
-    label: 'Label detail',
-    src: PLACEHOLDER_IMAGE,
-    alt: `${name} label detail`,
-  },
-  {
-    id: `${slug}-serve`,
-    label: 'Serving idea',
-    src: PLACEHOLDER_IMAGE,
-    alt: `${name} serving suggestion`,
-  },
-  {
-    id: `${slug}-lifestyle`,
-    label: 'Lifestyle shot',
-    src: PLACEHOLDER_IMAGE,
-    alt: `${name} lifestyle shot`,
-  },
-];
+const galleryFor = (slug, name) => {
+  let img = CLASSIC_IMAGE;
+  if (slug === 'sif') {
+    img = KAPPI_IMAGE;
+  } else if (slug === 'coffee-70-30') {
+    img = BOLD_IMAGE;
+  }
+  return [
+    {
+      id: `${slug}-front`,
+      label: 'Bottle front',
+      src: img,
+      alt: `${name} bottle front`,
+    },
+    {
+      id: `${slug}-label`,
+      label: 'Label detail',
+      src: img,
+      alt: `${name} label detail`,
+    },
+    {
+      id: `${slug}-serve`,
+      label: 'Serving idea',
+      src: img,
+      alt: `${name} serving suggestion`,
+    },
+    {
+      id: `${slug}-lifestyle`,
+      label: 'Lifestyle shot',
+      src: img,
+      alt: `${name} lifestyle shot`,
+    },
+  ];
+};
 
 export const CATEGORIES = [
   { id: 'all', label: 'All Products', icon: 'All' },
@@ -54,7 +63,7 @@ export const PRODUCTS = [
     tagline: 'Balanced Arabica and Robusta for everyday cold coffee.',
     description:
       'A smooth, dependable cold brew concentrate designed for creamy lattes, classic cold coffee, and quick cafe-style serves at home or in-store.',
-    image: PLACEHOLDER_IMAGE,
+    image: CLASSIC_IMAGE,
     gallery: galleryFor('coffee-50-50', 'Classic Concentrate'),
     basePrice: 399,
     sizes: BOTTLE_SIZES,
@@ -81,12 +90,12 @@ export const PRODUCTS = [
     id: 'classic-cb-concentrate',
     category: 'coffee-50-50',
     concentrateType: 'Classic',
-    name: 'Classic Concentrate',
+    name: 'Classic Cold Brew',
     tagline: 'Clean, mellow, and slow-steeped for a lighter finish.',
     description:
       'A classic cold brew profile made for drinkers who want coffee clarity, low bitterness, and a flexible base for cold brew, tonics, and black serves.',
-    image: PLACEHOLDER_IMAGE,
-    gallery: galleryFor('classic-cb', 'Classic Concentrate'),
+    image: CLASSIC_IMAGE,
+    gallery: galleryFor('classic-cb', 'Classic Cold Brew'),
     basePrice: 429,
     sizes: BOTTLE_SIZES,
     badges: ['smooth', 'best-value'],
@@ -116,7 +125,7 @@ export const PRODUCTS = [
     tagline: 'A stronger cup with deeper body and bolder coffee notes.',
     description:
       'Built for recipes that need more punch. This bold concentrate holds its flavor in milk-heavy lattes, jaggery blends, mocha drinks, and dessert-style cold coffee.',
-    image: PLACEHOLDER_IMAGE,
+    image: BOLD_IMAGE,
     gallery: galleryFor('coffee-70-30', 'Bold Concentrate'),
     basePrice: 449,
     sizes: BOTTLE_SIZES,
@@ -147,7 +156,7 @@ export const PRODUCTS = [
     tagline: 'South Indian filter-inspired depth in a chilled format.',
     description:
       'A nostalgic South Indian filter coffee style concentrate with a fuller roast character, made for chilled kaapi, condensed milk serves, and rich cafe recipes.',
-    image: PLACEHOLDER_IMAGE,
+    image: KAPPI_IMAGE,
     gallery: galleryFor('sif', 'Kaapi Concentrate'),
     basePrice: 459,
     sizes: BOTTLE_SIZES,

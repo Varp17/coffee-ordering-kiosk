@@ -188,3 +188,292 @@
 **Verification:**
 - `npm run build`: Production build completed successfully in 2.06s with zero errors.
 - Visual check: Navigated to `/recipes` via browser subagent and verified the headline, subheadline, and font loading match the layout specifications.
+
+---
+
+## Wave 9: Align Homepage Cup Images and Colors with Figma Design
+
+**Objective:** Match the homepage cup images, lid colors, and alignments with the Figma design.
+
+**Changes:**
+- Retained the original high-fidelity images of the people inside the glasses/cups (including Cup 3: man in sunglasses, Cup 4: woman) to keep them exactly as they were before.
+- Modified [WhyChilldCup.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/WhyChilldCup/WhyChilldCup.jsx) to make the pattern image continue and render inside the cup lid path `<path d={item.lidPath} fill={`url(#${patternId})`} />` so the image extension is visible in the lid.
+- Applied a semi-transparent lid color overlay on top of the lid image with `opacity={0.6}` and `mixBlendMode="multiply"` to match the Figma lid styling.
+- Defined custom lid colors (`lidColor`) matching the Figma screenshot:
+  - Cup 1: `#B89047` (golden bronze).
+  - Cup 2: `#1F2A44` (dark navy).
+  - Cup 3: `#BFC1C2` (silver/light grey).
+  - Cup 4: `#E2E8F0` (transparent light grey/white).
+
+**Files Touched:**
+- `src/components/WhyChilldCup/WhyChilldCup.jsx`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 10: Style Code Your Own Coffee Text and Optimize Cup Image Scaling
+
+**Objective:** Align the casing and style of the "Code your own Coffee" text with the mockup, and scale/shift the cup pattern images so that their heads extend visibly into the cup lids.
+
+**Changes:**
+- Updated [HomePage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.jsx) to display "Code your own Coffee" in sentence-case.
+- Modified [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) to set `.homepage-react-hero__glass-headline` text color to `#FFFFFF`, set `font-weight: 700`, change `text-transform` to `none`, and apply a dark dropshadow `text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4)` to match the mockup.
+- Adjusted `patternScale`, `patternX`, and `patternY` inside `WHY_CHILLD_ITEMS` in [WhyChilldCup.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/WhyChilldCup/WhyChilldCup.jsx) to zoom all cup images more and translate them upward, making the heads of the people show clearly in the lids of the glasses.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.jsx`
+- `src/pages/HomePage/HomePage.css`
+- `src/components/WhyChilldCup/WhyChilldCup.jsx`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 11: Adjust Frappe Cup Scaling and Revert Why Chilld Cup Scaling
+
+**Objective:** Adjust the size and positioning of the hero frappe cup, and revert Why Chilld cup image offsets/scaling to ensure the faces/bodies are fully visible.
+
+**Changes:**
+- Updated [HomePage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.jsx) `COFFEE_CUP_IMAGES` constant: increased `scale` of the `FRAPPE` cup to `1.30` (was `1.15`) and set `yOffset` to `40` to make it larger and shifted downward.
+- Reverted `patternScale`, `patternX`, and `patternY` settings of the 4 cups inside [WhyChilldCup.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/WhyChilldCup/WhyChilldCup.jsx) to their original working values, ensuring the people inside the glasses/cups are fully visible without clipping out of bounds.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.jsx`
+- `src/components/WhyChilldCup/WhyChilldCup.jsx`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 12: Implement SVG Pattern Rotation Support
+
+**Objective:** Add pattern rotation support to Why Chilld cups to enable rotation of the image pattern inside the SVG path.
+
+**Changes:**
+- Updated [WhyChilldCup.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/WhyChilldCup/WhyChilldCup.jsx) to append `item.transform` (e.g. `rotate(9)`) inside the SVG `<pattern>`'s `patternTransform` attribute, enabling the image pattern to rotate.
+- Cleaned up unneeded TS imports from `three/tsl` which were causing local compile errors, and restored lid colors for the cups.
+
+**Files Touched:**
+- `src/components/WhyChilldCup/WhyChilldCup.jsx`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 13: Make Why Chilld Background Screen Responsive
+
+**Objective:** Remove left and right padding from the abstract background illustration behind the glasses and make it screen responsive.
+
+**Changes:**
+- Updated [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) inside `.skip-why-chilld__background img` to change `object-fit` from `contain` to `cover`, forcing the abstract graphic to stretch fully across the screen without margins or letterboxing.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 14: Align Card Heading and Paragraph Text to Cup Rotation
+
+**Objective:** Rotate the text under each "Why Chilld?" glass cup card to align exactly with the tilt/rotation angle of its corresponding cup.
+
+**Changes:**
+- Updated [WhyChilldCup.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/WhyChilldCup/WhyChilldCup.jsx) to wrap the `h3` heading and `p` description elements in a `.why-chilld-cup-text` wrapper div.
+- Modified [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) to add styling for `.why-chilld-cup-text` that applies `transform: rotate(var(--why-cup-rotation, 0deg))` with `transform-origin: center top`, aligning the text rotation perfectly with the cup rotation while keeping the manually adjusted image scale/pan values untouched.
+
+**Files Touched:**
+- `src/components/WhyChilldCup/WhyChilldCup.jsx`
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 15: Align Text Rotation with Cup by Rotating Inner Container
+
+**Objective:** Ensure that both the cup illustration and the text under it rotate together as a single unit, maintaining perfect spacing and alignment underneath the cup.
+
+**Changes:**
+- Updated [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) to shift the rotation transform, translation, hover states, and animations from `.skip-why-chilld__cup-wrap` directly onto the parent `.why-chilld-cup-inner` container.
+- Cleaned up the separate transform on `.why-chilld-cup-text` since it now automatically rotates with its parent container.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 16: Separate Cup and Text Rotation to Prevent Clipping
+
+**Objective:** Prevent cup and text clipping at the bottom of the section by restoring standard card layout and applying rotation independently to the cup wrapper and text container.
+
+**Changes:**
+- Reverted the parent `.why-chilld-cup-inner` container rotation in [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css).
+- Restored standard rotation, translation, animations, and hover states directly on the `.skip-why-chilld__cup-wrap` element.
+- Applied `transform: rotate(var(--why-cup-rotation, 0deg))` with `transform-origin: center top` to `.why-chilld-cup-text` so the text rotates to match the cup's rotation angle independently, preventing container bounding box shifts and clipping.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 17: Unified Rotation on Inner Container and Expanded Section Height
+
+**Objective:** Fix text positioning and spacing under the cup, aligning both perfectly by rotating `.why-chilld-cup-inner` together and expanding the section `min-height`/`padding` to prevent bottom boundary clipping.
+
+**Changes:**
+- Restored unified rotation, translation, animations, and hover states on `.why-chilld-cup-inner` in [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css).
+- Removed separate rotation styling on `.why-chilld-cup-text` and `.skip-why-chilld__cup-wrap`.
+- Increased `.skip-why-chilld` `min-height` to `1060px` (was `980px`) and set `padding-bottom: 6rem` to give cards ample clearance at the bottom, eliminating text clipping.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 18: Adjust Hero Glass Headline Position Upward
+
+**Objective:** Move the "Code your own Coffee" headline overlay on the home page hero cup slightly upward so that it rests inside the cup and doesn't overlap the bottom edge.
+
+**Changes:**
+- Updated [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) inside `.homepage-react-hero__glass-headline` to position `top` using `calc(var(--hero-cta-top, 52%) - 8%)`, shifting it 8% higher relative to the cup body.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 19: Resize Hero Glass Headline According to Glass Width
+
+**Objective:** Prevent the "Code Your Own Coffee" text overlay from overflowing narrower glass/cup shapes (like the Espresso glass) by making the font-size responsive to the cup scale and constraining its maximum width to wrap neatly.
+
+**Changes:**
+- Updated [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) inside `.homepage-react-hero__glass-headline` to calculate `font-size` dynamically using `calc(clamp(1.4rem, 2.2vw, 2.5rem) * var(--hero-cup-scale, 1))`.
+- Set `max-width: 58%` to ensure the text is constrained to the width of the glass body, forcing it to wrap to two lines on narrower cups rather than overflowing.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 20: Position Headline Higher, Prevent Wrap, and Dynamic Size Scaling
+
+**Objective:** Move the "Code Your Own Coffee" text higher on the glass, restrict it to a single line, and scale its size dynamically to fit the width of the glass cup perfectly.
+
+**Changes:**
+- Updated [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) inside `.homepage-react-hero__glass-headline` to set `top` to `calc(var(--hero-cta-top, 52%) - 15%)` to shift it higher.
+- Added `white-space: nowrap` and removed `max-width` restrictions to keep the text strictly on a single line.
+- Refined the dynamic font size calculation: `calc(clamp(1.1rem, 1.6vw, 2.0rem) * var(--hero-cup-scale, 1))` to size the text up/down according to the cup scale.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 21: Apply Rotation to Card Text Container
+
+**Objective:** Rotate the text card container underneath the cups to align exactly with the cup tilt/rotation.
+
+**Changes:**
+- Added `transform: rotate(var(--why-cup-rotation, 0deg))` back to `.why-chilld-cup-text` in [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) to ensure the text is tilted exactly at the same angle as the cup body.
+
+**Files Touched:**
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 22: Compensate Text Spacing/Offset from Rotation Swing
+
+**Objective:** Center the rotated text perfectly under each glass cup card by counter-translating the text container horizontally to offset the swing caused by the rotation transform.
+
+**Changes:**
+- Added custom `textXOffset` parameters for each cup card inside `WHY_CHILLD_ITEMS` in [WhyChilldCup.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/WhyChilldCup/WhyChilldCup.jsx).
+- Passed the offset variable as `--why-text-x` to the component style.
+- Updated [HomePage.css](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/HomePage/HomePage.css) inside `.why-chilld-cup-text` transform to include `translateX(var(--why-text-x, 0px))`, shifting Cup 4 slightly to the left (`-22px`) and other cups as needed to perfectly balance the layout.
+
+**Files Touched:**
+- `src/components/WhyChilldCup/WhyChilldCup.jsx`
+- `src/pages/HomePage/HomePage.css`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 23: Disable Ordering and Add Delivery Warning Banner
+
+**Objective:** Disable order placement system-wide, and show a clear notice banner at the checkout stage stating that delivery is only available in Mumbai and will be available soon elsewhere.
+
+**Changes:**
+- Modified [CheckoutPage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/CheckoutPage/CheckoutPage.jsx) to add a warning banner (`.delivery-notice-banner`) right above the primary order placement button.
+- Disabled the "Proceed to Payment" action completely by setting `disabled={true}` and changing its label to "Ordering Temporarily Unavailable" with a locked cursor state to prevent customers from proceeding to place orders.
+
+**Files Touched:**
+- `src/pages/CheckoutPage/CheckoutPage.jsx`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 24: Add Concentrate Images, Restrict Bottle Sizes, and Declare Kiosk Launching Soon
+
+**Objective:** Add Classic and Kaapi concentrate images, restrict size selection to 250ml only, and set product catalog states to "We will be live soon to place order" system-wide.
+
+**Changes:**
+- Updated [products.js](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/data/products.js) to configure the newly added `Classic-concentrate.png` and `Kappi-concentrate.png` images, and restricted `BOTTLE_SIZES` to a single 250ml size.
+- Modified [ProductCard.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/components/ProductCard/ProductCard.jsx) to intercept grid quick-adds and show a toast warning stating that ordering is launching soon.
+- Modified [ProductDetailPage.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/ProductDetailPage/ProductDetailPage.jsx) and [Step6Review.jsx](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/pages/CoffeeBuilderPage/steps/Step6Review.jsx) to disable ordering buttons and display "We will be live soon to place order".
+
+**Files Touched:**
+- `src/data/products.js`
+- `src/components/ProductCard/ProductCard.jsx`
+- `src/pages/ProductDetailPage/ProductDetailPage.jsx`
+- `src/pages/CoffeeBuilderPage/steps/Step6Review.jsx`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.
+
+---
+
+## Wave 25: Map Bold Concentrate Image asset
+
+**Objective:** Map the newly added Bold Concentrate image asset to the Bold Concentrate product and clean up accidental syntax.
+
+**Changes:**
+- Updated [products.js](file:///c:/Users/HP/Downloads/coffee-ordering-kiosk-Dev-Varun/src/data/products.js) to define `BOLD_IMAGE = '/bold-concentrate-bottle.png';` and resolved the accidental trailing double quote syntax error in the placeholder definition.
+- Set the `image` property on the Bold Concentrate product to `BOLD_IMAGE` and updated the `galleryFor` selector to map the correct Bold Concentrate asset for that category.
+
+**Files Touched:**
+- `src/data/products.js`
+
+**Verification:**
+- `npm run build`: Production build completed successfully with zero compile errors.

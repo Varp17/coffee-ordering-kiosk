@@ -114,14 +114,14 @@ export default function Navbar() {
                 <span className="navbar__cart-count">{totalItems}</span>
               </button>
 
-              <Link to="/build" className="navbar__build-pill">
+              {/* <Link to="/build" className="navbar__build-pill">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
                   <path d="M6 8h12M7 8V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2" />
                   <path d="M7 8l1.2 11c.1.9.9 1.6 1.8 1.6h4c.9 0 1.7-.7 1.8-1.6L17 8" />
                   <path d="M8.5 13h7" />
                 </svg>
                 <span>Create Your Drink</span>
-              </Link>
+              </Link> */}
 
               {/* Hamburger (mobile) */}
               <button

@@ -3785,7 +3785,7 @@
 .hard-part-heading {
   font-family: 'Author', sans-serif;
   font-size: clamp(2.0rem, 3.0vw, 3.6rem);
-  font-weight: 900;
+  font-weight: 600;
   color: #FFFFFF;
   text-align: center;
   line-height: 1.05;

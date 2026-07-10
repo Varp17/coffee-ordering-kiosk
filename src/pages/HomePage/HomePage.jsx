@@ -94,8 +94,8 @@ const COFFEE_CUP_IMAGES = {
     width: 1632,
     height: 2582,
   },
-  ESPRESSO: {
-    url: '/images/expresso.webp',
+    ESPRESSO: {
+      url: '/images/Esspresso.png',
     scale: 1.15,
     yOffset: 0,
     maxHeight: '72dvh',
@@ -198,6 +198,7 @@ function TrendingMixCards({ duplicate = false }) {
 
 function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [typedChars, setTypedChars] = useState(0);
 
   useEffect(() => {
     if (!skippedWelcome) return undefined;
@@ -228,6 +229,20 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
     };
   }, [activeSlide, coffeeType, displayName, skippedWelcome, suffix]);
 
+  const fullName = `${heroState.name}${heroState.suffix}`;
+
+  useEffect(() => {
+    if (skippedWelcome) return;
+    if (typedChars < fullName.length) {
+      const timer = setTimeout(() => setTypedChars(typedChars + 1), 80 + Math.random() * 40);
+      return () => clearTimeout(timer);
+    }
+  }, [typedChars, fullName.length, skippedWelcome]);
+
+  const nameLen = heroState.name.length;
+  const visibleName = fullName.slice(0, Math.min(typedChars, nameLen));
+  const visibleSuffix = fullName.slice(nameLen, Math.min(typedChars, fullName.length));
+
   const titleFontSize = useMemo(() => {
     const totalLength = (heroState.name || '').length + (heroState.suffix || '').length;
     if (totalLength > 15) return 'clamp(10rem, 15vw, 13rem)';
@@ -248,8 +263,18 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
         style={{ fontSize: titleFontSize }}
         aria-label={`${heroState.name}${heroState.suffix}`}
       >
-        <span className="homepage-react-hero__name">{heroState.name}</span>
-        <span className="homepage-react-hero__suffix">{heroState.suffix}</span>
+        {skippedWelcome ? (
+          <>
+            <span className="homepage-react-hero__name">{heroState.name}</span>
+            <span className="homepage-react-hero__suffix">{heroState.suffix}</span>
+          </>
+        ) : (
+          <>
+            <span className="homepage-react-hero__name">{visibleName}</span>
+            <span className="homepage-react-hero__suffix">{visibleSuffix}</span>
+            {typedChars < fullName.length && <span className="homepage-react-hero__cursor" aria-hidden="true">|</span>}
+          </>
+        )}
       </h1>
 
       <img

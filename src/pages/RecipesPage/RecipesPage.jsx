@@ -99,25 +99,27 @@ export default function RecipesPage() {
             Why invent when prompting can do? Get inspired or just copy, do what you like with our collection of cold brew recipes created by the enthu types.
           </motion.p>
 
+          {/* ── Infinite Marquee of Recipe Cards ── */}
           <motion.div
-            className="recipes-search"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.2 }}
+            className="recipes-header__marquee"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
           >
-            <div className="recipes-search__wrapper">
-              <span className="recipes-search__icon-wrap">
-                <Icon name="search" size={16} />
-              </span>
-              <input
-                id="recipes-search"
-                type="search"
-                placeholder="Search recipes (e.g. Mocha, Latte, Jaggery...)"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="recipes-search__input"
-                aria-label="Search recipes"
-              />
+            <div className="recipes-header__marquee-track">
+              {[...RECIPES, ...RECIPES].map((recipe, i) => (
+                <Link key={`${recipe.id}-${i}`} to={`/recipe-details/${recipe.id}`} className="rp-marquee-card">
+                  <div className="rp-marquee-card__img-wrap">
+                    <RecipeMedia recipe={recipe} alt={recipe.name} className="rp-marquee-card__img" />
+                  </div>
+                  <div className="rp-marquee-card__body">
+                    <h4>{recipe.name}</h4>
+                    <span className="rp-marquee-card__likes">
+                      <Icon name="heart" size={10} /> {recipe.likes}
+                    </span>
+                  </div>
+                </Link>
+              ))}
             </div>
           </motion.div>
         </div>
@@ -135,21 +137,42 @@ export default function RecipesPage() {
             </div>
           </div>
 
-          {/* Filter tabs */}
-          <div className="rp-filter-bar" role="tablist" aria-label="Filter by cold brew variety">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                role="tab"
-                aria-selected={selectedConcentrate === cat.id}
-                className={`rp-filter-chip ${selectedConcentrate === cat.id ? 'rp-filter-chip--active' : ''}`}
-                onClick={() => setSelectedConcentrate(cat.id)}
-                onMouseEnter={() => setHoveredCategory(cat.id)}
-                onMouseLeave={() => setHoveredCategory(null)}
-              >
-                {cat.label}
-              </button>
-            ))}
+          {/* Controls Row: Filter Tabs + Search */}
+          <div className="rp-controls-row">
+            {/* Filter tabs */}
+            <div className="rp-filter-bar" role="tablist" aria-label="Filter by cold brew variety">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  role="tab"
+                  aria-selected={selectedConcentrate === cat.id}
+                  className={`rp-filter-chip ${selectedConcentrate === cat.id ? 'rp-filter-chip--active' : ''}`}
+                  onClick={() => setSelectedConcentrate(cat.id)}
+                  onMouseEnter={() => setHoveredCategory(cat.id)}
+                  onMouseLeave={() => setHoveredCategory(null)}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Search Bar */}
+            <div className="recipes-search">
+              <div className="recipes-search__wrapper">
+                <span className="recipes-search__icon-wrap">
+                  <Icon name="search" size={16} />
+                </span>
+                <input
+                  id="recipes-search"
+                  type="search"
+                  placeholder="Search recipes (e.g. Mocha, Latte, Jaggery...)"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="recipes-search__input"
+                  aria-label="Search recipes"
+                />
+              </div>
+            </div>
           </div>
 
           {/* Category description display with smooth height/opacity transition */}

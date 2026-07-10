@@ -50,8 +50,8 @@ const COFFEE_CUP_IMAGES = {
     mobileScale: 0.54,
     mobileY: -55,
   },
-  ESPRESSO: {
-    url: '/images/expresso.webp',
+    ESPRESSO: {
+      url: '/images/Esspresso.png',
     mobileScale: 0.48,
     mobileY: -60,
   },

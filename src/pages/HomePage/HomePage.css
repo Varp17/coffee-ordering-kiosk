@@ -78,6 +78,20 @@
   color: #b8dffe;
 }
 
+.homepage-react-hero__cursor {
+  display: inline-block;
+  margin-left: 0.05em;
+  color: var(--color-primary, #1844AB);
+  font-family: 'Heathergreen', sans-serif;
+  font-weight: normal;
+  animation: homepage-hero-cursor-blink 0.6s step-end infinite;
+}
+
+@keyframes homepage-hero-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .homepage-react-hero__beans-svg {
   position: absolute;
   top: 0;

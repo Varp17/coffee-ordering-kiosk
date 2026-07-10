@@ -395,6 +395,7 @@ function SkipHomepageMiddleFlow() {
   const [whyVisible, setWhyVisible] = useState(false);
   const videoSentinelRef = useRef(null);
   const [videoExpanded, setVideoExpanded] = useState(false);
+  const hardPartRef = useRef(null);
 
   useEffect(() => {
     const section = whySectionRef.current;
@@ -475,20 +476,46 @@ function SkipHomepageMiddleFlow() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const section = hardPartRef.current;
+    if (!section) return undefined;
+
+    const video = section.querySelector('.skip-hard-part__video');
+
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const sectionHeight = rect.height;
+      const totalRange = viewportHeight + sectionHeight;
+      const currentScroll = viewportHeight - rect.top;
+      const progress = Math.max(0, Math.min(1, currentScroll / totalRange));
+
+      const objectY = 50 - progress * 45;
+      video.style.objectPosition = `42% ${objectY}%`;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <>
-      <section className="skip-hard-part" aria-labelledby="skip-hard-part-title">
-        <video
-          className="skip-hard-part__video"
-          src="/Videos/coffeeswirl2.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-        />
-        <div className="skip-hard-part__shade" />
+      <section ref={hardPartRef} className="skip-hard-part" aria-labelledby="skip-hard-part-title">
+        <div className="skip-hard-part__media">
+          <video
+            className="skip-hard-part__video"
+            src="/Videos/coffeeswirl2.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          />
+          <div className="skip-hard-part__shade" />
+        </div>
         <svg className="skip-hard-part__top-wave" viewBox="0 0 1512 230" preserveAspectRatio="none" aria-hidden="true">
           <defs>
             <path

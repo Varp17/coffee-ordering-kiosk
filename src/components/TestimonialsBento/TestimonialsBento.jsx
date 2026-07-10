@@ -109,8 +109,8 @@ export default function TestimonialsBento() {
           <span className="bento-video__play" aria-hidden="true" />
         </button>
 
-        <article className="bento-card bento-facebook">
-          <p>Finally, a coffee that doesn't taste like my wallet made a bad decision.</p>
+        <article className="bento-card bento-facebook bento-social">
+          <p className="social-body">Finally a coffee brand that doesn't judge my weird combinations.</p>
           <div className="social-footer">
             <span className="social-handle">@bangalorebuzz</span>
             <span className="social-logo social-logo--facebook">facebook</span>
@@ -119,6 +119,14 @@ export default function TestimonialsBento() {
 
         <article className="bento-card bento-ad">
           <img src="/images/image10_366_1172.png" alt="Coffee should look like this. Water should not." />
+        </article>
+
+        <article className="bento-card bento-google bento-social">
+          <p className="social-body">Finally a coffee brand that doesn't judge my weird combinations.</p>
+          <div className="social-footer">
+            <span className="social-handle">Khushi P.</span>
+            <span className="social-logo social-logo--google">Google Maps</span>
+          </div>
         </article>
 
         <SocialCard review={reviews[0]} type="twitter" cycle={reviewIndex} />

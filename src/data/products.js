@@ -1,80 +1,63 @@
 // =====================================================
 // CHILLD COFFEE - Concentrate Product Catalog
+// Source: CHILLD Product Detail Catalog (July 2026)
 // =====================================================
 
 const CLASSIC_IMAGE = '/images/Classic-concentrate.png';
 const KAPPI_IMAGE = '/images/Kappi-concentrate.png';
 const BOLD_IMAGE = '/bold-concentrate-bottle.png';
-const PLACEHOLDER_IMAGE = '/bold-concentrate-bottle.png';
 
-const BOTTLE_SIZES = [
-  { id: '250ml', label: '250 ml', ml: 250, modifier: 0 },
+const size = (id, label, ml, modifier = 0) => [
+  { id, label, ml, modifier },
 ];
 
-const galleryFor = (slug, name) => {
-  let img = CLASSIC_IMAGE;
-  if (slug === 'sif') {
-    img = KAPPI_IMAGE;
-  } else if (slug === 'coffee-70-30') {
-    img = BOLD_IMAGE;
-  }
-  return [
-    {
-      id: `${slug}-front`,
-      label: 'Bottle front',
-      src: img,
-      alt: `${name} bottle front`,
-    },
-    {
-      id: `${slug}-label`,
-      label: 'Label detail',
-      src: img,
-      alt: `${name} label detail`,
-    },
-    {
-      id: `${slug}-serve`,
-      label: 'Serving idea',
-      src: img,
-      alt: `${name} serving suggestion`,
-    },
-    {
-      id: `${slug}-lifestyle`,
-      label: 'Lifestyle shot',
-      src: img,
-      alt: `${name} lifestyle shot`,
-    },
-  ];
-};
+// The catalog's image columns are intentionally not used. Until dedicated
+// assets exist for every new variant, use only product imagery already in the
+// repository and expose a single real image instead of duplicate thumbnails.
+const singleImageGallery = (id, name, image) => [
+  {
+    id: `${id}-image`,
+    label: 'Product image',
+    src: image,
+    alt: name,
+  },
+];
 
 export const CATEGORIES = [
   { id: 'all', label: 'All Products', icon: 'All' },
-  { id: 'coffee-50-50', label: 'Classic', icon: '50' },
-  { id: 'coffee-70-30', label: 'Bold', icon: '70' },
-  { id: 'sif', label: 'Kaapi', icon: 'SF' },
-  { id: 'cascara', label: 'Cascara', icon: 'CS' },
+  { id: 'coffee-50-50', label: 'Bold', icon: 'BD' },
+  { id: 'coffee-arabica', label: 'Classic', icon: 'CL' },
+  { id: 'coffee-70-30', label: 'Flex', icon: 'FX' },
+  { id: 'sif', label: 'Kaapi', icon: 'KA' },
+  { id: 'spice', label: 'Spice', icon: 'SP' },
+  { id: 'sampler', label: 'Discovery Kit', icon: 'Kit' },
 ];
 
 export const PRODUCTS = [
   {
+    order: 1,
     id: 'coffee-50-50-concentrate',
     category: 'coffee-50-50',
-    concentrateType: 'Classic',
-    name: 'Classic Concentrate',
+    concentrateType: 'Bold',
+    name: 'Bold Concentrate',
     tagline: 'Balanced Arabica and Robusta for everyday cold coffee.',
     description:
-      'A smooth, dependable cold brew concentrate designed for creamy lattes, classic cold coffee, and quick cafe-style serves at home or in-store.',
-    image: CLASSIC_IMAGE,
-    gallery: galleryFor('coffee-50-50', 'Classic Concentrate'),
-    basePrice: 399,
-    sizes: BOTTLE_SIZES,
-    badges: ['featured', 'classic'],
-    tags: ['coffee 50:50', 'cold brew', 'balanced', 'latte', 'concentrate'],
+      'Built for that extra punch. This strong concentrate holds its flavor in milk-heavy lattes, jaggery blends, mocha drinks, and dessert-style cold coffee.',
+    image: BOLD_IMAGE,
+    gallery: singleImageGallery('coffee-50-50-concentrate', 'Bold Concentrate', BOLD_IMAGE),
+    basePrice: 390,
+    defaultSizeId: '325ml',
+    sizes: size('325ml', '325 ml', 325),
+    availability: 'Available',
+    badges: ['bold', 'bestseller'],
+    tags: ['bold', 'cold brew', 'balanced', 'milk', 'juices', 'sweet'],
     ingredients: ['Cold brew coffee concentrate', 'Arabica coffee', 'Robusta coffee', 'Filtered water'],
     caffeine: 'High',
-    servings: '8-10 serves',
-    brewRatio: '1:3 with milk or water',
+    servings: '4-6 serves',
+    brewRatio: '1:2 with milk or oatmilk',
     roast: 'Medium dark',
     beanProfile: '50% Arabica, 50% Robusta',
+    bestMix: '1:2 with milk or oatmilk',
     reviews: {
       rating: 4.8,
       count: 126,
@@ -84,59 +67,69 @@ export const PRODUCTS = [
         'Balanced taste, not too bitter, great with dairy milk.',
       ],
     },
+    orderButtonText: 'We will be live soon to place order',
     isAvailable: true,
   },
   {
+    order: 2,
     id: 'classic-cb-concentrate',
-    category: 'coffee-50-50',
+    category: 'coffee-arabica',
     concentrateType: 'Classic',
-    name: 'Classic Cold Brew',
-    tagline: 'Clean, mellow, and slow-steeped for a lighter finish.',
+    name: 'Classic CB Concentrate',
+    tagline: '100% Arabica from Coorg, specially blended and roasted for a bright and clean flavour',
     description:
-      'A classic cold brew profile made for drinkers who want coffee clarity, low bitterness, and a flexible base for cold brew, tonics, and black serves.',
+      'A classic cold brew profile made for those who want coffee clarity, low bitterness, and a flexible base for cold brew, tonics, and black serves.',
     image: CLASSIC_IMAGE,
-    gallery: galleryFor('classic-cb', 'Classic Cold Brew'),
-    basePrice: 429,
-    sizes: BOTTLE_SIZES,
-    badges: ['smooth', 'best-value'],
-    tags: ['classic cb', 'cold brew', 'smooth', 'black coffee', 'concentrate'],
+    gallery: singleImageGallery('classic-cb-concentrate', 'Classic CB Concentrate', CLASSIC_IMAGE),
+    basePrice: 390,
+    defaultSizeId: '325ml',
+    sizes: size('325ml', '325 ml', 325),
+    availability: 'Available',
+    badges: ['smooth', 'black'],
+    tags: ['classic cb', 'cold brew', 'smooth', 'black coffee'],
     ingredients: ['Cold brew coffee concentrate', 'Arabica coffee', 'Filtered water'],
     caffeine: 'Medium High',
-    servings: '8-10 serves',
-    brewRatio: '1:3 with water, tonic, or milk',
+    servings: '4-6 serves',
+    brewRatio: '1:1.5 with water or tonic',
     roast: 'Medium plus',
     beanProfile: 'Arabica washed and natural blend',
+    bestMix: '1:1.5 with water or tonic',
     reviews: {
       rating: 4.7,
       count: 94,
       summary: 'A clean concentrate that works well for black cold brew.',
       quotes: [
         'Very smooth over ice, no harsh aftertaste.',
-        'Perfect for simple cold brew and tonic recipes.',
+        'Perfect for original cold brew and tonic recipes.',
       ],
     },
+    orderButtonText: 'We will be live soon to place order',
     isAvailable: true,
   },
   {
+    order: 3,
     id: 'coffee-70-30-concentrate',
     category: 'coffee-70-30',
-    concentrateType: 'Bold',
-    name: 'Bold Concentrate',
-    tagline: 'A stronger cup with deeper body and bolder coffee notes.',
+    concentrateType: 'Flex',
+    name: 'Flex Concentrate',
+    tagline: 'An all-rounder, good for the strong cup and also to get creative with recipes.',
     description:
-      'Built for recipes that need more punch. This bold concentrate holds its flavor in milk-heavy lattes, jaggery blends, mocha drinks, and dessert-style cold coffee.',
+      'A smooth, dependable cold brew concentrate designed for creamy lattes, Vietnamese shakes, and quick cafe-style serves at home or @work.',
     image: BOLD_IMAGE,
-    gallery: galleryFor('coffee-70-30', 'Bold Concentrate'),
-    basePrice: 449,
-    sizes: BOTTLE_SIZES,
-    badges: ['bold', 'bestseller'],
-    tags: ['coffee 70:30', 'bold', 'strong', 'jaggery latte', 'concentrate'],
-    ingredients: ['Bold cold brew coffee concentrate', 'Arabica coffee', 'Robusta coffee', 'Filtered water'],
-    caffeine: 'Very High',
-    servings: '8-10 serves',
-    brewRatio: '1:3 with milk for a bold latte',
+    gallery: singleImageGallery('coffee-70-30-concentrate', 'Flex Concentrate', BOLD_IMAGE),
+    basePrice: 390,
+    defaultSizeId: '325ml',
+    sizes: size('325ml', '325 ml', 325),
+    availability: 'Coming Soon',
+    badges: ['balanced', 'versatile'],
+    tags: ['flex', 'bold', 'strong', 'jaggery latte', 'orange cold brew'],
+    ingredients: ['Cold brew coffee concentrate', 'Arabica coffee', 'Robusta coffee', 'Filtered water'],
+    caffeine: 'High',
+    servings: '4-6 serves',
+    brewRatio: '1:2 with water or 1:2 with milk for a bold latte',
     roast: 'Medium dark',
     beanProfile: '70% Arabica, 30% Robusta',
+    bestMix: '1:2 with milk for a bold cold coffee',
     reviews: {
       rating: 4.9,
       count: 158,
@@ -146,28 +139,33 @@ export const PRODUCTS = [
         'Strong, rich, and very consistent for daily cold coffee.',
       ],
     },
-    isAvailable: true,
+    orderButtonText: 'We will be live soon to place order',
+    isAvailable: false,
   },
   {
+    order: 4,
     id: 'sif-concentrate',
     category: 'sif',
     concentrateType: 'Kaapi',
     name: 'Kaapi Concentrate',
     tagline: 'South Indian filter-inspired depth in a chilled format.',
     description:
-      'A nostalgic South Indian filter coffee style concentrate with a fuller roast character, made for chilled kaapi, condensed milk serves, and rich cafe recipes.',
+      'A nostalgic South Indian filter coffee style concentrate, made for chilled kaapi, condensed milk serves, and rich cafe recipes.',
     image: KAPPI_IMAGE,
-    gallery: galleryFor('sif', 'Kaapi Concentrate'),
-    basePrice: 459,
-    sizes: BOTTLE_SIZES,
-    badges: ['regional', 'rich'],
-    tags: ['sif', 'south indian filter', 'kaapi', 'condensed milk', 'concentrate'],
-    ingredients: ['Coffee concentrate', 'South Indian filter style coffee blend', 'Filtered water'],
-    caffeine: 'High',
-    servings: '8-10 serves',
+    gallery: singleImageGallery('sif-concentrate', 'Kaapi Concentrate', KAPPI_IMAGE),
+    basePrice: 390,
+    defaultSizeId: '325ml',
+    sizes: size('325ml', '325 ml', 325),
+    availability: 'Available',
+    badges: ['traditional', 'rich'],
+    tags: ['sif', 'south indian filter', 'cold kaapi', 'milk', 'sweet'],
+    ingredients: ['Coffee concentrate', 'Arabica coffee', 'Robusta coffee', 'Chicory', 'Filtered water'],
+    caffeine: 'Very High',
+    servings: '4-6 serves',
     brewRatio: '1:3 with milk or condensed milk blend',
-    roast: 'Dark',
+    roast: 'Medium dark',
     beanProfile: 'Filter coffee style blend',
+    bestMix: '1:3 with milk or condensed milk blend',
     reviews: {
       rating: 4.8,
       count: 87,
@@ -177,44 +175,77 @@ export const PRODUCTS = [
         'Great with condensed milk and ice.',
       ],
     },
+    orderButtonText: 'We will be live soon to place order',
     isAvailable: true,
   },
   {
-    id: 'cascara-concentrate',
-    category: 'cascara',
-    concentrateType: 'Cascara',
-    name: 'Cascara Coffee Cherry Concentrate',
-    tagline: 'A lighter coffee cherry base for fruity refreshers.',
+    order: 5,
+    id: 'spice-concentrate',
+    category: 'spice',
+    concentrateType: 'Spice',
+    name: 'Spice CB Concentrate',
+    tagline: 'A hint of Indian spices in smooth authentic coffee',
     description:
-      'A bright cascara concentrate made from coffee cherry notes. Use it for iced tea-style refreshers, citrus coolers, tonics, and lower-caffeine signature drinks.',
-    image: PLACEHOLDER_IMAGE,
-    gallery: galleryFor('cascara', 'Cascara Coffee Cherry Concentrate'),
-    basePrice: 379,
-    sizes: BOTTLE_SIZES,
-    badges: ['refreshing', 'low-caffeine'],
-    tags: ['cascara', 'coffee cherry', 'tonic', 'iced tea', 'concentrate'],
-    ingredients: ['Cascara concentrate', 'Coffee cherry extract', 'Filtered water'],
-    caffeine: 'Low',
-    servings: '8-10 serves',
-    brewRatio: '1:4 with soda, tonic, or chilled water',
-    roast: 'Coffee cherry infusion',
-    beanProfile: 'Cascara coffee cherry',
+      "A twist to the classic version, surprise yourself with this confluence of flavours. Let's get boring out!",
+    image: CLASSIC_IMAGE,
+    gallery: singleImageGallery('spice-concentrate', 'Spice CB Concentrate', CLASSIC_IMAGE),
+    basePrice: 425,
+    defaultSizeId: '325ml',
+    sizes: size('325ml', '325 ml', 325),
+    availability: 'Coming Soon',
+    badges: ['refreshing', 'aromatic'],
+    tags: ['spices', 'classic coffee', 'tonic', 'jaggery'],
+    ingredients: ['Cold brew coffee concentrate', 'Arabica coffee', 'traditional Indian Spices, Filtered water'],
+    caffeine: 'High',
+    servings: '4-6 serves',
+    brewRatio: '1:2 with soda, tonic, or chilled water',
+    roast: 'Medium',
+    beanProfile: 'AA Arabica washed',
+    bestMix: '1:2 with soda, tonic, or chilled water',
+    reviews: null,
+    orderButtonText: 'We will be live soon to place order',
+    isAvailable: false,
+  },
+  {
+    order: 6,
+    id: 'sampler-concentrate',
+    category: 'sampler',
+    concentrateType: 'Classic, Bold and Kaapi',
+    name: 'Discovery Kit',
+    tagline: 'Discover your preference or stock up for the mood swings',
+    description: '3 Cold Brew Concentrate samples in a single pack',
+    image: CLASSIC_IMAGE,
+    gallery: singleImageGallery('sampler-concentrate', 'Discovery Kit', CLASSIC_IMAGE),
+    basePrice: 725,
+    defaultSizeId: '540ml',
+    sizes: size('540ml', '540 ml', 540),
+    availability: 'Coming Soon',
+    badges: ['sampler', 'all-in-one'],
+    tags: ['classic', 'bold', 'kaapi', 'trial', 'discover'],
+    ingredients: ['Coffee concentrate', 'Arabica coffee', 'Robusta coffee', 'Chicory', 'Filtered water'],
+    caffeine: 'High',
+    servings: '12-18 serves',
+    brewRatio: '',
+    roast: 'Medium plus / Medium dark',
+    beanProfile: 'Free branded shot glass',
+    bestMix: '',
     reviews: {
-      rating: 4.6,
-      count: 73,
-      summary: 'A fruit-forward concentrate for refreshing non-latte recipes.',
+      rating: 5.8,
+      count: 88,
+      summary: 'Popular for kaapi-style cold coffee and richer milk recipes.',
       quotes: [
-        'Light, refreshing, and very different from regular coffee.',
-        'Works beautifully with tonic and citrus.',
+        'Tastes close to filter coffee but works cold.',
+        'Great with condensed milk and ice.',
       ],
     },
-    isAvailable: true,
+    orderButtonText: 'We will be live soon to place order',
+    isAvailable: false,
   },
 ];
 
 // The custom builder should not route to removed cafe drinks.
 export const KNOWN_COMBOS = [];
 
-export const getProductById = (id) => PRODUCTS.find((p) => p.id === id);
-export const getProductsByCategory = (cat) =>
-  cat === 'all' ? PRODUCTS : PRODUCTS.filter((p) => p.category === cat);
+export const getProductById = (id) => PRODUCTS.find((product) => product.id === id);
+export const getProductsByCategory = (category) =>
+  category === 'all' ? PRODUCTS : PRODUCTS.filter((product) => product.category === category);

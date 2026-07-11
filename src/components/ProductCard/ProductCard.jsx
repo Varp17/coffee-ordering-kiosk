@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Star } from 'lucide-react';
-import { useCartStore } from '@/store/useCartStore';
 import { formatPrice } from '@/utils/coffeeBuilder';
 import SizeSelector from '@/components/SizeSelector/SizeSelector';
 import { cardHover } from '@/utils/animations';
@@ -20,18 +19,24 @@ const BADGE_MAP = {
   rich: { label: 'Rich', color: '#8A3B2A' },
   refreshing: { label: 'Refreshing', color: '#2E8B74' },
   'low-caffeine': { label: 'Low Caffeine', color: '#6B7D8F' },
+  black: { label: 'Black', color: '#344054' },
+  balanced: { label: 'Balanced', color: '#5F6F52' },
+  versatile: { label: 'Versatile', color: '#4267A9' },
+  traditional: { label: 'Traditional', color: '#A35F22' },
+  aromatic: { label: 'Aromatic', color: '#7E587E' },
+  sampler: { label: 'Sampler', color: '#235789' },
+  'all-in-one': { label: 'All in One', color: '#6A4C93' },
 };
 
 export default function ProductCard({ product, compact = false }) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
-  const [isAdding, setIsAdding] = useState(false);
-  const addItem = useCartStore((s) => s.addItem);
   const navigate = useNavigate();
 
   const price = product.basePrice + (selectedSize?.modifier || 0);
   const image = product.gallery?.[0]?.src || product.image;
   const rating = product.reviews?.rating;
   const reviewCount = product.reviews?.count;
+  const hasRating = Number.isFinite(rating);
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -61,6 +66,7 @@ export default function ProductCard({ product, compact = false }) {
           src={image}
           alt={product.name}
           loading="lazy"
+          decoding="async"
           className="product-card__img"
         />
         <div className="product-card__badges">
@@ -77,6 +83,9 @@ export default function ProductCard({ product, compact = false }) {
         <span className={`product-card__caffeine caffeine--${product.caffeine?.toLowerCase().replace(/\s/g, '-')}`}>
           Caffeine: {product.caffeine}
         </span>
+        <span className={`product-card__availability ${product.isAvailable ? 'is-available' : 'is-coming-soon'}`}>
+          {product.availability}
+        </span>
       </div>
 
       <div className="product-card__body">
@@ -87,13 +96,13 @@ export default function ProductCard({ product, compact = false }) {
           )}
         </div>
 
-        {rating && (
-          <div className="product-card__reviews" aria-label={`${rating} out of 5 from ${reviewCount} reviews`}>
+        {hasRating ? (
+          <div className="product-card__reviews" aria-label={`Rated ${rating} from ${reviewCount} reviews`}>
             <Star size={14} fill="currentColor" />
             <strong>{rating.toFixed(1)}</strong>
             <span>({reviewCount} reviews)</span>
           </div>
-        )}
+        ) : null}
 
         <SizeSelector
           sizes={product.sizes}
@@ -108,22 +117,13 @@ export default function ProductCard({ product, compact = false }) {
             <strong>{formatPrice(price)}</strong>
           </div>
           <motion.button
-            className={`product-card__add-btn ${isAdding ? 'adding' : ''}`}
+            className="product-card__add-btn"
             onClick={handleAddToCart}
             whileTap={{ scale: 0.9 }}
-            aria-label={`Add ${product.name} to cart`}
+            aria-label={`${product.orderButtonText}: ${product.name}`}
+            type="button"
           >
-            {isAdding ? (
-              <motion.span
-                key="check"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-              >
-                OK
-              </motion.span>
-            ) : (
-              <ShoppingBag size={16} />
-            )}
+            <ShoppingBag size={16} />
           </motion.button>
         </div>
       </div>

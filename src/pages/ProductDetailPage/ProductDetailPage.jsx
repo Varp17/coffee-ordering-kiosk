@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ShoppingBag, AlertCircle, Plus, Minus, Star } from 'lucide-react';
+import { ArrowLeft, AlertCircle, Plus, Minus, Star } from 'lucide-react';
 import { getProductById } from '@/data/products';
 import { ADDONS } from '@/data/recommendations';
-import { useCartStore } from '@/store/useCartStore';
 import { formatPrice } from '@/utils/coffeeBuilder';
 import SizeSelector from '@/components/SizeSelector/SizeSelector';
-import toast from 'react-hot-toast';
 import './ProductDetailPage.css';
 
 const formatBadge = (badge) =>
@@ -19,7 +17,6 @@ const formatBadge = (badge) =>
 export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addItem } = useCartStore();
 
   const product = getProductById(id);
   const [selectedSizeId, setSelectedSizeId] = useState(null);
@@ -43,7 +40,7 @@ export default function ProductDetailPage() {
   const gallery = product.gallery?.length
     ? product.gallery
     : [{ id: `${product.id}-image`, label: 'Product image', src: product.image, alt: product.name }];
-  const defaultSize = product.sizes.find((s) => s.id === '250ml') || product.sizes[0];
+  const defaultSize = product.sizes.find((size) => size.id === product.defaultSizeId) || product.sizes[0];
   const selectedSize = product.sizes.find((s) => s.id === selectedSizeId) || defaultSize;
   const activeImage = gallery.find((item) => item.id === activeImageId) || gallery[0];
 
@@ -52,11 +49,11 @@ export default function ProductDetailPage() {
   );
 
   const toggleAddon = (addon) => {
-    if (selectedAddons.some((a) => a.id === addon.id)) {
-      setSelectedAddons(selectedAddons.filter((a) => a.id !== addon.id));
-    } else {
-      setSelectedAddons([...selectedAddons, addon]);
-    }
+    setSelectedAddons((currentAddons) =>
+      currentAddons.some((current) => current.id === addon.id)
+        ? currentAddons.filter((current) => current.id !== addon.id)
+        : [...currentAddons, addon]
+    );
   };
 
   const handleQtyChange = (val) => {
@@ -70,24 +67,7 @@ export default function ProductDetailPage() {
   const unitPrice = sizePrice + addonsTotal;
   const totalPrice = unitPrice * qty;
   const rating = product.reviews?.rating;
-
-  const handleAddToCart = () => {
-    const cartItem = {
-      id: product.id,
-      name: product.name,
-      price: unitPrice,
-      size: selectedSize.id,
-      image: product.image,
-      category: product.category,
-      isCustom: false,
-      qty,
-      addons: selectedAddons.map((a) => ({ id: a.id, name: a.name, price: a.price })),
-    };
-
-    addItem(cartItem);
-    toast.success(`${product.name} added to cart!`);
-    navigate('/menu');
-  };
+  const hasRating = Number.isFinite(rating);
 
   return (
     <div className="product-detail-page page-wrapper">
@@ -100,15 +80,18 @@ export default function ProductDetailPage() {
           {/* Mobile Header (visible only on mobile) */}
           <div className="product-detail__header product-detail__header--mobile">
             <span className="product-detail__category">{product.concentrateType}</span>
+            <span className={`product-detail__availability ${product.isAvailable ? 'is-available' : 'is-coming-soon'}`}>
+              {product.availability}
+            </span>
             <h1 className="product-detail__title">{product.name}</h1>
             <p className="product-detail__tagline">{product.tagline}</p>
-            {rating && (
-              <div className="product-detail__rating" aria-label={`${rating} out of 5 from ${product.reviews.count} reviews`}>
+            {hasRating ? (
+              <div className="product-detail__rating" aria-label={`Rated ${rating} from ${product.reviews.count} reviews`}>
                 <Star size={16} fill="currentColor" />
                 <strong>{rating.toFixed(1)}</strong>
                 <span>{product.reviews.count} reviews</span>
               </div>
-            )}
+            ) : null}
           </div>
 
           {/* ── PRODUCT IMAGES & SPECS ── */}
@@ -139,21 +122,23 @@ export default function ProductDetailPage() {
               )}
             </motion.div>
 
-            <div className="product-detail__gallery" aria-label="Product images">
-              {gallery.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={`product-detail__thumb ${activeImage.id === item.id ? 'product-detail__thumb--active' : ''}`}
-                  onClick={() => setActiveImageId(item.id)}
-                  aria-label={`View ${item.label}`}
-                  aria-pressed={activeImage.id === item.id}
-                >
-                  <img src={item.src} alt="" loading="lazy" />
-                  <span>{item.label}</span>
-                </button>
-              ))}
-            </div>
+            {gallery.length > 1 ? (
+              <div className="product-detail__gallery" aria-label="Product images">
+                {gallery.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`product-detail__thumb ${activeImage.id === item.id ? 'product-detail__thumb--active' : ''}`}
+                    onClick={() => setActiveImageId(item.id)}
+                    aria-label={`View ${item.label}`}
+                    aria-pressed={activeImage.id === item.id}
+                  >
+                    <img src={item.src} alt="" loading="lazy" decoding="async" />
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+              </div>
+            ) : null}
 
             <div className="product-detail__specs">
               <div className="spec-tile">
@@ -166,7 +151,7 @@ export default function ProductDetailPage() {
               </div>
               <div className="spec-tile">
                 <span className="spec-title">Ratio</span>
-                <span className="spec-value">{product.brewRatio}</span>
+                <span className="spec-value">{product.brewRatio || '—'}</span>
               </div>
             </div>
           </div>
@@ -180,15 +165,18 @@ export default function ProductDetailPage() {
             >
               <div className="product-detail__header product-detail__header--desktop">
                 <span className="product-detail__category">{product.concentrateType}</span>
+                <span className={`product-detail__availability ${product.isAvailable ? 'is-available' : 'is-coming-soon'}`}>
+                  {product.availability}
+                </span>
                 <h1 className="product-detail__title">{product.name}</h1>
                 <p className="product-detail__tagline">{product.tagline}</p>
-                {rating && (
-                  <div className="product-detail__rating" aria-label={`${rating} out of 5 from ${product.reviews.count} reviews`}>
+                {hasRating ? (
+                  <div className="product-detail__rating" aria-label={`Rated ${rating} from ${product.reviews.count} reviews`}>
                     <Star size={16} fill="currentColor" />
                     <strong>{rating.toFixed(1)}</strong>
                     <span>{product.reviews.count} reviews</span>
                   </div>
-                )}
+                ) : null}
               </div>
               <p className="product-detail__desc">{product.description}</p>
             </motion.div>
@@ -245,7 +233,7 @@ export default function ProductDetailPage() {
                 </div>
                 <div>
                   <span>Best Mix</span>
-                  <strong>{product.brewRatio}</strong>
+                  <strong>{product.bestMix || '—'}</strong>
                 </div>
               </div>
               <div className="ingredients-pills">
@@ -258,7 +246,7 @@ export default function ProductDetailPage() {
             </div>
 
             {/* ── REVIEWS ── */}
-            {product.reviews && (
+            {product.reviews ? (
               <div className="product-detail__section product-detail__reviews">
                 <h3 className="section-title-small">Reviews</h3>
                 <p>{product.reviews.summary}</p>
@@ -268,7 +256,7 @@ export default function ProductDetailPage() {
                   ))}
                 </div>
               </div>
-            )}
+            ) : null}
 
             {/* ── ORDER ACTION BOX ── */}
             <div className="product-detail__order-box">
@@ -296,12 +284,12 @@ export default function ProductDetailPage() {
                 <span className="price-val">{formatPrice(totalPrice)}</span>
               </div>
 
-              <button 
-                className="btn btn-primary order-add-btn disabled" 
-                disabled={true} 
+              <button
+                className="btn btn-primary order-add-btn disabled"
+                disabled
                 style={{ opacity: 0.6, cursor: 'not-allowed' }}
               >
-                We will be live soon to place order
+                {product.orderButtonText}
               </button>
             </div>
           </div>

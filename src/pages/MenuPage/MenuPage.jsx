@@ -6,10 +6,8 @@ import { PRODUCTS, CATEGORIES } from '@/data/products';
 import { containerVariants, itemVariants } from '@/utils/animations';
 import './MenuPage.css';
 
-const CONCENTRATE_RANK = { Classic: 0, Bold: 1, Kaapi: 2 };
-
 function rankProduct(product) {
-  return CONCENTRATE_RANK[product.concentrateType] ?? 99;
+  return product.order ?? Number.MAX_SAFE_INTEGER;
 }
 
 export default function MenuPage() {

@@ -10,7 +10,6 @@ const PRODUCT_MAPPING = {
   'classic-cb-concentrate': '165c42ad-1e76-4724-9b16-74d9781ff29a',
   'coffee-70-30-concentrate': '42afdd2d-0682-421b-97d6-fbebb56dde61',
   'sif-concentrate': '3e3390c7-3d82-417b-b472-59b46842936a',
-  'cascara-concentrate': '2081f9b4-842b-4ff7-af4e-341f4ebce608',
 };
 
 const FALLBACK_PRODUCT_ID = PRODUCT_MAPPING['coffee-50-50-concentrate'];

@@ -1006,7 +1006,7 @@
   color: #1f2a44;
   font-family: var(--font-heading);
   font-size: clamp(1.5rem, 1.8vw, 2.4rem);
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1.08;
 }
 
@@ -1016,7 +1016,7 @@
   color: rgba(31, 42, 68, 0.82);
   font-size: clamp(0.9rem, 1vw, 1.2rem);
   font-style: italic;
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.32;
 }
 
@@ -2933,7 +2933,7 @@
   color: #1f2a44;
   font-family: var(--font-heading);
   font-size: 2.2rem;
-  font-weight: 900;
+  font-weight: 650;
   line-height: 1.12;
   text-align: center;
 }
@@ -3085,7 +3085,7 @@
   margin: 0;
   color: #1844ab;
   font-family: var(--font-heading);
-  font-weight: 950;
+  font-weight: 650;
   letter-spacing: 0;
 }
 
@@ -3128,7 +3128,7 @@
   color: #1844ab;
   font-family: var(--font-heading);
   font-size: clamp(1.65rem, 2.2vw, 2.25rem);
-  font-weight: 900;
+  font-weight: 650;
   line-height: 1;
 }
 

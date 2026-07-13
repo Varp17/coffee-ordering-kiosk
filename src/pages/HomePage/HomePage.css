@@ -199,8 +199,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  background: #ffffff;
-  color: var(--color-primary, #1844AB);
+  background: transparent;
+  color: #ffffff;
   /* Brand primary blue */
   border-radius: 9999px;
   padding: 0.6rem 1.6rem;
@@ -210,7 +210,7 @@
   line-height: 1;
   pointer-events: none;
   white-space: nowrap;
-  box-shadow: 0 8px 32px rgba(31, 42, 68, 0.15);
+  box-shadow: none;
 }
 
 .homepage-react-hero__dots {
@@ -3187,11 +3187,12 @@
 .lower-flow-b2b__visual img {
   position: absolute;
   right: 0;
-  bottom: -1.5rem;
+  padding-right: 3rem;
+  bottom: 1rem;
   display: block;
   width: auto;
-  height: 108%;
-  max-height: 110%;
+  height: 95%;
+  max-height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 20px 30px rgba(31, 42, 68, 0.15));
 }

@@ -96,49 +96,51 @@ export default function ProductDetailPage() {
 
           {/* ── PRODUCT IMAGES & SPECS ── */}
           <div className="product-detail__image-area">
-            <motion.div
-              className="product-detail__img-wrapper"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <img
-                src={activeImage.src}
-                alt={activeImage.alt}
-                className="product-detail__img"
-                fetchPriority="high"
-                decoding="async"
-                width="960"
-                height="960"
-              />
-              {product.badges?.length > 0 && (
-                <div className="product-detail__badge-stack">
-                  {product.badges.slice(0, 3).map((badge) => (
-                    <span key={badge} className={`product-detail__badge badge--${badge}`}>
-                      {formatBadge(badge)}
-                    </span>
+            <div className="product-detail__image-container">
+              {gallery.length > 1 ? (
+                <div className="product-detail__gallery" aria-label="Product images">
+                  {gallery.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className={`product-detail__thumb ${activeImage.id === item.id ? 'product-detail__thumb--active' : ''}`}
+                      onClick={() => setActiveImageId(item.id)}
+                      aria-label={`View ${item.label}`}
+                      aria-pressed={activeImage.id === item.id}
+                    >
+                      <img src={item.src} alt="" loading="lazy" decoding="async" />
+                      <span className="product-detail__thumb-label">{item.label}</span>
+                    </button>
                   ))}
                 </div>
-              )}
-            </motion.div>
+              ) : null}
 
-            {gallery.length > 1 ? (
-              <div className="product-detail__gallery" aria-label="Product images">
-                {gallery.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`product-detail__thumb ${activeImage.id === item.id ? 'product-detail__thumb--active' : ''}`}
-                    onClick={() => setActiveImageId(item.id)}
-                    aria-label={`View ${item.label}`}
-                    aria-pressed={activeImage.id === item.id}
-                  >
-                    <img src={item.src} alt="" loading="lazy" decoding="async" />
-                    <span>{item.label}</span>
-                  </button>
-                ))}
-              </div>
-            ) : null}
+              <motion.div
+                className="product-detail__img-wrapper"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <img
+                  src={activeImage.src}
+                  alt={activeImage.alt}
+                  className="product-detail__img"
+                  fetchPriority="high"
+                  decoding="async"
+                  width="960"
+                  height="960"
+                />
+                {product.badges?.length > 0 && (
+                  <div className="product-detail__badge-stack">
+                    {product.badges.slice(0, 3).map((badge) => (
+                      <span key={badge} className={`product-detail__badge badge--${badge}`}>
+                        {formatBadge(badge)}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </div>
 
             <div className="product-detail__specs">
               <div className="spec-tile">

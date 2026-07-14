@@ -53,8 +53,19 @@
   }
 }
 
+.product-detail__image-container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-4);
+  align-items: flex-start;
+  width: 100%;
+}
+
 .product-detail__img-wrapper {
   position: relative;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
   aspect-ratio: 1;
   border-radius: var(--radius-xl);
   overflow: hidden;
@@ -124,45 +135,45 @@
 }
 
 .product-detail__gallery {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: var(--space-3);
+  width: 90px;
+  flex-shrink: 0;
 }
 
 .product-detail__thumb {
   display: flex;
-  min-width: 0;
-  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 1;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2);
+  justify-content: center;
+  padding: var(--space-1);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   border: 1.5px solid var(--color-border-soft);
-  color: var(--color-text-muted);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  text-align: center;
+  cursor: pointer;
   transition: all var(--transition-base);
+  overflow: hidden;
 }
 
 .product-detail__thumb:hover,
 .product-detail__thumb--active {
   border-color: var(--color-primary);
-  color: var(--color-primary-dark);
   background: rgba(198, 124, 78, 0.07);
 }
 
 .product-detail__thumb img {
   width: 100%;
-  aspect-ratio: 1;
+  height: 100%;
   border-radius: var(--radius-sm);
-  object-fit: cover;
+  object-fit: contain;
+  padding: var(--space-1);
   background: var(--color-surface-alt);
 }
 
-.product-detail__thumb span {
-  overflow-wrap: anywhere;
+.product-detail__thumb-label {
+  display: none;
 }
 
 .product-detail__specs {
@@ -505,6 +516,23 @@
   
   .product-detail__header--desktop {
     display: none;
+  }
+
+  .product-detail__image-container {
+    flex-direction: column-reverse;
+    gap: var(--space-3);
+    width: 100%;
+  }
+
+  .product-detail__gallery {
+    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+  }
+
+  .product-detail__thumb {
+    width: 100%;
   }
 
   .product-detail__img-wrapper {

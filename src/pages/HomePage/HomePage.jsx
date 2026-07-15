@@ -313,9 +313,11 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
 
         {skippedWelcome && formulaDetails && (
           <span className="homepage-react-hero__formula-text" role="note">
-            <span className="formula-text__name">{formulaDetails.inputName}</span>
-            <span className="formula-text__operator">+</span>
-            <span className="formula-text__coffee">{formulaDetails.inputCoffee}</span>
+            <span className="formula-text__name">
+              {formulaDetails.inputName.toUpperCase()}
+              <span className="formula-text__operator">'S</span>
+            </span>
+            <span className="formula-text__coffee">{formulaDetails.inputCoffee.toUpperCase()}</span>
 
             <span className="homepage-react-hero__formula-tooltip" role="tooltip">
               <span className="formula-tooltip__title">Hero Title Naming Logic</span>

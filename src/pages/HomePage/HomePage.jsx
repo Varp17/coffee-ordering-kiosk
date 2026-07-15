@@ -13,19 +13,19 @@ const SKIPPED_HERO_SLIDES = [
   {
     name: 'Vandy',
     suffix: 'Brew',
-    formula: '/ "Vandana" + "Cold Brew" /',
+    formula: "Vandana’s Cold Brew",
     image: '/images/COLD BREW.png',
   },
   {
     name: 'Preri',
     suffix: 'Appe',
-    formula: '/ "Prerita" + "Frappe" /',
+    formula: "Prerita’s Frappe",
     image: '/images/frappe.webp',
   },
   {
     name: 'Rishi',
     suffix: 'Latte',
-    formula: '/ "Rishima" + "Latte" /',
+    formula: "Rishima’s Latte",
     image: coffeeCup,
   },
 ];
@@ -313,8 +313,7 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
 
         {skippedWelcome && formulaDetails && (
           <span className="homepage-react-hero__formula-text" role="note">
-            <span className="formula-text__name">{formulaDetails.inputName}</span>
-            <span className="formula-text__operator">+</span>
+            <span className="formula-text__name">{formulaDetails.inputName}’s </span>
             <span className="formula-text__coffee">{formulaDetails.inputCoffee}</span>
 
             <span className="homepage-react-hero__formula-tooltip" role="tooltip">

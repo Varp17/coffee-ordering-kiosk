@@ -150,8 +150,8 @@
 .social-body {
   margin: 0;
   color: #1f2a44;
-  font-size: clamp(0.78rem, 0.95vw, 1rem);
-  font-weight: 700;
+  font-size: clamp(0.98rem, 0.95vw, 1rem);
+  font-weight: 500;
   line-height: 1.38;
 }
 

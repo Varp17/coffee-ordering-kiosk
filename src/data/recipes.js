@@ -43,7 +43,7 @@ export const RECIPES = [
         "copy": "Stir lightly & serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "images/Recipes/GoldenJaggeryVelvet.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "173 Likes",
@@ -87,7 +87,7 @@ export const RECIPES = [
         "copy": "Stir lightly for velvety texture and serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "images/Recipes/GoldenJaggeryVelvet2.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "322 Likes",
@@ -132,7 +132,7 @@ export const RECIPES = [
         "copy": "Stir lightly for smooth texture serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/SaltedcaramelJaggery.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "308 Likes",
@@ -177,7 +177,7 @@ export const RECIPES = [
         "copy": "Stir lightly for smooth texture serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/SaltedcaramelJaggery2.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "308 Likes",
@@ -220,7 +220,7 @@ export const RECIPES = [
         "copy": "Stir lightly for smooth texture serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "484 Likes",
@@ -263,7 +263,7 @@ export const RECIPES = [
         "copy": "Stir lightly for smooth texture and serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "77 Likes",
@@ -306,7 +306,7 @@ export const RECIPES = [
         "copy": "Stir lightly for smooth texture and serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "440 Likes",

@@ -186,7 +186,7 @@
   width: fit-content;
   color: var(--footer-muted);
   font-size: clamp(0.95rem, 1vw, 1.12rem);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.35;
   transition: color 160ms ease, transform 160ms ease;
 }

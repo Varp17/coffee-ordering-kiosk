@@ -43,7 +43,7 @@ export const RECIPES = [
         "copy": "Stir lightly & serve chilled"
       }
     ],
-    "image": "images/Recipes/GoldenJaggeryVelvet.png",
+    "image": "/images/Recipes/GoldenJaggeryVelvet.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "173 Likes",
@@ -87,7 +87,7 @@ export const RECIPES = [
         "copy": "Stir lightly for velvety texture and serve chilled"
       }
     ],
-    "image": "images/Recipes/GoldenJaggeryVelvet2.png",
+    "image": "/images/Recipes/GoldenJaggeryVelvet2.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "322 Likes",
@@ -349,7 +349,7 @@ export const RECIPES = [
         "copy": "Stir lightly for rich mocha texture serve chilled"
       }
     ],
-    "image": "/images/REcipe/IceMocha.png",
+    "image": "/images/Recipes/IceMocha.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "240 Likes",

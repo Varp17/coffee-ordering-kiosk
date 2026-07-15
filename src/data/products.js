@@ -7,15 +7,15 @@ const CLASSIC_IMAGE = '/images/Classic-concentrate.png';
 const KAPPI_IMAGE = '/images/Kappi-concentrate.png';
 const BOLD_IMAGE = '/bold-concentrate-bottle.png';
 
-const size = (id, label, ml, modifier = 0) => {
+const size = (id, label, ml, basePrice = 390) => {
   if (id === '325ml') {
     return [
       { id: '325ml', label: '325 ml', ml: 325, modifier: 0 },
-      { id: '1000ml', label: '1 Liter', ml: 1000, modifier: 600 }
+      { id: '1000ml', label: '1 Liter', ml: 1000, modifier: 1200 - basePrice }
     ];
   }
   return [
-    { id, label, ml, modifier },
+    { id, label, ml, modifier: 0 },
   ];
 };
 
@@ -61,7 +61,7 @@ export const PRODUCTS = [
     gallery: fourImageGallery('coffee-50-50-concentrate', 'Bold Concentrate', BOLD_IMAGE),
     basePrice: 390,
     defaultSizeId: '325ml',
-    sizes: size('325ml', '325 ml', 325),
+    sizes: size('325ml', '325 ml', 325, 390),
     availability: 'Available',
     badges: ['bold', 'bestseller'],
     tags: ['bold', 'cold brew', 'balanced', 'milk', 'juices', 'sweet'],
@@ -97,7 +97,7 @@ export const PRODUCTS = [
     gallery: fourImageGallery('classic-cb-concentrate', 'Classic CB Concentrate', CLASSIC_IMAGE),
     basePrice: 390,
     defaultSizeId: '325ml',
-    sizes: size('325ml', '325 ml', 325),
+    sizes: size('325ml', '325 ml', 325, 390),
     availability: 'Available',
     badges: ['smooth', 'black'],
     tags: ['classic cb', 'cold brew', 'smooth', 'black coffee'],
@@ -133,7 +133,7 @@ export const PRODUCTS = [
     gallery: fourImageGallery('coffee-70-30-concentrate', 'Flex Concentrate', BOLD_IMAGE),
     basePrice: 390,
     defaultSizeId: '325ml',
-    sizes: size('325ml', '325 ml', 325),
+    sizes: size('325ml', '325 ml', 325, 390),
     availability: 'Coming Soon',
     badges: ['balanced', 'versatile'],
     tags: ['flex', 'bold', 'strong', 'jaggery latte', 'orange cold brew'],
@@ -169,7 +169,7 @@ export const PRODUCTS = [
     gallery: fourImageGallery('sif-concentrate', 'Kaapi Concentrate', KAPPI_IMAGE),
     basePrice: 390,
     defaultSizeId: '325ml',
-    sizes: size('325ml', '325 ml', 325),
+    sizes: size('325ml', '325 ml', 325, 390),
     availability: 'Available',
     badges: ['traditional', 'rich'],
     tags: ['sif', 'south indian filter', 'cold kaapi', 'milk', 'sweet'],
@@ -205,7 +205,7 @@ export const PRODUCTS = [
     gallery: fourImageGallery('spice-concentrate', 'Spice CB Concentrate', CLASSIC_IMAGE),
     basePrice: 425,
     defaultSizeId: '325ml',
-    sizes: size('325ml', '325 ml', 325),
+    sizes: size('325ml', '325 ml', 325, 425),
     availability: 'Coming Soon',
     badges: ['refreshing', 'aromatic'],
     tags: ['spices', 'classic coffee', 'tonic', 'jaggery'],

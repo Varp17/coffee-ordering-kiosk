@@ -220,7 +220,7 @@ export const RECIPES = [
         "copy": "Stir lightly for smooth texture serve chilled"
       }
     ],
-    "image": "/images/Recipes/.png",
+    "image": "/images/Recipes/HoneySpicedlatte.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "484 Likes",
@@ -263,7 +263,7 @@ export const RECIPES = [
         "copy": "Stir lightly for smooth texture and serve chilled"
       }
     ],
-    "image": "/images/.png",
+    "image": "/images/Recipes/HoneySpicedlatte2.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "77 Likes",
@@ -306,7 +306,7 @@ export const RECIPES = [
         "copy": "Stir lightly for smooth texture and serve chilled"
       }
     ],
-    "image": "/images/Recipes/.png",
+    "image": "/images/Recipes/HoneySpicedlatte3.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "440 Likes",
@@ -349,7 +349,7 @@ export const RECIPES = [
         "copy": "Stir lightly for rich mocha texture serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/REcipe/IceMocha.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "240 Likes",
@@ -392,7 +392,7 @@ export const RECIPES = [
         "copy": "Stir lightly for rich mocha texture serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/IceMocha2.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "96 Likes",
@@ -435,7 +435,7 @@ export const RECIPES = [
         "copy": "shake well for creamy texture serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/Sifcold.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "292 Likes",
@@ -473,7 +473,7 @@ export const RECIPES = [
         "copy": "Stir lightly for balanced flavor serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/coldbrew16hrs.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "94 Likes",
@@ -517,7 +517,7 @@ export const RECIPES = [
         "copy": "Stir gently for soda texture serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/Orangecoldbrew.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "217 Likes",
@@ -561,7 +561,7 @@ export const RECIPES = [
         "copy": "Stir gently for sparkling texture serve chilld"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/Cranberrycoldbrew.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "298 Likes",
@@ -604,7 +604,7 @@ export const RECIPES = [
         "copy": "Stir lightly and serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/Toniccoldbrew.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "270 Likes",
@@ -648,7 +648,7 @@ export const RECIPES = [
         "copy": "Stir lightly and serve chilled"
       }
     ],
-    "image": "/images/georgesso-hero.png",
+    "image": "/images/Recipes/Minttonicwatercoldbrew.png",
     "video": "",
     "mediaMatch": "fallback",
     "likes": "200 Likes",

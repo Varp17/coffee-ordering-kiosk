@@ -80,7 +80,7 @@
   color: var(--footer-muted);
   font-family: var(--font-body);
   font-size: clamp(0.95rem, 1.02vw, 1.12rem);
-  font-weight: 700;
+  font-weight: 450;
   line-height: 1.64;
 }
 
@@ -209,7 +209,7 @@
   margin-inline: auto;
   color: var(--footer-ink);
   font-size: clamp(0.82rem, 0.92vw, 1rem);
-  font-weight: 800;
+  font-weight: 200;
   line-height: 1.5;
   text-align: center;
   text-shadow:

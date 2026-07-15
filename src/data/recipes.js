@@ -1,1252 +1,657 @@
 // =====================================================
 // CHILLD COFFEE - Recipes Catalog
-// Source: Concentrate & Recipes Sheet (1).xlsx + public/images/products media
 // =====================================================
 
 export const RECIPE_IMAGE_FALLBACK = '/images/georgesso-hero.png';
 
-const recipeRows = [
+export const RECIPES = [
   {
-    "id": "golden-jaggery-velvet",
+    "id": "golden-jaggery-velvet-8ndv1",
     "name": "Golden Jaggery Velvet",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Golden Cream",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "ice-mocha",
-    "name": "Ice Mocha",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "-",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Mocha.png",
-    "video": "/images/products/Ice_Mocha_Brand_Story_Choco.mp4",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "classic-cold-brew-coffee-50-50-sugar-syrup",
-    "name": "Classic Cold Brew",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Ice Cubes",
-    "source": "Sheet8",
-    "image": "/images/products/cold-brew.png",
-    "video": "",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "vanilla-latte",
-    "name": "Vanilla Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Vanilla Syrup",
-    "source": "Sheet8",
-    "image": "/images/products/vanilla Shake.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "caramel-latte",
-    "name": "Caramel Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Salted Caramel",
-    "source": "Sheet8",
-    "image": "/images/products/Salted Caramel Jaggery.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "cinnamon-latte",
-    "name": "Cinnamon Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Cinnamon",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "honey-coffee",
-    "name": "Honey Coffee",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Honey Drizzle",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "cold-brew-latte",
-    "name": "Cold Brew Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "70 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Dairy",
-    "milkQty": "160 gm",
-    "topping": "-",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-cinnamon",
-    "name": "Oat Cinnamon",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "Cinnamon",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-honey-laatte",
-    "name": "Oat Honey Laatte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "Honey Drizzle",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-salted-caramel-latte",
-    "name": "Oat Salted Caramel Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "Salted Caramel",
-    "source": "Sheet8",
-    "image": "/images/products/Salted Caramel Jaggery.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-mocha",
-    "name": "Oat Mocha",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "Chocolate Drizzle",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Mocha.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-vanilla",
-    "name": "Oat Vanilla",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "Vanilla Surup",
-    "source": "Sheet8",
-    "image": "/images/products/vanilla Shake.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-coconut-latte",
-    "name": "Oat Coconut Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "-",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-almond-mocha",
-    "name": "Oat Almond Mocha",
-    "concentrate": "Classic",
-    "concentrateQty": "70 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Oat Milk",
-    "milkQty": "160 gm",
-    "topping": "Almond Flakes",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Mocha.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-nutmeg-latte-coffee-50-50-sugar-syrup",
-    "name": "Oat Nutmeg Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "Nutmeg Powder",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-brown-sugar",
-    "name": "Oat Brown Sugar",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "-",
-    "source": "Sheet8",
+    "description": "Smooth jaggery sweet cold brew with creamy dairy milk and rich coffee finish",
+    "mood": "Warm & Velvety",
+    "tags": [
+      "#JaggeryCoffee",
+      "#VelvetCoffee",
+      "#GoldenVelvet"
+    ],
+    "concentrate": "Bold",
+    "ingredients": [
+      "60 ml Bold concentrate",
+      "15 ml jaggery syrup",
+      "170 ml dairy milk ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add jaggery syrup"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled dairy milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Add cold brewvconcentra"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly & serve chilled"
+      }
+    ],
     "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "fallback"
+    "mediaMatch": "fallback",
+    "likes": "173 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "oat-chocolate-latte",
-    "name": "Oat Chocolate Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "Cacao Powder",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Mocha.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-hazelnut-latte",
-    "name": "Oat Hazelnut Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Oat Milk",
-    "milkQty": "170 gm",
-    "topping": "-",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-cold-brew-latte",
-    "name": "Coconut Cold Brew Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "70 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "160 gm",
-    "topping": "Coconut Flakes",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-salted-caramel",
-    "name": "Coconut Salted Caramel",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "170 gm",
-    "topping": "Salted Caramel",
-    "source": "Sheet8",
-    "image": "/images/products/Salted Caramel Jaggery.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-cinnamon-latte-coffee-50-50-sugar-syrup",
-    "name": "Coconut Cinnamon Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "170 gm",
-    "topping": "Cinnamon Powder",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-mocha-frappe",
-    "name": "Coconut Mocha Frappe",
-    "concentrate": "Classic",
-    "concentrateQty": "65 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "165 gm",
-    "topping": "Rainbow Sprinkles",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Mocha.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-maple-latte",
-    "name": "Coconut Maple Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "170 gm",
-    "topping": "Maple Drizzle",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-spice-latte",
-    "name": "Jaggery Spice Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Cinnamon",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-brown-sugar-latte",
-    "name": "Jaggery Brown Sugar Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Brown Sugar Dust",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-salted-caramel",
-    "name": "Jaggery Salted Caramel",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Salted Caramel",
-    "source": "Sheet8",
-    "image": "/images/products/Salted Caramel Jaggery.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-almond-latte",
-    "name": "Jaggery Almond Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Almond Flakes",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-cold-brew-latte",
-    "name": "Jaggery Cold Brew Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "70 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "160 gm",
-    "topping": "-",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-honey-spice-latte",
-    "name": "Jaggery Honey Spice Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Honey Drizzle",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-coconut-latte",
-    "name": "Jaggery Coconut Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Coconut Flakes",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-nutmeg-latte",
-    "name": "Jaggery Nutmeg Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Nutmeg Powder",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-vanilla-latte",
-    "name": "Jaggery Vanilla Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy",
-    "milkQty": "170 gm",
-    "topping": "Vanilla Syrup",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-vanilla-latte",
-    "name": "Oat Vanilla Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "175 gm",
-    "topping": "Vanilla Syrup",
-    "source": "Sheet8",
-    "image": "/images/products/vanilla Shake.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-caramel-latte",
-    "name": "Oat Caramel Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "175 gm",
-    "topping": "Salted Caramel",
-    "source": "Sheet8",
-    "image": "/images/products/Salted Caramel Jaggery.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-cold-brew-latte",
-    "name": "Oat Cold Brew Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "70 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "165 gm",
-    "topping": "Cinnamon=Cacao Powder",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-almond-latte",
-    "name": "Oat Almond Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "175 gm",
-    "topping": "Almond Flakes",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-brown-sugar-latte",
-    "name": "Oat Brown Sugar Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "175 gm",
-    "topping": "Brown Sugar Dust",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-lavender-latte",
-    "name": "Oat Lavender Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "175 gm",
-    "topping": "Lavender Syrup",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "oat-nutmeg-latte-coffee-50-50-jaggery-syrup",
-    "name": "Oat Nutmeg Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Oat Milk",
-    "milkQty": "175 gm",
-    "topping": "Nutmeg Powder",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-vanilla-latte",
-    "name": "Coconut Vanilla Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "80 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "155 gm",
-    "topping": "Vanilla Syrup",
-    "source": "Sheet8",
-    "image": "/images/products/vanilla Shake.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-salted-caramel-latte",
-    "name": "Coconut Salted Caramel Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "80 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "155 gm",
-    "topping": "Salted Caramel",
-    "source": "Sheet8",
-    "image": "/images/products/Salted Caramel Jaggery.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-mocha-latte",
-    "name": "Coconut Mocha Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "70 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "165 gm",
-    "topping": "Cinnamon-Cacao Powder",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Mocha.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-almond-latte",
-    "name": "Coconut Almond Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "175 gm",
-    "topping": "Almond Flakes",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-brown-sugar-latte",
-    "name": "Coconut Brown Sugar Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "80 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "175 gm",
-    "topping": "Brown Sugar Dust",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-lavender-latte",
-    "name": "Coconut Lavender Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "80 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "175 gm",
-    "topping": "Lavender Syrup",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-nutmeg-latte",
-    "name": "Coconut Nutmeg Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "80 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "175 gm",
-    "topping": "Nutmeg Powder",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-cinnamon-latte-coffee-50-50-jaggery-syrup",
-    "name": "Coconut Cinnamon Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "80 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "175 gm",
-    "topping": "Cinnamon",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-flakes-latte",
-    "name": "Coconut Flakes Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "80 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "175 gm",
-    "topping": "Coconut Flakes",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "coconut-honey-latte",
-    "name": "Coconut Honey Latte",
-    "concentrate": "Classic",
-    "concentrateQty": "80 gm",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Coconut Milk",
-    "milkQty": "175 gm",
-    "topping": "Honey Drizzale",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "hazelnut-cream-latte",
-    "name": "Hazelnut Cream Latte",
+    "id": "golden-jaggery-velvet-cppu3",
+    "name": "Golden Jaggery Velvet",
+    "description": "Smooth and creamy cold brew with rich jaggery sweetness, velvety oat milk texture, and balanced coffee finish",
+    "mood": "Smooth, Sweet & Velvety",
+    "tags": [
+      "#SweetCoffee",
+      "#OatMilkCoffee",
+      "#CreamyCoffee"
+    ],
     "concentrate": "Bold",
-    "concentrateQty": "80 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "175 gm",
-    "topping": "Hazelnut Syrup",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "/images/products/Hazelnut_Cream_Kiosk_Video.mp4",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "choco-almond-latte",
-    "name": "Choco Almond Latte",
-    "concentrate": "Bold",
-    "concentrateQty": "70 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "180 gm",
-    "topping": "Cocoa Powder-Almond Flakes",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Mocha.png",
+    "ingredients": [
+      "60 ml Bold concentrate",
+      "15 ml jaggery syrup 170 ml oat milk",
+      "ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add jaggery syrup"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled oat milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Slowly add bold concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly for velvety texture and serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "related"
+    "mediaMatch": "fallback",
+    "likes": "322 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "honey-nut-latte",
-    "name": "Honey Nut Latte",
+    "id": "salted-caramel-jaggery-epynk",
+    "name": "Salted caramel Jaggery",
+    "description": "Bold and creamy cold brew with jaggery sweetness salted caramel richness and smoth dairy milk finish",
+    "mood": "Strong, Sweet & Creamy",
+    "tags": [
+      "#StrongCoffee",
+      "#SweetCoffee",
+      "#CreamyColdBrew"
+    ],
     "concentrate": "Bold",
-    "concentrateQty": "80 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "12 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "175 gm",
-    "topping": "Honey + Nutmeg",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
+    "ingredients": [
+      "60 ml bold cold brew",
+      "concentrate 20 gm jaggery+",
+      "salted caramel syrup 170 ml",
+      "dairy milk ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add jaggery+salted caramel syrup"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled dairy milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Slowly add bold concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly for smooth texture serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "related"
+    "mediaMatch": "fallback",
+    "likes": "308 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "mango-cold-brew",
-    "name": "Mango Cold Brew",
+    "id": "salted-caramel-jaggery-znxtd",
+    "name": "Salted caramel Jaggery",
+    "description": "Bold and creamy cold brew with jaggery sweetness salted caramel richness and smoth oat milk finish",
+    "mood": "Strong, Sweet & Creamy",
+    "tags": [
+      "#StrongCoffee",
+      "#SweetCoffee",
+      "#CreamyColdBrew"
+    ],
     "concentrate": "Bold",
-    "concentrateQty": "75 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "180 gm",
-    "topping": "Mango Pulp",
-    "source": "Sheet8",
-    "image": "/images/products/Cold Brew Orange .png",
+    "ingredients": [
+      "60 ml bold cold brew",
+      "concentrate 20 gm jaggery+",
+      "salted caramel syrup 170 ml",
+      "oat milk ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add jaggery+salted caramel syrup"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled oat milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Slowly add bold concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly for smooth texture serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "related"
+    "mediaMatch": "fallback",
+    "likes": "308 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "honey-almond",
-    "name": "Honey Almond",
+    "id": "honey-spiced-latte-02hm4",
+    "name": "Honey Spiced latte",
+    "description": "Smooth and aromatic cold brew latte with natural honey sweetness warm spice note and creamy almond milk",
+    "mood": "Warm , Smooth & Strong",
+    "tags": [
+      "#MildStrong",
+      "#SpicedLatte"
+    ],
     "concentrate": "Bold",
-    "concentrateQty": "80 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "12 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "175 gm",
-    "topping": "Honey + Almond",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
+    "ingredients": [
+      "60 ml bold cold brew concentrate",
+      "15 ml honey+ spices syrup",
+      "170 ml almond milk"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add honey + spices syrup"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled almond milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Slowly add bold concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly for smooth texture serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "related"
+    "mediaMatch": "fallback",
+    "likes": "484 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "strawberry-cream-coffee",
-    "name": "Strawberry Cream Coffee",
+    "id": "honey-spiced-latte-8kcsa",
+    "name": "Honey Spiced latte",
+    "description": "Smooth and aromatic cold brew latte with natural honey sweetness warm spice notes, and creamy dairy milk finish",
+    "mood": "Warm, Smooth & Mild Strong",
+    "tags": [
+      "#HoneyCoffee",
+      "#SpicedLatte"
+    ],
     "concentrate": "Bold",
-    "concentrateQty": "75 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "180 gm",
-    "topping": "Strawberry Crush",
-    "source": "Sheet8",
-    "image": "/images/products/cold-brew.png",
+    "ingredients": [
+      "60 ml bold cold brew concentrate",
+      "15 ml honey + spices syrup 170 ml",
+      "dairy milk ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add honey + spices syrup"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled dairy milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Slowly add bold cold brew concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly for smooth texture and serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "related"
+    "mediaMatch": "fallback",
+    "likes": "77 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "classic-cold-brew-coffee-70-30-sugar-syrup",
-    "name": "Classic Cold Brew",
+    "id": "honey-spiced-latte-r4stl",
+    "name": "Honey Spiced latte",
+    "description": "Smooth and aromatic cold brew latte with natural honey sweetness warm spice notes, and creamy oat milk finish",
+    "mood": "Warm, Smooth & Mild Strong",
+    "tags": [
+      "#HoneyCoffee",
+      "#SpicedLatte"
+    ],
     "concentrate": "Bold",
-    "concentrateQty": "60 ml",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 ml",
-    "milk": "Dairy Milk",
-    "milkQty": "160 ml",
-    "topping": "Cocoa Dust",
-    "source": "Sheet8",
-    "image": "/images/products/cold-brew.png",
+    "ingredients": [
+      "60 ml 70-30 cold brew concentrate",
+      "15 ml honey + spices syrup 170 ml",
+      "oat milk ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add honey + spices syrup"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled oat milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Slowly add bold cold brew concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly for smooth texture and serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "exact"
+    "mediaMatch": "fallback",
+    "likes": "440 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "sweet-cream-cold-brew",
-    "name": "Sweet Cream Cold Brew",
+    "id": "ice-mocha-0b6a5",
+    "name": "Ice Mocha",
+    "description": "Rich and creamy iced mocha with smooth cold brew, deep cacao flavor and natural jaggery sweetness balanced with chilled dairy milk",
+    "mood": "Chocolatey, Smooth & Refreshing",
+    "tags": [
+      "#IceMocha",
+      "#ChocolateCoffee"
+    ],
     "concentrate": "Bold",
-    "concentrateQty": "60 ml",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "25 ml",
-    "milk": "Dairy Milk",
-    "milkQty": "160 ml",
-    "topping": "Thick Milk Foam",
-    "source": "Sheet8",
-    "image": "/images/products/cold-brew.png",
+    "ingredients": [
+      "60 ml Bold concentrate 20 gm",
+      "jaggery syrup + cacao powder",
+      "170 ml dairy milk ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add jaggery syrup +cacao powder"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled dairy milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Slowly add bold concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly for rich mocha texture serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "related"
+    "mediaMatch": "fallback",
+    "likes": "240 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "desi-jaggery-coffee",
-    "name": "Desi Jaggery Coffee",
+    "id": "ice-mocha-74ulw",
+    "name": "Ice Mocha",
+    "description": "Rich and creamy iced mocha with smooth cold brew, deep cacao flavor and natural jaggery sweetness balanced with chilled oat milk",
+    "mood": "Chocolatey, Smooth & Refreshing",
+    "tags": [
+      "#IceMocha",
+      "#ChocolateCoffee"
+    ],
     "concentrate": "Bold",
-    "concentrateQty": "60 ml",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 ml",
-    "milk": "Dairy Milk",
-    "milkQty": "170 ml",
-    "topping": "Elaichi Pinch",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
+    "ingredients": [
+      "60 ml Bold concentrate 20 gm",
+      "jaggery syrup + cacao powder",
+      "170 ml oat milk ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add jaggery syrup +cacao powder"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled oat milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Slowly add bold concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly for rich mocha texture serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "related"
+    "mediaMatch": "fallback",
+    "likes": "96 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "jaggery-mocha",
-    "name": "Jaggery Mocha",
-    "concentrate": "Bold",
-    "concentrateQty": "50 ml",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "15 ml",
-    "milk": "Dairy Milk",
-    "milkQty": "165 ml",
-    "topping": "Chocolate Syrup-10 Ml",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Mocha.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "smoky-jaggery-latte",
-    "name": "Smoky Jaggery Latte",
-    "concentrate": "Bold",
-    "concentrateQty": "55 ml",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 ml",
-    "milk": "Dairy Milk",
-    "milkQty": "165 ml",
-    "topping": "Cocoa + Cinnamon",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "/images/products/Smoky_Jaggery_Latte_Kiosk.mp4",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "creamy-jaggey-latte",
-    "name": "Creamy Jaggey Latte",
-    "concentrate": "Bold",
-    "concentrateQty": "50 ml",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 ml",
-    "milk": "Dairy Milk",
-    "milkQty": "150 ml",
-    "topping": "20 Ml Fresh Cream",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "almond-jaggery-latte",
-    "name": "Almond Jaggery Latte",
-    "concentrate": "Bold",
-    "concentrateQty": "60 ml",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 ml",
-    "milk": "Dairy Milk",
-    "milkQty": "165 ml",
-    "topping": "Almond+ Cashew Crush",
-    "source": "Sheet8",
-    "image": "/images/products/Golden Jaggery Velvet.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "spiced-coffee",
-    "name": "Spiced Coffee",
-    "concentrate": "Bold",
-    "concentrateQty": "45 ml",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 ml",
-    "milk": "Dairy Milk",
-    "milkQty": "170 ml",
-    "topping": "Pinch Of Cinnamon+ Nutmeg",
-    "source": "Sheet8",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "jaggery-cocoa-latte",
-    "name": "Jaggery Cocoa Latte",
-    "concentrate": "Bold",
-    "concentrateQty": "45 ml",
-    "sweetener": "Jaggery Syrup",
-    "sweetenerQty": "20 ml",
-    "milk": "Dairy Milk",
-    "milkQty": "170 ml",
-    "topping": "Cocoa Powder Sprinkle",
-    "source": "Sheet8",
-    "image": "/images/products/Ice Mocha.png",
-    "video": "",
-    "mediaMatch": "related"
-  },
-  {
-    "id": "salted-caramel-jaggery",
-    "name": "Salted Caramel Jaggery",
-    "concentrate": "Bold",
-    "concentrateQty": "60 gm",
-    "sweetener": "Jaggery + Salted Caramel",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "170 gm",
-    "topping": "Caramel",
-    "source": "Products folder",
-    "image": "/images/products/Salted Caramel Jaggery.png",
-    "video": "/images/products/Salted_Caramel_Jaggery_Bran.mp4",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "honey-spiced-latte",
-    "name": "Honey Spiced Latte",
-    "concentrate": "Bold",
-    "concentrateQty": "60 gm",
-    "sweetener": "Honey + Spices",
-    "sweetenerQty": "15 gm",
-    "milk": "Almond Milk",
-    "milkQty": "170 gm",
-    "topping": "Honey Pollen and Almond Crush",
-    "source": "Products folder",
-    "image": "/images/products/Honey Spiced Latte.png",
-    "video": "/images/products/Honey_Spiced_Latte_Brand_St.mp4",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "sifon-the-rocks",
-    "name": "Kaapi on The Rocks",
+    "id": "sif-cold-ttj56",
+    "name": "Sif cold",
+    "description": "Strong and creamy chicory cold brew with rich condensed milk sweetness and smooth dairy milk texture for a classic",
+    "mood": "Bold, Creamy & Sweet",
+    "tags": [
+      "#SifCold",
+      "#ChicoryCoffee"
+    ],
     "concentrate": "Coffee & Chicory",
-    "concentrateQty": "135 gm",
-    "sweetener": "Condensed Milk",
-    "sweetenerQty": "30 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "40 gm",
-    "topping": "Milk Cream",
-    "source": "Products folder",
-    "image": "/images/products/SIFon the Rocks (South indian filter Coffee).png",
-    "video": "/images/products/5 product video/SIFon the Rocks (South indian filter Coffee).mp4",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "cold-brew",
-    "name": "Cold Brew",
-    "concentrate": "100% Arabica",
-    "concentrateQty": "80 gm",
-    "sweetener": "-",
-    "sweetenerQty": "",
-    "milk": "Water",
-    "milkQty": "160 gm",
-    "topping": "Ice Cubes",
-    "source": "Products folder",
-    "image": "/images/products/cold-brew.png",
+    "ingredients": [
+      "135 ml chicory concentrate",
+      "30 ml condensed milk 40 ml dairy",
+      "milk ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add condensed milk"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled dairy milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Add chicory concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "shake well for creamy texture serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "exact"
+    "mediaMatch": "fallback",
+    "likes": "292 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "cold-brew-orange",
-    "name": "Cold Brew Orange",
-    "concentrate": "100% Arabica",
-    "concentrateQty": "100 gm",
-    "sweetener": "Orange",
-    "sweetenerQty": "30 gm",
-    "milk": "Soda",
-    "milkQty": "95 gm",
-    "topping": "Ice Cubes, Honey, Lemon Juice",
-    "source": "Products folder",
-    "image": "/images/products/Cold Brew Orange .png",
-    "video": "/images/products/5 product video/Cold Brew Orange .mp4",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "cold-brew-tonic",
-    "name": "Cold Brew Tonic",
-    "concentrate": "100% Arabica",
-    "concentrateQty": "90 gm",
-    "sweetener": "Indian Tonic Water",
-    "sweetenerQty": "130 gm",
-    "milk": "-",
-    "milkQty": "",
-    "topping": "Ice Cubes",
-    "source": "Products folder",
-    "image": "/images/products/Cold Brew Tonic.png",
-    "video": "/images/products/5 product video/Cold Brew Tonic.mp4",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "cold-brew-mint-tonic",
-    "name": "Cold Brew Mint Tonic",
-    "concentrate": "100% Arabica",
-    "concentrateQty": "90 gm",
-    "sweetener": "Mint Tonic",
-    "sweetenerQty": "130 gm",
-    "milk": "-",
-    "milkQty": "",
-    "topping": "Mint",
-    "source": "Products folder",
-    "image": "/images/products/Cold Brew Mint Tonic.png",
-    "video": "/images/products/5 product video/Cold Brew Mint Tonic.mp4",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "cascara-ice-tea",
-    "name": "Cascara Ice Tea",
-    "concentrate": "Cascara Concentrate",
-    "concentrateQty": "100 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "25 gm",
-    "milk": "Soda + Lemon Juice",
-    "milkQty": "165 gm",
-    "topping": "Lemon",
-    "source": "Products folder",
-    "image": "/images/products/Cascara Ice Tea.png",
-    "video": "",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "ginger-tonic",
-    "name": "Ginger Tonic",
-    "concentrate": "100% Arabica",
-    "concentrateQty": "90 gm",
-    "sweetener": "Ginger",
-    "sweetenerQty": "20 gm",
-    "milk": "Tonic Water",
-    "milkQty": "130 gm",
-    "topping": "Ginger",
-    "source": "Products folder",
-    "image": "/images/products/ginger.png",
-    "video": "",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "lemonade",
-    "name": "Lemonade",
-    "concentrate": "Cascara Concentrate",
-    "concentrateQty": "80 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Lemon Soda",
-    "milkQty": "150 gm",
-    "topping": "Lemon",
-    "source": "Products folder",
-    "image": "/images/products/lemon.png",
-    "video": "",
-    "mediaMatch": "exact"
-  },
-  {
-    "id": "ice-latte",
-    "name": "Ice Latte",
+    "id": "cold-brew-16-hrs-e6sl9",
+    "name": "cold brew 16 hrs",
+    "description": "Smooth and clean 100 % arabica cold brew steeped for 16 hrs for a naturally sweet, low acidity and refreshing",
+    "mood": "Smooth, Refreshing & Bold",
+    "tags": [
+      "#BlackCoffee",
+      "#16HrsBrew"
+    ],
     "concentrate": "Classic",
-    "concentrateQty": "70 gm",
-    "sweetener": "Sugar Syrup",
-    "sweetenerQty": "15 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "160 gm",
-    "topping": "Ice Cubes",
-    "source": "Products folder",
-    "image": "/images/products/Ice Latte.png",
-    "video": "/images/products/5 product video/Ice Latte.mp4",
-    "mediaMatch": "exact"
+    "ingredients": [
+      "80 ml classic cold brew concentrate",
+      "160 ml chilled water ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Pour chilled water"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Slowly add classic cold brew"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Stir lightly for balanced flavor serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
+    "video": "",
+    "mediaMatch": "fallback",
+    "likes": "94 Likes",
+    "author": "CHILLD Lab"
   },
   {
-    "id": "vanilla-shake",
-    "name": "Vanilla Shake",
+    "id": "orange-cold-brew-w1vcd",
+    "name": "Orange cold brew",
+    "description": "Bright and refreshing cold brew with natural honey sweetness zesty lemon- orange citrus note and soda finish",
+    "mood": "Refreshing, Citrusy & Smooth",
+    "tags": [
+      "#CitrusCoffee",
+      "#RefreshingDrink",
+      "#FruitCoffee"
+    ],
     "concentrate": "Classic",
-    "concentrateQty": "60 gm",
-    "sweetener": "Vanilla Syrup",
-    "sweetenerQty": "20 gm",
-    "milk": "Dairy Milk",
-    "milkQty": "170 gm",
-    "topping": "Vanilla Foam",
-    "source": "Products folder",
-    "image": "/images/products/vanilla Shake.png",
+    "ingredients": [
+      "100 ml classic concentrate 20 ml",
+      "honey 5 ml lemon juice 30 ml orange",
+      "95 ml soda ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add honey, lemon juice and orange juice"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled soda slowly"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Add classic concentrate on top"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir gently for soda texture serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
     "video": "",
-    "mediaMatch": "exact"
+    "mediaMatch": "fallback",
+    "likes": "217 Likes",
+    "author": "CHILLD Lab"
+  },
+  {
+    "id": "cranberry-cold-brew-ir2ay",
+    "name": "Cranberry cold brew",
+    "description": "Fruity and refreshing cold brew with cranberry tanginess, citrus freshness, and soda finish",
+    "mood": "Refreshing, Citrusy & Smooth",
+    "tags": [
+      "#CitrusCoffee",
+      "#RefreshingDrink",
+      "#FruitCoffee"
+    ],
+    "concentrate": "Classic",
+    "ingredients": [
+      "100 ml classic cold brew concentrate",
+      "20 ml honey 5 ml lemon juice 30 ml",
+      "orange juice 95 ml soda and ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add honey lemon juiec, and cranberry juice"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour chilled soda slowly"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Add classic cold brew concentrate on top"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir gently for sparkling texture serve chilld"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
+    "video": "",
+    "mediaMatch": "fallback",
+    "likes": "298 Likes",
+    "author": "CHILLD Lab"
+  },
+  {
+    "id": "tonic-cold-brew-nz4ce",
+    "name": "Tonic cold brew",
+    "description": "Crisp and refreshing cold brew with tonic bitterness, smoth arabica notes, and a clean refreshing finish",
+    "mood": "Refreshing, Crisp & Bold",
+    "tags": [
+      "#TonicColdBrew",
+      "#SummerCoffee"
+    ],
+    "concentrate": "Classic",
+    "ingredients": [
+      "90 ml classic cold brew concentrate",
+      "130 ml tonic water ice cubes lemon",
+      "slice (optional)"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Pour chilled tonic water"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Slowly add cold brew concentrate"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Garnish with lemon slice if needed"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly and serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
+    "video": "",
+    "mediaMatch": "fallback",
+    "likes": "270 Likes",
+    "author": "CHILLD Lab"
+  },
+  {
+    "id": "mint-tonic-water-cold-brew-5efit",
+    "name": "Mint tonic water cold brew",
+    "description": "Cool and sparkling cold brew with refreshing mint tonic water, smoth arabica notes, and a crisp clean finish",
+    "mood": "Minty, Refreshing & Bold",
+    "tags": [
+      "#MintColdBrew",
+      "#SparklingCoffee",
+      "#MintCoffee"
+    ],
+    "concentrate": "Classic",
+    "ingredients": [
+      "90 ml classic cold brew concentrate",
+      "130 ml mint tonic water ice cubes",
+      "mint leaves"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Pour chilled mint tonic water"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Slowly add cold brew concentrate"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Garnish with mint leaves if needed"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly and serve chilled"
+      }
+    ],
+    "image": "/images/georgesso-hero.png",
+    "video": "",
+    "mediaMatch": "fallback",
+    "likes": "200 Likes",
+    "author": "CHILLD Lab"
   }
 ];
-
-const isUseful = (value) => Boolean(value && value !== '-');
-
-const displayValue = (value) => (isUseful(value) ? value : 'None');
-
-const buildIngredients = (recipe) => [
-  `${recipe.concentrateQty} ${recipe.concentrate} concentrate`.trim(),
-  isUseful(recipe.sweetener) ? `${recipe.sweetenerQty} ${recipe.sweetener}`.trim() : null,
-  isUseful(recipe.milk) ? `${recipe.milkQty} ${recipe.milk}`.trim() : null,
-  isUseful(recipe.topping) ? `${recipe.topping} topping` : null,
-].filter(Boolean);
-
-const buildTags = (recipe) => [
-  recipe.concentrate,
-  recipe.sweetener,
-  recipe.milk,
-  recipe.video ? 'VIDEO' : null,
-]
-  .filter(isUseful)
-  .map((tag) => tag.toUpperCase())
-  .slice(0, 4);
-
-const buildDescription = (recipe) => {
-  const parts = [
-    `${recipe.concentrateQty} ${recipe.concentrate} concentrate`.trim(),
-    isUseful(recipe.sweetener) ? `${recipe.sweetenerQty} ${recipe.sweetener}` : null,
-    isUseful(recipe.milk) ? `${recipe.milkQty} ${recipe.milk}` : null,
-    isUseful(recipe.topping) ? `${recipe.topping} finish` : null,
-  ].filter(Boolean);
-
-  return `A CHILLD cold coffee recipe built with ${parts.join(', ')}.`;
-};
-
-const buildMood = (recipe) => {
-  const copy = `${recipe.name} ${recipe.topping} ${recipe.milk}`.toLowerCase();
-  if (/mango|strawberry|orange|lemon|mint|tonic|cascara/.test(copy)) return 'Bright';
-  if (/cinnamon|nutmeg|elaichi|spiced|spice|ginger|chicory/.test(copy)) return 'Spiced';
-  if (/mocha|choco|cocoa|caramel|cream|vanilla/.test(copy)) return 'Indulgent';
-  if (/coconut/.test(copy)) return 'Tropical';
-  if (/oat/.test(copy)) return 'Smooth';
-  return 'Chilled';
-};
-
-const buildSteps = (recipe) => [
-  {
-    title: 'Step 1: Build the Base',
-    copy: `Add ${recipe.concentrateQty} of ${recipe.concentrate} concentrate to a chilled serving glass.`,
-  },
-  {
-    title: 'Step 2: Sweeten',
-    copy: isUseful(recipe.sweetener)
-      ? `Stir in ${recipe.sweetenerQty} ${recipe.sweetener} until the base is even.`
-      : 'Keep the base unsweetened and let the coffee profile stay clean.',
-  },
-  {
-    title: 'Step 3: Add Body',
-    copy: isUseful(recipe.milk)
-      ? `Pour in ${recipe.milkQty} ${recipe.milk} and mix gently over ice.`
-      : 'Add fresh ice and mix gently.',
-  },
-  {
-    title: 'Step 4: Finish',
-    copy: isUseful(recipe.topping)
-      ? `Top with ${recipe.topping} and serve cold.`
-      : 'Serve cold over fresh ice.',
-  },
-];
-
-export const RECIPES = recipeRows.map((recipe, index) => ({
-  ...recipe,
-  likes: '0 Likes',
-  image: recipe.image || RECIPE_IMAGE_FALLBACK,
-  fallbackImage: RECIPE_IMAGE_FALLBACK,
-  hasExactMedia: recipe.mediaMatch === 'exact',
-  description: buildDescription(recipe),
-  tags: buildTags(recipe),
-  author: 'CHILLD Lab',
-  mood: buildMood(recipe),
-  ingredients: buildIngredients(recipe),
-  steps: buildSteps(recipe),
-  display: {
-    concentrate: recipe.concentrate,
-    sweetener: displayValue(recipe.sweetener),
-    milk: displayValue(recipe.milk),
-    topping: displayValue(recipe.topping),
-    sequence: index + 1,
-  },
-}));

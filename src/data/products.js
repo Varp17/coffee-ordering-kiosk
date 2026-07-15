@@ -7,21 +7,35 @@ const CLASSIC_IMAGE = '/images/Classic-concentrate.png';
 const KAPPI_IMAGE = '/images/Kappi-concentrate.png';
 const BOLD_IMAGE = '/bold-concentrate-bottle.png';
 
-const size = (id, label, ml, modifier = 0) => [
-  { id, label, ml, modifier },
-];
+const size = (id, label, ml, modifier = 0) => {
+  if (id === '325ml') {
+    return [
+      { id: '325ml', label: '325 ml', ml: 325, modifier: 0 },
+      { id: '1000ml', label: '1 Liter', ml: 1000, modifier: 600 }
+    ];
+  }
+  return [
+    { id, label, ml, modifier },
+  ];
+};
 
 // The catalog's image columns are intentionally not used. Until dedicated
 // assets exist for every new variant, use only product imagery already in the
 // repository and expose a single real image instead of duplicate thumbnails.
-const singleImageGallery = (id, name, image) => [
-  {
-    id: `${id}-image`,
-    label: 'Product image',
-    src: image,
-    alt: name,
-  },
-];
+const fourImageGallery = (id, name, mainImage) => {
+  const images = [
+    mainImage,
+    '/images/COFFEBOTTLES.png',
+    '/images/iced-coffee-cup.png',
+    '/images/bgremoveconcentratebottels.png'
+  ];
+  return images.map((src, index) => ({
+    id: `${id}-image-${index}`,
+    label: index === 0 ? 'Front' : index === 1 ? 'Pack' : index === 2 ? 'Serve' : 'Details',
+    src,
+    alt: `${name} - View ${index + 1}`
+  }));
+};
 
 export const CATEGORIES = [
   { id: 'all', label: 'All Products', icon: 'All' },
@@ -44,7 +58,7 @@ export const PRODUCTS = [
     description:
       'Built for that extra punch. This strong concentrate holds its flavor in milk-heavy lattes, jaggery blends, mocha drinks, and dessert-style cold coffee.',
     image: BOLD_IMAGE,
-    gallery: singleImageGallery('coffee-50-50-concentrate', 'Bold Concentrate', BOLD_IMAGE),
+    gallery: fourImageGallery('coffee-50-50-concentrate', 'Bold Concentrate', BOLD_IMAGE),
     basePrice: 390,
     defaultSizeId: '325ml',
     sizes: size('325ml', '325 ml', 325),
@@ -80,7 +94,7 @@ export const PRODUCTS = [
     description:
       'A classic cold brew profile made for those who want coffee clarity, low bitterness, and a flexible base for cold brew, tonics, and black serves.',
     image: CLASSIC_IMAGE,
-    gallery: singleImageGallery('classic-cb-concentrate', 'Classic CB Concentrate', CLASSIC_IMAGE),
+    gallery: fourImageGallery('classic-cb-concentrate', 'Classic CB Concentrate', CLASSIC_IMAGE),
     basePrice: 390,
     defaultSizeId: '325ml',
     sizes: size('325ml', '325 ml', 325),
@@ -116,7 +130,7 @@ export const PRODUCTS = [
     description:
       'A smooth, dependable cold brew concentrate designed for creamy lattes, Vietnamese shakes, and quick cafe-style serves at home or @work.',
     image: BOLD_IMAGE,
-    gallery: singleImageGallery('coffee-70-30-concentrate', 'Flex Concentrate', BOLD_IMAGE),
+    gallery: fourImageGallery('coffee-70-30-concentrate', 'Flex Concentrate', BOLD_IMAGE),
     basePrice: 390,
     defaultSizeId: '325ml',
     sizes: size('325ml', '325 ml', 325),
@@ -152,7 +166,7 @@ export const PRODUCTS = [
     description:
       'A nostalgic South Indian filter coffee style concentrate, made for chilled kaapi, condensed milk serves, and rich cafe recipes.',
     image: KAPPI_IMAGE,
-    gallery: singleImageGallery('sif-concentrate', 'Kaapi Concentrate', KAPPI_IMAGE),
+    gallery: fourImageGallery('sif-concentrate', 'Kaapi Concentrate', KAPPI_IMAGE),
     basePrice: 390,
     defaultSizeId: '325ml',
     sizes: size('325ml', '325 ml', 325),
@@ -188,7 +202,7 @@ export const PRODUCTS = [
     description:
       "A twist to the classic version, surprise yourself with this confluence of flavours. Let's get boring out!",
     image: CLASSIC_IMAGE,
-    gallery: singleImageGallery('spice-concentrate', 'Spice CB Concentrate', CLASSIC_IMAGE),
+    gallery: fourImageGallery('spice-concentrate', 'Spice CB Concentrate', CLASSIC_IMAGE),
     basePrice: 425,
     defaultSizeId: '325ml',
     sizes: size('325ml', '325 ml', 325),
@@ -215,7 +229,7 @@ export const PRODUCTS = [
     tagline: 'Discover your preference or stock up for the mood swings',
     description: '3 Cold Brew Concentrate samples in a single pack',
     image: CLASSIC_IMAGE,
-    gallery: singleImageGallery('sampler-concentrate', 'Discovery Kit', CLASSIC_IMAGE),
+    gallery: fourImageGallery('sampler-concentrate', 'Discovery Kit', CLASSIC_IMAGE),
     basePrice: 725,
     defaultSizeId: '540ml',
     sizes: size('540ml', '540 ml', 540),

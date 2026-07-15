@@ -743,7 +743,7 @@ function HomepageLowerFlow() {
 
         <div className="lower-flow-b2b__visual" aria-hidden="true">
           <img
-            src="/images/COFFEBOTTLES.png"
+            src="/images/bgremoveconcentratebottels.png"
             alt=""
             width="1080"
             height="1080"

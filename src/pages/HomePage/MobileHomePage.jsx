@@ -210,20 +210,57 @@ export default function MobileHomePage() {
     if (skippedWelcome) {
       return skipSlides;
     }
-    return [mainSlide, ...skipSlides];
+    return [mainSlide];
   }, [displayName, suffix, coffeeType, skippedWelcome]);
 
   useEffect(() => {
+    if (!skippedWelcome) return;
+
     const timer = window.setInterval(() => {
       setActiveSlide((current) => (current + 1) % allSlides.length);
     }, 4000);
 
     return () => window.clearInterval(timer);
-  }, [allSlides.length]);
+  }, [skippedWelcome, allSlides.length]);
 
   const heroState = allSlides[activeSlide] || allSlides[0];
   const fullName = `${heroState.name}${heroState.suffix}`;
   const heroLabel = fullName;
+
+  const formulaDetails = useMemo(() => {
+    if (skippedWelcome) {
+      if (heroState.name === 'Vandy') {
+        return {
+          inputName: 'Vandana',
+          inputCoffee: 'Cold Brew',
+          heroName: 'Vandy',
+          heroSuffix: 'Brew',
+        };
+      }
+      if (heroState.name === 'Preri') {
+        return {
+          inputName: 'Prerita',
+          inputCoffee: 'Frappe',
+          heroName: 'Preri',
+          heroSuffix: 'Appe',
+        };
+      }
+      if (heroState.name === 'Rishi') {
+        return {
+          inputName: 'Rishima',
+          inputCoffee: 'Latte',
+          heroName: 'Rishi',
+          heroSuffix: 'Latte',
+        };
+      }
+    }
+    return {
+      inputName: heroState.name,
+      inputCoffee: formatCoffeeName(coffeeType),
+      heroName: heroState.name,
+      heroSuffix: heroState.suffix,
+    };
+  }, [skippedWelcome, heroState, coffeeType]);
 
   const triggerCupSlam = (to) => {
     setCupSlam(true);
@@ -234,17 +271,19 @@ export default function MobileHomePage() {
   };
 
   useEffect(() => {
+    if (skippedWelcome) return;
     if (typedChars < fullName.length) {
       const timer = setTimeout(() => setTypedChars((prev) => prev + 1), 80 + Math.random() * 40);
       return () => clearTimeout(timer);
     }
-  }, [typedChars, fullName.length]);
+  }, [typedChars, fullName.length, skippedWelcome]);
 
   useEffect(() => {
+    if (!skippedWelcome) return;
     setTypedChars(0);
     const timer = setTimeout(() => setTypedChars(1), 500);
     return () => clearTimeout(timer);
-  }, [activeSlide]);
+  }, [activeSlide, skippedWelcome]);
 
   useEffect(() => {
     const section = whySectionRef.current;
@@ -273,14 +312,41 @@ export default function MobileHomePage() {
       <section className={`mobile-home-hero${skippedWelcome ? ' mobile-home-hero--skipped' : ''}`} aria-labelledby="mobile-home-title">
         <div className="mobile-home-hero__title-wrap">
           <h1 className="mobile-home-hero__title" id="mobile-home-title" aria-label={`${heroLabel} cold brew`}>
-            <span className="mobile-home-hero__name">{visibleName}</span>
-            <span className="mobile-home-hero__suffix">{visibleSuffix}</span>
-            {typedChars < fullName.length && <span className="mobile-home-hero__cursor" aria-hidden="true">|</span>}
+            {skippedWelcome ? (
+              <>
+                <span className="mobile-home-hero__name">{heroState.name}</span>
+                <span className="mobile-home-hero__suffix">{heroState.suffix}</span>
+              </>
+            ) : (
+              <>
+                <span className="mobile-home-hero__name">{visibleName}</span>
+                <span className="mobile-home-hero__suffix">{visibleSuffix}</span>
+                {typedChars < fullName.length && <span className="mobile-home-hero__cursor" aria-hidden="true">|</span>}
+              </>
+            )}
           </h1>
 
-          {heroState.formula && (
+          {formulaDetails && (
             <span className="mobile-home-hero__formula-text" role="note">
-              {heroState.formula}
+              <span className="formula-text__name">{formulaDetails.inputName}’s </span>
+              <span className="formula-text__coffee">{formulaDetails.inputCoffee}</span>
+
+              <span className="mobile-home-hero__formula-tooltip" role="tooltip">
+                <span className="formula-tooltip__title">Hero Title Naming Logic</span>
+                <span className="formula-tooltip__math">
+                  <span className="math-input">{formulaDetails.inputName}</span>
+                  <span className="math-operator">+</span>
+                  <span className="math-input">{formulaDetails.inputCoffee}</span>
+                </span>
+                <span className="formula-tooltip__arrow">➔</span>
+                <span className="formula-tooltip__result">
+                  <span className="result-name">{formulaDetails.heroName}</span>
+                  <span className="result-suffix">{formulaDetails.heroSuffix}</span>
+                </span>
+                <span className="formula-tooltip__desc">
+                  We take your name and blend it with your favorite coffee type to generate your custom <strong>Hero Title</strong>!
+                </span>
+              </span>
             </span>
           )}
         </div>
@@ -324,17 +390,19 @@ export default function MobileHomePage() {
           </div>
         </div>
 
-        <div className="mobile-home-hero__dots" aria-label="Featured coffee examples">
-          {allSlides.map((slide, index) => (
-            <button
-              key={`${slide.name}-${index}`}
-              type="button"
-              className={index === activeSlide ? 'is-active' : ''}
-              aria-label={`Show ${slide.name} ${slide.suffix}`}
-              onClick={() => setActiveSlide(index)}
-            />
-          ))}
-        </div>
+        {skippedWelcome && (
+          <div className="mobile-home-hero__dots" aria-label="Featured coffee examples">
+            {allSlides.map((slide, index) => (
+              <button
+                key={`${slide.name}-${index}`}
+                type="button"
+                className={index === activeSlide ? 'is-active' : ''}
+                aria-label={`Show ${slide.name} ${slide.suffix}`}
+                onClick={() => setActiveSlide(index)}
+              />
+            ))}
+          </div>
+        )}
 
         <div className="mobile-home-hero__actions" aria-label="Primary actions">
           {/* <MobileButton icon={Coffee} onClick={() => triggerCupSlam('/build')}>Create Your Drink</MobileButton> — kiosk-only */}

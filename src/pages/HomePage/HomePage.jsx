@@ -233,7 +233,6 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
   const fullName = `${heroState.name}${heroState.suffix}`;
 
   const formulaDetails = useMemo(() => {
-    if (!skippedWelcome) return null;
     if (heroState.name === 'Vandy') {
       return {
         inputName: 'Vandana',
@@ -311,7 +310,7 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
           </>
         )}
 
-        {skippedWelcome && formulaDetails && (
+        {formulaDetails && (
           <span className="homepage-react-hero__formula-text" role="note">
             <span className="formula-text__name">{formulaDetails.inputName}’s </span>
             <span className="formula-text__coffee">{formulaDetails.inputCoffee}</span>

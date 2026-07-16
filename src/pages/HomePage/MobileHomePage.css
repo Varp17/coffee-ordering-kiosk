@@ -165,6 +165,10 @@
 }
 
 .mobile-home-hero__formula-text {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
   font-family: 'Author', sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
@@ -172,6 +176,131 @@
   opacity: 0.85;
   margin-top: 0.4rem;
   margin-left: 0.1rem;
+  pointer-events: auto;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  z-index: 50;
+  transition: opacity 0.2s ease;
+}
+
+.mobile-home-hero__formula-text .formula-text__name {
+  color: var(--mobile-home-blue);
+}
+
+.mobile-home-hero__formula-text .formula-text__coffee {
+  color: #2b6cb0;
+}
+
+.mobile-home-hero__formula-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: 260px;
+  background: #ffffff;
+  color: #1f2a44;
+  border-radius: 12px;
+  padding: 0.85rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(24, 68, 171, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 100;
+  font-size: 0.78rem;
+  font-weight: normal;
+  letter-spacing: normal;
+  text-align: left;
+}
+
+.mobile-home-hero__formula-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 20px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #ffffff transparent transparent transparent;
+}
+
+.mobile-home-hero__formula-text:hover .mobile-home-hero__formula-tooltip,
+.mobile-home-hero__formula-text:focus-within .mobile-home-hero__formula-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.mobile-home-hero__formula-tooltip .formula-tooltip__title {
+  font-family: 'Author', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--mobile-home-blue);
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.mobile-home-hero__formula-tooltip .formula-tooltip__math {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: monospace;
+  font-size: 0.85rem;
+  background: #f0f4f8;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  margin-bottom: 0.4rem;
+}
+
+.mobile-home-hero__formula-tooltip .math-input {
+  color: var(--mobile-home-blue);
+  font-weight: 600;
+}
+
+.mobile-home-hero__formula-tooltip .math-operator {
+  color: #a0aec0;
+}
+
+.mobile-home-hero__formula-tooltip .formula-tooltip__arrow {
+  text-align: center;
+  font-size: 1rem;
+  color: #4a5568;
+  margin-block: 0.2rem;
+  display: block;
+}
+
+.mobile-home-hero__formula-tooltip .formula-tooltip__result {
+  font-family: 'Author', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-align: center;
+  color: #1f2a44;
+  background: rgba(24, 68, 171, 0.05);
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px dashed rgba(24, 68, 171, 0.2);
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+.mobile-home-hero__formula-tooltip .result-name {
+  color: var(--mobile-home-blue);
+}
+
+.mobile-home-hero__formula-tooltip .result-suffix {
+  color: #63b3ed;
+}
+
+.mobile-home-hero__formula-tooltip .formula-tooltip__desc {
+  font-size: 0.72rem;
+  color: #718096;
+  line-height: 1.4;
+  margin: 0;
+  display: block;
 }
 
 .mobile-home-hero__beans {

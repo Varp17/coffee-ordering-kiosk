@@ -4,8 +4,16 @@
 // =====================================================
 
 const CLASSIC_IMAGE = '/images/Classic-concentrate.png';
-const KAPPI_IMAGE = '/images/Kappi-concentrate.png';
 const BOLD_IMAGE = '/bold-concentrate-bottle.png';
+
+const BOLD_325_IMAGE = '/images/products/BoldConcentrate325.png';
+const CLASSIC_325_IMAGE = '/images/products/ClassicCBConc325.png';
+const KAPPI_325_IMAGE = '/images/products/KappiConcentrate325.png';
+const BOLD_1L_BACK_IMAGE = '/images/products/Bold1ltr-Back.png';
+const CLASSIC_1L_BACK_IMAGE = '/images/products/Classic1ltr-Back.png';
+const KAPPI_1L_BACK_IMAGE = '/images/products/Kaapi1ltr-Back.png';
+const BOLD_1L_FRONT_IMAGE = '/images/products/Bold1ltr .jpeg';
+const CLASSIC_1L_FRONT_IMAGE = '/images/products/Classic1ltr.jpeg';
 
 const size = (id, label, ml, basePrice = 390) => {
   if (id === '325ml') {
@@ -57,8 +65,14 @@ export const PRODUCTS = [
     tagline: 'Balanced Arabica and Robusta for everyday cold coffee.',
     description:
       'Built for that extra punch. This strong concentrate holds its flavor in milk-heavy lattes, jaggery blends, mocha drinks, and dessert-style cold coffee.',
-    image: BOLD_IMAGE,
-    gallery: fourImageGallery('coffee-50-50-concentrate', 'Bold Concentrate', BOLD_IMAGE),
+    image: BOLD_325_IMAGE,
+    imageLtr: BOLD_1L_FRONT_IMAGE,
+    gallery: [
+      { id: 'coffee-50-50-concentrate-image-0', label: 'Front', src: BOLD_325_IMAGE, alt: 'Bold Concentrate - Front' },
+      { id: 'coffee-50-50-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Bold Concentrate - Serve' },
+      { id: 'coffee-50-50-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Bold Concentrate - Details' },
+      { id: 'coffee-50-50-concentrate-image-3', label: 'Label', src: BOLD_1L_BACK_IMAGE, alt: 'Bold Concentrate - 1L Label' },
+    ],
     basePrice: 390,
     defaultSizeId: '325ml',
     sizes: size('325ml', '325 ml', 325, 390),
@@ -93,8 +107,14 @@ export const PRODUCTS = [
     tagline: '100% Arabica from Coorg, specially blended and roasted for a bright and clean flavour',
     description:
       'A classic cold brew profile made for those who want coffee clarity, low bitterness, and a flexible base for cold brew, tonics, and black serves.',
-    image: CLASSIC_IMAGE,
-    gallery: fourImageGallery('classic-cb-concentrate', 'Classic CB Concentrate', CLASSIC_IMAGE),
+    image: CLASSIC_325_IMAGE,
+    imageLtr: CLASSIC_1L_FRONT_IMAGE,
+    gallery: [
+      { id: 'classic-cb-concentrate-image-0', label: 'Front', src: CLASSIC_325_IMAGE, alt: 'Classic CB Concentrate - Front' },
+      { id: 'classic-cb-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
+      { id: 'classic-cb-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Classic CB Concentrate - Details' },
+      { id: 'classic-cb-concentrate-image-3', label: 'Label', src: CLASSIC_1L_BACK_IMAGE, alt: 'Classic CB Concentrate - 1L Label' },
+    ],
     basePrice: 390,
     defaultSizeId: '325ml',
     sizes: size('325ml', '325 ml', 325, 390),
@@ -165,8 +185,13 @@ export const PRODUCTS = [
     tagline: 'South Indian filter-inspired depth in a chilled format.',
     description:
       'A nostalgic South Indian filter coffee style concentrate, made for chilled kaapi, condensed milk serves, and rich cafe recipes.',
-    image: KAPPI_IMAGE,
-    gallery: fourImageGallery('sif-concentrate', 'Kaapi Concentrate', KAPPI_IMAGE),
+    image: KAPPI_325_IMAGE,
+    gallery: [
+      { id: 'sif-concentrate-image-0', label: 'Front', src: KAPPI_325_IMAGE, alt: 'Kaapi Concentrate - Front' },
+      { id: 'sif-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
+      { id: 'sif-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Kaapi Concentrate - Details' },
+      { id: 'sif-concentrate-image-3', label: 'Label', src: KAPPI_1L_BACK_IMAGE, alt: 'Kaapi Concentrate - 1L Label' },
+    ],
     basePrice: 390,
     defaultSizeId: '325ml',
     sizes: size('325ml', '325 ml', 325, 390),

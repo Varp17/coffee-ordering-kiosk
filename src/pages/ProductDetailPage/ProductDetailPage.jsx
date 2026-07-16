@@ -37,11 +37,19 @@ export default function ProductDetailPage() {
     );
   }
 
-  const gallery = product.gallery?.length
-    ? product.gallery
-    : [{ id: `${product.id}-image`, label: 'Product image', src: product.image, alt: product.name }];
   const defaultSize = product.sizes.find((size) => size.id === product.defaultSizeId) || product.sizes[0];
   const selectedSize = product.sizes.find((s) => s.id === selectedSizeId) || defaultSize;
+
+  const isLtr = selectedSize.id === '1000ml';
+  const baseGallery = product.gallery?.length
+    ? product.gallery
+    : [{ id: `${product.id}-image`, label: 'Product image', src: product.image, alt: product.name }];
+  const gallery = isLtr && product.imageLtr
+    ? baseGallery.map((item, i) =>
+        i === 0 ? { ...item, src: product.imageLtr, alt: `${product.name} - 1L Front` } : item
+      )
+    : baseGallery;
+
   const activeImage = gallery.find((item) => item.id === activeImageId) || gallery[0];
 
   const compatibleAddons = ADDONS.filter((addon) =>
@@ -189,7 +197,10 @@ export default function ProductDetailPage() {
               <SizeSelector
                 sizes={product.sizes}
                 selected={selectedSize}
-                onChange={(size) => setSelectedSizeId(size.id)}
+                onChange={(size) => {
+                  setSelectedSizeId(size.id);
+                  setActiveImageId(null);
+                }}
                 basePrice={basePrice}
               />
             </div>

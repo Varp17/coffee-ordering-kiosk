@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Coffee } from 'lucide-react';
 import { useUserStore } from '@/store/useUserStore';
@@ -531,6 +532,7 @@ function SkipHomepageMiddleFlow() {
     return () => observer.disconnect();
   }, []);
 
+
   useEffect(() => {
     const section = hardPartRef.current;
     if (!section) return undefined;
@@ -655,21 +657,40 @@ function SkipHomepageMiddleFlow() {
       </section>
 
       <div ref={videoSentinelRef} aria-hidden="true" />
-      <section
-        className={`skip-feature-video${videoExpanded ? ' is-expanded' : ''}`}
-        aria-label="Chilld cold brew concentrate video"
-      >
-        <video
-          src="/Videos/coffee_concentrate_with_glass.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          width="1180"
-          height="664"
-        />
-      </section>
+      {videoExpanded ? createPortal(
+        <section
+          className="skip-feature-video is-expanded"
+          aria-label="Chilld cold brew concentrate video"
+        >
+          <video
+            src="/Videos/coffee_concentrate_with_glass.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            width="1180"
+            height="664"
+          />
+        </section>,
+        document.body
+      ) : (
+        <section
+          className="skip-feature-video"
+          aria-label="Chilld cold brew concentrate video"
+        >
+          <video
+            src="/Videos/coffee_concentrate_with_glass.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            width="1180"
+            height="664"
+          />
+        </section>
+      )}
     </>
   );
 }

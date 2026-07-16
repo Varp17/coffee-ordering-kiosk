@@ -29,6 +29,7 @@ import ContactPage from '@/pages/ContactPage/ContactPage';
 import StorePage from '@/pages/StorePage/StorePage';
 import B2BPage from '@/pages/B2BPage/B2BPage';
 import { useUserStore } from '@/store/useUserStore';
+import useProportionalScaling from '@/hooks/useProportionalScaling';
 import './App.css';
 
 /* Guard: redirect to /welcome if user hasn't completed onboarding */
@@ -39,6 +40,7 @@ function RequireWelcome({ children }) {
 }
 
 function App() {
+  useProportionalScaling();
   return (
     <Router basename={import.meta.env.BASE_URL}>
       <ScrollToTop />

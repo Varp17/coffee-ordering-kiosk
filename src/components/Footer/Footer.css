@@ -92,7 +92,7 @@
   margin-top: clamp(2.4rem, 3vw, 3.25rem);
   color: var(--footer-ink);
   font-size: clamp(0.82rem, 0.86vw, 0.96rem);
-  font-weight: 800;
+  font-weight: 400;
 }
 
 .footer__social-link {

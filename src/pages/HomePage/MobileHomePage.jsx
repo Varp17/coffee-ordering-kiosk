@@ -65,7 +65,7 @@ const storyNotes = [
   'Cafe-style cold coffee without a cafe-sized wait.',
 ];
 
-const marqueeItems = ['Great coffee, made easy', 'Great coffee, made easy', 'Great coffee, made easy'];
+const marqueeText = '100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • ';
 
 
 
@@ -99,6 +99,40 @@ const popularDrinks = [
     tone: 'core',
   },
 ];
+
+const SKIPPED_HERO_SLIDES = [
+  {
+    name: 'Vandy',
+    suffix: 'Brew',
+    formula: "Vandana’s Cold Brew",
+    image: '/images/COLD BREW.png',
+  },
+  {
+    name: 'Preri',
+    suffix: 'Appe',
+    formula: "Prerita’s Frappe",
+    image: '/images/frappe.webp',
+  },
+  {
+    name: 'Rishi',
+    suffix: 'Latte',
+    formula: "Rishima’s Latte",
+    image: '/images/LATTEeee.png',
+  },
+];
+
+function getCupConfigByUrl(imageUrl) {
+  return Object.values(COFFEE_CUP_IMAGES).find((config) => config.url === imageUrl) || {
+    url: imageUrl,
+    mobileScale: 1.0,
+    mobileY: 0,
+  };
+}
+
+function formatCoffeeName(coffeeType) {
+  if (!coffeeType) return 'Cold Brew';
+  return coffeeType.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+}
 
 const benefits = ['8-10 serves per bottle', 'Ready in under a minute', 'Milk, tonic, ice, and mixers'];
 
@@ -148,14 +182,48 @@ function SectionHeading({ eyebrow, title, id, children }) {
 export default function MobileHomePage() {
   const getHeroText = useUserStore((state) => state.getHeroText);
   const coffeeType = useUserStore((state) => state.coffeeType);
+  const skippedWelcome = useUserStore((state) => state.skippedWelcome);
   const { displayName, suffix } = useMemo(() => getHeroText(), [getHeroText]);
-  const heroLabel = `${displayName}${suffix}`;
+
+  const [activeSlide, setActiveSlide] = useState(0);
   const whySectionRef = useRef(null);
   const [whyCupsVisible, setWhyCupsVisible] = useState(false);
   const navigate = useNavigate();
   const [cupSlam, setCupSlam] = useState(false);
   const [typedChars, setTypedChars] = useState(0);
-  const fullName = `${displayName}${suffix}`;
+
+  const allSlides = useMemo(() => {
+    const mainSlide = {
+      name: displayName || 'CHILLD',
+      suffix: suffix || 'BREW',
+      formula: `${displayName || 'CHILLD'}’s ${formatCoffeeName(coffeeType)}`,
+      cup: COFFEE_CUP_IMAGES[coffeeType] || { url: `${ASSET_BASE}cold-brew-cup.png`, mobileScale: 1.0, mobileY: 0 },
+    };
+
+    const skipSlides = SKIPPED_HERO_SLIDES.map(slide => ({
+      name: slide.name,
+      suffix: slide.suffix,
+      formula: slide.formula,
+      cup: getCupConfigByUrl(slide.image),
+    }));
+
+    if (skippedWelcome) {
+      return skipSlides;
+    }
+    return [mainSlide, ...skipSlides];
+  }, [displayName, suffix, coffeeType, skippedWelcome]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % allSlides.length);
+    }, 4000);
+
+    return () => window.clearInterval(timer);
+  }, [allSlides.length]);
+
+  const heroState = allSlides[activeSlide] || allSlides[0];
+  const fullName = `${heroState.name}${heroState.suffix}`;
+  const heroLabel = fullName;
 
   const triggerCupSlam = (to) => {
     setCupSlam(true);
@@ -167,15 +235,16 @@ export default function MobileHomePage() {
 
   useEffect(() => {
     if (typedChars < fullName.length) {
-      const timer = setTimeout(() => setTypedChars(typedChars + 1), 80 + Math.random() * 40);
+      const timer = setTimeout(() => setTypedChars((prev) => prev + 1), 80 + Math.random() * 40);
       return () => clearTimeout(timer);
     }
   }, [typedChars, fullName.length]);
 
   useEffect(() => {
+    setTypedChars(0);
     const timer = setTimeout(() => setTypedChars(1), 500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [activeSlide]);
 
   useEffect(() => {
     const section = whySectionRef.current;
@@ -195,18 +264,26 @@ export default function MobileHomePage() {
     return () => observer.disconnect();
   }, []);
 
-  const nameLen = displayName.length;
+  const nameLen = heroState.name.length;
   const visibleName = fullName.slice(0, Math.min(typedChars, nameLen));
   const visibleSuffix = fullName.slice(nameLen, Math.min(typedChars, fullName.length));
 
   return (
     <div className="mobile-home" data-testid="mobile-home-page">
-      <section className="mobile-home-hero" aria-labelledby="mobile-home-title">
-        <h1 className="mobile-home-hero__title" id="mobile-home-title" aria-label={`${heroLabel} cold brew`}>
-          <span className="mobile-home-hero__name">{visibleName}</span>
-          <span className="mobile-home-hero__suffix">{visibleSuffix}</span>
-          {typedChars < fullName.length && <span className="mobile-home-hero__cursor" aria-hidden="true">|</span>}
-        </h1>
+      <section className={`mobile-home-hero${skippedWelcome ? ' mobile-home-hero--skipped' : ''}`} aria-labelledby="mobile-home-title">
+        <div className="mobile-home-hero__title-wrap">
+          <h1 className="mobile-home-hero__title" id="mobile-home-title" aria-label={`${heroLabel} cold brew`}>
+            <span className="mobile-home-hero__name">{visibleName}</span>
+            <span className="mobile-home-hero__suffix">{visibleSuffix}</span>
+            {typedChars < fullName.length && <span className="mobile-home-hero__cursor" aria-hidden="true">|</span>}
+          </h1>
+
+          {heroState.formula && (
+            <span className="mobile-home-hero__formula-text" role="note">
+              {heroState.formula}
+            </span>
+          )}
+        </div>
 
         <div className="mobile-home-hero__beans" aria-hidden="true">
           {beanClasses.map((beanClass) => (
@@ -226,22 +303,37 @@ export default function MobileHomePage() {
         </div>
 
         <div className="mobile-home-hero__cup-stage">
-          {(() => {
-            const cupConfig = COFFEE_CUP_IMAGES[coffeeType] || { url: `${ASSET_BASE}cold-brew-cup.png`, mobileScale: 1.0, mobileY: 0 };
-            return (
-              <img
-                className={`mobile-home-hero__cup${cupSlam ? ' mobile-home-hero__cup--slam' : ''}`}
-                src={cupConfig.url}
-                style={{
-                  transform: `scale(${cupConfig.mobileScale || 1.0}) translateY(${cupConfig.mobileY || 0}px)`,
-                  transformOrigin: 'center bottom',
-                }}
-                alt="Iced Chilld cold brew in a clear cup"
-                fetchPriority="high"
-                decoding="async"
-              />
-            );
-          })()}
+          <div
+            className="mobile-home-hero__cup-wrap"
+            style={{
+              transform: `scale(${(heroState.cup.mobileScale || 1.0) * 1.2}) translateY(${(heroState.cup.mobileY || 0) + 60}px)`,
+              transformOrigin: 'center bottom',
+              transition: 'transform 0.4s ease',
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            <img
+              className={`mobile-home-hero__cup${cupSlam ? ' mobile-home-hero__cup--slam' : ''}`}
+              src={heroState.cup.url}
+              alt="Iced Chilld cold brew in a clear cup"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        <div className="mobile-home-hero__dots" aria-label="Featured coffee examples">
+          {allSlides.map((slide, index) => (
+            <button
+              key={`${slide.name}-${index}`}
+              type="button"
+              className={index === activeSlide ? 'is-active' : ''}
+              aria-label={`Show ${slide.name} ${slide.suffix}`}
+              onClick={() => setActiveSlide(index)}
+            />
+          ))}
         </div>
 
         <div className="mobile-home-hero__actions" aria-label="Primary actions">
@@ -255,13 +347,11 @@ export default function MobileHomePage() {
         </div>
       </section>
 
-      <section className="mobile-home-marquee" aria-label="Great coffee, made easy">
+      <section className="mobile-home-marquee" aria-label="100% real coffee">
         <div className="mobile-home-marquee__track" aria-hidden="true">
           {[0, 1].map((setIndex) => (
             <span className="mobile-home-marquee__set" key={setIndex}>
-              {marqueeItems.map((item, itemIndex) => (
-                <span key={`${setIndex}-${itemIndex}`}>...{item}...</span>
-              ))}
+              <span>{marqueeText}</span>
             </span>
           ))}
         </div>
@@ -342,7 +432,7 @@ export default function MobileHomePage() {
       <section className="mobile-home-social" aria-labelledby="mobile-home-social-title">
         <SectionHeading id="mobile-home-social-title" eyebrow="What people are saying" title="Real Chilld moments." />
         <div className="mobile-home-review-grid">
-          
+
           {/* Card 1: Garden Collection Image */}
           <article className="mobile-home-review-card mobile-home-review-card--media">
             <img src={`${ASSET_BASE}garden-collection.png`} alt="Chilld coffee recipe collection" loading="lazy" decoding="async" />
@@ -514,7 +604,7 @@ export default function MobileHomePage() {
 
 
 
-      <Footer className="footer--mobile-home" />
+      <Footer />
     </div>
   );
 }

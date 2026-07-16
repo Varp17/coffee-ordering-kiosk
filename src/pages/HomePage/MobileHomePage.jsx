@@ -592,7 +592,7 @@ export default function MobileHomePage() {
         <div className="mobile-home-core__media" aria-hidden="true">
           <img
             className="mobile-home-core__image"
-            src="/images/CPB.png"
+            src="/images/bgremoveconcentratebottels.png"
             alt=""
             loading="lazy"
             decoding="async"

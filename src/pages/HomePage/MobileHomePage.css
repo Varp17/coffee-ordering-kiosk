@@ -978,16 +978,17 @@
 .mobile-home-core {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(8.25rem, 0.74fr);
-  gap: 0;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 0.5rem;
   align-items: stretch;
   isolation: isolate;
   overflow: clip;
-  min-block-size: clamp(17.5rem, 74vw, 22.5rem);
-  padding: 1.45rem 0 0.9rem 1rem;
-  border-block-start: 1px solid rgba(24, 68, 171, 0.08);
-  background: linear-gradient(180deg, #f7fbff 0%, #eaf6ff 100%);
+  min-block-size: clamp(18rem, 78vw, 23rem);
+  margin: 1.5rem 1rem;
+  border-radius: 16px;
+  background: #e6f4ff;
   color: var(--mobile-home-ink);
+  box-shadow: 0 12px 30px rgba(31, 42, 68, 0.08);
 }
 
 .mobile-home-core::before {
@@ -996,7 +997,9 @@
   inset: 0;
   background: url('/images/mobile-home/Subtract.svg') center / clamp(36rem, 185vw, 52rem) auto no-repeat;
   content: "";
+  opacity: 0.9;
   pointer-events: none;
+  border-radius: 16px;
 }
 
 .mobile-home-core__copy {
@@ -1004,7 +1007,7 @@
   z-index: 1;
   align-self: center;
   min-inline-size: 0;
-  padding-block-end: 0.3rem;
+  padding: 1.5rem 0 1.5rem 1.25rem;
 }
 
 .mobile-home-core__copy>p:not(.mobile-home-eyebrow),
@@ -1044,19 +1047,20 @@
   align-self: stretch;
   justify-self: end;
   inline-size: 100%;
-  min-block-size: clamp(15.5rem, 62vw, 19rem);
+  min-block-size: clamp(14rem, 58vw, 18rem);
   pointer-events: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .mobile-home-core__image {
   position: absolute;
-  inset-inline-end: clamp(0.35rem, 2vw, 0.8rem);
-  inset-block-end: clamp(-1.1rem, -3vw, -0.35rem);
-  max-inline-size: none;
-  inline-size: clamp(18rem, 74vw, 23.5rem);
-  block-size: auto;
-  justify-self: end;
-  filter: drop-shadow(0 20px 24px rgba(4, 14, 47, 0.34));
+  inset-inline-end: 0.5rem;
+  inset-block-end: 1rem;
+  width: 130px;
+  height: auto;
+  filter: drop-shadow(0 15px 20px rgba(4, 14, 47, 0.18));
 }
 
 .mobile-home-social {
@@ -1498,19 +1502,23 @@
   }
 
   .mobile-home-core {
-    grid-template-columns: minmax(0, 1fr) minmax(6.9rem, 0.64fr);
-    min-block-size: 17rem;
-    padding-inline-start: 0.72rem;
+    grid-template-columns: 1.3fr 0.7fr;
+    margin: 1.2rem 0.75rem;
+    padding-inline: 0;
+  }
+
+  .mobile-home-core__copy {
+    padding: 1.25rem 0 1.25rem 0.9rem;
   }
 
   .mobile-home-core__media {
-    min-block-size: 14.75rem;
+    min-block-size: 12rem;
   }
 
   .mobile-home-core__image {
+    width: 105px;
     inset-inline-end: 0.35rem;
-    inset-block-end: -0.8rem;
-    inline-size: 17.25rem;
+    inset-block-end: 0.75rem;
   }
 }
 

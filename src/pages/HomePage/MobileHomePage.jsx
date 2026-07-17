@@ -192,6 +192,43 @@ export default function MobileHomePage() {
   const [cupSlam, setCupSlam] = useState(false);
   const [typedChars, setTypedChars] = useState(0);
 
+  const topWavePathRef = useRef(null);
+  const topWaveTextRef = useRef(null);
+  const [waveAnim, setWaveAnim] = useState({ from: '0%', to: '-50%' });
+
+  useEffect(() => {
+    const measureWave = () => {
+      if (!topWavePathRef.current || !topWaveTextRef.current) return;
+      try {
+        const pathLength = topWavePathRef.current.getTotalLength();
+        const textLength = topWaveTextRef.current.getComputedTextLength();
+        const repetitions = 5;
+        const oneRepetitionLength = textLength / repetitions;
+        const shiftPercent = (oneRepetitionLength / pathLength) * 100;
+        setWaveAnim({
+          from: '0%',
+          to: `-${shiftPercent}%`
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    measureWave();
+    window.addEventListener('resize', measureWave);
+
+    if (document.fonts) {
+      document.fonts.ready.then(measureWave);
+    }
+
+    const timer = setTimeout(measureWave, 500);
+
+    return () => {
+      window.removeEventListener('resize', measureWave);
+      clearTimeout(timer);
+    };
+  }, []);
+
   const allSlides = useMemo(() => {
     const mainSlide = {
       name: displayName || 'CHILLD',
@@ -404,54 +441,82 @@ export default function MobileHomePage() {
           </div>
         )}
 
-        <div className="mobile-home-hero__actions" aria-label="Primary actions">
-          {/* <MobileButton icon={Coffee} onClick={() => triggerCupSlam('/build')}>Create Your Drink</MobileButton> — kiosk-only */}
-          <MobileButton icon={Coffee} onClick={() => triggerCupSlam('/menu')}>
-            Shop Concentrates
-          </MobileButton>
-          <MobileButton variant="secondary" icon={ShoppingBag} onClick={() => triggerCupSlam('/recipes')}>
-            Explore Recipes
-          </MobileButton>
-        </div>
+
       </section>
 
-      <section className="mobile-home-marquee" aria-label="100% real coffee">
-        <div className="mobile-home-marquee__track" aria-hidden="true">
-          {[0, 1].map((setIndex) => (
-            <span className="mobile-home-marquee__set" key={setIndex}>
-              <span>{marqueeText}</span>
-            </span>
-          ))}
+      <section className="mobile-home-hard-part" aria-labelledby="mobile-home-story-title">
+        <div className="mobile-home-hard-part__media">
+          <video
+            className="mobile-home-hard-part__video"
+            src="/Videos/coffeeswirl2.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          />
+          <div className="mobile-home-hard-part__shade" />
         </div>
-      </section>
+        
+        <svg className="mobile-home-hard-part__top-wave" viewBox="0 0 1512 230" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <path
+              ref={topWavePathRef}
+              id="mobile-home-hard-part-wave-text"
+              d="M -180 236 C -120 236, -60 181.3, 0 208 L 63 179.96 C 126 152.35, 252 95.65, 378 95.97 C 504 95.65, 630 152.35, 756 179.96 C 882 208, 1008 208, 1134 179.96 C 1260 152.35, 1386 95.65, 1449 68.03 L 1512 40 C 1572 13.3, 1632 -14, 1692 -14"
+            />
+          </defs>
+          <text className="mobile-home-hard-part__top-wave-text" dy="0.85em">
+            <textPath
+              ref={topWaveTextRef}
+              href="#mobile-home-hard-part-wave-text"
+              startOffset="0%"
+            >
+              100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • 100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… •
+              <animate
+                key={`${waveAnim.from}-${waveAnim.to}`}
+                attributeName="startOffset"
+                from={waveAnim.from}
+                to={waveAnim.to}
+                dur="34s"
+                repeatCount="indefinite"
+              />
+            </textPath>
+          </text>
+        </svg>
 
-      <section className="mobile-home-story" aria-labelledby="mobile-home-story-title">
-        <video
-          className="mobile-home-story__video"
-          src={`${ASSET_BASE}coffeeswirl.mp4`}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        />
-        <div className="mobile-home-story__shade" aria-hidden="true" />
-        <div className="mobile-home-story__copy">
-          <p className="mobile-home-eyebrow mobile-home-eyebrow--cream">Great coffee, made easy</p>
-          <h2 id="mobile-home-story-title">We handled the hard part. The fun part is on you.</h2>
+        <div className="mobile-home-hard-part__copy">
+          <h2 id="mobile-home-story-title">We handled the hard part, the fun part's on you</h2>
           <p>
-            Chilld keeps the craft behind the scenes, so your daily cup stays quick,
-            personal, and calm.
+            We get you exceptional coffee concentrate. We take care of the nitty-gritties of sourcing, grinding and brewing.<br />
+            After that, you are free to tailor your daily coffee to your liking. Add water, if you are in a hurry for your<br />
+            presentation. Add syrup, milk, experiment with everyday ingredients in your kitchen, if you feel like it.
           </p>
-          <ul>
-            {storyNotes.map((note) => (
-              <li key={note}>{note}</li>
-            ))}
-          </ul>
-          <MobileButton to="/menu" variant="cream" icon={ShoppingBag}>
-            Buy Cold Brew Core
-          </MobileButton>
+          <p>
+            If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery but<br />
+            enjoy the occasional pick-me-up, add a spoon less. No one's judging you.
+          </p>
+          <p>
+            We guarantee that it will taste good; we promise that it won't eat into your wallet.
+          </p>
+          <p className="mobile-home-hard-part__quote">'Coffee is too much work?'</p>
+          <p>
+            If you can make lemonade or iced-water, this is a walk in the park.
+          </p>
+          <p>
+            Chilld is built for people who like things their way. From milk choices to sweetness levels, every drink is designed
+            by you. No complicated menus. Just cold coffee made for your mood, your routine, and your kind of day.
+          </p>
+          <div className="mobile-home-hard-part__actions">
+            <Link to="/menu" className="mobile-home-hard-part__primary">Cold Brew Concentrate</Link>
+            <Link to="/recipes" className="mobile-home-hard-part__secondary">Explore Recipes</Link>
+          </div>
         </div>
+
+        <svg className="mobile-home-hard-part__bottom-wave" viewBox="0 0 1512 220" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 46 C178 96 348 138 532 137 C724 136 850 82 1026 82 C1210 82 1336 130 1512 176 L1512 220 L0 220 Z" fill="#ffffff" />
+        </svg>
       </section>
 
       <section

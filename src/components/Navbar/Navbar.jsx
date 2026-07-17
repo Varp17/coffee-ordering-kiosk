@@ -123,14 +123,7 @@ export default function Navbar() {
                 <span>Create Your Drink</span>
               </Link> */}
 
-              {/* Hamburger (mobile) */}
-              <button
-                className="navbar__hamburger"
-                onClick={() => setMobileOpen(!mobileOpen)}
-                aria-label="Toggle menu"
-              >
-                {mobileOpen ? <X size={22} /> : <MenuIcon size={22} />}
-              </button>
+
             </div>
           </div>
 

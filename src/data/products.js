@@ -3,8 +3,12 @@
 // Source: CHILLD Product Detail Catalog (July 2026)
 // =====================================================
 
+// ── Product Card (Menu Page) Images ──
 const CLASSIC_IMAGE = '/images/Classic-concentrate.png';
-const BOLD_IMAGE = '/bold-concentrate-bottle.png';
+const BOLD_IMAGE = '/images/products/coffee-concentrate-bottle.png';
+const KAPPI_IMAGE = '/images/Kappi-concentrate.png';
+
+// ── Product Detail Page Images ──
 
 const BOLD_325_IMAGE = '/images/products/BoldConcentrate325.png';
 const CLASSIC_325_IMAGE = '/images/products/ClassicCBConc325.png';
@@ -65,6 +69,12 @@ export const PRODUCTS = [
     tagline: 'Balanced Arabica and Robusta for everyday cold coffee.',
     description:
       'Built for that extra punch. This strong concentrate holds its flavor in milk-heavy lattes, jaggery blends, mocha drinks, and dessert-style cold coffee.',
+    // ── Image Config ──
+    // cardImage → Product Card on Menu Page
+    // image     → Detail Page default (325ml)
+    // imageLtr  → Detail Page when 1L selected
+    // gallery   → Detail Page gallery (front/serve/details/label)
+    cardImage: BOLD_IMAGE,
     image: BOLD_325_IMAGE,
     imageLtr: BOLD_1L_FRONT_IMAGE,
     gallery: [
@@ -107,6 +117,12 @@ export const PRODUCTS = [
     tagline: '100% Arabica from Coorg, specially blended and roasted for a bright and clean flavour',
     description:
       'A classic cold brew profile made for those who want coffee clarity, low bitterness, and a flexible base for cold brew, tonics, and black serves.',
+    // ── Image Config ──
+    // cardImage → Product Card on Menu Page
+    // image     → Detail Page default (325ml)
+    // imageLtr  → Detail Page when 1L selected
+    // gallery   → Detail Page gallery (front/serve/details/label)
+    cardImage: CLASSIC_IMAGE,
     image: CLASSIC_325_IMAGE,
     imageLtr: CLASSIC_1L_FRONT_IMAGE,
     gallery: [
@@ -185,6 +201,12 @@ export const PRODUCTS = [
     tagline: 'South Indian filter-inspired depth in a chilled format.',
     description:
       'A nostalgic South Indian filter coffee style concentrate, made for chilled kaapi, condensed milk serves, and rich cafe recipes.',
+    // ── Image Config ──
+    // cardImage → Product Card on Menu Page
+    // image     → Detail Page default (325ml)
+    // imageLtr  → Detail Page when 1L selected
+    // gallery   → Detail Page gallery (front/serve/details/label)
+    cardImage: KAPPI_IMAGE,
     image: KAPPI_325_IMAGE,
     gallery: [
       { id: 'sif-concentrate-image-0', label: 'Front', src: KAPPI_325_IMAGE, alt: 'Kaapi Concentrate - Front' },

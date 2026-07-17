@@ -33,7 +33,7 @@ export default function ProductCard({ product, compact = false }) {
   const navigate = useNavigate();
 
   const price = product.basePrice + (selectedSize?.modifier || 0);
-  const image = product.gallery?.[0]?.src || product.image;
+  const image = product.cardImage || product.gallery?.[0]?.src || product.image;
   const rating = product.reviews?.rating;
   const reviewCount = product.reviews?.count;
   const hasRating = Number.isFinite(rating);

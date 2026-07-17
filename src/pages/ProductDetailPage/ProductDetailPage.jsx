@@ -48,7 +48,9 @@ export default function ProductDetailPage() {
     ? baseGallery.map((item, i) =>
         i === 0 ? { ...item, src: product.imageLtr, alt: `${product.name} - 1L Front` } : item
       )
-    : baseGallery;
+    : baseGallery.map((item, i) =>
+        i === 0 ? { ...item, src: product.image } : item
+      );
 
   const activeImage = gallery.find((item) => item.id === activeImageId) || gallery[0];
 

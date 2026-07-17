@@ -78,8 +78,12 @@ export const PRODUCTS = [
     gallery: [
       { id: 'coffee-50-50-concentrate-image-0', label: 'Front', src: BOLD_IMAGE, alt: 'Bold Concentrate - Bottle' },
       { id: 'coffee-50-50-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Bold Concentrate - Serve' },
-      // { id: 'coffee-50-50-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Bold Concentrate - Details' },
-      { id: 'coffee-50-50-concentrate-image-3', label: 'Label', src: BOLD_1L_BACK_IMAGE, alt: 'Bold Concentrate - 1L Label' },
+      { id: 'coffee-50-50-concentrate-image-2', label: '325 Back', src: '/images/products/BoldConcentrare-325-backlabel.png', alt: 'Bold Concentrate - 325ml Back Label' },
+    ],
+    galleryLtr: [
+      { id: 'coffee-50-50-concentrate-ltr-0', label: 'Front', src: BOLD_1L_FRONT_IMAGE, alt: 'Bold Concentrate - 1L Front' },
+      { id: 'coffee-50-50-concentrate-ltr-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Bold Concentrate - Serve' },
+      { id: 'coffee-50-50-concentrate-ltr-2', label: '1L Back', src: BOLD_1L_BACK_IMAGE, alt: 'Bold Concentrate - 1L Back Label' },
     ],
     basePrice: 390,
     defaultSizeId: '325ml',
@@ -126,8 +130,11 @@ export const PRODUCTS = [
     gallery: [
       { id: 'classic-cb-concentrate-image-0', label: 'Front', src: CLASSIC_IMAGE, alt: 'Classic CB Concentrate - Front' },
       { id: 'classic-cb-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
-      // { id: 'classic-cb-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Classic CB Concentrate - Details' },
-      { id: 'classic-cb-concentrate-image-3', label: 'Label', src: CLASSIC_1L_BACK_IMAGE, alt: 'Classic CB Concentrate - 1L Label' },
+    ],
+    galleryLtr: [
+      { id: 'classic-cb-concentrate-ltr-0', label: 'Front', src: CLASSIC_1L_FRONT_IMAGE, alt: 'Classic CB Concentrate - 1L Front' },
+      { id: 'classic-cb-concentrate-ltr-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
+      { id: 'classic-cb-concentrate-ltr-2', label: '1L Back', src: CLASSIC_1L_BACK_IMAGE, alt: 'Classic CB Concentrate - 1L Back Label' },
     ],
     basePrice: 390,
     defaultSizeId: '325ml',
@@ -203,8 +210,13 @@ export const PRODUCTS = [
     gallery: [
       { id: 'sif-concentrate-image-0', label: 'Front', src: KAPI_IMAGE, alt: 'Kaapi Concentrate - Front' },
       { id: 'sif-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
-      // { id: 'sif-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Kaapi Concentrate - Details' },
-      { id: 'sif-concentrate-image-3', label: 'Label', src: KAPPI_1L_BACK_IMAGE, alt: 'Kaapi Concentrate - 1L Label' },
+      { id: 'sif-concentrate-image-2', label: '325 Label', src: KAPPI_325_IMAGE, alt: 'Kaapi Concentrate - 325ml Label' },
+      { id: 'sif-concentrate-image-3', label: '325 Back', src: '/images/products/Kapi-325-backlabel.png', alt: 'Kaapi Concentrate - 325ml Back Label' },
+    ],
+    galleryLtr: [
+      { id: 'sif-concentrate-ltr-0', label: 'Front', src: KAPI_IMAGE, alt: 'Kaapi Concentrate - 1L Front' },
+      { id: 'sif-concentrate-ltr-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
+      { id: 'sif-concentrate-ltr-2', label: '1L Back', src: KAPPI_1L_BACK_IMAGE, alt: 'Kaapi Concentrate - 1L Back Label' },
     ],
     basePrice: 390,
     defaultSizeId: '325ml',

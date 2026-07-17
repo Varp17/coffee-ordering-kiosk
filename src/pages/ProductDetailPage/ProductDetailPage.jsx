@@ -44,13 +44,16 @@ export default function ProductDetailPage() {
   const baseGallery = product.gallery?.length
     ? product.gallery
     : [{ id: `${product.id}-image`, label: 'Product image', src: product.image, alt: product.name }];
-  const gallery = isLtr && product.imageLtr
-    ? baseGallery.map((item, i) =>
-        i === 0 ? { ...item, src: product.imageLtr, alt: `${product.name} - 1L Front` } : item
-      )
-    : baseGallery.map((item, i) =>
-        i === 0 ? { ...item, src: product.image } : item
-      );
+  const ltrGallery = product.galleryLtr?.length
+    ? product.galleryLtr
+    : null;
+  const gallery = isLtr && ltrGallery
+    ? ltrGallery
+    : isLtr && product.imageLtr
+      ? baseGallery.map((item, i) =>
+          i === 0 ? { ...item, src: product.imageLtr, alt: `${product.name} - 1L Front` } : item
+        )
+      : baseGallery;
 
   const activeImage = gallery.find((item) => item.id === activeImageId) || gallery[0];
 

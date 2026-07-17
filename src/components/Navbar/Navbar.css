@@ -233,6 +233,7 @@
 @media (max-width: 1024px), (pointer: coarse) and (max-width: 1180px) {
   .navbar__hamburger { display: flex; }
   .navbar__build-pill { display: none; }
+  .navbar__username { display: none; }
 }
 
 /* Mobile Menu */

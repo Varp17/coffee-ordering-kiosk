@@ -5,12 +5,10 @@
 
 // ── Product Card (Menu Page) Images ──
 const CLASSIC_IMAGE = '/images/Classic-concentrate.png';
-const BOLD_IMAGE = '/images/products/coffee-concentrate-bottle.png';
-const KAPPI_IMAGE = '/images/Kappi-concentrate.png';
-
-// ── Product Detail Page Images ──
-
+const BOLD_IMAGE = '/bold-concentrate-bottle.png';
+const KAPI_IMAGE = '/images/Kappi-concentrate.png';
 const BOLD_325_IMAGE = '/images/products/BoldConcentrate325.png';
+
 const CLASSIC_325_IMAGE = '/images/products/ClassicCBConc325.png';
 const KAPPI_325_IMAGE = '/images/products/KappiConcentrate325.png';
 const BOLD_1L_BACK_IMAGE = '/images/products/Bold1ltr-Back.png';
@@ -75,12 +73,12 @@ export const PRODUCTS = [
     // imageLtr  → Detail Page when 1L selected
     // gallery   → Detail Page gallery (front/serve/details/label)
     cardImage: BOLD_IMAGE,
-    image: BOLD_325_IMAGE,
+    image: BOLD_IMAGE,
     imageLtr: BOLD_1L_FRONT_IMAGE,
     gallery: [
-      { id: 'coffee-50-50-concentrate-image-0', label: 'Front', src: BOLD_325_IMAGE, alt: 'Bold Concentrate - Front' },
+      { id: 'coffee-50-50-concentrate-image-0', label: 'Front', src: BOLD_IMAGE, alt: 'Bold Concentrate - Bottle' },
       { id: 'coffee-50-50-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Bold Concentrate - Serve' },
-      { id: 'coffee-50-50-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Bold Concentrate - Details' },
+      // { id: 'coffee-50-50-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Bold Concentrate - Details' },
       { id: 'coffee-50-50-concentrate-image-3', label: 'Label', src: BOLD_1L_BACK_IMAGE, alt: 'Bold Concentrate - 1L Label' },
     ],
     basePrice: 390,
@@ -123,12 +121,12 @@ export const PRODUCTS = [
     // imageLtr  → Detail Page when 1L selected
     // gallery   → Detail Page gallery (front/serve/details/label)
     cardImage: CLASSIC_IMAGE,
-    image: CLASSIC_325_IMAGE,
+    image: CLASSIC_IMAGE,
     imageLtr: CLASSIC_1L_FRONT_IMAGE,
     gallery: [
-      { id: 'classic-cb-concentrate-image-0', label: 'Front', src: CLASSIC_325_IMAGE, alt: 'Classic CB Concentrate - Front' },
+      { id: 'classic-cb-concentrate-image-0', label: 'Front', src: CLASSIC_IMAGE, alt: 'Classic CB Concentrate - Front' },
       { id: 'classic-cb-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
-      { id: 'classic-cb-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Classic CB Concentrate - Details' },
+      // { id: 'classic-cb-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Classic CB Concentrate - Details' },
       { id: 'classic-cb-concentrate-image-3', label: 'Label', src: CLASSIC_1L_BACK_IMAGE, alt: 'Classic CB Concentrate - 1L Label' },
     ],
     basePrice: 390,
@@ -201,17 +199,11 @@ export const PRODUCTS = [
     tagline: 'South Indian filter-inspired depth in a chilled format.',
     description:
       'A nostalgic South Indian filter coffee style concentrate, made for chilled kaapi, condensed milk serves, and rich cafe recipes.',
-    // ── Image Config ──
-    // cardImage → Product Card on Menu Page
-    // image     → Detail Page default (325ml)
-    // imageLtr  → Detail Page when 1L selected
-    // gallery   → Detail Page gallery (front/serve/details/label)
-    cardImage: KAPPI_IMAGE,
-    image: KAPPI_325_IMAGE,
+    image: KAPI_IMAGE,
     gallery: [
-      { id: 'sif-concentrate-image-0', label: 'Front', src: KAPPI_325_IMAGE, alt: 'Kaapi Concentrate - Front' },
+      { id: 'sif-concentrate-image-0', label: 'Front', src: KAPI_IMAGE, alt: 'Kaapi Concentrate - Front' },
       { id: 'sif-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
-      { id: 'sif-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Kaapi Concentrate - Details' },
+      // { id: 'sif-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Kaapi Concentrate - Details' },
       { id: 'sif-concentrate-image-3', label: 'Label', src: KAPPI_1L_BACK_IMAGE, alt: 'Kaapi Concentrate - 1L Label' },
     ],
     basePrice: 390,
@@ -249,7 +241,11 @@ export const PRODUCTS = [
     description:
       "A twist to the classic version, surprise yourself with this confluence of flavours. Let's get boring out!",
     image: CLASSIC_IMAGE,
-    gallery: fourImageGallery('spice-concentrate', 'Spice CB Concentrate', CLASSIC_IMAGE),
+    gallery: [
+      { id: 'spice-concentrate-image-0', label: 'Front', src: CLASSIC_IMAGE, alt: 'Spice CB Concentrate - Front' },
+      { id: 'spice-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Spice CB Concentrate - Serve' },
+      { id: 'spice-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Spice CB Concentrate - Details' },
+    ],
     basePrice: 425,
     defaultSizeId: '325ml',
     sizes: size('325ml', '325 ml', 325, 425),
@@ -275,8 +271,12 @@ export const PRODUCTS = [
     name: 'Discovery Kit',
     tagline: 'Discover your preference or stock up for the mood swings',
     description: '3 Cold Brew Concentrate samples in a single pack',
-    image: CLASSIC_IMAGE,
-    gallery: fourImageGallery('sampler-concentrate', 'Discovery Kit', CLASSIC_IMAGE),
+    image: '/3inone.jpeg',
+    gallery: [
+      { id: 'sampler-concentrate-image-0', label: 'Front', src: '/3inone.jpeg', alt: 'Discovery Kit - 3 in 1' },
+      { id: 'sampler-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Discovery Kit - Serve' },
+      { id: 'sampler-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Discovery Kit - Details' },
+    ],
     basePrice: 725,
     defaultSizeId: '540ml',
     sizes: size('540ml', '540 ml', 540),

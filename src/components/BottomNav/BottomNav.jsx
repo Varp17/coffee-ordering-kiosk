@@ -28,11 +28,6 @@ export default function BottomNav() {
           );
         })}
       </nav>
-      <Link to="/build" className="bottom-nav__action-btn" aria-label="Build your drink">
-        <div className="action-btn__icon-wrap">
-          <Coffee size={24} strokeWidth={2.3} />
-        </div>
-      </Link>
     </div>
   );
 }

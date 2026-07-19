@@ -133,7 +133,7 @@
 .homepage-react-hero__cup-wrap {
   position: absolute;
   left: 50%;
-  bottom: -15rem;
+  bottom: -5rem;
   transform: translateX(-50%);
   z-index: 5;
   /* Cup fills nearly the full viewport height and extends below */

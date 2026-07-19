@@ -129,7 +129,7 @@ const WhyChilldCup = forwardRef(function WhyChilldCup({
                   height={vh}
                   preserveAspectRatio="xMidYMid meet"
                   style={{
-                    transform: 'scale(1.3) translateY(var(--why-image-parallax-y, 0px))',
+                    transform: 'scale(1.3)',
                     transformOrigin: 'center center',
                     willChange: 'transform'
                   }}

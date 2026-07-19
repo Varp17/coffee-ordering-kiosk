@@ -15,13 +15,13 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/Coffee Cups/Cold Brew_With_Logo_Circular.png',
+    image: '/images/Coffee Cups/Cold Brew_With_Logo_Circular_Tagline.png',
   },
   {
     name: 'Preri',
     suffix: 'Appe',
     formula: "Prerita’s Frappe",
-    image: '/images/Coffee Cups/frappe_with_logo_circular.png',
+    image: '/images/Coffee Cups/frappe_with_logo_circular_tagline.png',
   },
   {
     name: 'Rishi',
@@ -106,7 +106,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1080,
   },
   COLDBREW_LOGO: {
-    url: '/images/Coffee Cups/Cold Brew_With_Logo_Circular.png',
+    url: '/images/Coffee Cups/Cold Brew_With_Logo_Circular_Tagline.png',
     scale: 0.80,
     yOffset: 60,
     maxHeight: '77dvh',
@@ -115,7 +115,7 @@ const COFFEE_CUP_IMAGES = {
     height: 980,
   },
   FRAPPE_LOGO: {
-    url: '/images/Coffee Cups/frappe_with_logo_circular.png',
+    url: '/images/Coffee Cups/frappe_with_logo_circular_tagline.png',
     scale: 0.85,
     yOffset: 70,
     maxHeight: '77dvh',
@@ -467,9 +467,11 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
           fetchPriority="high"
         />
 
-        <div className="homepage-react-hero__cup-overlay-text">
-          Code Your Own Coffee
-        </div>
+        {(!skippedWelcome || (skippedWelcome && heroState.name === 'Rishi')) && (
+          <div className="homepage-react-hero__cup-overlay-text">
+            Code Your Own Coffee
+          </div>
+        )}
       </div>
 
       {skippedWelcome && (
@@ -565,32 +567,38 @@ function SkipHomepageMiddleFlow() {
       const progress = Math.max(0, Math.min(1, currentScroll / totalRange));
 
       items.forEach((item) => {
-        let range = 150;
-        let distortion = 0;
-        let isOdd = false;
+        let isTopToCenter = false;
+        let baseOffset = 0; // custom offset to align center beautifully
 
         if (item.classList.contains('skip-why-chilld__item--one')) {
-          range = 140;
-          distortion = 12;
-          isOdd = true;
+          isTopToCenter = true;
+          baseOffset = 12;
         } else if (item.classList.contains('skip-why-chilld__item--three')) {
-          range = 130;
-          distortion = -15;
-          isOdd = true;
+          isTopToCenter = true;
+          baseOffset = -15;
         } else if (item.classList.contains('skip-why-chilld__item--two')) {
-          range = 150;
-          distortion = -10;
+          isTopToCenter = false;
+          baseOffset = -10;
         } else if (item.classList.contains('skip-why-chilld__item--four')) {
-          range = 160;
-          distortion = 18;
+          isTopToCenter = false;
+          baseOffset = 18;
         }
 
-        const direction = isOdd ? 1 : -1;
-        const parallaxY = (progress - 0.5) * range * direction + distortion;
-        item.style.setProperty('--why-cup-parallax-y', `${parallaxY}px`);
+        // We want the cups to reach their target centered alignment as the section scrolls into focus.
+        // Scroll progress starts at 0 (bottom of screen), reaches center at ~0.5.
+        // clamp progress to [0, 0.5] then map it to transform offset:
+        const scrollFactor = Math.max(0, Math.min(0.5, progress)) / 0.5; // 0 to 1
 
-        const imageParallaxY = (progress - 0.5) * -70 * direction;
-        item.style.setProperty('--why-image-parallax-y', `${imageParallaxY}px`);
+        let parallaxY;
+        if (isTopToCenter) {
+          // Moves from top (-150px) to center (0px)
+          parallaxY = (-150 * (1 - scrollFactor)) + baseOffset;
+        } else {
+          // Moves from bottom (+150px) to center (0px)
+          parallaxY = (150 * (1 - scrollFactor)) + baseOffset;
+        }
+
+        item.style.setProperty('--why-cup-parallax-y', `${parallaxY}px`);
       });
     };
 

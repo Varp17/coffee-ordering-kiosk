@@ -130,6 +130,7 @@ export const PRODUCTS = [
     gallery: [
       { id: 'classic-cb-concentrate-image-0', label: 'Front', src: CLASSIC_IMAGE, alt: 'Classic CB Concentrate - Front' },
       { id: 'classic-cb-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
+      { id: 'classic-cb-concentrate-image-2', label: '325 Label', src: '/images/products/classicbrew_label.png', alt: 'Classic CB Concentrate - 325ml Label' },
     ],
     galleryLtr: [
       { id: 'classic-cb-concentrate-ltr-0', label: 'Front', src: CLASSIC_1L_FRONT_IMAGE, alt: 'Classic CB Concentrate - 1L Front' },
@@ -210,7 +211,6 @@ export const PRODUCTS = [
     gallery: [
       { id: 'sif-concentrate-image-0', label: 'Front', src: KAPI_IMAGE, alt: 'Kaapi Concentrate - Front' },
       { id: 'sif-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
-      { id: 'sif-concentrate-image-2', label: '325 Label', src: KAPPI_325_IMAGE, alt: 'Kaapi Concentrate - 325ml Label' },
       { id: 'sif-concentrate-image-3', label: '325 Back', src: '/images/products/Kapi-325-backlabel.png', alt: 'Kaapi Concentrate - 325ml Back Label' },
     ],
     galleryLtr: [

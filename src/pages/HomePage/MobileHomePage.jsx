@@ -55,6 +55,21 @@ const COFFEE_CUP_IMAGES = {
     mobileScale: 0.55,
     mobileY: -60,
   },
+  VANDY_SLIDE: {
+    url: '/images/Coffee Cups/Cold Brew_With_Logo_Circular_Tagline.png',
+    mobileScale: 0.72,
+    mobileY: 90,
+  },
+  PRERI_SLIDE: {
+    url: '/images/Coffee Cups/frappe_with_logo_circular_tagline.png',
+    mobileScale: 0.72,
+    mobileY: 90,
+  },
+  RISHI_SLIDE: {
+    url: '/images/Coffee Cups/latte_with_logo_circular.png',
+    mobileScale: 0.72,
+    mobileY: 90,
+  },
 };
 
 const beanClasses = ['one', 'two', 'three', 'four', 'seven', 'eight', 'nine', 'ten'];
@@ -72,13 +87,13 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/Coffee Cups/Cold Brew_With_Logo_Circular.png',
+    image: '/images/Coffee Cups/Cold Brew_With_Logo_Circular_Tagline.png',
   },
   {
     name: 'Preri',
     suffix: 'Appe',
     formula: "Prerita’s Frappe",
-    image: '/images/Coffee Cups/frappe_with_logo_circular.png',
+    image: '/images/Coffee Cups/frappe_with_logo_circular_tagline.png',
   },
   {
     name: 'Rishi',
@@ -236,7 +251,7 @@ export default function MobileHomePage() {
   const whySectionRef = useRef(null);
   const hardPartRef = useRef(null);
   const trendingRailRef = useRef(null);
-  
+
   const [whyCupsVisible, setWhyCupsVisible] = useState(false);
   const navigate = useNavigate();
   const [cupSlam, setCupSlam] = useState(false);
@@ -559,7 +574,7 @@ export default function MobileHomePage() {
           <div
             className="mobile-home-hero__cup-wrap"
             style={{
-              transform: `translateY(${(heroState.cup.mobileY || 0) + 60}px)`,
+              transform: `translateY(${(heroState.cup.mobileY || 0) + 10}px)`,
               transformOrigin: 'center bottom',
               transition: 'transform 0.4s ease',
               display: 'flex',
@@ -573,7 +588,17 @@ export default function MobileHomePage() {
               alt="Iced Chilld cold brew in a clear cup"
               fetchPriority="high"
               decoding="async"
+              style={{
+                transform: `scale(${heroState.cup.mobileScale || 1.0})`,
+                transformOrigin: 'center bottom',
+                transition: 'transform 0.4s ease',
+              }}
             />
+            {(!skippedWelcome || (skippedWelcome && heroState.name === 'Rishi')) && (
+              <div className="mobile-home-hero__cup-overlay-text">
+                Code Your Own Coffee
+              </div>
+            )}
           </div>
         </div>
 
@@ -880,10 +905,10 @@ export default function MobileHomePage() {
 
       <section className="mobile-home-popular" aria-labelledby="mobile-home-popular-title">
         <SectionHeading id="mobile-home-popular-title" eyebrow="Trending mixes" title="Start with a favorite." />
-        
-        <div 
+
+        <div
           ref={trendingRailRef}
-          className="lower-flow-trending__rail" 
+          className="lower-flow-trending__rail"
           aria-label="Trending coffee mixes"
         >
           <div className="lower-flow-trending__track">
@@ -932,17 +957,17 @@ export default function MobileHomePage() {
 
         <div className="lower-flow-trending__actions">
           <div className="lower-flow-trending__arrows">
-            <button 
-              type="button" 
-              onClick={() => handleMarqueeScroll('left')} 
+            <button
+              type="button"
+              onClick={() => handleMarqueeScroll('left')}
               className="trending-arrow-btn"
               aria-label="Scroll left"
             >
               ←
             </button>
-            <button 
-              type="button" 
-              onClick={() => handleMarqueeScroll('right')} 
+            <button
+              type="button"
+              onClick={() => handleMarqueeScroll('right')}
               className="trending-arrow-btn"
               aria-label="Scroll right"
             >

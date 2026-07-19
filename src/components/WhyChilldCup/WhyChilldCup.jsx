@@ -128,6 +128,11 @@ const WhyChilldCup = forwardRef(function WhyChilldCup({
                   width={vw}
                   height={vh}
                   preserveAspectRatio="xMidYMid meet"
+                  style={{
+                    transform: 'scale(1.3) translateY(var(--why-image-parallax-y, 0px))',
+                    transformOrigin: 'center center',
+                    willChange: 'transform'
+                  }}
                 />
               </pattern>
             </defs>

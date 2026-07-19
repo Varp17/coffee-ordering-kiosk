@@ -82,8 +82,8 @@
 .welcome-logo {
   position: absolute;
   top: clamp(1.5rem, 4vh, 3rem);
-  font-family: 'Dancing Script', cursive;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-family: 'Heathergreen', cursive;
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
   font-weight: 700;
   color: #FFFFFF;
   letter-spacing: 0.01em;

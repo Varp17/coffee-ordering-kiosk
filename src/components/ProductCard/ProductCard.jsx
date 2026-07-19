@@ -45,7 +45,7 @@ export default function ProductCard({ product, compact = false }) {
       style: {
         background: '#1F2A44',
         color: '#fff',
-        fontFamily: 'Outfit, sans-serif',
+        fontFamily: "'Author', sans-serif",
       },
     });
   };

@@ -15,27 +15,27 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/COLD BREW.png',
+    image: '/images/Coffee Cups/Cold Brew_With_Logo_Circular.png',
   },
   {
     name: 'Preri',
     suffix: 'Appe',
     formula: "Prerita’s Frappe",
-    image: '/images/frappe.webp',
+    image: '/images/Coffee Cups/frappe_with_logo_circular.png',
   },
   {
     name: 'Rishi',
     suffix: 'Latte',
     formula: "Rishima’s Latte",
-    image: coffeeCup,
+    image: '/images/Coffee Cups/latte_with_logo_circular.png',
   },
 ];
 
 const COFFEE_CUP_IMAGES = {
   AMERICANO: {
     url: '/images/iced-coffee-cup.webp',
-    scale: 1.15,
-    yOffset: 0,
+    scale: 0.82,
+    yOffset: 70,
     maxHeight: '75dvh',
     ctaTop: '54%',
     width: 634,
@@ -43,8 +43,8 @@ const COFFEE_CUP_IMAGES = {
   },
   AFFOGATO: {
     url: '/images/affogato.png',
-    scale: 1.10,
-    yOffset: 0,
+    scale: 0.85,
+    yOffset: 70,
     maxHeight: '70dvh',
     ctaTop: '56%',
     width: 1080,
@@ -53,8 +53,8 @@ const COFFEE_CUP_IMAGES = {
 
   FRAPPE: {
     url: '/images/frappe.webp',
-    scale: 1.6,
-    yOffset: 240,
+    scale: 0.90,
+    yOffset: 90,
     maxHeight: '77dvh',
     ctaTop: '50%',
     width: 1980,
@@ -62,8 +62,8 @@ const COFFEE_CUP_IMAGES = {
   },
   LATTE: {
     url: coffeeCup,
-    scale: 1.12,
-    yOffset: 0,
+    scale: 0.80,
+    yOffset: 70,
     maxHeight: '78dvh',
     ctaTop: '54%',
     width: 1632,
@@ -71,8 +71,8 @@ const COFFEE_CUP_IMAGES = {
   },
   VIETNAMESE: {
     url: '/images/VIETNAMESE.png',
-    scale: 1.12,
-    yOffset: 0,
+    scale: 0.80,
+    yOffset: 70,
     maxHeight: '76dvh',
     ctaTop: '58%',
     width: 1080,
@@ -80,8 +80,8 @@ const COFFEE_CUP_IMAGES = {
   },
   CORTADO: {
     url: '/images/CATARDO.png',
-    scale: 1.12,
-    yOffset: 0,
+    scale: 0.78,
+    yOffset: 70,
     maxHeight: '76dvh',
     ctaTop: '59%',
     width: 1080,
@@ -89,8 +89,8 @@ const COFFEE_CUP_IMAGES = {
   },
   COLDBREW: {
     url: '/images/COLD BREW.png',
-    scale: 1.12,
-    yOffset: 0,
+    scale: 0.80,
+    yOffset: 70,
     maxHeight: '77dvh',
     ctaTop: '59%',
     width: 1632,
@@ -98,18 +98,45 @@ const COFFEE_CUP_IMAGES = {
   },
   ESPRESSO: {
     url: '/images/Esspresso.png',
-    scale: 1.25,
-    yOffset: 0,
+    scale: 0.85,
+    yOffset: 70,
     maxHeight: '76dvh',
     ctaTop: '54%',
     width: 1080,
     height: 1080,
   },
+  COLDBREW_LOGO: {
+    url: '/images/Coffee Cups/Cold Brew_With_Logo_Circular.png',
+    scale: 0.80,
+    yOffset: 60,
+    maxHeight: '77dvh',
+    ctaTop: '59%',
+    width: 654,
+    height: 980,
+  },
+  FRAPPE_LOGO: {
+    url: '/images/Coffee Cups/frappe_with_logo_circular.png',
+    scale: 0.85,
+    yOffset: 70,
+    maxHeight: '77dvh',
+    ctaTop: '59%',
+    width: 654,
+    height: 980,
+  },
+  LATTE_LOGO: {
+    url: '/images/Coffee Cups/latte_with_logo_circular.png',
+    scale: 0.82,
+    yOffset: 60,
+    maxHeight: '77dvh',
+    ctaTop: '59%',
+    width: 654,
+    height: 980,
+  },
 };
 
 const FALLBACK_CUP = {
   url: '/images/iced-coffee-cup.webp',
-  scale: 1.12,
+  scale: 0.80,
   yOffset: 70,
   maxHeight: '75dvh',
   ctaTop: '54%',
@@ -121,42 +148,42 @@ const FALLBACK_CUP = {
 const TRENDING_MIXES = [
   {
     id: 'rajpresso',
-    name: 'Rajpresso',
+    name: 'RajPresso',
     image: '/images/image11_366_1172.png',
-    description: 'Rajpresso',
-    tags: ['#Coffee', '#Signature'],
-    likes: '1.2K Likes',
+    description: 'A silky-smooth Espresso Martini kissed with rich Cold Coffee concentrate...',
+    tags: ['COLD COFFEE', 'SWEET'],
+    likes: '50 Likes',
   },
   {
     id: 'vandy-mood-mocha',
     name: 'Vandy Mood Mocha',
     image: '/images/image12_366_1172.png',
-    description: 'Vandy Mood Mocha',
-    tags: ['#Mocha', '#Signature'],
-    likes: '890 Likes',
+    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
+    tags: ['MACHA', 'BITTER'],
+    likes: '30 Likes',
   },
   {
     id: 'kishorappe',
     name: 'Kishorappe',
     image: '/images/image13_366_1172.png',
-    description: 'Kishorappe',
-    tags: ['#Coffee', '#Bold'],
-    likes: '650 Likes',
+    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
+    tags: ['CHILLD', 'LEMON'],
+    likes: '+1K Likes',
   },
   {
     id: 'rishi-latte',
     name: 'RishiLatte',
     image: '/images/image14_366_1172.png',
-    description: 'RishiLatte',
-    tags: ['#Latte', '#Creamy'],
-    likes: '1.5K Likes',
+    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
+    tags: ['COLD COFFEE', 'STRONG'],
+    likes: '250 Likes',
   },
 ];
 
 function getCupConfigByUrl(imageUrl) {
   return Object.values(COFFEE_CUP_IMAGES).find((config) => config.url === imageUrl) || {
     url: imageUrl,
-    scale: 1,
+    scale: 0.80,
     yOffset: 70,
     maxHeight: '66dvh',
     ctaTop: '54%',
@@ -170,32 +197,105 @@ function formatCoffeeName(coffeeType) {
   return coffeeType.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-function TrendingMixCards({ duplicate = false }) {
-  return TRENDING_MIXES.map((mix) => (
-    <Link
-      key={`${mix.id}-${duplicate ? 'duplicate' : 'original'}`}
-      to={`/recipe-details/${mix.id}`}
-      className="trending-mix-card"
-      tabIndex={duplicate ? -1 : undefined}
-      aria-hidden={duplicate ? 'true' : undefined}
-    >
-      <div className="trending-mix-card__image">
-        <img src={mix.image} alt={duplicate ? '' : mix.name} loading="lazy" decoding="async" />
-        <span className="trending-mix-card__likes">{mix.likes}</span>
-      </div>
+function TrendingMixesSection() {
+  const railRef = useRef(null);
 
-      <div className="trending-mix-card__content">
-        <h3>{mix.name}</h3>
-        <p>{mix.description}</p>
+  const scroll = (direction) => {
+    if (!railRef.current) return;
+    const scrollAmount = 312; // Card width + gap
+    railRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
 
-        <div className="trending-mix-card__tags">
-          {mix.tags.slice(0, 2).map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
+  return (
+    <section className="lower-flow-trending" aria-labelledby="lower-flow-trending-title">
+      <h2 id="lower-flow-trending-title">Trending Mixes</h2>
+
+      <div className="lower-flow-trending__container">
+        <button
+          type="button"
+          onClick={() => scroll('left')}
+          className="trending-nav-btn trending-nav-btn--left"
+          aria-label="Scroll left"
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <div
+          ref={railRef}
+          className="lower-flow-trending__rail"
+          aria-label="Trending coffee mixes"
+        >
+          <div className="lower-flow-trending__track">
+            {/* Main List */}
+            {TRENDING_MIXES.map((mix) => (
+              <Link key={mix.id} to={`/recipe-details/${mix.id}`} className="trending-mix-card">
+                <div className="trending-mix-card__image-wrapper">
+                  <div className="trending-mix-card__image">
+                    <img src={mix.image} alt={mix.name} loading="lazy" decoding="async" />
+                    <span className="trending-mix-card__likes">{mix.likes}</span>
+                  </div>
+                </div>
+                <div className="trending-mix-card__content">
+                  <h3>{mix.name}</h3>
+                  <p>{mix.description}</p>
+                  <div className="trending-mix-card__tags">
+                    {mix.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+            ))}
+            {/* Duplicate List for marquee wrap */}
+            {TRENDING_MIXES.map((mix) => (
+              <Link key={`${mix.id}-dup`} to={`/recipe-details/${mix.id}`} className="trending-mix-card" tabIndex={-1} aria-hidden="true">
+                <div className="trending-mix-card__image-wrapper">
+                  <div className="trending-mix-card__image">
+                    <img src={mix.image} alt="" loading="lazy" decoding="async" />
+                    <span className="trending-mix-card__likes">{mix.likes}</span>
+                  </div>
+                </div>
+                <div className="trending-mix-card__content">
+                  <h3>{mix.name}</h3>
+                  <p>{mix.description}</p>
+                  <div className="trending-mix-card__tags">
+                    {mix.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
+
+        <button
+          type="button"
+          onClick={() => scroll('right')}
+          className="trending-nav-btn trending-nav-btn--right"
+          aria-label="Scroll right"
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
       </div>
-    </Link>
-  ));
+
+      <div className="lower-flow-trending__actions">
+        <p>
+          Tag your mix with <strong>#MadeByYou</strong>
+        </p>
+        <Link to="/builder" className="lower-flow-trending__button">
+          Create your Recipe
+        </Link>
+      </div>
+    </section>
+  );
 }
 
 function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
@@ -312,27 +412,29 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
         )}
 
         {formulaDetails && (
-          <span className="homepage-react-hero__formula-text" role="note">
-            <span className="formula-text__name">{formulaDetails.inputName}’s </span>
-            <span className="formula-text__coffee">{formulaDetails.inputCoffee}</span>
+          <>
+            <span className="homepage-react-hero__formula-text" role="note">
+              <span className="formula-text__name">{formulaDetails.inputName}’s </span>
+              <span className="formula-text__coffee">{formulaDetails.inputCoffee}</span>
 
-            <span className="homepage-react-hero__formula-tooltip" role="tooltip">
-              <span className="formula-tooltip__title">Hero Title Naming Logic</span>
-              <span className="formula-tooltip__math">
-                <span className="math-input">{formulaDetails.inputName}</span>
-                <span className="math-operator">+</span>
-                <span className="math-input">{formulaDetails.inputCoffee}</span>
-              </span>
-              <span className="formula-tooltip__arrow">➔</span>
-              <span className="formula-tooltip__result">
-                <span className="result-name">{formulaDetails.heroName}</span>
-                <span className="result-suffix">{formulaDetails.heroSuffix}</span>
-              </span>
-              <span className="formula-tooltip__desc">
-                We take your name and blend it with your favorite coffee type to generate your custom <strong>Hero Title</strong>!
+              <span className="homepage-react-hero__formula-tooltip" role="tooltip">
+                <span className="formula-tooltip__title">Hero Title Naming Logic</span>
+                <span className="formula-tooltip__math">
+                  <span className="math-input">{formulaDetails.inputName}</span>
+                  <span className="math-operator">+</span>
+                  <span className="math-input">{formulaDetails.inputCoffee}</span>
+                </span>
+                <span className="formula-tooltip__arrow">➔</span>
+                <span className="formula-tooltip__result">
+                  <span className="result-name">{formulaDetails.heroName}</span>
+                  <span className="result-suffix">{formulaDetails.heroSuffix}</span>
+                </span>
+                <span className="formula-tooltip__desc">
+                  We take your name and blend it with your favorite coffee type to generate your custom <strong>Hero Title</strong>!
+                </span>
               </span>
             </span>
-          </span>
+          </>
         )}
       </h1>
 
@@ -364,31 +466,10 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
           decoding="async"
           fetchPriority="high"
         />
-        <div className="homepage-react-hero__glass-headline">
-          <svg
-            className="glass-headline-icon"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ flexShrink: 0 }}
-          >
-            {/* Takeaway cup lid */}
-            <path d="M6 9h12" />
-            <path d="M5 6h14a1 1 0 0 1 1 1v2H4V7a1 1 0 0 1 1-1z" />
-            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-            {/* Takeaway cup body */}
-            <path d="M6 9l1.8 11.5c.1.9.9 1.5 1.7 1.5h5c.8 0 1.5-.6 1.7-1.5L18 9" />
-          </svg>
-          <span>Code Your Own Coffee</span>
+
+        <div className="homepage-react-hero__cup-overlay-text">
+          Code Your Own Coffee
         </div>
-        {/* <Link to="/build" className="homepage-react-hero__cup-cta">
-          <span>Code Your Own Coffee</span>
-        </Link> */}
       </div>
 
       {skippedWelcome && (
@@ -412,8 +493,7 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
 function SkipHomepageMiddleFlow() {
   const whySectionRef = useRef(null);
   const [whyVisible, setWhyVisible] = useState(false);
-  const videoSentinelRef = useRef(null);
-  const [videoExpanded, setVideoExpanded] = useState(false);
+  const videoSectionRef = useRef(null);
   const hardPartRef = useRef(null);
 
   const [waveAnim, setWaveAnim] = useState({ from: '0%', to: '-50%' });
@@ -508,6 +588,9 @@ function SkipHomepageMiddleFlow() {
         const direction = isOdd ? 1 : -1;
         const parallaxY = (progress - 0.5) * range * direction + distortion;
         item.style.setProperty('--why-cup-parallax-y', `${parallaxY}px`);
+
+        const imageParallaxY = (progress - 0.5) * -70 * direction;
+        item.style.setProperty('--why-image-parallax-y', `${imageParallaxY}px`);
       });
     };
 
@@ -518,18 +601,47 @@ function SkipHomepageMiddleFlow() {
   }, [whyVisible]);
 
   useEffect(() => {
-    const sentinel = videoSentinelRef.current;
-    if (!sentinel) return undefined;
+    const wrapper = videoSectionRef.current;
+    if (!wrapper) return undefined;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setVideoExpanded(entry.isIntersecting);
-      },
-      { threshold: 0, rootMargin: '0px 0px -20% 0px' }
-    );
+    const container = wrapper.querySelector('.skip-feature-video__container');
+    if (!container) return undefined;
 
-    observer.observe(sentinel);
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      const rect = wrapper.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+
+      const totalScroll = rect.height - viewportHeight;
+      if (totalScroll <= 0) return;
+
+      const currentScroll = -rect.top;
+      const progress = Math.max(0, Math.min(1, currentScroll / totalScroll));
+
+      const t = progress <= 0.5 ? progress / 0.5 : (1 - progress) / 0.5;
+      const easeT = t * t * (3 - 2 * t);
+
+      const originalWidth = Math.min(viewportWidth * 0.9, 1180);
+      const originalHeight = originalWidth * (9 / 16);
+      const originalRadius = 24;
+
+      const currentWidth = originalWidth + (viewportWidth - originalWidth) * easeT;
+      const currentHeight = originalHeight + (viewportHeight - originalHeight) * easeT;
+      const currentRadius = originalRadius * (1 - easeT);
+
+      container.style.width = `${currentWidth}px`;
+      container.style.height = `${currentHeight}px`;
+      container.style.borderRadius = `${currentRadius}px`;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
 
@@ -538,6 +650,7 @@ function SkipHomepageMiddleFlow() {
     if (!section) return undefined;
 
     const video = section.querySelector('.skip-hard-part__video');
+    if (!video) return undefined;
 
     const handleScroll = () => {
       const rect = section.getBoundingClientRect();
@@ -547,8 +660,9 @@ function SkipHomepageMiddleFlow() {
       const currentScroll = viewportHeight - rect.top;
       const progress = Math.max(0, Math.min(1, currentScroll / totalRange));
 
-      const objectY = 50 - progress * 45;
-      video.style.objectPosition = `42% ${objectY}%`;
+      // Translate the video vertically from -100px to +100px for a smooth parallax
+      const translateY = (progress - 0.5) * -120;
+      video.style.transform = `translate3d(0, ${translateY}px, 0)`;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -656,41 +770,33 @@ function SkipHomepageMiddleFlow() {
         </div>
       </section>
 
-      <div ref={videoSentinelRef} aria-hidden="true" />
-      {videoExpanded ? createPortal(
-        <section
-          className="skip-feature-video is-expanded"
-          aria-label="Chilld cold brew concentrate video"
-        >
-          <video
-            src="/Videos/coffee_concentrate_with_glass.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            width="1180"
-            height="664"
-          />
-        </section>,
-        document.body
-      ) : (
-        <section
-          className="skip-feature-video"
-          aria-label="Chilld cold brew concentrate video"
-        >
-          <video
-            src="/Videos/coffee_concentrate_with_glass.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            width="1180"
-            height="664"
-          />
-        </section>
-      )}
+      <section
+        ref={videoSectionRef}
+        className="skip-feature-video-scroll-wrapper"
+        aria-label="Chilld cold brew concentrate video scroll animation"
+      >
+        <div className="skip-feature-video-sticky">
+          <div className="skip-feature-video__container">
+            <video
+              src="/Videos/coffee_concentrate_with_glass.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              onClick={(e) => {
+                const video = e.currentTarget;
+                if (video.paused) {
+                  video.play();
+                } else {
+                  video.pause();
+                }
+              }}
+              style={{ cursor: 'pointer' }}
+            />
+          </div>
+        </div>
+      </section>
     </>
   );
 }
@@ -700,29 +806,7 @@ function HomepageLowerFlow() {
     <section className="homepage-lower-flow" aria-label="Chilld social proof and cafe offer">
       <TestimonialsBento />
 
-      <section className="lower-flow-trending" aria-labelledby="lower-flow-trending-title">
-        <h2 id="lower-flow-trending-title">Trending Mixes</h2>
-
-        <div className="lower-flow-trending__rail" aria-label="Trending coffee mixes">
-          <div className="lower-flow-trending__track">
-            <TrendingMixCards />
-            <TrendingMixCards duplicate />
-          </div>
-        </div>
-
-        <div className="lower-flow-trending__actions">
-          <div className="lower-flow-trending__arrows" aria-hidden="true">
-            <span>&lt;</span>
-            <span>&gt;</span>
-          </div>
-          <p>
-            Tag your mix with <strong>#ChilldByYou</strong>
-          </p>
-          <Link to="/recipes" className="lower-flow-trending__button">
-            Explore Recipes
-          </Link>
-        </div>
-      </section>
+      <TrendingMixesSection />
 
       <section className="lower-flow-b2b" aria-labelledby="lower-flow-b2b-title">
         <div className="lower-flow-b2b__content">

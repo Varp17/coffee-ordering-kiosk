@@ -67,58 +67,105 @@ const storyNotes = [
 
 const marqueeText = '100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • ';
 
-
-
-const popularDrinks = [
-  {
-    name: 'Mint Tonic',
-    description: 'Bright, iced, and light.',
-    image: `${ASSET_BASE}mint-coldbrew.png`,
-    to: '/recipe-details/cold-brew-mint-tonic',
-    tone: 'mint',
-  },
-  {
-    name: 'Citrus Brew',
-    description: 'Fresh cold brew, mellow finish.',
-    image: `${ASSET_BASE}lemon-coldbrew.png`,
-    to: '/recipe-details/cold-brew-orange',
-    tone: 'citrus',
-  },
-  {
-    name: 'Coffee Cloud',
-    description: 'Creamy, soft, easy to love.',
-    image: `${ASSET_BASE}latte-glass.png`,
-    to: '/recipe-details/cold-brew-latte',
-    tone: 'cloud',
-  },
-  {
-    name: 'Cold Brew Core',
-    description: 'The everyday clean base.',
-    image: `${ASSET_BASE}cold-brew-cup.png`,
-    to: '/recipe-details/cold-brew',
-    tone: 'core',
-  },
-];
-
 const SKIPPED_HERO_SLIDES = [
   {
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/COLD BREW.png',
+    image: '/images/Coffee Cups/Cold Brew_With_Logo_Circular.png',
   },
   {
     name: 'Preri',
     suffix: 'Appe',
     formula: "Prerita’s Frappe",
-    image: '/images/frappe.webp',
+    image: '/images/Coffee Cups/frappe_with_logo_circular.png',
   },
   {
     name: 'Rishi',
     suffix: 'Latte',
     formula: "Rishima’s Latte",
-    image: '/images/LATTEeee.png',
+    image: '/images/Coffee Cups/latte_with_logo_circular.png',
   },
+];
+
+const TRENDING_MIXES = [
+  {
+    id: 'rajpresso',
+    name: 'RajPresso',
+    image: '/images/image11_366_1172.png',
+    description: 'A silky-smooth Espresso Martini kissed with rich Cold Coffee concentrate...',
+    tags: ['COLD COFFEE', 'SWEET'],
+    likes: '50 Likes',
+  },
+  {
+    id: 'vandy-mood-mocha',
+    name: 'Vandy Mood Mocha',
+    image: '/images/image12_366_1172.png',
+    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
+    tags: ['MACHA', 'BITTER'],
+    likes: '30 Likes',
+  },
+  {
+    id: 'kishorappe',
+    name: 'Kishorappe',
+    image: '/images/image13_366_1172.png',
+    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
+    tags: ['CHILLD', 'LEMON'],
+    likes: '+1K Likes',
+  },
+  {
+    id: 'rishi-latte',
+    name: 'RishiLatte',
+    image: '/images/image14_366_1172.png',
+    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
+    tags: ['COLD COFFEE', 'STRONG'],
+    likes: '250 Likes',
+  },
+];
+
+const TESTIMONIALS_DATA = [
+  {
+    x: {
+      body: 'Meeting se pehle CHILLD leliya. Survived somehow.',
+      handle: '@corporatelaunda',
+    },
+    reddit: {
+      body: 'Made my own drink and honestly... this might ruin normal coffee for me now.',
+      handle: '@riyaworksallday',
+    },
+    facebook: {
+      body: "Finally a coffee brand that doesn't judge my weird combinations.",
+      handle: '@bangalorebuzz',
+    }
+  },
+  {
+    x: {
+      body: 'Client call at 9, CHILLD at 8:55. Personality restored.',
+      handle: '@deadlinebrew',
+    },
+    reddit: {
+      body: 'I thought concentrate would taste flat. It absolutely did not.',
+      handle: '@brewthread',
+    },
+    facebook: {
+      body: 'Best option for quick iced lattes. Just add milk and ice, done in 20 seconds.',
+      handle: '@coffeelover_ind',
+    }
+  },
+  {
+    x: {
+      body: 'Two spoons, milk, ice. Suddenly I am the office coffee person.',
+      handle: '@pantryupgrade',
+    },
+    reddit: {
+      body: 'The build-your-own drink thing is dangerously convenient.',
+      handle: '@coldbrewcommittee',
+    },
+    facebook: {
+      body: 'No artificial sugars, pure coffee flavour. Loving the Bold variant.',
+      handle: '@healthybrewlife',
+    }
+  }
 ];
 
 function getCupConfigByUrl(imageUrl) {
@@ -187,10 +234,17 @@ export default function MobileHomePage() {
 
   const [activeSlide, setActiveSlide] = useState(0);
   const whySectionRef = useRef(null);
+  const hardPartRef = useRef(null);
+  const trendingRailRef = useRef(null);
+  
   const [whyCupsVisible, setWhyCupsVisible] = useState(false);
   const navigate = useNavigate();
   const [cupSlam, setCupSlam] = useState(false);
   const [typedChars, setTypedChars] = useState(0);
+  const [reviewIndex, setReviewIndex] = useState(0);
+  const [isPlaying1, setIsPlaying1] = useState(true);
+  const [isPlaying2, setIsPlaying2] = useState(true);
+  const [isProcessPlaying, setIsProcessPlaying] = useState(true);
 
   const topWavePathRef = useRef(null);
   const topWaveTextRef = useRef(null);
@@ -259,6 +313,14 @@ export default function MobileHomePage() {
 
     return () => window.clearInterval(timer);
   }, [skippedWelcome, allSlides.length]);
+
+  // Testimonials rotation
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setReviewIndex((current) => (current + 1) % TESTIMONIALS_DATA.length);
+    }, 4000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const heroState = allSlides[activeSlide] || allSlides[0];
   const fullName = `${heroState.name}${heroState.suffix}`;
@@ -333,16 +395,104 @@ export default function MobileHomePage() {
           observer.disconnect();
         }
       },
-      { threshold: 0.28, rootMargin: '0px 0px -12% 0px' }
+      { threshold: 0.15, rootMargin: '0px 0px -5% 0px' }
     );
 
     observer.observe(section);
     return () => observer.disconnect();
   }, []);
 
+  // Why Chilld 3D Parallax scroll effect
+  useEffect(() => {
+    const section = whySectionRef.current;
+    if (!section) return undefined;
+
+    const items = section.querySelectorAll('.mobile-home-why-chilld__item');
+
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const totalRange = viewportHeight + rect.height;
+      const currentScroll = viewportHeight - rect.top;
+      const progress = Math.max(0, Math.min(1, currentScroll / totalRange));
+
+      items.forEach((item) => {
+        let range = 60; // Slightly smaller range for mobile screens
+        let distortion = 0;
+        let isOdd = false;
+
+        if (item.classList.contains('item-one')) {
+          range = 50;
+          distortion = 6;
+          isOdd = true;
+        } else if (item.classList.contains('item-three')) {
+          range = 45;
+          distortion = -8;
+          isOdd = true;
+        } else if (item.classList.contains('item-two')) {
+          range = 55;
+          distortion = -5;
+        } else if (item.classList.contains('item-four')) {
+          range = 65;
+          distortion = 10;
+        }
+
+        const direction = isOdd ? 1 : -1;
+        const parallaxY = (progress - 0.5) * range * direction + distortion;
+        item.style.setProperty('--why-cup-parallax-y', `${parallaxY}px`);
+
+        const imageParallaxY = (progress - 0.5) * -35 * direction;
+        item.style.setProperty('--why-image-parallax-y', `${imageParallaxY}px`);
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [whyCupsVisible]);
+
+  // We handled the hard part scroll parallax video
+  useEffect(() => {
+    const section = hardPartRef.current;
+    if (!section) return undefined;
+
+    const video = section.querySelector('.mobile-home-hard-part__video');
+    if (!video) return undefined;
+
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const sectionHeight = rect.height;
+      const totalRange = viewportHeight + sectionHeight;
+      const currentScroll = viewportHeight - rect.top;
+      const progress = Math.max(0, Math.min(1, currentScroll / totalRange));
+
+      const translateY = (progress - 0.5) * -70; // Mobile vertical parallax translation
+      video.style.transform = `translate3d(0, ${translateY}px, 0)`;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+
+  const handleMarqueeScroll = (direction) => {
+    if (!trendingRailRef.current) return;
+    const scrollAmount = 296; // card width + gap (280 + 16)
+    trendingRailRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+
   const nameLen = heroState.name.length;
   const visibleName = fullName.slice(0, Math.min(typedChars, nameLen));
   const visibleSuffix = fullName.slice(nameLen, Math.min(typedChars, fullName.length));
+
+  const currentReviews = TESTIMONIALS_DATA[reviewIndex];
 
   return (
     <div className="mobile-home" data-testid="mobile-home-page">
@@ -409,7 +559,7 @@ export default function MobileHomePage() {
           <div
             className="mobile-home-hero__cup-wrap"
             style={{
-              transform: `scale(${(heroState.cup.mobileScale || 1.0) * 1.2}) translateY(${(heroState.cup.mobileY || 0) + 60}px)`,
+              transform: `translateY(${(heroState.cup.mobileY || 0) + 60}px)`,
               transformOrigin: 'center bottom',
               transition: 'transform 0.4s ease',
               display: 'flex',
@@ -440,11 +590,9 @@ export default function MobileHomePage() {
             ))}
           </div>
         )}
-
-
       </section>
 
-      <section className="mobile-home-hard-part" aria-labelledby="mobile-home-story-title">
+      <section ref={hardPartRef} className="mobile-home-hard-part" aria-labelledby="mobile-home-story-title">
         <div className="mobile-home-hard-part__media">
           <video
             className="mobile-home-hard-part__video"
@@ -458,7 +606,7 @@ export default function MobileHomePage() {
           />
           <div className="mobile-home-hard-part__shade" />
         </div>
-        
+
         <svg className="mobile-home-hard-part__top-wave" viewBox="0 0 1512 230" preserveAspectRatio="none" aria-hidden="true">
           <defs>
             <path
@@ -540,7 +688,23 @@ export default function MobileHomePage() {
       </section>
 
       <section className="mobile-home-process" aria-labelledby="mobile-home-process-title">
-        <div className="mobile-home-process__media">
+        <button
+          className={`mobile-home-process__media ${isProcessPlaying ? 'is-playing' : 'is-paused'}`}
+          type="button"
+          onClick={(e) => {
+            const video = e.currentTarget.querySelector('video');
+            if (video) {
+              if (video.paused) {
+                video.play();
+                setIsProcessPlaying(true);
+              } else {
+                video.pause();
+                setIsProcessPlaying(false);
+              }
+            }
+          }}
+          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'block', width: '100%' }}
+        >
           <video
             src={`${ASSET_BASE}coffee-concentrate-with-glass.mp4`}
             autoPlay
@@ -549,13 +713,12 @@ export default function MobileHomePage() {
             playsInline
             preload="metadata"
           />
-          <PlayCircle size={38} aria-hidden="true" />
-        </div>
+          <span className="bento-video__control-btn" aria-hidden="true" />
+        </button>
         <div className="mobile-home-process__copy">
           <p className="mobile-home-eyebrow">How they make it</p>
           <h2 id="mobile-home-process-title">Pour. Mix. Chill.</h2>
           <p>Concentrate, ice, milk or tonic. A premium cold coffee is ready before the ice settles.</p>
-          {/* <MobileButton to="/build" variant="dark" icon={Coffee}>Open builder</MobileButton> — kiosk-only */}
           <MobileButton to="/menu" variant="dark" icon={Coffee}>
             Shop Concentrates
           </MobileButton>
@@ -572,7 +735,22 @@ export default function MobileHomePage() {
           </article>
 
           {/* Card 2: Swirl Video */}
-          <article className="mobile-home-review-card mobile-home-review-card--video">
+          <button
+            className={`mobile-home-review-card mobile-home-review-card--video ${isPlaying1 ? 'is-playing' : 'is-paused'}`}
+            type="button"
+            onClick={(e) => {
+              const video = e.currentTarget.querySelector('video');
+              if (video) {
+                if (video.paused) {
+                  video.play();
+                  setIsPlaying1(true);
+                } else {
+                  video.pause();
+                  setIsPlaying1(false);
+                }
+              }
+            }}
+          >
             <video
               src="/Videos/coffeeswirl1.mp4"
               autoPlay
@@ -581,15 +759,16 @@ export default function MobileHomePage() {
               playsInline
               preload="metadata"
             />
-          </article>
+            <span className="bento-video__control-btn" aria-hidden="true" />
+          </button>
 
           {/* Card 3: Facebook */}
-          <article className="mobile-home-review-card mobile-home-review-card--facebook">
+          <article className="mobile-home-review-card mobile-home-review-card--facebook" key={`fb-${reviewIndex}`}>
             <p className="mobile-home-review-card__body">
-              Finally a coffee brand that doesn't judge my weird combinations.
+              {currentReviews.facebook.body}
             </p>
             <div className="mobile-home-review-card__footer">
-              <span className="mobile-home-review-card__handle">@bangalorebuzz</span>
+              <span className="mobile-home-review-card__handle">{currentReviews.facebook.handle}</span>
               <span className="mobile-home-review-card__brand mobile-home-review-card__brand--facebook">
                 facebook
               </span>
@@ -613,12 +792,12 @@ export default function MobileHomePage() {
           </article>
 
           {/* Card 5: Twitter / X */}
-          <article className="mobile-home-review-card mobile-home-review-card--x">
+          <article className="mobile-home-review-card mobile-home-review-card--x" key={`x-${reviewIndex}`}>
             <p className="mobile-home-review-card__body">
-              Meeting se pehle CHILLD leliya. Survived somehow.
+              {currentReviews.x.body}
             </p>
             <div className="mobile-home-review-card__footer">
-              <span className="mobile-home-review-card__handle">@corporatelaunda</span>
+              <span className="mobile-home-review-card__handle">{currentReviews.x.handle}</span>
               <span className="mobile-home-review-card__brand">
                 <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -628,12 +807,12 @@ export default function MobileHomePage() {
           </article>
 
           {/* Card 6: Reddit */}
-          <article className="mobile-home-review-card mobile-home-review-card--reddit">
+          <article className="mobile-home-review-card mobile-home-review-card--reddit" key={`reddit-${reviewIndex}`}>
             <p className="mobile-home-review-card__body">
-              Made my own drink and honestly... this might ruin normal coffee for me now.
+              {currentReviews.reddit.body}
             </p>
             <div className="mobile-home-review-card__footer">
-              <span className="mobile-home-review-card__handle">@riyaworksallday</span>
+              <span className="mobile-home-review-card__handle">{currentReviews.reddit.handle}</span>
               <span className="mobile-home-review-card__brand mobile-home-review-card__brand--reddit">
                 <svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor" style={{ verticalAlign: 'middle', marginRight: '3px' }}>
                   <path d="M17.16 9.17a2.12 2.12 0 0 0-3.52-1.57c-1.2-.74-2.83-1.22-4.63-1.28L10 2.22l2.9.61c.03.52.46.94.99.94a1.03 1.03 0 1 0-1.03-1.03c0 .06.01.12.02.18l-3.23-.68a.43.43 0 0 0-.49.31L8.1 6.32c-1.83.04-3.5.52-4.73 1.27a2.12 2.12 0 0 0-2.4 3.19c-.06.24-.09.5-.09.76 0 3.2 3.82 5.8 8.54 5.8s8.54-2.6 8.54-5.8c0-.25-.03-.49-.08-.72a2.11 2.11 0 0 0 1.28-2.65ZM4.67 11.3a1.23 1.23 0 1 1 2.46 0 1.23 1.23 0 0 1-2.46 0Zm7.89 3.03c-.92.92-2.67.92-3.6 0a.39.39 0 1 1 .55-.55c.62.61 1.88.61 2.5 0a.39.39 0 1 1 .55.55Zm-.75-1.8a1.23 1.23 0 1 1 0-2.46 1.23 1.23 0 0 1 0 2.46Z" />
@@ -645,23 +824,42 @@ export default function MobileHomePage() {
 
           {/* Card 7: Google Maps Card with video */}
           <article className="mobile-home-review-card mobile-home-review-card--google">
-            <div className="mobile-home-review-card__google-promo">
+            <button
+              className={`mobile-home-review-card__google-promo ${isPlaying2 ? 'is-playing' : 'is-paused'}`}
+              type="button"
+              onClick={(e) => {
+                const video = e.currentTarget.querySelector('video');
+                if (video) {
+                  if (video.paused) {
+                    video.play();
+                    setIsPlaying2(true);
+                  } else {
+                    video.pause();
+                    setIsPlaying2(false);
+                  }
+                }
+              }}
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', width: '100%' }}
+            >
               <span className="google-eyebrow">CHILLD COFFEE</span>
               <h3>Coffee should look like this.</h3>
               <p>Water shouldn't.</p>
-              <video
-                className="google-promo-media"
-                src="/Videos/google-review-cup.mp4?v=20260705"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                width="320"
-                height="320"
-                aria-label="Iced coffee cup"
-              />
-            </div>
+              <div className="google-promo-video-wrap">
+                <video
+                  className="google-promo-media"
+                  src="/Videos/google-review-cup.mp4?v=20260705"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  width="320"
+                  height="320"
+                  aria-label="Iced coffee cup"
+                />
+                <span className="bento-video__control-btn" aria-hidden="true" />
+              </div>
+            </button>
             <div className="google-comment-part">
               <div className="mobile-home-review-card__footer">
                 <span className="mobile-home-review-card__handle">Khushi P.</span>
@@ -682,26 +880,82 @@ export default function MobileHomePage() {
 
       <section className="mobile-home-popular" aria-labelledby="mobile-home-popular-title">
         <SectionHeading id="mobile-home-popular-title" eyebrow="Trending mixes" title="Start with a favorite." />
-        <div className="mobile-home-drink-marquee" aria-label="Popular drink recipes">
-          <div className="mobile-home-drink-track">
-            {[0, 1].map((setIndex) => (
-              <div className="mobile-home-drink-set" key={setIndex} aria-hidden={setIndex > 0}>
-                {popularDrinks.map((drink) => (
-                  <Link
-                    to={drink.to}
-                    className={`mobile-home-drink-card mobile-home-drink-card--${drink.tone}`}
-                    key={`${setIndex}-${drink.name}`}
-                  >
-                    <img src={drink.image} alt={drink.name} loading="lazy" decoding="async" />
-                    <span>
-                      <strong>{drink.name}</strong>
-                      <small>{drink.description}</small>
-                    </span>
-                  </Link>
-                ))}
-              </div>
+        
+        <div 
+          ref={trendingRailRef}
+          className="lower-flow-trending__rail" 
+          aria-label="Trending coffee mixes"
+        >
+          <div className="lower-flow-trending__track">
+            {/* Main List */}
+            {TRENDING_MIXES.map((mix) => (
+              <Link key={mix.id} to={`/recipe-details/${mix.id}`} className="trending-mix-card">
+                <div className="trending-mix-card__image-wrapper">
+                  <div className="trending-mix-card__image">
+                    <img src={mix.image} alt={mix.name} loading="lazy" decoding="async" />
+                    <span className="trending-mix-card__likes">{mix.likes}</span>
+                  </div>
+                </div>
+                <div className="trending-mix-card__content">
+                  <h3>{mix.name}</h3>
+                  <p>{mix.description}</p>
+                  <div className="trending-mix-card__tags">
+                    {mix.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+            ))}
+            {/* Duplicate List */}
+            {TRENDING_MIXES.map((mix) => (
+              <Link key={`${mix.id}-dup`} to={`/recipe-details/${mix.id}`} className="trending-mix-card" tabIndex={-1} aria-hidden="true">
+                <div className="trending-mix-card__image-wrapper">
+                  <div className="trending-mix-card__image">
+                    <img src={mix.image} alt="" loading="lazy" decoding="async" />
+                    <span className="trending-mix-card__likes">{mix.likes}</span>
+                  </div>
+                </div>
+                <div className="trending-mix-card__content">
+                  <h3>{mix.name}</h3>
+                  <p>{mix.description}</p>
+                  <div className="trending-mix-card__tags">
+                    {mix.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
+        </div>
+
+        <div className="lower-flow-trending__actions">
+          <div className="lower-flow-trending__arrows">
+            <button 
+              type="button" 
+              onClick={() => handleMarqueeScroll('left')} 
+              className="trending-arrow-btn"
+              aria-label="Scroll left"
+            >
+              ←
+            </button>
+            <button 
+              type="button" 
+              onClick={() => handleMarqueeScroll('right')} 
+              className="trending-arrow-btn"
+              aria-label="Scroll right"
+            >
+              →
+            </button>
+          </div>
+
+          <p>
+            Tag your mix with <strong>#MadeByYou</strong>
+          </p>
+          <Link to="/builder" className="mobile-home-trending-btn">
+            Create your Recipe
+          </Link>
         </div>
       </section>
 
@@ -734,8 +988,6 @@ export default function MobileHomePage() {
           />
         </div>
       </section>
-
-
 
       <Footer />
     </div>

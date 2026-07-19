@@ -94,17 +94,66 @@
   object-fit: cover;
 }
 
-.bento-video__play {
+.bento-video__control-btn {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 2px solid #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Play Icon (triangle) */
+.bento-video__control-btn::before {
+  content: '';
+  display: block;
   width: 0;
   height: 0;
-  border-top: 17px solid transparent;
-  border-bottom: 17px solid transparent;
-  border-left: 26px solid #ffffff;
-  filter: drop-shadow(0 5px 18px rgba(0, 0, 0, 0.28));
-  transform: translate(-35%, -50%);
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 16px solid #ffffff;
+  margin-left: 4px;
+  transition: border 0.2s ease, width 0.2s ease, height 0.2s ease;
+}
+
+/* When playing, hide control button by default */
+.bento-video.is-playing .bento-video__control-btn {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.85);
+}
+
+/* Show pause icon on hover when playing */
+.bento-video.is-playing:hover .bento-video__control-btn {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.bento-video.is-playing:hover .bento-video__control-btn::before {
+  border: none;
+  margin-left: 0;
+  width: 14px;
+  height: 16px;
+  background: transparent;
+  border-left: 4px solid #ffffff;
+  border-right: 4px solid #ffffff;
+  box-sizing: border-box;
+}
+
+/* Show play icon when paused */
+.bento-video.is-paused .bento-video__control-btn {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .bento-facebook {

@@ -1,12 +1,17 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
+import Lenis from 'lenis';
 
 /* Scroll to top of the page on route transition */
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (window.lenis) {
+      window.lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, [pathname]);
   return null;
 }
@@ -41,6 +46,34 @@ function RequireWelcome({ children }) {
 
 function App() {
   useProportionalScaling();
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+    });
+
+    let rafId;
+    function raf(time) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    window.lenis = lenis;
+
+    return () => {
+      lenis.destroy();
+      cancelAnimationFrame(rafId);
+      window.lenis = undefined;
+    };
+  }, []);
+
   return (
     <Router basename={import.meta.env.BASE_URL}>
       <ScrollToTop />

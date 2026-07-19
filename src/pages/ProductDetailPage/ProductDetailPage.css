@@ -83,7 +83,7 @@
 }
 
 .product-detail__img-wrapper:hover .product-detail__img {
-  transform: scale(1.04);
+  transform: none;
 }
 
 .product-detail__badge-stack {

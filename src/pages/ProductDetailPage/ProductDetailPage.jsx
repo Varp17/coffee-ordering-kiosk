@@ -24,6 +24,16 @@ export default function ProductDetailPage() {
   const [activeImageId, setActiveImageId] = useState(null);
   const [qty, setQty] = useState(1);
 
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomOrigin, setZoomOrigin] = useState('center center');
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomOrigin(`${x}% ${y}%`);
+  };
+
   if (!product) {
     return (
       <div className="product-detail-page page-wrapper container product-not-found">
@@ -133,6 +143,10 @@ export default function ProductDetailPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
+                onMouseEnter={() => setIsZoomed(true)}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={() => setIsZoomed(false)}
+                style={{ cursor: 'zoom-in', overflow: 'hidden', position: 'relative' }}
               >
                 <img
                   src={activeImage.src}
@@ -142,6 +156,14 @@ export default function ProductDetailPage() {
                   decoding="async"
                   width="960"
                   height="960"
+                  style={{
+                    transform: isZoomed ? 'scale(2.2)' : 'scale(1)',
+                    transformOrigin: zoomOrigin,
+                    transition: isZoomed ? 'none' : 'transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain'
+                  }}
                 />
                 {product.badges?.length > 0 && (
                   <div className="product-detail__badge-stack">

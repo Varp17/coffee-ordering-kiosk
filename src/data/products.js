@@ -283,9 +283,9 @@ export const PRODUCTS = [
     name: 'Discovery Kit',
     tagline: 'Discover your preference or stock up for the mood swings',
     description: '3 Cold Brew Concentrate samples in a single pack',
-    image: '/3inone.jpeg',
+    image: '/3inone.png',
     gallery: [
-      { id: 'sampler-concentrate-image-0', label: 'Front', src: '/3inone.jpeg', alt: 'Discovery Kit - 3 in 1' },
+      { id: 'sampler-concentrate-image-0', label: 'Front', src: '/3inone.png', alt: 'Discovery Kit - 3 in 1' },
       { id: 'sampler-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Discovery Kit - Serve' },
       { id: 'sampler-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Discovery Kit - Details' },
     ],

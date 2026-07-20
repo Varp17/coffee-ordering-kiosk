@@ -136,7 +136,7 @@
   gap: 0;
   margin: 0;
   font-family: 'Heathergreen', sans-serif;
-  font-size: clamp(3.2rem, 16vw, 4.5rem);
+  font-size: clamp(6rem, 30vw, 9.5rem);
   font-weight: normal;
   letter-spacing: 0.02em;
   line-height: 0.85;
@@ -478,8 +478,9 @@
   position: relative;
   z-index: 4;
   display: grid;
-  min-block-size: 25.4rem;
+  min-block-size: 21rem;
   place-items: end center;
+  margin-top: -5.5rem;
 }
 
 .mobile-home-hero__cup-stage::before {
@@ -496,8 +497,8 @@
 .mobile-home-hero__cup {
   position: relative;
   z-index: 2;
-  inline-size: min(70%, 18rem);
-  max-block-size: 23.5rem;
+  inline-size: min(98%, 25rem);
+  max-block-size: 29rem;
   object-fit: contain;
   object-position: center bottom;
   filter: drop-shadow(0 24px 21px rgba(48, 28, 14, 0.24));
@@ -508,11 +509,11 @@
 
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0) scale(var(--cup-scale, 1));
   }
 
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-10px) scale(var(--cup-scale, 1));
   }
 }
 
@@ -554,19 +555,19 @@
 
 @keyframes cup-slam {
   0% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(var(--cup-scale, 1));
   }
 
   30% {
-    transform: translateY(-18px) scale(1.08) rotate(-2deg);
+    transform: translateY(-18px) scale(calc(var(--cup-scale, 1) * 1.08)) rotate(-2deg);
   }
 
   60% {
-    transform: translateY(4px) scale(0.95) rotate(1deg);
+    transform: translateY(4px) scale(calc(var(--cup-scale, 1) * 0.95)) rotate(1deg);
   }
 
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(var(--cup-scale, 1));
   }
 }
 
@@ -787,7 +788,7 @@
 
 .mobile-home-hard-part__copy h2 {
   font-family: 'Author', sans-serif;
-  font-size: clamp(1.6rem, 8vw, 2.2rem);
+  font-size: clamp(1.25rem, 6vw, 1.7rem);
   font-weight: 500;
   color: #FFFFFF;
   line-height: 1.15;
@@ -1534,7 +1535,8 @@
 
 .mobile-home-review-card--google {
   grid-column: 1 / -1;
-  min-height: 0;
+  min-height: auto;
+  align-self: start;
   padding: 0;
   background: #ffffff;
   display: flex;
@@ -1548,16 +1550,20 @@
     linear-gradient(135deg, #1844ab 0%, #0d47bd 100%);
   color: #ffffff;
   padding: clamp(1rem, 3.4vw, 1.35rem);
-  display: flex;
-  flex-direction: column;
-  gap: 0.38rem;
+  display: grid;
+  grid-template-columns: 1fr clamp(7rem, 32vw, 10rem);
+  grid-template-rows: auto auto 1fr;
+  align-items: start;
+  row-gap: 0.38rem;
+  column-gap: clamp(0.75rem, 2.5vw, 1.25rem);
   position: relative;
   overflow: hidden;
   flex-grow: 1;
-  min-height: clamp(8.6rem, 36vw, 10.2rem);
+  min-height: clamp(8rem, 36vw, 11rem);
 }
 
 .mobile-home-review-card__google-promo .google-eyebrow {
+  grid-column: 1;
   font-size: clamp(0.68rem, 2.6vw, 0.86rem);
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -1565,29 +1571,30 @@
 }
 
 .mobile-home-review-card__google-promo h3 {
+  grid-column: 1;
   margin: 0;
   font-size: clamp(1.22rem, 5.2vw, 1.75rem);
   font-weight: 900;
   line-height: 1.1;
-  max-width: 60%;
   color: #ffffff;
 }
 
 .mobile-home-review-card__google-promo p {
+  grid-column: 1;
   margin: 0;
   font-size: clamp(0.88rem, 3.4vw, 1.12rem);
   color: rgba(255, 255, 255, 0.8);
 }
 
 .google-promo-video-wrap {
-  position: absolute;
-  right: clamp(0.1rem, 2.3vw, 0.8rem);
-  bottom: clamp(-0.9rem, -2.4vw, -0.4rem);
-  width: clamp(8.4rem, 38vw, 12rem);
+  grid-column: 2;
+  grid-row: 1 / -1;
+  position: relative;
+  width: 100%;
   aspect-ratio: 1;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  display: block;
+  align-self: center;
 }
 
 .google-promo-media {
@@ -1699,11 +1706,12 @@
   }
 
   .mobile-home-hero__title {
-    font-size: clamp(2.7rem, 14vw, 3.55rem);
+    font-size: clamp(3.8rem, 20vw, 5.5rem);
   }
 
   .mobile-home-hero__cup-stage {
-    min-block-size: 23.4rem;
+    min-block-size: 19rem;
+    margin-top: -3rem;
   }
 
   .mobile-home-hero__actions,
@@ -1810,8 +1818,7 @@
 
 
 /* ── BENTO TESTIMONIAL VIDEO CONTROLS ── */
-.mobile-home-review-card--video,
-.google-promo-video-wrap {
+.mobile-home-review-card--video {
   position: relative;
 }
 
@@ -1892,7 +1899,6 @@
   display: flex;
   width: max-content;
   gap: 16px;
-  animation: lowerFlowTrendingMarquee 26s linear infinite;
 }
 
 .lower-flow-trending__rail:hover .lower-flow-trending__track {
@@ -2059,20 +2065,40 @@
   transform: scale(0.96);
 }
 
-.lower-flow-trending__arrows {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 12px;
+.mobile-home-trending__slider-wrap {
+  position: relative;
+  width: 100%;
 }
 
-.trending-arrow-btn {
-  background: transparent;
-  border: none;
+.mobile-home-popular .trending-nav-btn {
+  position: absolute;
+  top: 34%;
+  transform: translateY(-50%);
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
   color: #1844AB;
-  font-size: 1.5rem;
   cursor: pointer;
-  padding: 4px;
+  box-shadow: 0 4px 12px rgba(31, 42, 68, 0.12);
+  transition: all 0.2s ease;
+}
+
+.mobile-home-popular .trending-nav-btn:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+.mobile-home-popular .trending-nav-btn--left {
+  left: 0.5rem;
+}
+
+.mobile-home-popular .trending-nav-btn--right {
+  right: 0.5rem;
 }
 
 @keyframes lowerFlowTrendingMarquee {

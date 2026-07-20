@@ -7,10 +7,6 @@
 const CLASSIC_IMAGE = '/images/Classic-concentrate.png';
 const BOLD_IMAGE = '/bold-concentrate-bottle.png';
 const KAPI_IMAGE = '/images/Kappi-concentrate.png';
-const BOLD_325_IMAGE = '/images/products/BoldConcentrate325.png';
-
-const CLASSIC_325_IMAGE = '/images/products/ClassicCBConc325.png';
-const KAPPI_325_IMAGE = '/images/products/KappiConcentrate325.png';
 const BOLD_1L_BACK_IMAGE = '/images/products/Bold1ltr-Back.png';
 const CLASSIC_1L_BACK_IMAGE = '/images/products/Classic1ltr-Back.png';
 const KAPPI_1L_BACK_IMAGE = '/images/products/Kaapi1ltr-Back.png';
@@ -29,14 +25,11 @@ const size = (id, label, ml, basePrice = 390) => {
   ];
 };
 
-// The catalog's image columns are intentionally not used. Until dedicated
-// assets exist for every new variant, use only product imagery already in the
-// repository and expose a single real image instead of duplicate thumbnails.
 const fourImageGallery = (id, name, mainImage) => {
   const images = [
     mainImage,
     '/images/COFFEBOTTLES.png',
-    '/images/iced-coffee-cup.png',
+    '/images/coffee-cups/iced-coffee-cup.png',
     '/images/bgremoveconcentratebottels.png'
   ];
   return images.map((src, index) => ({
@@ -77,12 +70,12 @@ export const PRODUCTS = [
     imageLtr: BOLD_1L_FRONT_IMAGE,
     gallery: [
       { id: 'coffee-50-50-concentrate-image-0', label: 'Front', src: BOLD_IMAGE, alt: 'Bold Concentrate - Bottle' },
-      { id: 'coffee-50-50-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Bold Concentrate - Serve' },
+      { id: 'coffee-50-50-concentrate-image-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Bold Concentrate - Serve' },
       { id: 'coffee-50-50-concentrate-image-2', label: '325 Back', src: '/images/products/BoldConcentrare-325-backlabel.png', alt: 'Bold Concentrate - 325ml Back Label' },
     ],
     galleryLtr: [
       { id: 'coffee-50-50-concentrate-ltr-0', label: 'Front', src: BOLD_1L_FRONT_IMAGE, alt: 'Bold Concentrate - 1L Front' },
-      { id: 'coffee-50-50-concentrate-ltr-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Bold Concentrate - Serve' },
+      { id: 'coffee-50-50-concentrate-ltr-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Bold Concentrate - Serve' },
       { id: 'coffee-50-50-concentrate-ltr-2', label: '1L Back', src: BOLD_1L_BACK_IMAGE, alt: 'Bold Concentrate - 1L Back Label' },
     ],
     basePrice: 390,
@@ -107,7 +100,7 @@ export const PRODUCTS = [
         'Balanced taste, not too bitter, great with dairy milk.',
       ],
     },
-    orderButtonText: 'We will be live soon to place order',
+    orderButtonText: 'Coming Soon',
     isAvailable: true,
   },
   {
@@ -129,12 +122,12 @@ export const PRODUCTS = [
     imageLtr: CLASSIC_1L_FRONT_IMAGE,
     gallery: [
       { id: 'classic-cb-concentrate-image-0', label: 'Front', src: CLASSIC_IMAGE, alt: 'Classic CB Concentrate - Front' },
-      { id: 'classic-cb-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
+      { id: 'classic-cb-concentrate-image-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
       { id: 'classic-cb-concentrate-image-2', label: '325 Label', src: '/images/products/classicbrew_label.png', alt: 'Classic CB Concentrate - 325ml Label' },
     ],
     galleryLtr: [
       { id: 'classic-cb-concentrate-ltr-0', label: 'Front', src: CLASSIC_1L_FRONT_IMAGE, alt: 'Classic CB Concentrate - 1L Front' },
-      { id: 'classic-cb-concentrate-ltr-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
+      { id: 'classic-cb-concentrate-ltr-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
       { id: 'classic-cb-concentrate-ltr-2', label: '1L Back', src: CLASSIC_1L_BACK_IMAGE, alt: 'Classic CB Concentrate - 1L Back Label' },
     ],
     basePrice: 390,
@@ -159,7 +152,7 @@ export const PRODUCTS = [
         'Perfect for original cold brew and tonic recipes.',
       ],
     },
-    orderButtonText: 'We will be live soon to place order',
+    orderButtonText: 'Coming Soon',
     isAvailable: true,
   },
   {
@@ -195,7 +188,7 @@ export const PRODUCTS = [
         'Strong, rich, and very consistent for daily cold coffee.',
       ],
     },
-    orderButtonText: 'We will be live soon to place order',
+    orderButtonText: 'Coming Soon',
     isAvailable: false,
   },
   {
@@ -210,12 +203,12 @@ export const PRODUCTS = [
     image: KAPI_IMAGE,
     gallery: [
       { id: 'sif-concentrate-image-0', label: 'Front', src: KAPI_IMAGE, alt: 'Kaapi Concentrate - Front' },
-      { id: 'sif-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
+      { id: 'sif-concentrate-image-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
       { id: 'sif-concentrate-image-3', label: '325 Back', src: '/images/products/Kapi-325-backlabel.png', alt: 'Kaapi Concentrate - 325ml Back Label' },
     ],
     galleryLtr: [
       { id: 'sif-concentrate-ltr-0', label: 'Front', src: KAPI_IMAGE, alt: 'Kaapi Concentrate - 1L Front' },
-      { id: 'sif-concentrate-ltr-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
+      { id: 'sif-concentrate-ltr-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
       { id: 'sif-concentrate-ltr-2', label: '1L Back', src: KAPPI_1L_BACK_IMAGE, alt: 'Kaapi Concentrate - 1L Back Label' },
     ],
     basePrice: 390,
@@ -240,7 +233,7 @@ export const PRODUCTS = [
         'Great with condensed milk and ice.',
       ],
     },
-    orderButtonText: 'We will be live soon to place order',
+    orderButtonText: 'Coming Soon',
     isAvailable: true,
   },
   {
@@ -255,7 +248,7 @@ export const PRODUCTS = [
     image: CLASSIC_IMAGE,
     gallery: [
       { id: 'spice-concentrate-image-0', label: 'Front', src: CLASSIC_IMAGE, alt: 'Spice CB Concentrate - Front' },
-      { id: 'spice-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Spice CB Concentrate - Serve' },
+      { id: 'spice-concentrate-image-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Spice CB Concentrate - Serve' },
       { id: 'spice-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Spice CB Concentrate - Details' },
     ],
     basePrice: 425,
@@ -272,7 +265,7 @@ export const PRODUCTS = [
     beanProfile: 'AA Arabica washed',
     bestMix: '1:2 with soda, tonic, or chilled water',
     reviews: null,
-    orderButtonText: 'We will be live soon to place order',
+    orderButtonText: 'Coming Soon',
     isAvailable: false,
   },
   {
@@ -286,7 +279,7 @@ export const PRODUCTS = [
     image: '/3inone.png',
     gallery: [
       { id: 'sampler-concentrate-image-0', label: 'Front', src: '/3inone.png', alt: 'Discovery Kit - 3 in 1' },
-      { id: 'sampler-concentrate-image-1', label: 'Serve', src: '/images/iced-coffee-cup.png', alt: 'Discovery Kit - Serve' },
+      { id: 'sampler-concentrate-image-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Discovery Kit - Serve' },
       { id: 'sampler-concentrate-image-2', label: 'Details', src: '/images/bgremoveconcentratebottels.png', alt: 'Discovery Kit - Details' },
     ],
     basePrice: 725,
@@ -311,7 +304,7 @@ export const PRODUCTS = [
         'Great with condensed milk and ice.',
       ],
     },
-    orderButtonText: 'We will be live soon to place order',
+    orderButtonText: 'Coming Soon',
     isAvailable: false,
   },
 ];

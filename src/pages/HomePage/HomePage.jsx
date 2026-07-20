@@ -8,32 +8,59 @@ import TestimonialsBento from '@/components/TestimonialsBento/TestimonialsBento'
 import Footer from '@/components/Footer/Footer';
 import './HomePage.css';
 
-const coffeeCup = '/images/LATTEeee.png';
+const coffeeCup = '/images/coffee-cups/LATTEeee.png';
 
 const SKIPPED_HERO_SLIDES = [
   {
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/Coffee Cups/Cold Brew_With_Logo_Circular_Tagline.png',
+    image: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
+    cup: {
+      url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
+      scale: 0.80,
+      yOffset: 60,
+      maxHeight: '77dvh',
+      ctaTop: '59%',
+      width: 654,
+      height: 980,
+    }
   },
   {
     name: 'Preri',
     suffix: 'Appe',
     formula: "Prerita’s Frappe",
-    image: '/images/Coffee Cups/frappe_with_logo_circular_tagline.png',
+    image: '/images/coffee-cups/circular/frappe_with_logo_circular_tagline.png',
+    cup: {
+      url: '/images/coffee-cups/circular/frappe_with_logo_circular_tagline.png',
+      scale: 0.85,
+      yOffset: 70,
+      maxHeight: '77dvh',
+      ctaTop: '59%',
+      width: 654,
+      height: 980,
+    }
   },
   {
     name: 'Rishi',
     suffix: 'Latte',
     formula: "Rishima’s Latte",
-    image: '/images/Coffee Cups/latte_with_logo_circular.png',
+    image: '/images/coffee-cups/circular/latte_with_logo_circular.png',
+    cup: {
+      url: '/images/coffee-cups/circular/latte_with_logo_circular.png',
+      scale: 0.82,
+      yOffset: 60,
+      maxHeight: '77dvh',
+      ctaTop: '59%',
+      width: 654,
+      height: 980,
+    }
   },
 ];
 
 const COFFEE_CUP_IMAGES = {
   AMERICANO: {
-    url: '/images/iced-coffee-cup.webp',
+    url: '/images/coffee-cups/iced-coffee-cup.png',
     scale: 0.82,
     yOffset: 70,
     maxHeight: '75dvh',
@@ -42,7 +69,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1024,
   },
   AFFOGATO: {
-    url: '/images/affogato.png',
+    url: '/images/coffee-cups/affogato.png',
     scale: 0.85,
     yOffset: 70,
     maxHeight: '70dvh',
@@ -52,7 +79,7 @@ const COFFEE_CUP_IMAGES = {
   },
 
   FRAPPE: {
-    url: '/images/frappe.webp',
+    url: '/images/coffee-cups/frappe_with_logo_circular_tagline.png',
     scale: 0.90,
     yOffset: 90,
     maxHeight: '77dvh',
@@ -61,7 +88,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1480,
   },
   LATTE: {
-    url: coffeeCup,
+    url: '/images/coffee-cups/lattee_with_logo_circular_tagline.png',
     scale: 0.80,
     yOffset: 70,
     maxHeight: '78dvh',
@@ -70,7 +97,7 @@ const COFFEE_CUP_IMAGES = {
     height: 2582,
   },
   VIETNAMESE: {
-    url: '/images/VIETNAMESE.png',
+    url: '/images/coffee-cups/VIETNAMESE.png',
     scale: 0.80,
     yOffset: 70,
     maxHeight: '76dvh',
@@ -79,7 +106,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1080,
   },
   CORTADO: {
-    url: '/images/CATARDO.png',
+    url: '/images/coffee-cups/CATARDO.png',
     scale: 0.78,
     yOffset: 70,
     maxHeight: '76dvh',
@@ -88,7 +115,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1080,
   },
   COLDBREW: {
-    url: '/images/COLD BREW.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
     scale: 0.80,
     yOffset: 70,
     maxHeight: '77dvh',
@@ -97,7 +124,7 @@ const COFFEE_CUP_IMAGES = {
     height: 2582,
   },
   ESPRESSO: {
-    url: '/images/Esspresso.png',
+    url: '/images/coffee-cups/Esspresso.png',
     scale: 0.85,
     yOffset: 70,
     maxHeight: '76dvh',
@@ -106,7 +133,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1080,
   },
   COLDBREW_LOGO: {
-    url: '/images/Coffee Cups/Cold Brew_With_Logo_Circular_Tagline.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
     scale: 0.80,
     yOffset: 60,
     maxHeight: '77dvh',
@@ -115,7 +142,7 @@ const COFFEE_CUP_IMAGES = {
     height: 980,
   },
   FRAPPE_LOGO: {
-    url: '/images/Coffee Cups/frappe_with_logo_circular_tagline.png',
+    url: '/images/coffee-cups/circular/frappe_with_logo_circular_tagline.png',
     scale: 0.85,
     yOffset: 70,
     maxHeight: '77dvh',
@@ -124,7 +151,7 @@ const COFFEE_CUP_IMAGES = {
     height: 980,
   },
   LATTE_LOGO: {
-    url: '/images/Coffee Cups/latte_with_logo_circular.png',
+    url: '/images/coffee-cups/circular/latte_with_logo_circular.png',
     scale: 0.82,
     yOffset: 60,
     maxHeight: '77dvh',
@@ -135,7 +162,7 @@ const COFFEE_CUP_IMAGES = {
 };
 
 const FALLBACK_CUP = {
-  url: '/images/iced-coffee-cup.webp',
+  url: '/images/coffee-cups/iced-coffee-cup.png',
   scale: 0.80,
   yOffset: 70,
   maxHeight: '75dvh',
@@ -199,14 +226,70 @@ function formatCoffeeName(coffeeType) {
 
 function TrendingMixesSection() {
   const railRef = useRef(null);
+  const isManuallyScrollingRef = useRef(false);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return undefined;
+
+    let animId;
+    let isPaused = false;
+
+    const step = () => {
+      if (!isPaused && !isManuallyScrollingRef.current) {
+        rail.scrollLeft += 0.8;
+        if (rail.scrollLeft >= rail.scrollWidth / 2) {
+          rail.scrollLeft = 0;
+        }
+      }
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+
+    const pause = () => { isPaused = true; };
+    const resume = () => { isPaused = false; };
+
+    rail.addEventListener('mouseenter', pause);
+    rail.addEventListener('mouseleave', resume);
+    rail.addEventListener('touchstart', pause, { passive: true });
+    rail.addEventListener('touchend', resume, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(animId);
+      rail.removeEventListener('mouseenter', pause);
+      rail.removeEventListener('mouseleave', resume);
+      rail.removeEventListener('touchstart', pause);
+      rail.removeEventListener('touchend', resume);
+    };
+  }, []);
 
   const scroll = (direction) => {
-    if (!railRef.current) return;
-    const scrollAmount = 312; // Card width + gap
-    railRef.current.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
+    const rail = railRef.current;
+    if (!rail) return;
+
+    isManuallyScrollingRef.current = true;
+
+    const scrollAmount = 312;
+    let targetScroll = rail.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+    const halfWidth = rail.scrollWidth / 2;
+
+    if (targetScroll < 0) {
+      rail.scrollLeft = halfWidth + rail.scrollLeft;
+      targetScroll = halfWidth + targetScroll;
+    } else if (targetScroll >= halfWidth) {
+      rail.scrollLeft = rail.scrollLeft - halfWidth;
+      targetScroll = targetScroll - halfWidth;
+    }
+
+    rail.scrollTo({
+      left: targetScroll,
       behavior: 'smooth',
     });
+
+    setTimeout(() => {
+      isManuallyScrollingRef.current = false;
+    }, 600);
   };
 
   return (
@@ -319,7 +402,7 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
         name: slide.name,
         suffix: slide.suffix,
         formula: slide.formula,
-        cup: getCupConfigByUrl(slide.image),
+        cup: slide.cup,
       };
     }
 

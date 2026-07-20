@@ -170,7 +170,7 @@ export default function Step6Review() {
               disabled={true} 
               style={{ opacity: 0.6, cursor: 'not-allowed', width: '100%', justifyContent: 'center' }}
             >
-              We will be live soon to place order
+              Coming Soon
             </button>
           </div>
         </div>

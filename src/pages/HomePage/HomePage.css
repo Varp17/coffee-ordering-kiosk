@@ -2951,7 +2951,6 @@
   width: max-content;
   gap: 32px;
   will-change: transform;
-  animation: lowerFlowTrendingMarquee 26s linear infinite;
 }
 
 @keyframes lowerFlowTrendingMarquee {

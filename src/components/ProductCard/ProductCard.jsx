@@ -41,7 +41,7 @@ export default function ProductCard({ product, compact = false }) {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    toast.error('We will be live soon to place orders! ☕', {
+    toast.error('Coming Soon! ☕', {
       style: {
         background: '#1F2A44',
         color: '#fff',

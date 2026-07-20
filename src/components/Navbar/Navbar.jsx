@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, User, Menu as MenuIcon, X, ChevronDown } from 'lucide-react';
+import { ShoppingBag, User, ChevronDown } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import CartDrawer from '@/components/CartDrawer/CartDrawer';
@@ -73,7 +73,7 @@ export default function Navbar() {
           <div className="navbar__inner container">
             {/* Logo */}
             <Link to="/" className="navbar__logo" aria-label="Chilld Coffee Home">
-              <Logo height="42px" width="auto" color="currentColor" />
+              <Logo height="26px" width="auto" color="currentColor" />
             </Link>
 
             {/* Desktop links */}

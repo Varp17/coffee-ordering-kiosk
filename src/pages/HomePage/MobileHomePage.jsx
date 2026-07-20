@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   Coffee,
-  PlayCircle,
   ShoppingBag,
   Sparkles,
 } from 'lucide-react';
@@ -16,57 +15,57 @@ const ASSET_BASE = '/images/mobile-home/';
 
 const COFFEE_CUP_IMAGES = {
   AMERICANO: {
-    url: '/images/iced-coffee-cup.webp',
+    url: '/images/coffee-cups/iced-coffee-cup.png',
     mobileScale: 0.78,
     mobileY: -35,
   },
   AFFOGATO: {
-    url: '/images/affogato.png',
+    url: '/images/coffee-cups/affogato.png',
     mobileScale: 0.60,
     mobileY: -50,
   },
   FRAPPE: {
-    url: '/images/frappe.webp',
+    url: '/images/coffee-cups/frappe_with_logo_circular_tagline.png',
     mobileScale: 0.78,
     mobileY: -38,
   },
   LATTE: {
-    url: '/images/LATTEeee.png',
+    url: '/images/coffee-cups/lattee_with_logo_circular_tagline.png',
     mobileScale: 0.54,
     mobileY: -55,
   },
   VIETNAMESE: {
-    url: '/images/VIETNAMESE.png',
+    url: '/images/coffee-cups/VIETNAMESE.png',
     mobileScale: 0.54,
     mobileY: -55,
   },
   CORTADO: {
-    url: '/images/CATARDO.png',
+    url: '/images/coffee-cups/CATARDO.png',
     mobileScale: 0.50,
     mobileY: -60,
   },
   COLDBREW: {
-    url: '/images/COLD BREW.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
     mobileScale: 0.54,
     mobileY: -55,
   },
   ESPRESSO: {
-    url: '/images/Esspresso.png',
+    url: '/images/coffee-cups/Esspresso.png',
     mobileScale: 0.55,
     mobileY: -60,
   },
   VANDY_SLIDE: {
-    url: '/images/Coffee Cups/Cold Brew_With_Logo_Circular_Tagline.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
     mobileScale: 0.72,
     mobileY: 90,
   },
   PRERI_SLIDE: {
-    url: '/images/Coffee Cups/frappe_with_logo_circular_tagline.png',
+    url: '/images/coffee-cups/circular/frappe_with_logo_circular_tagline.png',
     mobileScale: 0.72,
     mobileY: 90,
   },
   RISHI_SLIDE: {
-    url: '/images/Coffee Cups/latte_with_logo_circular.png',
+    url: '/images/coffee-cups/circular/latte_with_logo_circular.png',
     mobileScale: 0.72,
     mobileY: 90,
   },
@@ -74,32 +73,39 @@ const COFFEE_CUP_IMAGES = {
 
 const beanClasses = ['one', 'two', 'three', 'four', 'seven', 'eight', 'nine', 'ten'];
 
-const storyNotes = [
-  'Source, roast, grind, and slow-brew handled for you.',
-  'Add milk, water, tonic, ice, or your own mix.',
-  'Cafe-style cold coffee without a cafe-sized wait.',
-];
-
-const marqueeText = '100% real coffee…Only cold brew, nothing else…authentic coffee, without the fuss…for those who like it smooth…custom coded coffee …save money, drink Chilld…it’s not about the temperature…fuel for your next…Chilld before the next meeting… • ';
-
 const SKIPPED_HERO_SLIDES = [
   {
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/Coffee Cups/Cold Brew_With_Logo_Circular_Tagline.png',
+    image: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
+    cup: {
+      url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
+      mobileScale: 0.72,
+      mobileY: 90,
+    }
   },
   {
     name: 'Preri',
     suffix: 'Appe',
     formula: "Prerita’s Frappe",
-    image: '/images/Coffee Cups/frappe_with_logo_circular_tagline.png',
+    image: '/images/coffee-cups/circular/frappe_with_logo_circular_tagline.png',
+    cup: {
+      url: '/images/coffee-cups/circular/frappe_with_logo_circular_tagline.png',
+      mobileScale: 0.72,
+      mobileY: 90,
+    }
   },
   {
     name: 'Rishi',
     suffix: 'Latte',
     formula: "Rishima’s Latte",
-    image: '/images/Coffee Cups/latte_with_logo_circular.png',
+    image: '/images/coffee-cups/circular/latte_with_logo_circular.png',
+    cup: {
+      url: '/images/coffee-cups/circular/latte_with_logo_circular.png',
+      mobileScale: 0.72,
+      mobileY: 90,
+    }
   },
 ];
 
@@ -253,8 +259,8 @@ export default function MobileHomePage() {
   const trendingRailRef = useRef(null);
 
   const [whyCupsVisible, setWhyCupsVisible] = useState(false);
-  const navigate = useNavigate();
-  const [cupSlam, setCupSlam] = useState(false);
+  const cupSlam = false;
+
   const [typedChars, setTypedChars] = useState(0);
   const [reviewIndex, setReviewIndex] = useState(0);
   const [isPlaying1, setIsPlaying1] = useState(true);
@@ -310,7 +316,7 @@ export default function MobileHomePage() {
       name: slide.name,
       suffix: slide.suffix,
       formula: slide.formula,
-      cup: getCupConfigByUrl(slide.image),
+      cup: slide.cup,
     }));
 
     if (skippedWelcome) {
@@ -376,13 +382,7 @@ export default function MobileHomePage() {
     };
   }, [skippedWelcome, heroState, coffeeType]);
 
-  const triggerCupSlam = (to) => {
-    setCupSlam(true);
-    setTimeout(() => {
-      setCupSlam(false);
-      navigate(to);
-    }, 500);
-  };
+
 
   useEffect(() => {
     if (skippedWelcome) return;
@@ -394,9 +394,15 @@ export default function MobileHomePage() {
 
   useEffect(() => {
     if (!skippedWelcome) return;
-    setTypedChars(0);
-    const timer = setTimeout(() => setTypedChars(1), 500);
-    return () => clearTimeout(timer);
+    let t1, t2;
+    t1 = setTimeout(() => {
+      setTypedChars(0);
+      t2 = setTimeout(() => setTypedChars(1), 500);
+    }, 0);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, [activeSlide, skippedWelcome]);
 
   useEffect(() => {
@@ -494,13 +500,70 @@ export default function MobileHomePage() {
   }, []);
 
 
+  const isManuallyScrollingRef = useRef(false);
+
+  useEffect(() => {
+    const rail = trendingRailRef.current;
+    if (!rail) return undefined;
+
+    let animId;
+    let isPaused = false;
+
+    const step = () => {
+      if (!isPaused && !isManuallyScrollingRef.current) {
+        rail.scrollLeft += 0.8;
+        if (rail.scrollLeft >= rail.scrollWidth / 2) {
+          rail.scrollLeft = 0;
+        }
+      }
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+
+    const pause = () => { isPaused = true; };
+    const resume = () => { isPaused = false; };
+
+    rail.addEventListener('mouseenter', pause);
+    rail.addEventListener('mouseleave', resume);
+    rail.addEventListener('touchstart', pause, { passive: true });
+    rail.addEventListener('touchend', resume, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(animId);
+      rail.removeEventListener('mouseenter', pause);
+      rail.removeEventListener('mouseleave', resume);
+      rail.removeEventListener('touchstart', pause);
+      rail.removeEventListener('touchend', resume);
+    };
+  }, []);
+
   const handleMarqueeScroll = (direction) => {
-    if (!trendingRailRef.current) return;
-    const scrollAmount = 296; // card width + gap (280 + 16)
-    trendingRailRef.current.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
+    const rail = trendingRailRef.current;
+    if (!rail) return;
+
+    isManuallyScrollingRef.current = true;
+
+    const scrollAmount = 256;
+    let targetScroll = rail.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+    const halfWidth = rail.scrollWidth / 2;
+
+    if (targetScroll < 0) {
+      rail.scrollLeft = halfWidth + rail.scrollLeft;
+      targetScroll = halfWidth + targetScroll;
+    } else if (targetScroll >= halfWidth) {
+      rail.scrollLeft = rail.scrollLeft - halfWidth;
+      targetScroll = targetScroll - halfWidth;
+    }
+
+    rail.scrollTo({
+      left: targetScroll,
       behavior: 'smooth',
     });
+
+    setTimeout(() => {
+      isManuallyScrollingRef.current = false;
+    }, 600);
   };
 
   const nameLen = heroState.name.length;
@@ -589,16 +652,11 @@ export default function MobileHomePage() {
               fetchPriority="high"
               decoding="async"
               style={{
-                transform: `scale(${heroState.cup.mobileScale || 1.0})`,
+                '--cup-scale': heroState.cup.mobileScale || 1.0,
                 transformOrigin: 'center bottom',
                 transition: 'transform 0.4s ease',
               }}
             />
-            {(!skippedWelcome || (skippedWelcome && heroState.name === 'Rishi')) && (
-              <div className="mobile-home-hero__cup-overlay-text">
-                Code Your Own Coffee
-              </div>
-            )}
           </div>
         </div>
 
@@ -660,7 +718,7 @@ export default function MobileHomePage() {
         </svg>
 
         <div className="mobile-home-hard-part__copy">
-          <h2 id="mobile-home-story-title">We handled the hard part, the fun part's on you</h2>
+          <h2 id="mobile-home-story-title">We handled the hard part,<br />the fun part's on you</h2>
           <p>
             We get you exceptional coffee concentrate. We take care of the nitty-gritties of sourcing, grinding and brewing.<br />
             After that, you are free to tailor your daily coffee to your liking. Add water, if you are in a hurry for your<br />
@@ -864,7 +922,7 @@ export default function MobileHomePage() {
                   }
                 }
               }}
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', width: '100%' }}
+              style={{ border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', width: '100%' }}
             >
               <span className="google-eyebrow">CHILLD COFFEE</span>
               <h3>Coffee should look like this.</h3>
@@ -906,75 +964,80 @@ export default function MobileHomePage() {
       <section className="mobile-home-popular" aria-labelledby="mobile-home-popular-title">
         <SectionHeading id="mobile-home-popular-title" eyebrow="Trending mixes" title="Start with a favorite." />
 
-        <div
-          ref={trendingRailRef}
-          className="lower-flow-trending__rail"
-          aria-label="Trending coffee mixes"
-        >
-          <div className="lower-flow-trending__track">
-            {/* Main List */}
-            {TRENDING_MIXES.map((mix) => (
-              <Link key={mix.id} to={`/recipe-details/${mix.id}`} className="trending-mix-card">
-                <div className="trending-mix-card__image-wrapper">
-                  <div className="trending-mix-card__image">
-                    <img src={mix.image} alt={mix.name} loading="lazy" decoding="async" />
-                    <span className="trending-mix-card__likes">{mix.likes}</span>
+        <div className="mobile-home-trending__slider-wrap">
+          <button
+            type="button"
+            onClick={() => handleMarqueeScroll('left')}
+            className="trending-nav-btn trending-nav-btn--left"
+            aria-label="Scroll left"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          <div
+            ref={trendingRailRef}
+            className="lower-flow-trending__rail"
+            aria-label="Trending coffee mixes"
+          >
+            <div className="lower-flow-trending__track">
+              {/* Main List */}
+              {TRENDING_MIXES.map((mix) => (
+                <Link key={mix.id} to={`/recipe-details/${mix.id}`} className="trending-mix-card">
+                  <div className="trending-mix-card__image-wrapper">
+                    <div className="trending-mix-card__image">
+                      <img src={mix.image} alt={mix.name} loading="lazy" decoding="async" />
+                      <span className="trending-mix-card__likes">{mix.likes}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="trending-mix-card__content">
-                  <h3>{mix.name}</h3>
-                  <p>{mix.description}</p>
-                  <div className="trending-mix-card__tags">
-                    {mix.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
+                  <div className="trending-mix-card__content">
+                    <h3>{mix.name}</h3>
+                    <p>{mix.description}</p>
+                    <div className="trending-mix-card__tags">
+                      {mix.tags.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-            {/* Duplicate List */}
-            {TRENDING_MIXES.map((mix) => (
-              <Link key={`${mix.id}-dup`} to={`/recipe-details/${mix.id}`} className="trending-mix-card" tabIndex={-1} aria-hidden="true">
-                <div className="trending-mix-card__image-wrapper">
-                  <div className="trending-mix-card__image">
-                    <img src={mix.image} alt="" loading="lazy" decoding="async" />
-                    <span className="trending-mix-card__likes">{mix.likes}</span>
+                </Link>
+              ))}
+              {/* Duplicate List */}
+              {TRENDING_MIXES.map((mix) => (
+                <Link key={`${mix.id}-dup`} to={`/recipe-details/${mix.id}`} className="trending-mix-card" tabIndex={-1} aria-hidden="true">
+                  <div className="trending-mix-card__image-wrapper">
+                    <div className="trending-mix-card__image">
+                      <img src={mix.image} alt="" loading="lazy" decoding="async" />
+                      <span className="trending-mix-card__likes">{mix.likes}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="trending-mix-card__content">
-                  <h3>{mix.name}</h3>
-                  <p>{mix.description}</p>
-                  <div className="trending-mix-card__tags">
-                    {mix.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
+                  <div className="trending-mix-card__content">
+                    <h3>{mix.name}</h3>
+                    <p>{mix.description}</p>
+                    <div className="trending-mix-card__tags">
+                      {mix.tags.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
+
+          <button
+            type="button"
+            onClick={() => handleMarqueeScroll('right')}
+            className="trending-nav-btn trending-nav-btn--right"
+            aria-label="Scroll right"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
         </div>
 
         <div className="lower-flow-trending__actions">
-          <div className="lower-flow-trending__arrows">
-            <button
-              type="button"
-              onClick={() => handleMarqueeScroll('left')}
-              className="trending-arrow-btn"
-              aria-label="Scroll left"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              onClick={() => handleMarqueeScroll('right')}
-              className="trending-arrow-btn"
-              aria-label="Scroll right"
-            >
-              →
-            </button>
-          </div>
-
           <p>
             Tag your mix with <strong>#MadeByYou</strong>
           </p>

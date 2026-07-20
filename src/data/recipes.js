@@ -955,5 +955,56 @@ export const RECIPES = [
     "mediaMatch": "exact",
     "likes": "119 Likes",
     "author": "CHILLD Lab"
+  },
+  {
+    "id": "ice-mocha-9",
+    "name": "Ice Mocha",
+    "description": "Rich and creamy iced mocha with smooth cold brew & deep cacao flavor",
+    "mood": "Chocolatey, Smooth\n& Refreshing",
+    "tags": [
+      "#IceMocha",
+      "#ChocolateCoffee",
+      "#OatMilk",
+      "#Jaggery",
+      "#Bold"
+    ],
+    "concentrate": "Bold",
+    "ingredients": [
+      "75 ml Chilld Bold concentrate",
+      "20 gm jaggery syrup + cacao powder",
+      "170 ml oat milk",
+      "ice cubes"
+    ],
+    "steps": [
+      {
+        "title": "Step 1",
+        "copy": "Fill glass with ice cubes"
+      },
+      {
+        "title": "Step 2",
+        "copy": "Add jaggery syrup + cacao powder"
+      },
+      {
+        "title": "Step 3",
+        "copy": "Pour cold oat milk"
+      },
+      {
+        "title": "Step 4",
+        "copy": "Slowly add chilld bold concentrate"
+      },
+      {
+        "title": "Step 5",
+        "copy": "Stir lightly for rich mocha texture"
+      },
+      {
+        "title": "Step 6",
+        "copy": "Serve chilled"
+      }
+    ],
+    "image": "/images/Recipes/IceMocha.png",
+    "video": "",
+    "mediaMatch": "exact",
+    "likes": "285 Likes",
+    "author": "CHILLD Lab"
   }
 ];

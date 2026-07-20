@@ -215,6 +215,11 @@
   animation-delay: 1.4s;
 }
 
+/* Defensive: ensure overlay text never displays across breakpoints */
+.homepage-react-hero__cup-overlay-text {
+  display: none !important;
+}
+
 @keyframes cup-text-pop-in {
   to {
     opacity: 1;

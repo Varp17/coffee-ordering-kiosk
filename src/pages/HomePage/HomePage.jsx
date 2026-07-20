@@ -550,11 +550,7 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
           fetchPriority="high"
         />
 
-        {(!skippedWelcome || (skippedWelcome && heroState.name === 'Rishi')) && (
-          <div className="homepage-react-hero__cup-overlay-text">
-            Code Your Own Coffee
-          </div>
-        )}
+        {/* Removed the overlay text per request */}
       </div>
 
       {skippedWelcome && (

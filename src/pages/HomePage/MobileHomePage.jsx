@@ -657,6 +657,9 @@ export default function MobileHomePage() {
                 transition: 'transform 0.4s ease',
               }}
             />
+            <div key={`tagline-mobile-${heroState.cup.url}`} className="mobile-home-hero__cup-overlay-text">
+              Code Your Own Coffee
+            </div>
           </div>
         </div>
 
@@ -1039,7 +1042,7 @@ export default function MobileHomePage() {
 
         <div className="lower-flow-trending__actions">
           <p>
-            Tag your mix with <strong>#MadeByYou</strong>
+            Tag your mix with <strong>#MadeByMe</strong>
           </p>
           <Link to="/builder" className="mobile-home-trending-btn">
             Create your Recipe

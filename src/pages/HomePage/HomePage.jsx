@@ -371,7 +371,7 @@ function TrendingMixesSection() {
 
       <div className="lower-flow-trending__actions">
         <p>
-          Tag your mix with <strong>#MadeByYou</strong>
+          Tag your mix with <strong>#MadeByMe</strong>
         </p>
         <Link to="/builder" className="lower-flow-trending__button">
           Create your Recipe
@@ -550,7 +550,10 @@ function HomeHero({ skippedWelcome, displayName, suffix, coffeeType }) {
           fetchPriority="high"
         />
 
-        {/* Removed the overlay text per request */}
+        {/* Tagline overlay text pop-up */}
+        <div key={`tagline-${heroState.cup.url}`} className="homepage-react-hero__cup-overlay-text">
+          Code Your Own Coffee
+        </div>
       </div>
 
       {skippedWelcome && (

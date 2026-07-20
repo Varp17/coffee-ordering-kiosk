@@ -989,3 +989,42 @@
     display: none;
   }
 }
+
+.rp-create-floating-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary, #1844AB);
+  color: #ffffff;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(24, 68, 171, 0.35);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rp-create-floating-btn:hover {
+  background: #133587;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(24, 68, 171, 0.45);
+  color: #ffffff;
+}
+
+.rp-create-floating-btn:active {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .rp-create-floating-btn {
+    bottom: calc(var(--bottom-nav-height, 64px) + 24px);
+    right: 1.5rem;
+    width: 48px;
+    height: 48px;
+  }
+}

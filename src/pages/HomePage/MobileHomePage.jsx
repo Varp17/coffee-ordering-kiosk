@@ -789,7 +789,7 @@ export default function MobileHomePage() {
           style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'block', width: '100%' }}
         >
           <video
-            src={`${ASSET_BASE}coffee-concentrate-with-glass.mp4`}
+            src="/Videos/coffee_concentrate_with_glass_new.webm"
             autoPlay
             muted
             loop
@@ -922,7 +922,7 @@ export default function MobileHomePage() {
                   }
                 }
               }}
-              style={{ border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', width: '100%' }}
+              style={{ border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%' }}
             >
               <span className="google-eyebrow">CHILLD COFFEE</span>
               <h3>Coffee should look like this.</h3>

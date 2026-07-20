@@ -869,7 +869,7 @@ function SkipHomepageMiddleFlow() {
         <div className="skip-feature-video-sticky">
           <div className="skip-feature-video__container">
             <video
-              src="/Videos/coffee_concentrate_with_glass.mp4"
+              src="/Videos/coffee_concentrate_with_glass_new.webm"
               autoPlay
               loop
               muted

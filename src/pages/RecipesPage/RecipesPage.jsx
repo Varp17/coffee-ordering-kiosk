@@ -135,10 +135,6 @@ export default function RecipesPage() {
                 All men were born equal (really?). Not all cold brew was made equal. Check the recipes that go best with your type of coffee.
               </p>
             </div>
-            <Link to="/create-recipe" className="rp-btn rp-btn--primary">
-              <Icon name="plus" size={16} />
-              <span>Create Recipe</span>
-            </Link>
           </div>
 
           {/* Controls Row: Filter Tabs + Search */}
@@ -240,6 +236,10 @@ export default function RecipesPage() {
           </motion.div>
         </div>
       </section>
+
+      <Link to="/create-recipe" className="rp-create-floating-btn" aria-label="Create new recipe">
+        <Icon name="plus" size={24} />
+      </Link>
     </main>
   );
 }

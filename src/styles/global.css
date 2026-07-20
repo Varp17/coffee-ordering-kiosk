@@ -124,18 +124,18 @@ ol {
   --font-heading: 'Author', sans-serif;
   --font-body: 'Author', sans-serif;
 
-  /* Font sizes — fluid */
-  --text-xs: clamp(0.7rem, 1.8vw, 0.75rem);
-  --text-sm: clamp(0.8rem, 2vw, 0.875rem);
-  --text-base: clamp(0.9rem, 2.5vw, 1rem);
-  --text-md: clamp(1rem, 2.5vw, 1.125rem);
-  --text-lg: clamp(1.1rem, 3vw, 1.25rem);
-  --text-xl: clamp(1.25rem, 4vw, 1.5rem);
-  --text-2xl: clamp(1.5rem, 5vw, 2rem);
-  --text-3xl: clamp(2rem, 6vw, 2.75rem);
-  --text-4xl: clamp(2.5rem, 8vw, 3.5rem);
-  --text-5xl: clamp(3rem, 10vw, 5rem);
-  --text-hero: clamp(3.5rem, 12vw, 7rem);
+  /* Font sizes — brand hierarchy values (Desktop values: Heading:90px, Subheading:48px, Title:32px, Body:20px, Label:18px, Tags:16px) */
+  --text-xs: clamp(0.7rem, 0.95vw, 0.875rem);
+  --text-sm: clamp(0.75rem, 1.1vw, 1rem);            /* Tags - 16px */
+  --text-base: clamp(0.85rem, 1.2vw, 1.125rem);       /* Label - 18px */
+  --text-md: clamp(0.95rem, 1.4vw, 1.25rem);          /* Body Text / Button - 20px */
+  --text-lg: clamp(1.1rem, 1.8vw, 1.5rem);
+  --text-xl: clamp(1.35rem, 2.2vw, 2rem);             /* Title - 32px */
+  --text-2xl: clamp(1.5rem, 2.6vw, 2.5rem);
+  --text-3xl: clamp(1.8rem, 3.3vw, 3rem);             /* Sub Heading - 48px */
+  --text-4xl: clamp(2.2rem, 5vw, 4rem);
+  --text-5xl: clamp(2.5rem, 6.25vw, 5.625rem);        /* Heading - 90px */
+  --text-hero: clamp(3rem, 9vw, 6.8rem);
 
   /* Spacing */
   --space-1: 0.25rem;

@@ -194,6 +194,9 @@ function RecipeDetailContent({ id, location }) {
               alt={`${currentRecipe.name} coffee`}
               preferVideo
             />
+            <figcaption className="recipe-img-disclaimer" style={{ fontSize: '0.78rem', color: '#718096', fontStyle: 'italic', textAlign: 'center', marginTop: '0.5rem' }}>
+              *Note: Images shown are AI-generated and intended for illustrative purposes only.
+            </figcaption>
           </figure>
         </div>
       </section>

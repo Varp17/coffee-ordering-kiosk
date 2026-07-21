@@ -186,6 +186,9 @@ export default function MobileRecipeDetailPage({ id, location }) {
         {/* TITLE & AUTHOR */}
         <h1 className="mobile-recipe-title">{currentRecipe.name}</h1>
         <p className="mobile-recipe-author">Created by {currentRecipe.author}</p>
+        <p className="mobile-recipe-disclaimer" style={{ fontSize: '0.75rem', color: '#718096', fontStyle: 'italic', marginTop: '0.25rem', marginBottom: '0.75rem' }}>
+          *Note: Images shown are AI-generated and intended for illustrative purposes only.
+        </p>
 
         {/* DESCRIPTION */}
         <div className="mobile-recipe-desc-container">

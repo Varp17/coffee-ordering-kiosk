@@ -8,16 +8,16 @@ import TestimonialsBento from '@/components/TestimonialsBento/TestimonialsBento'
 import Footer from '@/components/Footer/Footer';
 import './HomePage.css';
 
-const coffeeCup = '/images/coffee-cups/LATTEeee.png';
+const coffeeCup = '/images/coffee-cups/circular/latte_with_logo.png';
 
 const SKIPPED_HERO_SLIDES = [
   {
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/coffee-cups/circular/Cold Brew.png',
+    image: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
     cup: {
-      url: '/images/coffee-cups/circular/Cold Brew.png',
+      url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
       scale: 0.80,
       yOffset: 60,
       maxHeight: '77dvh',
@@ -30,9 +30,9 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Preri',
     suffix: 'Appe',
     formula: "Prerita’s Frappe",
-    image: '/images/coffee-cups/circular/frappe.png',
+    image: '/images/coffee-cups/circular/frappe_with_logo.png',
     cup: {
-      url: '/images/coffee-cups/circular/frappe.png',
+      url: '/images/coffee-cups/circular/frappe_with_logo.png',
       scale: 0.85,
       yOffset: 70,
       maxHeight: '77dvh',
@@ -45,9 +45,9 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Rishi',
     suffix: 'Latte',
     formula: "Rishima’s Latte",
-    image: '/images/coffee-cups/circular/Lattee.png',
+    image: '/images/coffee-cups/circular/latte_with_logo.png',
     cup: {
-      url: '/images/coffee-cups/circular/Lattee.png',
+      url: '/images/coffee-cups/circular/latte_with_logo.png',
       scale: 0.82,
       yOffset: 60,
       maxHeight: '77dvh',
@@ -79,7 +79,7 @@ const COFFEE_CUP_IMAGES = {
   },
 
   FRAPPE: {
-    url: '/images/coffee-cups/frappe_with_logo_circular_tagline.png',
+    url: '/images/coffee-cups/circular/frappe_with_logo.png',
     scale: 0.90,
     yOffset: 90,
     maxHeight: '77dvh',
@@ -88,7 +88,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1480,
   },
   LATTE: {
-    url: '/images/coffee-cups/lattee_with_logo_circular_tagline.png',
+    url: '/images/coffee-cups/circular/latte_with_logo.png',
     scale: 0.80,
     yOffset: 70,
     maxHeight: '78dvh',
@@ -115,7 +115,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1080,
   },
   COLDBREW: {
-    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
     scale: 0.80,
     yOffset: 70,
     maxHeight: '77dvh',
@@ -133,7 +133,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1080,
   },
   COLDBREW_LOGO: {
-    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
     scale: 0.80,
     yOffset: 60,
     maxHeight: '77dvh',
@@ -142,7 +142,7 @@ const COFFEE_CUP_IMAGES = {
     height: 980,
   },
   FRAPPE_LOGO: {
-    url: '/images/coffee-cups/circular/frappe_with_logo_circular_tagline.png',
+    url: '/images/coffee-cups/circular/frappe_with_logo.png',
     scale: 0.85,
     yOffset: 70,
     maxHeight: '77dvh',
@@ -151,7 +151,7 @@ const COFFEE_CUP_IMAGES = {
     height: 980,
   },
   LATTE_LOGO: {
-    url: '/images/coffee-cups/circular/latte_with_logo_circular.png',
+    url: '/images/coffee-cups/circular/latte_with_logo.png',
     scale: 0.82,
     yOffset: 60,
     maxHeight: '77dvh',

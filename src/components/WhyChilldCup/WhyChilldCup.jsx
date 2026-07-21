@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import { WHY_CHILLD_ITEMS } from '@/data/whyChilldItems';
+
 export { WHY_CHILLD_ITEMS };
 
 const WhyChilldCup = forwardRef(function WhyChilldCup({
@@ -14,9 +15,6 @@ const WhyChilldCup = forwardRef(function WhyChilldCup({
   const [vbx, vby, vw, vh] = vb;
   const s = item.patternScale || 1.0;
   
-  // Center position calculations:
-  // Using patternX / patternY variables from data configs if provided,
-  // falling back to viewBox boundaries if not.
   const px = item.patternX !== undefined ? item.patternX : vbx;
   const py = item.patternY !== undefined ? item.patternY : vby;
   

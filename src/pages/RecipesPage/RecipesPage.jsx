@@ -98,6 +98,14 @@ export default function RecipesPage() {
           >
             Why invent when prompting can do? Get inspired or just copy, do what you like with our collection of cold brew recipes created by the enthu types.
           </motion.p>
+          <motion.p
+            className="recipes-header__disclaimer"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.15 }}
+          >
+            *Note: Recipe images shown are AI-generated and intended for illustrative purposes only.
+          </motion.p>
 
           {/* ── Infinite Marquee of Recipe Cards ── */}
           <motion.div

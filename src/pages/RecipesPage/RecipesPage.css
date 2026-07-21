@@ -28,8 +28,18 @@
 .recipes-header__sub {
   font-size: var(--text-md);
   color: var(--color-text-muted, #718096);
+  margin-bottom: var(--space-3);
+  text-align: left;
+}
+
+.recipes-header__disclaimer {
+  font-size: 0.85rem;
+  color: #718096;
+  font-style: italic;
+  margin-top: -0.25rem;
   margin-bottom: var(--space-6);
   text-align: left;
+  opacity: 0.9;
 }
 
 /* Recipes Search bar styled matching the menu search but light-themed */

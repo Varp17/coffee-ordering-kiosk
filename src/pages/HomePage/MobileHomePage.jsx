@@ -25,12 +25,12 @@ const COFFEE_CUP_IMAGES = {
     mobileY: -50,
   },
   FRAPPE: {
-    url: '/images/coffee-cups/frappe_with_logo_circular_tagline.png',
+    url: '/images/coffee-cups/circular/frappe_with_logo.png',
     mobileScale: 0.78,
     mobileY: -38,
   },
   LATTE: {
-    url: '/images/coffee-cups/lattee_with_logo_circular_tagline.png',
+    url: '/images/coffee-cups/circular/latte_with_logo.png',
     mobileScale: 0.54,
     mobileY: -55,
   },
@@ -45,7 +45,7 @@ const COFFEE_CUP_IMAGES = {
     mobileY: -60,
   },
   COLDBREW: {
-    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
     mobileScale: 0.54,
     mobileY: -55,
   },
@@ -55,17 +55,17 @@ const COFFEE_CUP_IMAGES = {
     mobileY: -60,
   },
   VANDY_SLIDE: {
-    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular_Tagline.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
     mobileScale: 0.72,
     mobileY: 90,
   },
   PRERI_SLIDE: {
-    url: '/images/coffee-cups/circular/frappe_with_logo_circular_tagline.png',
+    url: '/images/coffee-cups/circular/frappe_with_logo.png',
     mobileScale: 0.72,
     mobileY: 90,
   },
   RISHI_SLIDE: {
-    url: '/images/coffee-cups/circular/latte_with_logo_circular.png',
+    url: '/images/coffee-cups/circular/latte_with_logo.png',
     mobileScale: 0.72,
     mobileY: 90,
   },
@@ -78,9 +78,9 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/coffee-cups/circular/Cold Brew.png',
+    image: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
     cup: {
-      url: '/images/coffee-cups/circular/Cold Brew.png',
+      url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
       mobileScale: 0.72,
       mobileY: 90,
     }
@@ -89,9 +89,9 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Preri',
     suffix: 'Appe',
     formula: "Prerita’s Frappe",
-    image: '/images/coffee-cups/circular/frappe.png',
+    image: '/images/coffee-cups/circular/frappe_with_logo.png',
     cup: {
-      url: '/images/coffee-cups/circular/frappe.png',
+      url: '/images/coffee-cups/circular/frappe_with_logo.png',
       mobileScale: 0.72,
       mobileY: 90,
     }
@@ -100,9 +100,9 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Rishi',
     suffix: 'Latte',
     formula: "Rishima’s Latte",
-    image: '/images/coffee-cups/circular/Lattee.png',
+    image: '/images/coffee-cups/circular/latte_with_logo.png',
     cup: {
-      url: '/images/coffee-cups/circular/Lattee.png',
+      url: '/images/coffee-cups/circular/latte_with_logo.png',
       mobileScale: 0.72,
       mobileY: 90,
     }

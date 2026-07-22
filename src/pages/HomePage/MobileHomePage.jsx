@@ -728,18 +728,18 @@ export default function MobileHomePage() {
             presentation. Add syrup, milk, experiment with everyday ingredients in your kitchen, if you feel like it.
           </p>
           <p>
-            If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery but<br />
+            If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery, like me, but<br />
             enjoy the occasional pick-me-up, add a spoon less. No one's judging you.
           </p>
           <p>
             We guarantee that it will taste good; we promise that it won't eat into your wallet.
           </p>
-          <p className="mobile-home-hard-part__quote">'Coffee is too much work?'</p>
+          <p className="mobile-home-hard-part__quote">“Coffee is too much work” or “this sounds difficult”</p>
           <p>
             If you can make lemonade or iced-water, this is a walk in the park.
           </p>
           <p>
-            Chilld is built for people who like things their way. From milk choices to sweetness levels, every drink is designed
+            Chilld is built for people who like things their way. From milk choices to sweetness levels, every drink is designed<br />
             by you. No complicated menus. Just cold coffee made for your mood, your routine, and your kind of day.
           </p>
           <div className="mobile-home-hard-part__actions">
@@ -1052,20 +1052,32 @@ export default function MobileHomePage() {
 
       <section className="mobile-home-core" aria-labelledby="mobile-home-core-title">
         <div className="mobile-home-core__copy">
-          <p className="mobile-home-eyebrow">Premium cold brew for your personal cafe.</p>
-          <h2 id="mobile-home-core-title">One bottle. Many cups.</h2>
-          <p>Keep Chilld concentrate ready and make a clean cold brew, creamy latte, tonic, or late-night mix.</p>
+          <p className="mobile-home-eyebrow">B2B - The Cold Brew Factory</p>
+          <h2 id="mobile-home-core-title">Cold Brew for your Restaurant &amp; Cafe</h2>
+          <p>
+            Authentic taste, Consistent quality, Customised blends for HoReCa clients. More than 70% of your clients are drinking cold beverages. Unleash the creativity of your chefs with an operationally easy core.
+          </p>
           <ul>
-            {benefits.map((benefit) => (
-              <li key={benefit}>
-                <Sparkles size={15} aria-hidden="true" />
-                {benefit}
-              </li>
-            ))}
+            <li>
+              <Sparkles size={15} aria-hidden="true" />
+              &lt;48h Fresh Brew
+            </li>
+            <li>
+              <Sparkles size={15} aria-hidden="true" />
+              0 Zero Capex
+            </li>
+            <li>
+              <Sparkles size={15} aria-hidden="true" />
+              2L Small MOQ
+            </li>
+            <li>
+              <Sparkles size={15} aria-hidden="true" />
+              ₹₹₹ Low TCO
+            </li>
           </ul>
-          <MobileButton to="/menu" variant="primary" icon={ShoppingBag}>
-            Shop cold brew
-          </MobileButton>
+          <a href="tel:+919819927327" className="mobile-home-button mobile-home-button--primary" style={{ width: 'fit-content', marginTop: '0.5rem' }}>
+            Call +91 98199 27327
+          </a>
         </div>
         <div className="mobile-home-core__media" aria-hidden="true">
           <img

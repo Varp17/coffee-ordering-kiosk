@@ -812,15 +812,13 @@ function SkipHomepageMiddleFlow() {
             presentation. Add syrup, milk, experiment with everyday ingredients in your kitchen, if you feel like it.
           </p>
           <p className="skip-hard-part__middle">
-            If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery, like me, but<br />
+            If you've been on-call all night, add an extra spoon of our cold brew concentrate. If you get jittery but<br />
             enjoy the occasional pick-me-up, add a spoon less. No one's judging you.
           </p>
           <p className="skip-hard-part__promise">
             We guarantee that it will taste good; we promise that it won't eat into your wallet.
           </p>
-          <p className="skip-hard-part__quote">
-            “Coffee is too much work” or “this sounds difficult”
-          </p>
+          <p className="skip-hard-part__quote">"Coffee is too much work?"</p>
           <p className="skip-hard-part__simple">
             If you can make lemonade or iced-water, this is a walk in the park.
           </p>

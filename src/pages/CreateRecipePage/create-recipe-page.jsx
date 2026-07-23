@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import {
   ChevronDown,
   Plus,
-  Sparkles,
   Tag,
   Upload,
   X,
@@ -249,22 +248,26 @@ export default function CreateRecipePage() {
           <section className="create-recipe-editor-card create-recipe-ingredients" aria-labelledby="ingredients-title">
             <div className="create-recipe-editor-card__heading">
               <h2 id="ingredients-title">Ingredients</h2>
-              <span>{ingredients.length} items</span>
             </div>
-            <ul>
-              {ingredients.map((ingredient, index) => (
-                <li key={`${ingredient}-${index}`}>
-                  <button
-                    type="button"
-                    onClick={() => setIngredients((current) => current.filter((_, itemIndex) => itemIndex !== index))}
-                    aria-label={`Remove ${ingredient}`}
-                  >
-                    <X size={14} />
-                  </button>
-                  {ingredient}
-                </li>
-              ))}
-            </ul>
+            <div className="create-recipe-ingredients-box">
+              <div className="create-recipe-ingredients-toolbar">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+              </div>
+              <ul>
+                {ingredients.map((ingredient, index) => (
+                  <li key={`${ingredient}-${index}`}>
+                    <span className="ingredient-text">{ingredient}</span>
+                    <button
+                      type="button"
+                      onClick={() => setIngredients((current) => current.filter((_, itemIndex) => itemIndex !== index))}
+                      aria-label={`Remove ${ingredient}`}
+                    >
+                      <X size={16} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="create-recipe-ingredients__entry">
               <input
                 value={ingredientInput}
@@ -286,25 +289,27 @@ export default function CreateRecipePage() {
           <section className="create-recipe-editor-card create-recipe-method" aria-labelledby="method-title">
             <div className="create-recipe-editor-card__heading">
               <h2 id="method-title">Recipe</h2>
-              <span>Markdown-friendly</span>
             </div>
-            <div className="create-recipe-toolbar" aria-hidden="true">
-              <span>16</span><b>B</b><i>I</i><u>U</u><span>☷</span><span>☰</span><span>↗</span>
+            <div className="create-recipe-wysiwyg-box">
+              <div className="create-recipe-toolbar" aria-hidden="true">
+                <span>16</span><b>B</b><i>I</i><u>U</u><span>☷</span><span>☰</span><span>↗</span>
+              </div>
+              <textarea
+                value={recipeText}
+                onChange={(event) => setRecipeText(event.target.value)}
+                aria-label="Recipe instructions"
+                placeholder="Step 1: Prepare double espresso..."
+              />
             </div>
-            <textarea
-              value={recipeText}
-              onChange={(event) => setRecipeText(event.target.value)}
-              aria-label="Recipe instructions"
-            />
           </section>
         </div>
 
         {/* ── PUBLISH CONTROL ── */}
         <div className="create-recipe-publish-row">
-          <p role="status" aria-live="polite">{status}</p>
           <button type="button" className="create-recipe-publish" onClick={publishRecipe}>
-            <Sparkles size={17} /> Publish Your Mix
+            Publish Your Mix
           </button>
+          {status && <p role="status" aria-live="polite">{status}</p>}
         </div>
       </section>
     </main>

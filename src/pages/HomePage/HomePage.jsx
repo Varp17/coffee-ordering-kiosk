@@ -6,6 +6,7 @@ import { useUserStore } from '@/store/useUserStore';
 import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
 import TestimonialsBento from '@/components/TestimonialsBento/TestimonialsBento';
 import Footer from '@/components/Footer/Footer';
+import { RECIPES } from '@/data/recipes';
 import './HomePage.css';
 
 const coffeeCup = '/images/coffee-cups/circular/latte_with_logo.png';
@@ -172,40 +173,14 @@ const FALLBACK_CUP = {
 };
 
 
-const TRENDING_MIXES = [
-  {
-    id: 'rajpresso',
-    name: 'RajPresso',
-    image: '/images/image11_366_1172.png',
-    description: 'A silky-smooth Espresso Martini kissed with rich Cold Coffee concentrate...',
-    tags: ['COLD COFFEE', 'SWEET'],
-    likes: '50 Likes',
-  },
-  {
-    id: 'vandy-mood-mocha',
-    name: 'Vandy Mood Mocha',
-    image: '/images/image12_366_1172.png',
-    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
-    tags: ['MACHA', 'BITTER'],
-    likes: '30 Likes',
-  },
-  {
-    id: 'kishorappe',
-    name: 'Kishorappe',
-    image: '/images/image13_366_1172.png',
-    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
-    tags: ['CHILLD', 'LEMON'],
-    likes: '+1K Likes',
-  },
-  {
-    id: 'rishi-latte',
-    name: 'RishiLatte',
-    image: '/images/image14_366_1172.png',
-    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
-    tags: ['COLD COFFEE', 'STRONG'],
-    likes: '250 Likes',
-  },
-];
+const TRENDING_MIXES = RECIPES.slice(0, 4).map((recipe) => ({
+  id: recipe.id,
+  name: recipe.name,
+  image: recipe.image,
+  description: recipe.description,
+  tags: recipe.tags ? recipe.tags.map((t) => t.replace('#', '')).slice(0, 2) : ['COLD COFFEE', 'SWEET'],
+  likes: recipe.likes || '50 Likes',
+}));
 
 function getCupConfigByUrl(imageUrl) {
   return Object.values(COFFEE_CUP_IMAGES).find((config) => config.url === imageUrl) || {

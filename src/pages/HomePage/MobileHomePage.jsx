@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowRight,
-  Coffee,
-  ShoppingBag,
   Sparkles,
 } from 'lucide-react';
 import { useUserStore } from '@/store/useUserStore';
 import Footer from '@/components/Footer/Footer';
 import WhyChilldCup, { WHY_CHILLD_ITEMS } from '@/components/WhyChilldCup/WhyChilldCup';
+import { RECIPES } from '@/data/recipes';
 import './MobileHomePage.css';
 
 const ASSET_BASE = '/images/mobile-home/';
@@ -109,40 +107,14 @@ const SKIPPED_HERO_SLIDES = [
   },
 ];
 
-const TRENDING_MIXES = [
-  {
-    id: 'rajpresso',
-    name: 'RajPresso',
-    image: '/images/image11_366_1172.png',
-    description: 'A silky-smooth Espresso Martini kissed with rich Cold Coffee concentrate...',
-    tags: ['COLD COFFEE', 'SWEET'],
-    likes: '50 Likes',
-  },
-  {
-    id: 'vandy-mood-mocha',
-    name: 'Vandy Mood Mocha',
-    image: '/images/image12_366_1172.png',
-    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
-    tags: ['MACHA', 'BITTER'],
-    likes: '30 Likes',
-  },
-  {
-    id: 'kishorappe',
-    name: 'Kishorappe',
-    image: '/images/image13_366_1172.png',
-    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
-    tags: ['CHILLD', 'LEMON'],
-    likes: '+1K Likes',
-  },
-  {
-    id: 'rishi-latte',
-    name: 'RishiLatte',
-    image: '/images/image14_366_1172.png',
-    description: 'A silky-smooth Nitro Espresso Martini kissed with rich chocolate liqueur...',
-    tags: ['COLD COFFEE', 'STRONG'],
-    likes: '250 Likes',
-  },
-];
+const TRENDING_MIXES = RECIPES.slice(0, 4).map((recipe) => ({
+  id: recipe.id,
+  name: recipe.name,
+  image: recipe.image,
+  description: recipe.description,
+  tags: recipe.tags ? recipe.tags.map((t) => t.replace('#', '')).slice(0, 2) : ['COLD COFFEE', 'SWEET'],
+  likes: recipe.likes || '50 Likes',
+}));
 
 const TESTIMONIALS_DATA = [
   {
@@ -189,53 +161,53 @@ const TESTIMONIALS_DATA = [
   }
 ];
 
-function getCupConfigByUrl(imageUrl) {
-  return Object.values(COFFEE_CUP_IMAGES).find((config) => config.url === imageUrl) || {
-    url: imageUrl,
-    mobileScale: 1.0,
-    mobileY: 0,
-  };
-}
+// function getCupConfigByUrl(imageUrl) {
+//   return Object.values(COFFEE_CUP_IMAGES).find((config) => config.url === imageUrl) || {
+//     url: imageUrl,
+//     mobileScale: 1.0,
+//     mobileY: 0,
+//   };
+// }
 
 function formatCoffeeName(coffeeType) {
   if (!coffeeType) return 'Cold Brew';
   return coffeeType.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-const benefits = ['8-10 serves per bottle', 'Ready in under a minute', 'Milk, tonic, ice, and mixers'];
+// const benefits = ['8-10 serves per bottle', 'Ready in under a minute', 'Milk, tonic, ice, and mixers'];
 
-function MobileButton({ to, href, children, variant = 'primary', className = '', icon: Icon, onClick }) {
-  const classes = `mobile-home-button mobile-home-button--${variant} ${className}`.trim();
-  const content = (
-    <>
-      {Icon && <Icon size={17} aria-hidden="true" />}
-      <span>{children}</span>
-      <ArrowRight size={16} aria-hidden="true" />
-    </>
-  );
+// function MobileButton({ to, href, children, variant = 'primary', className = '', icon: Icon, onClick }) {
+//   const classes = `mobile-home-button mobile-home-button--${variant} ${className}`.trim();
+//   const content = (
+//     <>
+//       {Icon && <Icon size={17} aria-hidden="true" />}
+//       <span>{children}</span>
+//       <ArrowRight size={16} aria-hidden="true" />
+//     </>
+//   );
 
-  if (onClick) {
-    return (
-      <button className={classes} onClick={(e) => { e.preventDefault(); onClick(); }}>
-        {content}
-      </button>
-    );
-  }
+//   if (onClick) {
+//     return (
+//       <button className={classes} onClick={(e) => { e.preventDefault(); onClick(); }}>
+//         {content}
+//       </button>
+//     );
+//   }
 
-  if (href) {
-    return (
-      <a className={classes} href={href}>
-        {content}
-      </a>
-    );
-  }
+//   if (href) {
+//     return (
+//       <a className={classes} href={href}>
+//         {content}
+//       </a>
+//     );
+//   }
 
-  return (
-    <Link className={classes} to={to}>
-      {content}
-    </Link>
-  );
-}
+//   return (
+//     <Link className={classes} to={to}>
+//       {content}
+//     </Link>
+//   );
+// }
 
 function SectionHeading({ eyebrow, title, id, children }) {
   return (
@@ -801,14 +773,6 @@ export default function MobileHomePage() {
           />
           <span className="bento-video__control-btn" aria-hidden="true" />
         </button>
-        <div className="mobile-home-process__copy">
-          <p className="mobile-home-eyebrow">How they make it</p>
-          <h2 id="mobile-home-process-title">Pour. Mix. Chill.</h2>
-          <p>Concentrate, ice, milk or tonic. A premium cold coffee is ready before the ice settles.</p>
-          <MobileButton to="/menu" variant="dark" icon={Coffee}>
-            Shop Concentrates
-          </MobileButton>
-        </div>
       </section>
 
       <section className="mobile-home-social" aria-labelledby="mobile-home-social-title">

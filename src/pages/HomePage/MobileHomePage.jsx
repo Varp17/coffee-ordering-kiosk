@@ -1019,7 +1019,7 @@ export default function MobileHomePage() {
           <p className="mobile-home-eyebrow">B2B - The Cold Brew Factory</p>
           <h2 id="mobile-home-core-title">Cold Brew for your Restaurant &amp; Cafe</h2>
           <p>
-            Authentic taste, Consistent quality, Customised blends for HoReCa clients. More than 70% of your clients are drinking cold beverages. Unleash the creativity of your chefs with an operationally easy core.
+            Authentic taste, Consistent quality. More than 70% of your Clienteles are drinking cold beverages. Unleash the creativity of your chefs with an operationally easy core.
           </p>
           <ul>
             <li>
@@ -1039,9 +1039,9 @@ export default function MobileHomePage() {
               ₹₹₹ Low TCO
             </li>
           </ul>
-          <a href="tel:+919819927327" className="mobile-home-button mobile-home-button--primary" style={{ width: 'fit-content', marginTop: '0.5rem' }}>
-            Call +91 98199 27327
-          </a>
+          <Link to="/contact" className="mobile-home-button mobile-home-button--primary" style={{ width: 'fit-content', marginTop: '0.5rem' }}>
+            Contact Us
+          </Link>
         </div>
         <div className="mobile-home-core__media" aria-hidden="true">
           <img

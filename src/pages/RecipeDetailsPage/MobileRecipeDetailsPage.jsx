@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import RecipeMedia from '@/components/RecipeMedia/RecipeMedia';
@@ -7,14 +7,14 @@ import './MobileRecipeDetailsPage.css';
 
 const initialComments = [
   {
-    name: 'Alia Bhatt',
+    name: 'Aarav Sharma',
     time: '2/4/2026 10:30 AM',
     copy: 'I love it! Best with the jaggery espresso. Add a tiny pinch of sea salt on top to elevate the flavors.',
   },
   {
-    name: 'Ranveer Singh',
+    name: 'Rohan Mehta',
     time: '2/4/2026 10:30 AM',
-    copy: 'This recipe is dam good, I cannot believe that whatever i tried was a shit compared to this amazing drink.',
+    copy: 'This recipe is super refreshing and smooth. Loved making it at home!',
   },
 ];
 
@@ -50,9 +50,10 @@ export default function MobileRecipeDetailPage({ id, location }) {
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState(initialComments);
   const [checkedIngredients, setCheckedIngredients] = useState({});
+  const mobileCarouselRef = useRef(null);
 
   // Look up current recipe: first check location state (for draft preview), then central list
-  const currentRecipe = location.state?.name
+  const currentRecipe = location?.state?.name
     ? {
         id: id || 'custom-mix',
         name: location.state.name,
@@ -76,7 +77,41 @@ export default function MobileRecipeDetailPage({ id, location }) {
       }
     : (RECIPES.find((r) => r.id === id) || RECIPES[0]);
 
+  const relatedRecipes = RECIPES.filter((r) => r.id !== currentRecipe.id);
   const likesCount = isLiked ? '1,001 Likes' : currentRecipe.likes || '1,000 Likes';
+
+  // Exact 60fps requestAnimationFrame smooth infinite marquee loop matched from Homepage TrendingMixes
+  useEffect(() => {
+    const rail = mobileCarouselRef.current;
+    if (!rail) return undefined;
+
+    let animId;
+    let isPaused = false;
+
+    const step = () => {
+      if (!isPaused) {
+        rail.scrollLeft += 0.8;
+        if (rail.scrollLeft >= rail.scrollWidth / 2) {
+          rail.scrollLeft = 0;
+        }
+      }
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+
+    const pause = () => { isPaused = true; };
+    const resume = () => { isPaused = false; };
+
+    rail.addEventListener('touchstart', pause, { passive: true });
+    rail.addEventListener('touchend', resume, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(animId);
+      rail.removeEventListener('touchstart', pause);
+      rail.removeEventListener('touchend', resume);
+    };
+  }, []);
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -118,8 +153,6 @@ export default function MobileRecipeDetailPage({ id, location }) {
     setComment('');
     toast.success('Comment posted successfully!');
   };
-
-  const relatedRecipes = RECIPES.filter((r) => r.id !== currentRecipe.id);
 
   return (
     <main className="mobile-recipe-page">
@@ -279,12 +312,12 @@ export default function MobileRecipeDetailPage({ id, location }) {
         {/* MORE RECIPES HORIZONTAL SWIPE */}
         <div className="mobile-recipe-section-card no-padding-bottom">
           <h2 className="mobile-recipe-sec-title">More Great Recipes</h2>
-          <div className="mobile-recipe-carousel">
-            {relatedRecipes.map((recipe) => (
+          <div ref={mobileCarouselRef} className="mobile-recipe-carousel">
+            {relatedRecipes.concat(relatedRecipes).map((recipe, idx) => (
               <Link
                 to={`/recipe-details/${recipe.id}`}
                 className="mobile-related-card"
-                key={recipe.id}
+                key={`${recipe.id}-${idx}`}
               >
                 <div className="mobile-related-card-media">
                   <RecipeMedia recipe={recipe} alt={recipe.name} className="related-img" />

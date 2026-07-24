@@ -48,8 +48,6 @@ export default function Navbar() {
   const navLinks = [
     { to: '/', label: 'Home' },
     { to: '/menu', label: 'Products' },
-    { to: '/store', label: 'Store' },
-    { to: '/b2b', label: 'B2B' },
     { to: '/recipes', label: 'Recipes' },
     { to: '/#hard-part', label: 'About Us' },
     { to: '/contact', label: 'Contact' },

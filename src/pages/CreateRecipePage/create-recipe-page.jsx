@@ -6,22 +6,15 @@ import {
   Tag,
   Upload,
   X,
+  CheckCircle2,
+  Trash2
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import './create-recipe-page.css';
 
 const DEFAULT_IMAGE = '/images/image11_366_1172.png';
-const DEFAULT_TAGS = ['OFFICE', 'STRONG', 'SWEET', 'OAT MILK'];
-const DEFAULT_INGREDIENTS = [
-  '2 Shots Double Espresso (Dark Roast)',
-  '1 Cup Chilled Oat milk',
-  '1 tbsp Jaggery syrup',
-];
-const DEFAULT_RECIPE = `Step 1: Brew & Cool\nPrepare double espresso and let it cool slightly. Using a dark roast will cut through the sweetness of the jaggery perfectly.\n\nStep 2: Sweeten\nStir in jaggery syrup while coffee is warm. Ensure it dissolves completely to avoid settling at the bottom of your glass.`;
+const CONCENTRATE_OPTIONS = ['Classic', 'Bold', 'Kappi'];
 
-/**
- * Render this page inside MainLayout so the existing Navbar and Footer are shared.
- * Add a route such as: <Route path="/create-recipe" element={<CreateRecipePage />} />
- */
 export default function CreateRecipePage() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -30,13 +23,21 @@ export default function CreateRecipePage() {
   const [recipeName, setRecipeName] = useState('');
   const [description, setDescription] = useState('');
   const [mood, setMood] = useState('Chill');
-  const [tags, setTags] = useState(DEFAULT_TAGS);
+  const [selectedConcentrate, setSelectedConcentrate] = useState('Classic');
+  const [tags, setTags] = useState(['COLD BREW', 'HOMEMADE']);
   const [tagInput, setTagInput] = useState('');
-  const [ingredients, setIngredients] = useState(DEFAULT_INGREDIENTS);
+  const [ingredients, setIngredients] = useState([]);
   const [ingredientInput, setIngredientInput] = useState('');
-  const [recipeText, setRecipeText] = useState(DEFAULT_RECIPE);
+  
+  // Recipe Steps
+  const [steps, setSteps] = useState([
+    { title: 'Step 1', copy: '' },
+    { title: 'Step 2', copy: '' }
+  ]);
+
   const [isDragging, setIsDragging] = useState(false);
   const [status, setStatus] = useState('');
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   useEffect(() => () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -77,36 +78,52 @@ export default function CreateRecipePage() {
     setTagInput('');
   };
 
-  const addIngredient = () => {
-    const nextIngredient = ingredientInput.trim();
-    if (!nextIngredient) return;
-    setIngredients((current) => [...current, nextIngredient]);
-    setIngredientInput('');
+  const addIngredient = (customText) => {
+    const textToAdd = (typeof customText === 'string' ? customText : ingredientInput).trim();
+    if (!textToAdd) return;
+    setIngredients((current) => [...current, textToAdd]);
+    if (typeof customText !== 'string') {
+      setIngredientInput('');
+    }
+  };
+
+  const addConcentrateIngredient = (concType) => {
+    setSelectedConcentrate(concType);
+    const text = `90 ml Chilld ${concType} Concentrate`;
+    if (!ingredients.includes(text)) {
+      setIngredients((prev) => [...prev, text]);
+    }
+  };
+
+  const updateStep = (index, field, value) => {
+    setSteps((prev) => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], [field]: value };
+      return copy;
+    });
+  };
+
+  const addStep = () => {
+    setSteps((prev) => [...prev, { title: `Step ${prev.length + 1}`, copy: '' }]);
+  };
+
+  const removeStep = (index) => {
+    if (steps.length <= 1) return;
+    setSteps((prev) => prev.filter((_, i) => i !== index));
   };
 
   const publishRecipe = () => {
-    const safeName = recipeName.trim() || 'Untitled Mix';
-    const slug = safeName
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '') || 'untitled-mix';
+    if (!recipeName.trim()) {
+      toast.error('Please enter a name for your recipe');
+      return;
+    }
 
-    setStatus('Your mix is ready. Opening its recipe page…');
+    setIsSuccessModalOpen(true);
+  };
 
-    window.setTimeout(() => {
-      navigate(`/recipe-details/${slug}`, {
-        state: {
-          name: safeName,
-          description: description.trim() || 'A hand-coded CHILLD community recipe.',
-          mood,
-          tags,
-          ingredients,
-          recipeText,
-          image: imageSrc,
-          author: 'Arya Kagathara',
-        },
-      });
-    }, 500);
+  const handleConfirmRedirect = () => {
+    setIsSuccessModalOpen(false);
+    navigate('/recipes');
   };
 
   return (
@@ -245,29 +262,50 @@ export default function CreateRecipePage() {
 
         {/* ── INGREDIENTS & STEPS EDITOR ── */}
         <div className="create-recipe-workspace__bottom">
+          {/* Ingredients Section */}
           <section className="create-recipe-editor-card create-recipe-ingredients" aria-labelledby="ingredients-title">
             <div className="create-recipe-editor-card__heading">
               <h2 id="ingredients-title">Ingredients</h2>
             </div>
-            <div className="create-recipe-ingredients-box">
-              <div className="create-recipe-ingredients-toolbar">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-              </div>
-              <ul>
-                {ingredients.map((ingredient, index) => (
-                  <li key={`${ingredient}-${index}`}>
-                    <span className="ingredient-text">{ingredient}</span>
-                    <button
-                      type="button"
-                      onClick={() => setIngredients((current) => current.filter((_, itemIndex) => itemIndex !== index))}
-                      aria-label={`Remove ${ingredient}`}
-                    >
-                      <X size={16} />
-                    </button>
-                  </li>
+
+            {/* Concentrate Selector Buttons (Feature 13b) */}
+            <div className="create-recipe-conc-selector">
+              <span className="conc-selector-label">Select Concentrate Base:</span>
+              <div className="conc-buttons-row">
+                {CONCENTRATE_OPTIONS.map((conc) => (
+                  <button
+                    key={conc}
+                    type="button"
+                    className={`conc-btn ${selectedConcentrate === conc ? 'is-selected' : ''}`}
+                    onClick={() => addConcentrateIngredient(conc)}
+                  >
+                    + Add {conc} Concentrate
+                  </button>
                 ))}
-              </ul>
+              </div>
             </div>
+
+            <div className="create-recipe-ingredients-box">
+              {ingredients.length === 0 ? (
+                <p className="ingredients-empty-prompt">No ingredients added yet. Select a concentrate base above or add custom ingredients below.</p>
+              ) : (
+                <ul>
+                  {ingredients.map((ingredient, index) => (
+                    <li key={`${ingredient}-${index}`}>
+                      <span className="ingredient-text">{ingredient}</span>
+                      <button
+                        type="button"
+                        onClick={() => setIngredients((current) => current.filter((_, itemIndex) => itemIndex !== index))}
+                        aria-label={`Remove ${ingredient}`}
+                      >
+                        <X size={16} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
             <div className="create-recipe-ingredients__entry">
               <input
                 value={ingredientInput}
@@ -278,28 +316,49 @@ export default function CreateRecipePage() {
                     addIngredient();
                   }
                 }}
-                placeholder="Add an ingredient"
+                placeholder="Add an ingredient (e.g. 15ml Jaggery syrup, Ice cubes)"
               />
-              <button type="button" onClick={addIngredient}>
+              <button type="button" onClick={() => addIngredient()}>
                 <Plus size={16} /> Add
               </button>
             </div>
           </section>
 
-          <section className="create-recipe-editor-card create-recipe-method" aria-labelledby="method-title">
+          {/* Proper Recipe Steps Section (Feature 13) */}
+          <section className="create-recipe-editor-card create-recipe-steps-editor" aria-labelledby="steps-title">
             <div className="create-recipe-editor-card__heading">
-              <h2 id="method-title">Recipe</h2>
+              <h2 id="steps-title">Recipe Steps</h2>
             </div>
-            <div className="create-recipe-wysiwyg-box">
-              <div className="create-recipe-toolbar" aria-hidden="true">
-                <span>16</span><b>B</b><i>I</i><u>U</u><span>☷</span><span>☰</span><span>↗</span>
-              </div>
-              <textarea
-                value={recipeText}
-                onChange={(event) => setRecipeText(event.target.value)}
-                aria-label="Recipe instructions"
-                placeholder="Step 1: Prepare double espresso..."
-              />
+            
+            <div className="create-recipe-steps-list">
+              {steps.map((step, idx) => (
+                <div key={idx} className="step-builder-item">
+                  <div className="step-builder-header">
+                    <span className="step-number">{step.title}</span>
+                    {steps.length > 1 && (
+                      <button
+                        type="button"
+                        className="step-remove-btn"
+                        onClick={() => removeStep(idx)}
+                        title="Remove step"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    )}
+                  </div>
+                  <textarea
+                    className="step-text-input"
+                    value={step.copy}
+                    onChange={(e) => updateStep(idx, 'copy', e.target.value)}
+                    placeholder={`Describe ${step.title} (e.g. Fill glass with ice cubes)...`}
+                    rows={2}
+                  />
+                </div>
+              ))}
+
+              <button type="button" className="add-step-btn" onClick={addStep}>
+                <Plus size={16} /> Add Step
+              </button>
             </div>
           </section>
         </div>
@@ -312,6 +371,22 @@ export default function CreateRecipePage() {
           {status && <p role="status" aria-live="polite">{status}</p>}
         </div>
       </section>
+
+      {/* ── PUBLISH SUCCESS CONFIRMATION MODAL (Feature 14) ── */}
+      {isSuccessModalOpen && (
+        <div className="recipe-modal-backdrop">
+          <div className="recipe-modal-card">
+            <div className="recipe-modal-icon">
+              <CheckCircle2 size={44} />
+            </div>
+            <h3>Thank You!</h3>
+            <p>Thank you for sharing your recipe. It will be published after review.</p>
+            <button type="button" className="recipe-modal-confirm-btn" onClick={handleConfirmRedirect}>
+              Back to Recipes Page
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

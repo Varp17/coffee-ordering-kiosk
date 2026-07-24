@@ -5,7 +5,6 @@
 .store-page {
   background: #f5f9fc;
   min-height: 100vh;
-  padding-top: clamp(6rem, 8vw, 8rem);
 }
 
 /* ── HERO ──────────────────────────────────────────── */

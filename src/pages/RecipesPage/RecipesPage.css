@@ -9,25 +9,61 @@
 
 .recipes-header {
   background: transparent;
-  padding: clamp(6rem, 8vw, 8rem) 0 var(--space-6);
+  padding: var(--space-4) 0 var(--space-6);
   margin-bottom: var(--space-2);
   position: relative;
   overflow: hidden;
 }
 
+.recipes-header__top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: var(--space-3);
+}
+
+.recipes-header__create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  background: var(--color-primary, #1844AB);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(24, 68, 171, 0.25);
+  transition: all 0.22s ease;
+  flex-shrink: 0;
+}
+
+.recipes-header__create-btn:hover {
+  background: #133587;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(24, 68, 171, 0.35);
+  color: #ffffff;
+}
+
 .recipes-header__title {
   font-family: 'Author', sans-serif;
   font-size: var(--text-4xl);
-  font-weight: 900;
+  font-weight: 500;
   color: var(--color-dark, #1f2a44);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   margin-bottom: var(--space-2);
   text-align: left;
 }
 
-.recipes-header__sub {
-  font-size: var(--text-md);
+.recipes-header__sub,
+.rp-section-sub {
+  font-size: var(--text-md, 1.125rem);
+  font-family: var(--font-body);
   color: var(--color-text-muted, #718096);
+  line-height: 1.6;
   margin-bottom: var(--space-3);
   text-align: left;
 }
@@ -381,8 +417,10 @@
 }
 
 .rp-section-sub {
-  font-size: 0.85rem;
-  color: #718096;
+  font-size: var(--text-md, 1.125rem);
+  font-family: var(--font-body);
+  color: var(--color-text-muted, #718096);
+  line-height: 1.6;
   margin-top: 4px;
 }
 
@@ -403,7 +441,7 @@
   display: flex;
   gap: 1.25rem;
   width: max-content;
-  animation: rp-marquee-scroll 60s linear infinite;
+  animation: rp-marquee-scroll 180s linear infinite;
 }
 
 .rp-marquee:hover .rp-marquee__track {
@@ -774,6 +812,12 @@
 
 /* ── RESPONSIVE ───────────────────────────────────── */
 @media (max-width: 600px) {
+  .recipes-header__top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
   .recipes-header {
     padding-block: var(--space-4) var(--space-2);
     margin-bottom: var(--space-1);
@@ -829,8 +873,9 @@
   }
 
   .rp-section-sub {
-    font-size: 0.76rem;
-    margin-top: 2px;
+    font-size: var(--text-sm, 0.95rem);
+    line-height: 1.5;
+    margin-top: 4px;
   }
 
   .recipes-header__marquee {

@@ -33,6 +33,7 @@ import RecipesPage from '@/pages/RecipesPage/RecipesPage';
 import ContactPage from '@/pages/ContactPage/ContactPage';
 import StorePage from '@/pages/StorePage/StorePage';
 import B2BPage from '@/pages/B2BPage/B2BPage';
+import PoliciesPage from '@/pages/PoliciesPage/PoliciesPage';
 import { useUserStore } from '@/store/useUserStore';
 import useProportionalScaling from '@/hooks/useProportionalScaling';
 import './App.css';
@@ -124,6 +125,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/store" element={<StorePage />} />
           <Route path="/b2b" element={<B2BPage />} />
+          <Route path="/policies" element={<PoliciesPage />} />
         </Route>
       </Routes>
     </Router>

@@ -159,7 +159,7 @@
 .footer__links {
   grid-area: links;
   display: grid;
-  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
   gap: clamp(1.5rem, 5vw, 9.5rem);
   align-self: start;
   padding-top: clamp(0.2rem, 0.5vw, 0.6rem);
@@ -180,6 +180,19 @@
   letter-spacing: 0.16em;
   line-height: 1;
   text-transform: uppercase;
+}
+
+.footer__column-header-link {
+  color: inherit !important;
+  text-decoration: none;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.footer__column-header-link:hover,
+.footer__column-header-link:focus-visible {
+  color: #E6F4FF !important;
+  opacity: 0.85;
+  transform: none !important;
 }
 
 .footer__column a {

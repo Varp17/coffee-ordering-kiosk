@@ -112,7 +112,7 @@ export default function StorePage() {
   };
 
   return (
-    <main className="store-page">
+    <main className="store-page page-wrapper">
       {/* ── WAITLIST CTA ── */}
       <section className="store-waitlist">
         <div className="container">

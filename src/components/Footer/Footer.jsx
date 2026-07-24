@@ -2,15 +2,8 @@ import { Link } from 'react-router-dom';
 import Logo from '@/components/Logo/Logo';
 import './Footer.css';
 
-const shopLinks = [
-  { label: 'Products', to: '/menu' },
-  { label: 'Store (Soon)', to: '/store' },
-  { label: 'B2B (Soon)', to: '/b2b' },
-  /* { label: 'Create Your Drink', to: '/build' }, // kiosk-only */
-  { label: 'Cart', to: '/checkout' },
-];
-
 const exploreLinks = [
+  { label: 'Products', to: '/menu' },
   { label: 'About Us', to: '/#hard-part' },
   { label: 'Create Recipe', to: '/create-recipe' },
   { label: 'Recipes', to: '/recipes' },
@@ -18,10 +11,10 @@ const exploreLinks = [
 ];
 
 const otherLinks = [
-  { label: 'Refund Policy', to: '/profile' },
-  { label: 'Privacy Policy', to: '/profile' },
-  { label: 'Terms of Service', to: '/profile' },
-  { label: 'Shopping Policy', to: '/checkout' },
+  { label: 'Refund Policy', to: '/policies' },
+  { label: 'Privacy Policy', to: '/policies' },
+  { label: 'Terms of Service', to: '/policies' },
+  { label: 'Shipping Policy', to: '/policies' },
 ];
 
 function SocialIcon({ label, children }) {
@@ -32,11 +25,19 @@ function SocialIcon({ label, children }) {
   );
 }
 
-function FooterColumn({ title, links }) {
+function FooterColumn({ title, headerTo, links }) {
   return (
     <nav className="footer__column" aria-label={title}>
-      <h2>{title}</h2>
-      {links.map((link) => (
+      <h2>
+        {headerTo ? (
+          <Link to={headerTo} className="footer__column-header-link">
+            {title}
+          </Link>
+        ) : (
+          title
+        )}
+      </h2>
+      {links && links.map((link) => (
         <Link key={link.label} to={link.to}>
           {link.label}
         </Link>
@@ -132,7 +133,6 @@ export default function Footer({ className = '' }) {
         </section>
 
         <div className="footer__links">
-          <FooterColumn title="Shop" links={shopLinks} />
           <FooterColumn title="Explore" links={exploreLinks} />
           <FooterColumn title="Other" links={otherLinks} />
         </div>

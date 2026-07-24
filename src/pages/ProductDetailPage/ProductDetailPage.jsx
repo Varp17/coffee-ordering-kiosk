@@ -275,6 +275,12 @@ export default function ProductDetailPage() {
                   <span>Best Mix</span>
                   <strong>{product.bestMix || '—'}</strong>
                 </div>
+                <div className="product-detail__fact--use-before">
+                  <div className="use-before__text">
+                    <span>Use Before</span>
+                    <strong>4 weeks from manufacturing date</strong>
+                  </div>
+                </div>
               </div>
               <div className="ingredients-pills">
                 {product.ingredients.map((ing) => (

@@ -11,14 +11,14 @@ const SHOW_PROMO = false; // Set to true when we have a promo
 
 const initialComments = [
   {
-    name: 'Alia Bhatt',
+    name: 'Aarav Sharma',
     time: '2/4/2026 10:30 Am',
     copy: 'I love it! Best with the jaggery espresso. Add a tiny pinch of sea salt on top to elevate the flavors.',
   },
   {
-    name: 'Ranveer Singh',
+    name: 'Rohan Mehta',
     time: '2/4/2026 10:30 Am',
-    copy: 'This recipe is dam good, I cannot believe that whatever i tried was a shit compared to this amazing drink.',
+    copy: 'This recipe is super refreshing and smooth. Loved making it at home!',
   },
 ];
 
@@ -116,6 +116,72 @@ function RecipeDetailContent({ id, location }) {
 
   // Get other recipes for bottom carousel
   const relatedRecipes = RECIPES.filter((r) => r.id !== currentRecipe.id);
+  const isManuallyScrollingRef = useRef(false);
+
+  // Exact 60fps requestAnimationFrame smooth infinite marquee loop matched from Homepage TrendingMixes
+  useEffect(() => {
+    const rail = carouselRef.current;
+    if (!rail) return undefined;
+
+    let animId;
+    let isPaused = false;
+
+    const step = () => {
+      if (!isPaused && !isManuallyScrollingRef.current) {
+        rail.scrollLeft += 0.8;
+        if (rail.scrollLeft >= rail.scrollWidth / 2) {
+          rail.scrollLeft = 0;
+        }
+      }
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+
+    const pause = () => { isPaused = true; };
+    const resume = () => { isPaused = false; };
+
+    rail.addEventListener('mouseenter', pause);
+    rail.addEventListener('mouseleave', resume);
+    rail.addEventListener('touchstart', pause, { passive: true });
+    rail.addEventListener('touchend', resume, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(animId);
+      rail.removeEventListener('mouseenter', pause);
+      rail.removeEventListener('mouseleave', resume);
+      rail.removeEventListener('touchstart', pause);
+      rail.removeEventListener('touchend', resume);
+    };
+  }, []);
+
+  const scrollNav = (direction) => {
+    const rail = carouselRef.current;
+    if (!rail) return;
+
+    isManuallyScrollingRef.current = true;
+
+    const scrollAmount = 312;
+    let targetScroll = rail.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+    const halfWidth = rail.scrollWidth / 2;
+
+    if (targetScroll < 0) {
+      rail.scrollLeft = halfWidth + rail.scrollLeft;
+      targetScroll = halfWidth + targetScroll;
+    } else if (targetScroll >= halfWidth) {
+      rail.scrollLeft = rail.scrollLeft - halfWidth;
+      targetScroll = targetScroll - halfWidth;
+    }
+
+    rail.scrollTo({
+      left: targetScroll,
+      behavior: 'smooth',
+    });
+
+    setTimeout(() => {
+      isManuallyScrollingRef.current = false;
+    }, 600);
+  };
 
   return (
     <main className="recipe-page">
@@ -241,27 +307,81 @@ function RecipeDetailContent({ id, location }) {
       </section>
 
       {/* ── RELATED RECIPES ── */}
-      <section className="more-recipes-section" id="recipes">
-        <div className="recipe-container">
-          <div className="section-heading-row">
-            <h2>More great recipes</h2>
-            <Link to="/recipes" className="view-recipes-button">View all recipes <Icon name="arrowUpRight" size={17} /></Link>
+      <section className="lower-flow-trending" id="recipes" aria-labelledby="more-recipes-title">
+        <div className="section-heading-row" style={{ maxWidth: '1660px', margin: '0 auto 1rem', padding: '0 2rem' }}>
+          <h2 id="more-recipes-title">More great recipes</h2>
+          <Link to="/recipes" className="view-recipes-button">View all recipes <Icon name="arrowUpRight" size={17} /></Link>
+        </div>
+
+        <div className="lower-flow-trending__container">
+          <button
+            type="button"
+            onClick={() => scrollNav('left')}
+            className="trending-nav-btn trending-nav-btn--left"
+            aria-label="Scroll left"
+          >
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          <div
+            ref={carouselRef}
+            className="lower-flow-trending__rail"
+            aria-label="More coffee recipes"
+          >
+            <div className="lower-flow-trending__track">
+              {relatedRecipes.map((recipe) => (
+                <Link key={recipe.id} to={`/recipe-details/${recipe.id}`} className="trending-mix-card">
+                  <div className="trending-mix-card__image-wrapper">
+                    <div className="trending-mix-card__image">
+                      <RecipeMedia recipe={recipe} alt={recipe.name} />
+                      <span className="trending-mix-card__likes">{recipe.likes}</span>
+                    </div>
+                  </div>
+                  <div className="trending-mix-card__content">
+                    <h3>{recipe.name}</h3>
+                    <p>{recipe.description}</p>
+                    <div className="trending-mix-card__tags">
+                      {recipe.tags.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+              {relatedRecipes.map((recipe) => (
+                <Link key={`${recipe.id}-dup`} to={`/recipe-details/${recipe.id}`} className="trending-mix-card" tabIndex={-1} aria-hidden="true">
+                  <div className="trending-mix-card__image-wrapper">
+                    <div className="trending-mix-card__image">
+                      <RecipeMedia recipe={recipe} alt="" />
+                      <span className="trending-mix-card__likes">{recipe.likes}</span>
+                    </div>
+                  </div>
+                  <div className="trending-mix-card__content">
+                    <h3>{recipe.name}</h3>
+                    <p>{recipe.description}</p>
+                    <div className="trending-mix-card__tags">
+                      {recipe.tags.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-          <div ref={carouselRef} className="recipe-carousel" tabIndex="0" aria-label="More coffee recipes">
-            {relatedRecipes.map((recipe) => (
-              <Link to={`/recipe-details/${recipe.id}`} className="related-recipe-card" key={recipe.id}>
-                <div className="related-image">
-                  <RecipeMedia recipe={recipe} alt={recipe.name} />
-                  {recipe.video && <span className="related-video">Video</span>}
-                  <span className="related-likes">{recipe.likes}</span>
-                </div>
-                <h3>{recipe.name}</h3>
-                <p>{recipe.description}</p>
-                <div className="related-tags">{recipe.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-              </Link>
-            ))}
-          </div>
-          <div className="carousel-buttons"><button type="button" onClick={() => scrollRecipes(-1)} aria-label="Previous recipes"><Icon name="arrowLeft" size={21} /></button><button type="button" onClick={() => scrollRecipes(1)} aria-label="Next recipes"><Icon name="arrowRight" size={21} /></button></div>
+
+          <button
+            type="button"
+            onClick={() => scrollNav('right')}
+            className="trending-nav-btn trending-nav-btn--right"
+            aria-label="Scroll right"
+          >
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
         </div>
       </section>
 

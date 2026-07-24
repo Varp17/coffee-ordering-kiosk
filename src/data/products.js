@@ -44,7 +44,7 @@ export const CATEGORIES = [
   { id: 'all', label: 'All Products', icon: 'All' },
   { id: 'coffee-50-50', label: 'Bold', icon: 'BD' },
   { id: 'coffee-arabica', label: 'Classic', icon: 'CL' },
-  { id: 'sif', label: 'Kaapi', icon: 'KA' },
+  { id: 'sif', label: 'Kappi', icon: 'KA' },
   { id: 'sampler', label: 'Discovery Kit', icon: 'Kit' },
 ];
 
@@ -76,9 +76,13 @@ export const PRODUCTS = [
       { id: 'coffee-50-50-concentrate-ltr-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Bold Concentrate - Serve' },
       { id: 'coffee-50-50-concentrate-ltr-2', label: '1L Back', src: BOLD_1L_BACK_IMAGE, alt: 'Bold Concentrate - 1L Back Label' },
     ],
-    basePrice: 390,
+    basePrice: 355,
+    mrp: 390,
     defaultSizeId: '325ml',
-    sizes: size('325ml', '325 ml', 325, 390),
+    sizes: [
+      { id: '325ml', label: '325 ml', ml: 325, modifier: 0, price: 355, mrp: 390 },
+      { id: '1000ml', label: '1 Liter', ml: 1000, modifier: 675, price: 1030, mrp: 1200 }
+    ],
     availability: 'Available',
     badges: ['bold', 'bestseller'],
     tags: ['bold', 'cold brew', 'balanced', 'milk', 'juices', 'sweet'],
@@ -128,9 +132,13 @@ export const PRODUCTS = [
       { id: 'classic-cb-concentrate-ltr-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Classic CB Concentrate - Serve' },
       { id: 'classic-cb-concentrate-ltr-2', label: '1L Back', src: CLASSIC_1L_BACK_IMAGE, alt: 'Classic CB Concentrate - 1L Back Label' },
     ],
-    basePrice: 390,
+    basePrice: 360,
+    mrp: 390,
     defaultSizeId: '325ml',
-    sizes: size('325ml', '325 ml', 325, 390),
+    sizes: [
+      { id: '325ml', label: '325 ml', ml: 325, modifier: 0, price: 360, mrp: 390 },
+      { id: '1000ml', label: '1 Liter', ml: 1000, modifier: 690, price: 1050, mrp: 1200 }
+    ],
     availability: 'Available',
     badges: ['smooth', 'black'],
     tags: ['classic cb', 'cold brew', 'smooth', 'black coffee'],
@@ -157,25 +165,29 @@ export const PRODUCTS = [
     order: 3,
     id: 'sif-concentrate',
     category: 'sif',
-    concentrateType: 'Kaapi',
-    name: 'Kaapi Concentrate',
+    concentrateType: 'Kappi',
+    name: 'Kappi Concentrate',
     tagline: 'South Indian filter-inspired depth in a chilled format.',
     description:
-      'A nostalgic South Indian filter coffee style concentrate, made for chilled kaapi, condensed milk serves, and rich cafe recipes.',
+      'A nostalgic South Indian filter coffee style concentrate, made for chilled kappi, condensed milk serves, and rich cafe recipes.',
     image: KAPI_IMAGE,
     gallery: [
-      { id: 'sif-concentrate-image-0', label: 'Front', src: KAPI_IMAGE, alt: 'Kaapi Concentrate - Front' },
-      { id: 'sif-concentrate-image-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
-      { id: 'sif-concentrate-image-3', label: '325 Back', src: '/images/products/Kapi-325-backlabel.png', alt: 'Kaapi Concentrate - 325ml Back Label' },
+      { id: 'sif-concentrate-image-0', label: 'Front', src: KAPI_IMAGE, alt: 'Kappi Concentrate - Front' },
+      { id: 'sif-concentrate-image-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Kappi Concentrate - Serve' },
+      { id: 'sif-concentrate-image-3', label: '325 Back', src: '/images/products/Kapi-325-backlabel.png', alt: 'Kappi Concentrate - 325ml Back Label' },
     ],
     galleryLtr: [
       { id: 'sif-concentrate-ltr-0', label: 'Front', src: KAPI_IMAGE, alt: 'Kaapi Concentrate - 1L Front' },
       { id: 'sif-concentrate-ltr-1', label: 'Serve', src: '/images/coffee-cups/iced-coffee-cup.png', alt: 'Kaapi Concentrate - Serve' },
       { id: 'sif-concentrate-ltr-2', label: '1L Back', src: KAPPI_1L_BACK_IMAGE, alt: 'Kaapi Concentrate - 1L Back Label' },
     ],
-    basePrice: 390,
+    basePrice: 350,
+    mrp: 390,
     defaultSizeId: '325ml',
-    sizes: size('325ml', '325 ml', 325, 390),
+    sizes: [
+      { id: '325ml', label: '325 ml', ml: 325, modifier: 0, price: 350, mrp: 390 },
+      { id: '1000ml', label: '1 Liter', ml: 1000, modifier: 660, price: 1010, mrp: 1200 }
+    ],
     availability: 'Available',
     badges: ['traditional', 'rich'],
     tags: ['sif', 'south indian filter', 'cold kaapi', 'milk', 'sweet'],

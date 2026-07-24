@@ -564,8 +564,6 @@ a {
   margin-top: 36px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
   scrollbar-width: none;
   padding-bottom: 12px;
 }
@@ -579,7 +577,6 @@ a {
   display: grid;
   align-content: start;
   gap: 8px;
-  scroll-snap-align: start;
 }
 
 .related-image {

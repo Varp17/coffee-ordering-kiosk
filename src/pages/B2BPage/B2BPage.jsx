@@ -109,7 +109,7 @@ export default function B2BPage() {
   };
 
   return (
-    <main className="b2b-page">
+    <main className="b2b-page page-wrapper">
       {/* ── VOLUME ESTIMATOR ── */}
       <section className="b2b-estimator" id="b2b-estimator">
         <div className="container">

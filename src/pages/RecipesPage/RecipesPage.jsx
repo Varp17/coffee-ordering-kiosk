@@ -36,11 +36,11 @@ const RECIPE_CATEGORIES = [
   { id: 'all', label: 'All Recipes', description: 'Explore our complete selection of cold brew recipes tailored to every preference.' },
   { id: 'Classic', label: 'Classic', description: 'A 100% arabica coffee. Smooth, balanced, subtle. Ideal for those who like it black' },
   { id: 'Bold', label: 'Bold', description: 'A heady mix of arabica and robusta. Flavour plus strength. Recommended for milky, juicy or sweet recipes' },
-  { id: 'Coffee & Chicory', label: 'Kaapi', description: 'Contains more than a dash of chicory if you long for that bitter after taste of south Indian filter.' }
+  { id: 'Kappi', label: 'Kappi', description: 'Contains more than a dash of chicory if you long for that bitter after taste of south Indian filter.' }
 ];
 
 const getConcentrateLabel = (concentrate) => {
-  if (concentrate === 'Coffee & Chicory') return 'Kaapi';
+  if (concentrate === 'Coffee & Chicory' || concentrate === 'Kaapi') return 'Kappi';
   return concentrate;
 };
 
@@ -78,34 +78,41 @@ export default function RecipesPage() {
   });
 
   return (
-    <main className="recipes-page">
+    <main className="recipes-page page-wrapper">
       {/* ── HEADER & SEARCH ── */}
       <header className="recipes-header">
         <div className="container">
-          <motion.h1
-            className="recipes-header__title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
-          >
-            One Cold Brew, Many Vibes
-          </motion.h1>
-          <motion.p
-            className="recipes-header__sub"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.1 }}
-          >
-            Why invent when prompting can do? Get inspired or just copy, do what you like with our collection of cold brew recipes created by the enthu types.
-          </motion.p>
-          <motion.p
-            className="recipes-header__disclaimer"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.15 }}
-          >
-            *Note: Recipe images shown are AI-generated and intended for illustrative purposes only.
-          </motion.p>
+          <div className="recipes-header__top-row">
+            <div>
+              <motion.h2
+                className="recipes-header__title"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45 }}
+              >
+                One Cold Brew, Many Vibes
+              </motion.h2>
+              <motion.p
+                className="recipes-header__sub"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.1 }}
+              >
+                Why invent when prompting can do? Get inspired or just copy, do what you like with our collection of cold brew recipes created by the enthu types.
+              </motion.p>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.15 }}
+            >
+              <Link to="/create-recipe" className="recipes-header__create-btn">
+                <Icon name="plus" size={16} />
+                <span>Create Your Own Recipe</span>
+                <Icon name="arrow-right" size={16} />
+              </Link>
+            </motion.div>
+          </div>
 
           {/* ── Infinite Marquee of Recipe Cards ── */}
           <motion.div

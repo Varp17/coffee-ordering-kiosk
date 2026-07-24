@@ -32,7 +32,8 @@ export default function ProductCard({ product, compact = false }) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const navigate = useNavigate();
 
-  const price = product.basePrice + (selectedSize?.modifier || 0);
+  const price = selectedSize?.price ?? (product.basePrice + (selectedSize?.modifier || 0));
+  const activeMrp = selectedSize?.mrp ?? null;
   const image = product.cardImage || product.gallery?.[0]?.src || product.image;
   const rating = product.reviews?.rating;
   const reviewCount = product.reviews?.count;
@@ -113,7 +114,9 @@ export default function ProductCard({ product, compact = false }) {
 
         <div className="product-card__footer">
           <div className="product-card__price">
-            <span className="product-card__price-label">from</span>
+            {activeMrp && activeMrp > price && (
+              <span className="product-card__mrp">{formatPrice(activeMrp)}</span>
+            )}
             <strong>{formatPrice(price)}</strong>
           </div>
           <motion.button

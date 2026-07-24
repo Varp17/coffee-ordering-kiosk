@@ -60,11 +60,8 @@ const WhyChilldCup = forwardRef(function WhyChilldCup({
             {/* Render body filled with image */}
             <path d={item.bodyPath} fill={`url(#${patternId})`} />
 
-            {/* Render image inside the lid path */}
-            <path d={item.lidPath} fill={`url(#${patternId})`} />
-
-            {/* Overlay the semi-transparent lid color on top of the lid image */}
-            <path d={item.lidPath} fill={item.lidColor || '#1F2A44'} opacity={0.6} style={{ mixBlendMode: 'multiply' }} />
+            {/* Render solid lid cover so background image doesn't leak into lid */}
+            <path d={item.lidPath} fill={item.lidColor || '#1F2A44'} />
           </svg>
         </div>
         <div className="why-chilld-cup-text">

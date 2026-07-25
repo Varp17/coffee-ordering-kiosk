@@ -26,7 +26,7 @@ export default function ContactPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!formData.name.trim()) {
       toast.error('Please enter your name');
       return;
@@ -65,23 +65,15 @@ export default function ContactPage() {
       {/* ── SPLIT MAIN CONTENT ── */}
       <section className="contact-split-section">
         <div className="container contact-split-grid">
-          
+
           {/* Left Column: Contact Channels Info */}
-          <motion.div 
+          <motion.div
             className="contact-info-block"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="info-badge">
-              <MessageCircle size={14} />
-              <span>Contact Directory</span>
-            </div>
-
             <h2>Chilld Coffee Headquarters</h2>
-            <p className="info-intro">
-              Drop by or connect via our direct communication channels. We aim to respond to all inquiries within 24 hours.
-            </p>
 
             <div className="channel-list">
               {/* Address */}
@@ -91,7 +83,7 @@ export default function ContactPage() {
                 </div>
                 <div className="channel-details">
                   <h3>Our Location</h3>
-                  <p>Plot No. 44, Industrial Area Phase II, Bengaluru, Karnataka, 560001</p>
+                  <p>1st Floor, Hind Services Industrial Premises, 16/1, Jambhekar Maharaj Path, Dadar West, Dadar, Mumbai, Maharashtra 400028</p>
                 </div>
               </div>
 
@@ -125,15 +117,14 @@ export default function ContactPage() {
                 </div>
                 <div className="channel-details">
                   <h3>Operational Hours</h3>
-                  <p>Kiosk Orders: 24/7</p>
-                  <p>Customer Care: 9:00 AM - 8:00 PM IST</p>
+                  <p>Customer Care: 10:00 AM - 6:00 PM IST (Mon - Sat)</p>
                 </div>
               </div>
             </div>
           </motion.div>
 
           {/* Right Column: Premium Contact Form */}
-          <motion.div 
+          <motion.div
             className="contact-card"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -142,7 +133,7 @@ export default function ContactPage() {
             {!submitted ? (
               <form className="contact-form" onSubmit={handleSubmit}>
                 <h2 className="form-title">Send a Message</h2>
-                
+
                 {/* Name */}
                 <div className="form-group">
                   <label htmlFor="contact-name" className="form-label">Full Name</label>
@@ -239,7 +230,7 @@ export default function ContactPage() {
                 </button>
               </form>
             ) : (
-              <motion.div 
+              <motion.div
                 className="success-state"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -252,9 +243,9 @@ export default function ContactPage() {
                 <p className="success-text">
                   Thank you for reaching out. We have logged your support ticket and will get back to you shortly.
                 </p>
-                <button 
-                  type="button" 
-                  className="btn btn-outline" 
+                <button
+                  type="button"
+                  className="btn btn-outline"
                   onClick={handleReset}
                   style={{ marginTop: 'var(--space-4)', minWidth: '160px' }}
                 >

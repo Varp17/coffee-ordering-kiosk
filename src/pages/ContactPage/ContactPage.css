@@ -164,10 +164,10 @@
 
 .contact-info-block h2 {
   font-family: var(--font-heading);
-  font-size: var(--text-xl, 24px);
+  font-size: var(--text-2xl);
   font-weight: 800;
   color: var(--color-text, #1f2a44);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-8);
 }
 
 .info-intro {

@@ -205,12 +205,12 @@
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  text-shadow: 
-    -2px -2px 0 #fff, 
-     2px -2px 0 #fff, 
-    -2px  2px 0 #fff, 
-     2px  2px 0 #fff,
-     0 6px 12px rgba(24, 68, 171, 0.25);
+  text-shadow:
+    -2px -2px 0 #fff,
+    2px -2px 0 #fff,
+    -2px 2px 0 #fff,
+    2px 2px 0 #fff,
+    0 6px 12px rgba(24, 68, 171, 0.25);
   animation: cup-text-pop-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   animation-delay: 1.4s;
 }
@@ -2614,7 +2614,7 @@
 /* ── INFINITE TRENDING MIXES CAROUSEL ───────────────── */
 #lower-flow-trending-title {
   font-family: 'Author', var(--font-heading);
-  font-size: 48px;
+  font-size: var(--text-3xl);
   font-weight: 596;
   font-style: normal;
   line-height: 120%;
@@ -2722,7 +2722,7 @@
   background: #B9E0FF;
   color: #1F2A44;
   font-family: 'Author', var(--font-body);
-  font-size: 16px;
+  font-size: var(--text-sm);
   font-weight: 494;
   line-height: 150%;
   display: inline-flex;
@@ -2741,7 +2741,7 @@
   overflow: hidden;
   color: #1844AB;
   font-family: 'Author', var(--font-heading);
-  font-size: 32px;
+  font-size: var(--text-xl);
   font-weight: 494;
   font-style: normal;
   line-height: 130%;
@@ -2756,7 +2756,7 @@
   overflow: hidden;
   color: #191817;
   font-family: 'Author', var(--font-body);
-  font-size: 18px;
+  font-size: var(--text-base);
   font-weight: 494;
   line-height: 150%;
   -webkit-box-orient: vertical;
@@ -2777,7 +2777,7 @@
   border-radius: 29px;
   color: #1844AB;
   font-family: 'Author', var(--font-heading);
-  font-size: 16px;
+  font-size: var(--text-sm);
   font-weight: 700;
   line-height: 150%;
   text-transform: uppercase;

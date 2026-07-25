@@ -5,6 +5,7 @@ import { ShoppingBag, Star } from 'lucide-react';
 import { formatPrice } from '@/utils/coffeeBuilder';
 import SizeSelector from '@/components/SizeSelector/SizeSelector';
 import { cardHover } from '@/utils/animations';
+import { useCartStore } from '@/store/useCartStore';
 import toast from 'react-hot-toast';
 import './ProductCard.css';
 
@@ -31,6 +32,7 @@ const BADGE_MAP = {
 export default function ProductCard({ product, compact = false }) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const navigate = useNavigate();
+  const addItem = useCartStore((state) => state.addItem);
 
   const price = selectedSize?.price ?? (product.basePrice + (selectedSize?.modifier || 0));
   const activeMrp = selectedSize?.mrp ?? null;
@@ -42,13 +44,23 @@ export default function ProductCard({ product, compact = false }) {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    toast.error('Coming Soon! ☕', {
-      style: {
-        background: '#1F2A44',
-        color: '#fff',
-        fontFamily: "'Author', sans-serif",
-      },
+
+    if (!product.isAvailable) {
+      toast.error('Coming Soon! ☕');
+      return;
+    }
+
+    addItem({
+      id: product.id,
+      name: product.name,
+      price,
+      size: selectedSize.id,
+      sizeLabel: selectedSize.label,
+      image,
+      qty: 1,
+      addons: [],
     });
+    toast.success(`${product.name} added to cart`);
   };
 
   return (
@@ -125,6 +137,7 @@ export default function ProductCard({ product, compact = false }) {
             whileTap={{ scale: 0.9 }}
             aria-label={`${product.orderButtonText}: ${product.name}`}
             type="button"
+            disabled={!product.isAvailable}
           >
             <ShoppingBag size={16} />
           </motion.button>

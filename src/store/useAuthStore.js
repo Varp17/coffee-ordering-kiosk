@@ -11,13 +11,14 @@ export const useAuthStore = create(
       userName:    '',
       otpSent:     false,
       otpVerified: false,
+      authIntent:  'login',
 
       setPhone: (phone) => set({ phone }),
 
-      sendOTP: async (phone) => {
+      sendOTP: async (phone, options = {}) => {
         try {
-          const res = await authService.sendOtp(phone);
-          set({ phone, otpSent: true });
+          const res = await authService.sendOtp({ mobile: phone, ...options });
+          set({ phone, otpSent: true, authIntent: options.intent || 'login' });
           const payload = unwrapObject(res, {});
           const otp = payload.otp || res.otp;
           return { success: true, otp };
@@ -26,21 +27,24 @@ export const useAuthStore = create(
         }
       },
 
-      verifyOTP: async (otp) => {
+      verifyOTP: async (otp, details = {}) => {
         try {
           const mobile = get().phone;
-          const res = await authService.verifyOtp(mobile, otp);
+          const res = await authService.verifyOtp(mobile, otp, {
+            intent: get().authIntent,
+            ...details,
+          });
           const payload = unwrapObject(res, {});
           const user = payload.user || res.user;
-          
+
           set({
             otpVerified: true,
             isLoggedIn: true,
-            userName: user?.name || '',
+            userName: user?.name || details.name || details.fullName || '',
           });
-          return true;
-        } catch {
-          return false;
+          return { success: true, user: user || { name: details.name || details.fullName } };
+        } catch (err) {
+          return { success: false, error: err.message };
         }
       },
 
@@ -56,10 +60,11 @@ export const useAuthStore = create(
           userName:    '',
           otpSent:     false,
           otpVerified: false,
+          authIntent:  'login',
         });
       },
 
-      resetOTP: () => set({ otpSent: false, otpVerified: false }),
+      resetOTP: () => set({ otpSent: false, otpVerified: false, authIntent: 'login' }),
     }),
     { name: 'chilld-auth' }
   )

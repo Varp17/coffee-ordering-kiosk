@@ -5,7 +5,9 @@ import { ArrowLeft, AlertCircle, Plus, Minus, Star } from 'lucide-react';
 import { getProductById } from '@/data/products';
 import { ADDONS } from '@/data/recommendations';
 import { formatPrice } from '@/utils/coffeeBuilder';
+import { useCartStore } from '@/store/useCartStore';
 import SizeSelector from '@/components/SizeSelector/SizeSelector';
+import toast from 'react-hot-toast';
 import './ProductDetailPage.css';
 
 const formatBadge = (badge) =>
@@ -17,6 +19,7 @@ const formatBadge = (badge) =>
 export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const addItem = useCartStore((state) => state.addItem);
 
   const product = getProductById(id);
   const [selectedSizeId, setSelectedSizeId] = useState(null);
@@ -91,6 +94,27 @@ export default function ProductDetailPage() {
   const totalPrice = unitPrice * qty;
   const rating = product.reviews?.rating;
   const hasRating = Number.isFinite(rating);
+
+  const handleAddToCart = () => {
+    if (!product.isAvailable) return;
+
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: unitPrice,
+      size: selectedSize.id,
+      sizeLabel: selectedSize.label,
+      image: activeImage.src,
+      qty,
+      addons: selectedAddons.map((addon) => ({
+        id: addon.id,
+        name: addon.name,
+        price: addon.price,
+      })),
+    });
+
+    toast.success(`${product.name} added to cart`);
+  };
 
   return (
     <div className="product-detail-page page-wrapper">
@@ -331,11 +355,12 @@ export default function ProductDetailPage() {
               </div>
 
               <button
-                className="btn btn-primary order-add-btn disabled"
-                disabled
-                style={{ opacity: 0.6, cursor: 'not-allowed' }}
+                className={`btn btn-primary order-add-btn ${product.isAvailable ? '' : 'disabled'}`}
+                disabled={!product.isAvailable}
+                onClick={handleAddToCart}
+                style={product.isAvailable ? undefined : { opacity: 0.6, cursor: 'not-allowed' }}
               >
-                {product.orderButtonText}
+                {product.isAvailable ? `Add to Cart · ${formatPrice(totalPrice)}` : product.orderButtonText}
               </button>
             </div>
           </div>

@@ -1,5 +1,7 @@
 # CHILLD Homepage Motion & Parallax Implementation Specification
 
+> **Document status — July 24, 2026:** This file is the homepage motion target/specification, not a record that every acceptance item is currently complete. The active website uses Lenis, Framer Motion, CSS, `requestAnimationFrame`, and `IntersectionObserver`; GSAP is not an installed runtime dependency. Current route, data, checkout, and integration status is documented in `ProjectInfo.md` and the workspace `CHILLD.md`.
+
 ## Objective
 
 Transform the existing homepage into a premium, interactive experience

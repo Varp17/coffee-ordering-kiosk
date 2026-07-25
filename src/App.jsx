@@ -102,6 +102,8 @@ function App() {
       <Routes>
         {/* Welcome page — no layout chrome */}
         <Route path="/welcome" element={<WelcomePage />} />
+        {/* Authentication remains reachable before the optional welcome personalisation step. */}
+        <Route path="/auth" element={<AuthPage />} />
 
         {/* All main routes wrapped in layout + welcome guard */}
         <Route element={
@@ -113,9 +115,8 @@ function App() {
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/menu/:id" element={<ProductDetailPage />} />
           {/* <Route path="/build" element={<CoffeeBuilderPage />} /> kiosk-only */}
-          <Route path="/location" element={<LocationPage />} />
+          <Route path="/location" element={<Navigate to="/checkout" replace />} />
           <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/auth" element={<AuthPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/order-confirm" element={<OrderConfirmPage />} />
           <Route path="/profile" element={<ProfilePage />} />

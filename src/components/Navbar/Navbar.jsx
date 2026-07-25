@@ -17,7 +17,14 @@ export default function Navbar() {
   const [cartOpen, setCartOpen] = useState(false);
   const location = useLocation();
   const totalItems = useCartStore((s) => s.getTotalItems());
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, userName, user } = useAuthStore();
+  const displayName = userName || user?.name || 'My Account';
+
+  const handleLoginClick = () => {
+    if (location.pathname !== '/auth') {
+      sessionStorage.setItem('pre_auth_redirect', location.pathname + location.search);
+    }
+  };
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -93,11 +100,11 @@ export default function Navbar() {
               {isLoggedIn ? (
                 <Link to="/profile" className="navbar__user-profile-new">
                   <User size={22} />
-                  <span className="navbar__username">Arya Kagathara</span>
+                  <span className="navbar__username">{displayName}</span>
                   <ChevronDown size={16} className="navbar__chevron" />
                 </Link>
               ) : (
-                <Link to="/auth" className="navbar__user-profile-new" aria-label="Account">
+                <Link to="/auth" onClick={handleLoginClick} className="navbar__user-profile-new" aria-label="Account">
                   <User size={22} />
                   <span className="navbar__username">Login</span>
                 </Link>
@@ -111,17 +118,6 @@ export default function Navbar() {
                 <ShoppingBag size={22} />
                 <span className="navbar__cart-count">{totalItems}</span>
               </button>
-
-              {/* <Link to="/build" className="navbar__build-pill">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
-                  <path d="M6 8h12M7 8V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2" />
-                  <path d="M7 8l1.2 11c.1.9.9 1.6 1.8 1.6h4c.9 0 1.7-.7 1.8-1.6L17 8" />
-                  <path d="M8.5 13h7" />
-                </svg>
-                <span>Create Your Drink</span>
-              </Link> */}
-
-
             </div>
           </div>
 
@@ -146,10 +142,10 @@ export default function Navbar() {
                 ))}
                 {isLoggedIn ? (
                   <Link to="/profile" className="navbar__mobile-link">
-                    Arya Kagathara (My Account)
+                    {displayName} (My Account)
                   </Link>
                 ) : (
-                  <Link to="/auth" className="navbar__mobile-link">
+                  <Link to="/auth" onClick={handleLoginClick} className="navbar__mobile-link">
                     Login
                   </Link>
                 )}

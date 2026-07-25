@@ -131,13 +131,14 @@ export default function CartDrawer({ open, onClose }) {
                   <span>Total</span>
                   <strong>{formatPrice(total)}</strong>
                 </div>
-                <button
-                  className="btn btn-primary cart-drawer__checkout disabled"
-                  disabled={true}
-                  style={{ opacity: 0.6, cursor: 'not-allowed', width: '100%', justifyContent: 'center' }}
+                <Link
+                  className="btn btn-primary cart-drawer__checkout"
+                  onClick={onClose}
+                  to="/checkout"
+                  style={{ width: '100%', justifyContent: 'center', color: 'inherit' }}
                 >
-                  Coming Soon
-                </button>
+                  Continue to Checkout
+                </Link>
                 <button
                   className="cart-drawer__clear"
                   onClick={clearCart}

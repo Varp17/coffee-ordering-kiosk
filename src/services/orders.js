@@ -5,6 +5,10 @@ export const orderService = {
     return api.post('/orders', orderData);
   },
 
+  verifyPayment: async (paymentData) => {
+    return api.post('/orders/verify', paymentData);
+  },
+
   getById: async (id) => {
     return api.get(`/orders/${id}`);
   },

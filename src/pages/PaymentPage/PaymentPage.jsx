@@ -1,376 +1,183 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, QrCode, CreditCard, Wallet, Smartphone, Loader2 } from 'lucide-react';
+import { ArrowLeft, CreditCard, Loader2, QrCode, Shield, Wallet } from 'lucide-react';
+import { useAuthStore } from '@/store/useAuthStore';
 import { useCartStore } from '@/store/useCartStore';
 import { useOrderStore } from '@/store/useOrderStore';
-import { formatPrice, generateToken } from '@/utils/coffeeBuilder';
+import { loadRazorpayCheckout } from '@/services/razorpay';
+import { formatPrice } from '@/utils/coffeeBuilder';
 import toast from 'react-hot-toast';
 import './PaymentPage.css';
+
+const PAYMENT_METHODS = [
+  { label: 'UPI & QR', icon: QrCode },
+  { label: 'Credit / Debit Cards', icon: CreditCard },
+  { label: 'Net Banking & Wallets', icon: Wallet },
+];
 
 export default function PaymentPage() {
   const navigate = useNavigate();
   const { items, getTotalPrice, clearCart } = useCartStore();
-  const { selectedLocation, orderType, placeOrder } = useOrderStore();
-
-  const [activeTab, setActiveTab] = useState('upi'); // 'upi' | 'card' | 'wallet'
+  const { selectedLocation, orderType, createPaymentOrder, completePayment } = useOrderStore();
+  const { phone, userName } = useAuthStore();
   const [paying, setPaying] = useState(false);
   const [success, setSuccess] = useState(false);
-
-  // Card Form State
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardName, setCardName] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [cvv, setCvv] = useState('');
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  // UPI State
-  const [upiId, setUpiId] = useState('');
-
-  // Wallet State
-  const [selectedWallet, setSelectedWallet] = useState('gpay');
 
   const subtotal = getTotalPrice();
   const tax = Math.round(subtotal * 0.05);
   const packaging = orderType === 'takeaway' ? 15 : 0;
-  const grandTotal = subtotal + tax + packaging;
+  const estimatedTotal = subtotal + tax + packaging;
 
-  // If cart is empty, redirect
   useEffect(() => {
-    if (items.length === 0 && !success) {
-      navigate('/menu');
-    }
-  }, [items, success, navigate]);
+    if (items.length === 0 && !success) navigate('/menu');
+  }, [items.length, navigate, success]);
 
-  const handlePay = (e) => {
-    e.preventDefault();
-
-    // Verification check based on tab
-    if (activeTab === 'upi') {
-      if (!upiId.includes('@')) {
-        toast.error('Please enter a valid UPI ID (e.g. name@okhdfcbank) 💳');
-        return;
-      }
-    } else if (activeTab === 'card') {
-      if (cardNumber.replace(/\s/g, '').length < 16) {
-        toast.error('Please enter a valid 16-digit card number.');
-        return;
-      }
-      if (cvv.length < 3) {
-        toast.error('Please enter a valid CVV.');
-        return;
-      }
+  const handlePayment = async () => {
+    if (paying) return;
+    if (!selectedLocation) {
+      toast.error('Please select a collection location first.');
+      navigate('/location');
+      return;
     }
 
     setPaying(true);
+    try {
+      const Razorpay = await loadRazorpayCheckout();
+      const paymentOrder = await createPaymentOrder({ name: userName, phone });
 
-    // Simulate payment process (2 seconds)
-    setTimeout(async () => {
-      const token = generateToken();
-      const res = await placeOrder(token);
-      
-      setPaying(false);
-
-      if (res && res.success === false) {
-        toast.error(`Order placement failed: ${res.error || 'Please try again.'}`);
-        setSuccess(false);
-        return;
+      if (!paymentOrder.success) {
+        throw new Error(paymentOrder.error || 'Unable to create a payment order');
       }
 
-      setSuccess(true);
-      toast.success('Payment Received & Order Placed! 💸');
+      const { order, razorpayOrder, keyId } = paymentOrder;
+      const checkout = new Razorpay({
+        key: keyId,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency || 'INR',
+        name: 'CHILLD Coffee',
+        description: `Order ${order.id.slice(0, 8).toUpperCase()}`,
+        order_id: razorpayOrder.id,
+        prefill: {
+          name: userName || '',
+          contact: phone || '',
+        },
+        notes: {
+          order_id: order.id,
+          collection_location: selectedLocation.name,
+        },
+        theme: { color: '#1844AB' },
+        retry: { enabled: true },
+        modal: {
+          confirm_close: true,
+          ondismiss: () => setPaying(false),
+        },
+        handler: async (response) => {
+          const verification = await completePayment(response);
+          if (!verification.success) {
+            setPaying(false);
+            toast.error(verification.error || 'Payment verification failed');
+            return;
+          }
 
-      // Clear cart
-      clearCart();
+          setSuccess(true);
+          clearCart();
+          toast.success('Payment verified and order placed');
+          navigate('/order-confirm');
+        },
+      });
 
-      // Navigate to order-confirm page after a tiny success delay
-      setTimeout(() => {
-        navigate('/order-confirm');
-      }, 1000);
-    }, 2000);
-  };
+      checkout.on('payment.failed', (response) => {
+        setPaying(false);
+        toast.error(response.error?.description || 'Payment failed. Please try again.');
+      });
 
-  // Card formatting
-  const handleCardNumberChange = (e) => {
-    const val = e.target.value.replace(/\D/g, '').slice(0, 16);
-    const formatted = val.replace(/(\d{4})(?=\d)/g, '$1 ');
-    setCardNumber(formatted);
-  };
-
-  const handleExpiryChange = (e) => {
-    const val = e.target.value.replace(/\D/g, '').slice(0, 4);
-    if (val.length >= 3) {
-      setExpiry(`${val.slice(0, 2)}/${val.slice(2)}`);
-    } else {
-      setExpiry(val);
+      checkout.open();
+    } catch (error) {
+      setPaying(false);
+      toast.error(error.message || 'Unable to open the secure payment window');
     }
   };
 
   return (
     <div className="payment-page page-wrapper">
       <div className="container payment-page__grid">
-        {/* ── PAYMENT METHODS SELECTION ── */}
         <div className="payment-page__forms">
           <button className="payment-page__back" onClick={() => navigate('/checkout')}>
             <ArrowLeft size={18} /> Back to Checkout
           </button>
 
-          <h1 className="payment-page__title">Choose Payment Mode</h1>
+          <h1 className="payment-page__title">Secure Payment</h1>
 
-          {/* Payment Tabs */}
-          <div className="payment-tabs" role="tablist" aria-label="Payment methods">
-            <button
-              className={`payment-tab ${activeTab === 'upi' ? 'payment-tab--active' : ''}`}
-              onClick={() => setActiveTab('upi')}
-              role="tab"
-              aria-selected={activeTab === 'upi'}
-            >
-              <QrCode size={18} />
-              <span>UPI / QR</span>
-            </button>
-            <button
-              className={`payment-tab ${activeTab === 'card' ? 'payment-tab--active' : ''}`}
-              onClick={() => setActiveTab('card')}
-              role="tab"
-              aria-selected={activeTab === 'card'}
-            >
-              <CreditCard size={18} />
-              <span>Credit/Debit Card</span>
-            </button>
-            <button
-              className={`payment-tab ${activeTab === 'wallet' ? 'payment-tab--active' : ''}`}
-              onClick={() => setActiveTab('wallet')}
-              role="tab"
-              aria-selected={activeTab === 'wallet'}
-            >
-              <Wallet size={18} />
-              <span>Net Banking / Wallets</span>
-            </button>
-          </div>
+          <div className="payment-form-card razorpay-checkout-card">
+            <div className="razorpay-checkout-card__icon">
+              <Shield size={32} />
+            </div>
+            <h2>Pay with Razorpay</h2>
+            <p>
+              Your payment details are collected securely inside Razorpay Checkout.
+              CHILLD never receives or stores your card number, CVV, UPI PIN, or banking password.
+            </p>
 
-          <div className="payment-form-card">
-            {/* ── ACTIVE TAB CONTENT (UPI/CARD/WALLET) ── */}
-            {activeTab === 'upi' && (
-              <div className="upi-payment">
-                <div className="qr-container">
-                  <div className="qr-box">
-                    {/* Simulated QR Code using CSS grid */}
-                    <div className="mock-qr-code">
-                      <div className="mock-qr-dot" />
-                      <div className="mock-qr-dot" />
-                      <div className="mock-qr-dot" />
-                      <div className="mock-qr-dot" />
-                    </div>
-                  </div>
-                  <p className="qr-caption">Scan this QR code using any UPI App to pay</p>
+            <div className="razorpay-methods" aria-label="Available payment methods">
+              {PAYMENT_METHODS.map(({ label, icon: Icon }) => (
+                <div key={label} className="razorpay-method">
+                  <Icon size={20} />
+                  <span>{label}</span>
                 </div>
+              ))}
+            </div>
 
-                <div className="divider-or">
-                  <span>OR</span>
-                </div>
-
-                <form onSubmit={handlePay} className="upi-id-form">
-                  <div className="input-group">
-                    <label htmlFor="upi-id-input">Enter UPI ID</label>
-                    <input
-                      id="upi-id-input"
-                      type="text"
-                      className="form-input"
-                      placeholder="e.g., username@upi"
-                      value={upiId}
-                      onChange={(e) => setUpiId(e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <button type="submit" className="btn btn-primary pay-submit-btn" disabled={paying}>
-                    {paying ? (
-                      <>
-                        <Loader2 className="spin" size={18} style={{ marginRight: 8 }} /> Processing...
-                      </>
-                    ) : (
-                      `Pay ${formatPrice(grandTotal)}`
-                    )}
-                  </button>
-                </form>
-              </div>
-            )}
-
-            {activeTab === 'card' && (
-              <div className="card-payment">
-                {/* 3D Flipping Card Visualizer */}
-                <div className={`credit-card-preview ${isFlipped ? 'flipped' : ''}`}>
-                  <div className="credit-card-preview__inner">
-                    {/* Front */}
-                    <div className="credit-card-preview__front">
-                      <div className="card-chip" />
-                      <div className="card-preview-number">
-                        {cardNumber || '•••• •••• •••• ••••'}
-                      </div>
-                      <div className="card-preview-footer">
-                        <div className="card-preview-holder">
-                          <span className="card-meta-lbl">Card Holder</span>
-                          <span className="card-meta-val">{cardName || 'YOUR NAME'}</span>
-                        </div>
-                        <div className="card-preview-expiry">
-                          <span className="card-meta-lbl">Expires</span>
-                          <span className="card-meta-val">{expiry || 'MM/YY'}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Back */}
-                    <div className="credit-card-preview__back">
-                      <div className="card-magnetic-strip" />
-                      <div className="card-preview-signature">
-                        <div className="signature-bar" />
-                        <div className="cvv-val">{cvv || '•••'}</div>
-                      </div>
-                      <div className="card-back-disclaimer">
-                        This card is simulated for Chilld Coffee ordering.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <form onSubmit={handlePay} className="credit-card-form">
-                  <div className="input-group">
-                    <label htmlFor="card-number-input">Card Number</label>
-                    <input
-                      id="card-number-input"
-                      type="text"
-                      className="form-input"
-                      placeholder="4111 2222 3333 4444"
-                      value={cardNumber}
-                      onChange={handleCardNumberChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="card-holder-input">Card Holder Name</label>
-                    <input
-                      id="card-holder-input"
-                      type="text"
-                      className="form-input"
-                      placeholder="John Doe"
-                      value={cardName}
-                      onChange={(e) => setCardName(e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="input-group">
-                      <label htmlFor="card-expiry-input">Expiry Date</label>
-                      <input
-                        id="card-expiry-input"
-                        type="text"
-                        className="form-input"
-                        placeholder="MM/YY"
-                        value={expiry}
-                        onChange={handleExpiryChange}
-                        required
-                      />
-                    </div>
-                    <div className="input-group">
-                      <label htmlFor="card-cvv-input">CVV</label>
-                      <input
-                        id="card-cvv-input"
-                        type="password"
-                        className="form-input"
-                        placeholder="•••"
-                        maxLength={3}
-                        value={cvv}
-                        onChange={(e) => setCvv(e.target.value.replace(/\D/g, ''))}
-                        onFocus={() => setIsFlipped(true)}
-                        onBlur={() => setIsFlipped(false)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <button type="submit" className="btn btn-primary pay-submit-btn" disabled={paying}>
-                    {paying ? (
-                      <>
-                        <Loader2 className="spin" size={18} style={{ marginRight: 8 }} /> Securing transaction...
-                      </>
-                    ) : (
-                      `Pay ${formatPrice(grandTotal)}`
-                    )}
-                  </button>
-                </form>
-              </div>
-            )}
-
-            {activeTab === 'wallet' && (
-              <div className="wallet-payment">
-                <form onSubmit={handlePay} className="wallet-form">
-                  <div className="wallet-tiles-grid">
-                    <button
-                      type="button"
-                      className={`wallet-tile ${selectedWallet === 'gpay' ? 'wallet-tile--selected' : ''}`}
-                      onClick={() => setSelectedWallet('gpay')}
-                    >
-                      <Smartphone size={24} className="wallet-icon" />
-                      <span>Google Pay</span>
-                    </button>
-                    <button
-                      type="button"
-                      className={`wallet-tile ${selectedWallet === 'paytm' ? 'wallet-tile--selected' : ''}`}
-                      onClick={() => setSelectedWallet('paytm')}
-                    >
-                      <Smartphone size={24} className="wallet-icon" />
-                      <span>Paytm</span>
-                    </button>
-                    <button
-                      type="button"
-                      className={`wallet-tile ${selectedWallet === 'netbanking' ? 'wallet-tile--selected' : ''}`}
-                      onClick={() => setSelectedWallet('netbanking')}
-                    >
-                      <Smartphone size={24} className="wallet-icon" />
-                      <span>Net Banking</span>
-                    </button>
-                  </div>
-
-                  <button type="submit" className="btn btn-primary pay-submit-btn" disabled={paying}>
-                    {paying ? (
-                      <>
-                        <Loader2 className="spin" size={18} style={{ marginRight: 8 }} /> Verifying wallet...
-                      </>
-                    ) : (
-                      `Pay ${formatPrice(grandTotal)} via ${selectedWallet === 'gpay' ? 'GPay' : selectedWallet === 'paytm' ? 'Paytm' : 'Net Banking'}`
-                    )}
-                  </button>
-                </form>
-              </div>
-            )}
+            <button
+              type="button"
+              className="btn btn-primary pay-submit-btn"
+              onClick={handlePayment}
+              disabled={paying || items.length === 0}
+            >
+              {paying ? (
+                <>
+                  <Loader2 className="spin" size={18} /> Opening secure checkout...
+                </>
+              ) : (
+                `Pay ${formatPrice(estimatedTotal)} Securely`
+              )}
+            </button>
           </div>
         </div>
 
-        {/* ── ORDER SUMMARY & TRUST BADGES ── */}
         <div className="payment-page__summary">
           <div className="summary-sticky">
             <h2 className="section-title-small">Order Summary</h2>
-
             <div className="payment-summary-card">
               <div className="summary-cafe">
-                <span className="summary-cafe__name">{selectedLocation?.shortName || 'Cafe'}</span>
+                <span className="summary-cafe__name">{selectedLocation?.shortName || selectedLocation?.name || 'Cafe'}</span>
                 <span className="summary-cafe__type">
                   {orderType === 'dine-in' ? 'Dine In' : 'Takeaway'}
                 </span>
               </div>
-
               <div className="summary-bill-details">
                 <div className="bill-row">
-                  <span>Grand Total</span>
-                  <span className="bold-pay">{formatPrice(grandTotal)}</span>
+                  <span>Subtotal</span>
+                  <span>{formatPrice(subtotal)}</span>
+                </div>
+                <div className="bill-row">
+                  <span>GST (5%)</span>
+                  <span>{formatPrice(tax)}</span>
+                </div>
+                {packaging > 0 && (
+                  <div className="bill-row">
+                    <span>Packaging</span>
+                    <span>{formatPrice(packaging)}</span>
+                  </div>
+                )}
+                <div className="bill-row">
+                  <strong>To Pay</strong>
+                  <strong className="bold-pay">{formatPrice(estimatedTotal)}</strong>
                 </div>
               </div>
             </div>
-
             <div className="secure-badge">
               <Shield size={16} />
-              <span>PCI-DSS Compliant 256-bit Secure Gateway</span>
+              <span>Payment is verified on the CHILLD server before the order is confirmed.</span>
             </div>
           </div>
         </div>

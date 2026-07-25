@@ -1,95 +1,129 @@
 import { create } from 'zustand';
 import { orderService } from '../services/orders';
 import { useCartStore } from './useCartStore';
-import { unwrapData } from '../utils/apiResponse';
-
-// Map local concentrate template IDs to backend product UUIDs.
-// Replace these temporary UUIDs when the backend has dedicated bottle SKUs.
-const PRODUCT_MAPPING = {
-  'coffee-50-50-concentrate': '3e3390c7-3d82-417b-b472-59b46842936a',
-  'classic-cb-concentrate': '165c42ad-1e76-4724-9b16-74d9781ff29a',
-  'sif-concentrate': '3e3390c7-3d82-417b-b472-59b46842936a',
-};
-
-const FALLBACK_PRODUCT_ID = PRODUCT_MAPPING['coffee-50-50-concentrate'];
+import { unwrapObject } from '../utils/apiResponse';
 
 export const useOrderStore = create((set, get) => ({
-  // Location & table
-  selectedLocation: null,
-  orderType:        'dine-in', // 'dine-in' | 'takeaway'
-  tableNumber:      null,
+  // Delivery address & fulfillment
+  deliveryAddress: {
+    fullName: 'Arya Kagathara',
+    phone: '9876543210',
+    flatNo: 'Flat 402, Sunshine Apartments',
+    street: '100 Feet Road, Indiranagar',
+    landmark: 'Near Metro Station',
+    city: 'Bengaluru',
+    state: 'Karnataka',
+    pincode: '560038',
+    addressType: 'Home',
+  },
 
   // Order state
-  orderId:    null,
-  token:      null,
-  status:     'idle', // 'idle' | 'preparing' | 'ready' | 'done' | 'placing' | 'error'
-  placedAt:   null,
+  orderId: null,
+  token: null,
+  status: 'idle', // 'idle' | 'preparing' | 'ready' | 'done' | 'placing' | 'error'
+  placedAt: null,
 
-  setLocation: (location) => set({ selectedLocation: location }),
-  setOrderType: (type)    => set({ orderType: type, tableNumber: null }),
-  setTableNumber: (num)   => set({ tableNumber: num }),
+  setDeliveryAddress: (address) =>
+    set((state) => ({ deliveryAddress: { ...state.deliveryAddress, ...address } })),
 
-  placeOrder: async (paymentRef) => {
+  createPaymentOrder: async (customer = {}) => {
     set({ status: 'placing' });
     try {
-      const { selectedLocation, orderType, tableNumber } = get();
       const cartItems = useCartStore.getState().items;
+      if (cartItems.length === 0) throw new Error('Your cart is empty');
 
-      // Translate local product IDs to backend UUIDs
-      const items = cartItems.map(item => {
-        const backendUuid = PRODUCT_MAPPING[item.id] || FALLBACK_PRODUCT_ID;
-        
-        // Construct detailed notes containing customizations and size
-        let notesParts = [`Product: ${item.name}`, `Size: ${item.size || 'Default'}`];
-        if (item.addons && item.addons.length > 0) {
-          notesParts.push(`Addons: ${item.addons.map(a => a.name).join(', ')}`);
-        }
-        if (item.isCustom && item.ingredients) {
-          notesParts.push(`Custom base: ${item.ingredients.concentrate}, sweetener: ${item.ingredients.sweetener}, milk: ${item.ingredients.milk}, topping: ${item.ingredients.topping}`);
-        }
-        
-        return {
-          product_id: backendUuid,
-          quantity: item.qty || 1,
-          notes: notesParts.join(' | ')
-        };
-      });
+      const hasCombo = cartItems.some(
+        (i) => i.isCombo || i.is_combo || (i.name && i.name.toLowerCase().includes('combo'))
+      );
 
-      // Parse numeric store ID
-      const storeId = selectedLocation ? parseInt(selectedLocation.id.replace('loc', ''), 10) : 1;
+      const items = cartItems.map((item) => ({
+        product_id: item.id,
+        quantity: item.qty || 1,
+        name: item.name,
+        size: item.size,
+        addons: item.addons || [],
+        is_combo: !!(item.isCombo || item.is_combo || (item.name && item.name.toLowerCase().includes('combo'))),
+      }));
 
-      // Construct order request payload
+      const addressObj = customer.shippingAddress || get().deliveryAddress || {};
+      const fullAddressString = customer.address || `${addressObj.flatNo || ''}, ${addressObj.street || ''}, ${addressObj.city || 'Bengaluru'} - ${addressObj.pincode || ''}`;
+
       const orderData = {
-        store_id: storeId,
-        channel: 'kiosk',
         items,
-        notes: `Payment Ref: ${paymentRef} | Type: ${orderType}${tableNumber ? ` | Table: ${tableNumber}` : ''}`
+        is_combo: hasCombo,
+        shipping_address: {
+          name: customer.name || addressObj.fullName || 'Valued Customer',
+          phone: customer.phone || addressObj.phone || '',
+          address: fullAddressString,
+          flat_no: addressObj.flatNo || '',
+          street: addressObj.street || '',
+          city: addressObj.city || 'Bengaluru',
+          pincode: addressObj.pincode || '',
+          landmark: addressObj.landmark || '',
+          order_type: 'delivery',
+          location_name: 'CHILLD Express Delivery',
+          is_combo: hasCombo,
+        },
       };
 
       const res = await orderService.create(orderData);
-      const newOrder = unwrapData(res, res);
+      const payload = unwrapObject(res);
+      const order = payload.order;
+      const razorpayOrder = payload.razorpayOrder;
+
+      if (!order?.id || !razorpayOrder?.id || !payload.key_id) {
+        throw new Error('The payment gateway did not return a valid checkout order');
+      }
 
       set({
-        token: newOrder.order_number || `T-${Math.floor(100 + Math.random() * 900)}`,
-        status: newOrder.status || 'preparing',
-        placedAt: newOrder.created_at || new Date().toISOString(),
-        orderId: newOrder.id || newOrder.uuid || `CHD-${Date.now()}`,
+        orderId: order.id,
+        token: order.order_number || order.id.slice(0, 8).toUpperCase(),
+        status: 'placing',
+        placedAt: new Date().toISOString(),
       });
-      return { success: true };
-    } catch (err) {
+
+      return {
+        success: true,
+        order,
+        razorpayOrder,
+        keyId: payload.key_id,
+      };
+    } catch (error) {
       set({ status: 'error' });
-      return { success: false, error: err.message };
+      return { success: false, error: error.message };
+    }
+  },
+
+  completePayment: async (paymentDetails) => {
+    try {
+      const { orderId } = get();
+      if (!orderId) throw new Error('No active order ID to confirm payment');
+
+      const res = await orderService.verifyPayment({
+        order_id: orderId,
+        razorpay_payment_id: paymentDetails.razorpay_payment_id,
+        razorpay_order_id: paymentDetails.razorpay_order_id,
+        razorpay_signature: paymentDetails.razorpay_signature,
+      });
+
+      const payload = unwrapObject(res);
+      set({
+        status: 'preparing',
+        placedAt: payload.order?.created_at || new Date().toISOString(),
+      });
+
+      return { success: true, order: payload.order };
+    } catch (error) {
+      set({ status: 'error' });
+      return { success: false, error: error.message };
     }
   },
 
   resetOrder: () =>
     set({
-      selectedLocation: null,
-      orderType:        'dine-in',
-      tableNumber:      null,
-      orderId:          null,
-      token:            null,
-      status:           'idle',
-      placedAt:         null,
+      orderId: null,
+      token: null,
+      status: 'idle',
+      placedAt: null,
     }),
 }));

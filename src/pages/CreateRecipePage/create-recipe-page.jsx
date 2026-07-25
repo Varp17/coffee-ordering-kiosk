@@ -10,10 +10,18 @@ import {
   Trash2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { api } from '@/services/api';
 import './create-recipe-page.css';
 
 const DEFAULT_IMAGE = '/images/image11_366_1172.png';
 const CONCENTRATE_OPTIONS = ['Classic', 'Bold', 'Kappi'];
+
+const getConcentrateImage = (conc) => {
+  const c = (conc || '').toLowerCase();
+  if (c.includes('bold')) return '/images/products/BoldConcentrate325.png';
+  if (c.includes('kappi') || c.includes('kaapi') || c.includes('chicory')) return '/images/products/KappiConcentrate325.png';
+  return '/images/products/ClassicCBConc325.png';
+};
 
 export default function CreateRecipePage() {
   const navigate = useNavigate();
@@ -60,7 +68,7 @@ export default function CreateRecipePage() {
     const nextPreview = URL.createObjectURL(file);
     setPreviewUrl(nextPreview);
     setImageSrc(nextPreview);
-    setStatus('Image ready to publish.');
+    setStatus('Image selected.');
   };
 
   const handleFileChange = (event) => setPreviewFromFile(event.target.files?.[0]);
@@ -112,10 +120,66 @@ export default function CreateRecipePage() {
     setSteps((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const publishRecipe = () => {
+  const publishRecipe = async () => {
     if (!recipeName.trim()) {
       toast.error('Please enter a name for your recipe');
       return;
+    }
+
+    const defaultImage = getConcentrateImage(selectedConcentrate);
+
+    const newRecipe = {
+      id: `custom-mix-${Date.now()}`,
+      name: recipeName.trim(),
+      description: description.trim() || `Custom brew created with ${selectedConcentrate} concentrate.`,
+      author: 'User Mixologist',
+      concentrate: selectedConcentrate,
+      status: 'pending',
+      is_published: false,
+      mood: mood || 'Chill',
+      tags: tags.length > 0 ? tags : ['CUSTOM MIX', selectedConcentrate.toUpperCase()],
+      likesCount: 0,
+      createdAt: new Date().toISOString(),
+      ingredients: ingredients.length > 0 ? ingredients : [`90 ml Chilld ${selectedConcentrate} Concentrate`],
+      steps: steps.map((s, idx) => ({
+        title: s.title || `Step ${idx + 1}`,
+        copy: s.copy || ''
+      })),
+      image: defaultImage,
+    };
+
+    // 1. Save to local storage for instant offline / CRM sync
+    try {
+      const PENDING_KEY = 'chilld_local_pending_recipes';
+      const raw = localStorage.getItem(PENDING_KEY);
+      const existing = raw ? JSON.parse(raw) : [];
+      const updated = [newRecipe, ...existing];
+      localStorage.setItem(PENDING_KEY, JSON.stringify(updated));
+
+      // Broadcast events to update CRM in real-time
+      window.dispatchEvent(new Event('recipes:updated'));
+      if ('BroadcastChannel' in window) {
+        const bc = new BroadcastChannel('chilld_recipe_channel');
+        bc.postMessage({ type: 'RECIPE_ADDED', recipe: newRecipe });
+        bc.close();
+      }
+    } catch (e) {
+      console.warn('Local recipe storage error:', e);
+    }
+
+    // 2. Try posting to backend API in background if server is running
+    try {
+      await api.post('/recipes', {
+        name: newRecipe.name,
+        description: newRecipe.description,
+        concentrate: newRecipe.concentrate,
+        mood: newRecipe.mood,
+        tags: newRecipe.tags,
+        ingredients: newRecipe.ingredients,
+        steps: newRecipe.steps,
+      });
+    } catch (_) {
+      // Non-blocking
     }
 
     setIsSuccessModalOpen(true);

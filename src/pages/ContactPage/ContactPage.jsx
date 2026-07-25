@@ -1,3 +1,4 @@
+import { api } from '@/services/api';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle, MapPin, Mail, Clock, PhoneCall, MessageCircle } from 'lucide-react';
@@ -24,7 +25,7 @@ export default function ContactPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.name.trim()) {
@@ -41,12 +42,15 @@ export default function ContactPage() {
     }
 
     setLoading(true);
-
-    setTimeout(() => {
+    try {
+      await api.post('/support/tickets', formData);
       setLoading(false);
       setSubmitted(true);
-      toast.success('Message sent successfully! ☕');
-    }, 1500);
+      toast.success('Your message has been sent to Customer Support! ☕');
+    } catch (err) {
+      setLoading(false);
+      toast.error(err.message || 'Failed to submit contact message');
+    }
   };
 
   const handleReset = () => {

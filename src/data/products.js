@@ -25,21 +25,6 @@ const size = (id, label, ml, basePrice = 390) => {
   ];
 };
 
-const fourImageGallery = (id, name, mainImage) => {
-  const images = [
-    mainImage,
-    '/images/COFFEBOTTLES.png',
-    '/images/coffee-cups/iced-coffee-cup.png',
-    '/images/bgremoveconcentratebottels.png'
-  ];
-  return images.map((src, index) => ({
-    id: `${id}-image-${index}`,
-    label: index === 0 ? 'Front' : index === 1 ? 'Pack' : index === 2 ? 'Serve' : 'Details',
-    src,
-    alt: `${name} - View ${index + 1}`
-  }));
-};
-
 export const CATEGORIES = [
   { id: 'all', label: 'All Products', icon: 'All' },
   { id: 'coffee-50-50', label: 'Bold', icon: 'BD' },
@@ -102,7 +87,7 @@ export const PRODUCTS = [
         'Balanced taste, not too bitter, great with dairy milk.',
       ],
     },
-    orderButtonText: 'Coming Soon',
+    orderButtonText: 'Add to Cart',
     isAvailable: true,
   },
   {
@@ -158,7 +143,7 @@ export const PRODUCTS = [
         'Perfect for original cold brew and tonic recipes.',
       ],
     },
-    orderButtonText: 'Coming Soon',
+    orderButtonText: 'Add to Cart',
     isAvailable: true,
   },
   {
@@ -207,7 +192,7 @@ export const PRODUCTS = [
         'Great with condensed milk and ice.',
       ],
     },
-    orderButtonText: 'Coming Soon',
+    orderButtonText: 'Add to Cart',
     isAvailable: true,
   },
   {

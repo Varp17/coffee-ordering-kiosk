@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import RecipeMedia from '@/components/RecipeMedia/RecipeMedia';
 import { RECIPES } from '@/data/recipes';
+import { api } from '@/services/api';
+import { unwrapList } from '@/utils/apiResponse';
 import './RecipesPage.css';
 
 /* ── Inline SVG Icon helper ── */
@@ -58,6 +60,25 @@ export default function RecipesPage() {
   const [selectedConcentrate, setSelectedConcentrate] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [liveRecipes, setLiveRecipes] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadRecipes = async () => {
+      try {
+        const res = await api.get('/recipes');
+        const list = unwrapList(res);
+        if (isMounted && Array.isArray(list)) {
+          const approvedOnly = list.filter((r) => r.status === 'approved' || (r.status === undefined && r.is_published !== false));
+          setLiveRecipes(approvedOnly);
+        }
+      } catch (_) {
+        // Fallback to static if backend unreached
+      }
+    };
+    loadRecipes();
+    return () => { isMounted = false; };
+  }, []);
 
   const categories = RECIPE_CATEGORIES;
 
@@ -65,12 +86,14 @@ export default function RecipesPage() {
   const activeCat = categories.find((c) => c.id === activeCatId);
   const activeDescription = activeCat ? activeCat.description : '';
 
-  const filteredRecipes = RECIPES.filter((r) => {
-    const concentrateMatch = selectedConcentrate === 'all' || r.concentrate === selectedConcentrate;
+  const recipeSource = liveRecipes !== null ? liveRecipes : RECIPES;
+
+  const filteredRecipes = recipeSource.filter((r) => {
+    const concentrateMatch = selectedConcentrate === 'all' || r.concentrate === selectedConcentrate || (r.concentrate || '').toLowerCase().includes(selectedConcentrate.toLowerCase());
     const query = searchQuery.toLowerCase().trim();
     const queryMatch = query
       ? r.name.toLowerCase().includes(query) ||
-        r.concentrate.toLowerCase().includes(query) ||
+        (r.concentrate && r.concentrate.toLowerCase().includes(query)) ||
         (r.milk && r.milk.toLowerCase().includes(query)) ||
         (r.topping && r.topping.toLowerCase().includes(query))
       : true;

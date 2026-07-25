@@ -8,14 +8,16 @@ export default function RecipeMedia({
   preferVideo = false,
 }) {
   const [videoFailed, setVideoFailed] = useState(false);
-  const [imageSrc, setImageSrc] = useState(recipe.image || RECIPE_IMAGE_FALLBACK);
-  const shouldRenderVideo = preferVideo && recipe.video && !videoFailed;
+  const rawImage = recipe?.image || recipe?.image_url || recipe?.imageUrl;
+  const initialImage = rawImage || RECIPE_IMAGE_FALLBACK;
+  const [imageSrc, setImageSrc] = useState(initialImage);
+  const shouldRenderVideo = preferVideo && recipe?.video && !videoFailed;
 
   if (shouldRenderVideo) {
     return (
       <video
         className={className}
-        poster={recipe.image || RECIPE_IMAGE_FALLBACK}
+        poster={initialImage}
         muted
         loop
         autoPlay

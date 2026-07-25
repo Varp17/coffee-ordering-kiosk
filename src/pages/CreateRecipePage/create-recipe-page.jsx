@@ -47,6 +47,8 @@ export default function CreateRecipePage() {
   const [status, setStatus] = useState('');
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
   useEffect(() => () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
   }, [previewUrl]);
@@ -64,6 +66,7 @@ export default function CreateRecipePage() {
       return;
     }
 
+    setSelectedFile(file);
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     const nextPreview = URL.createObjectURL(file);
     setPreviewUrl(nextPreview);
@@ -126,7 +129,26 @@ export default function CreateRecipePage() {
       return;
     }
 
-    const defaultImage = getConcentrateImage(selectedConcentrate);
+    let defaultImage = getConcentrateImage(selectedConcentrate);
+
+    // 1. Upload photo if selected
+    if (selectedFile) {
+      try {
+        toast.loading('Uploading recipe photo...', { id: 'recipe-upload' });
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('folder', 'recipes');
+        const uploadRes = await api.post('/upload/s3', formData);
+        const returnedUrl = uploadRes?.data?.url || uploadRes?.url;
+        if (returnedUrl) {
+          defaultImage = returnedUrl;
+          toast.success('Photo uploaded!', { id: 'recipe-upload' });
+        }
+      } catch (err) {
+        console.warn('Recipe image upload error:', err);
+        toast.error('Image upload failed, using default concentrate image.', { id: 'recipe-upload' });
+      }
+    }
 
     const newRecipe = {
       id: `custom-mix-${Date.now()}`,
@@ -148,7 +170,7 @@ export default function CreateRecipePage() {
       image: defaultImage,
     };
 
-    // 1. Save to local storage for instant offline / CRM sync
+    // 2. Save to local storage for instant offline / CRM sync
     try {
       const PENDING_KEY = 'chilld_local_pending_recipes';
       const raw = localStorage.getItem(PENDING_KEY);
@@ -167,7 +189,7 @@ export default function CreateRecipePage() {
       console.warn('Local recipe storage error:', e);
     }
 
-    // 2. Try posting to backend API in background if server is running
+    // 3. Post to backend API
     try {
       await api.post('/recipes', {
         name: newRecipe.name,
@@ -177,6 +199,7 @@ export default function CreateRecipePage() {
         tags: newRecipe.tags,
         ingredients: newRecipe.ingredients,
         steps: newRecipe.steps,
+        image: newRecipe.image,
       });
     } catch (_) {
       // Non-blocking

@@ -4,16 +4,16 @@ import { useCartStore } from './useCartStore';
 import { unwrapObject } from '../utils/apiResponse';
 
 export const useOrderStore = create((set, get) => ({
-  // Delivery address & fulfillment
+  // Delivery address & fulfillment — starts empty; populated from CheckoutPage saved addresses
   deliveryAddress: {
-    fullName: 'Arya Kagathara',
-    phone: '9876543210',
-    flatNo: 'Flat 402, Sunshine Apartments',
-    street: '100 Feet Road, Indiranagar',
-    landmark: 'Near Metro Station',
-    city: 'Bengaluru',
-    state: 'Karnataka',
-    pincode: '560038',
+    fullName: '',
+    phone: '',
+    flatNo: '',
+    street: '',
+    landmark: '',
+    city: '',
+    state: '',
+    pincode: '',
     addressType: 'Home',
   },
 

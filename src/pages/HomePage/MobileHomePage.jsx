@@ -43,7 +43,7 @@ const COFFEE_CUP_IMAGES = {
     mobileY: -60,
   },
   COLDBREW: {
-    url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular.png',
     mobileScale: 0.54,
     mobileY: -55,
   },
@@ -53,7 +53,7 @@ const COFFEE_CUP_IMAGES = {
     mobileY: -60,
   },
   VANDY_SLIDE: {
-    url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular.png',
     mobileScale: 0.72,
     mobileY: 90,
   },
@@ -76,9 +76,9 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
+    image: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular.png',
     cup: {
-      url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
+      url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular.png',
       mobileScale: 0.72,
       mobileY: 90,
     }

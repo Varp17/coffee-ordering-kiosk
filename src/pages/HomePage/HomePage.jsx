@@ -16,9 +16,9 @@ const SKIPPED_HERO_SLIDES = [
     name: 'Vandy',
     suffix: 'Brew',
     formula: "Vandana’s Cold Brew",
-    image: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
+    image: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular.png',
     cup: {
-      url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
+      url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular.png',
       scale: 0.80,
       yOffset: 60,
       maxHeight: '77dvh',
@@ -116,7 +116,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1080,
   },
   COLDBREW: {
-    url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular.png',
     scale: 0.80,
     yOffset: 70,
     maxHeight: '77dvh',
@@ -134,7 +134,7 @@ const COFFEE_CUP_IMAGES = {
     height: 1080,
   },
   COLDBREW_LOGO: {
-    url: '/images/coffee-cups/circular/Cold Brew_With_Logo.png',
+    url: '/images/coffee-cups/circular/Cold Brew_With_Logo_Circular.png',
     scale: 0.80,
     yOffset: 60,
     maxHeight: '77dvh',

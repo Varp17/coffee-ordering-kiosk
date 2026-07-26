@@ -29,6 +29,7 @@ export default function CreateRecipePage() {
   const [imageSrc, setImageSrc] = useState(DEFAULT_IMAGE);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [recipeName, setRecipeName] = useState('');
+  const [authorName, setAuthorName] = useState('');
   const [description, setDescription] = useState('');
   const [mood, setMood] = useState('Chill');
   const [selectedConcentrate, setSelectedConcentrate] = useState('Classic');
@@ -48,6 +49,70 @@ export default function CreateRecipePage() {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const DRAFT_KEY = 'chilld_recipe_create_draft_v1';
+  const DRAFT_EXPIRY_MS = 15 * 60 * 1000; // 15 minutes cache limit
+
+  // 1. Restore draft from browser cache if less than 15 minutes old
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(DRAFT_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const now = Date.now();
+        if (parsed.timestamp && now - parsed.timestamp < DRAFT_EXPIRY_MS) {
+          if (parsed.recipeName) setRecipeName(parsed.recipeName);
+          if (parsed.authorName) setAuthorName(parsed.authorName);
+          if (parsed.description) setDescription(parsed.description);
+          if (parsed.mood) setMood(parsed.mood);
+          if (parsed.selectedConcentrate) setSelectedConcentrate(parsed.selectedConcentrate);
+          if (Array.isArray(parsed.tags) && parsed.tags.length > 0) setTags(parsed.tags);
+          if (Array.isArray(parsed.ingredients) && parsed.ingredients.length > 0) setIngredients(parsed.ingredients);
+          if (Array.isArray(parsed.steps) && parsed.steps.length > 0) setSteps(parsed.steps);
+          toast('Restored your recipe draft from browser cache (Saved for 15 min)', { icon: '📝', duration: 4000 });
+        } else {
+          localStorage.removeItem(DRAFT_KEY);
+        }
+      }
+    } catch (_) {}
+  }, []);
+
+  // 2. Auto-save draft on form field changes
+  useEffect(() => {
+    if (!recipeName && !description && ingredients.length === 0) return;
+    const draftData = {
+      timestamp: Date.now(),
+      recipeName,
+      authorName,
+      description,
+      mood,
+      selectedConcentrate,
+      tags,
+      ingredients,
+      steps,
+    };
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
+    } catch (_) {}
+  }, [recipeName, authorName, description, mood, selectedConcentrate, tags, ingredients, steps]);
+
+  const clearDraft = () => {
+    try {
+      localStorage.removeItem(DRAFT_KEY);
+    } catch (_) {}
+    setRecipeName('');
+    setAuthorName('');
+    setDescription('');
+    setMood('Chill');
+    setSelectedConcentrate('Classic');
+    setTags(['COLD BREW', 'HOMEMADE']);
+    setIngredients([]);
+    setSteps([
+      { title: 'Step 1', copy: '' },
+      { title: 'Step 2', copy: '' }
+    ]);
+    toast.success('Draft cleared.');
+  };
 
   useEffect(() => () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -131,7 +196,7 @@ export default function CreateRecipePage() {
 
     let defaultImage = getConcentrateImage(selectedConcentrate);
 
-    // 1. Upload photo if selected
+    // 1. Upload photo if selected — ABORT IF UPLOAD FAILS
     if (selectedFile) {
       try {
         toast.loading('Uploading recipe photo...', { id: 'recipe-upload' });
@@ -143,18 +208,23 @@ export default function CreateRecipePage() {
         if (returnedUrl) {
           defaultImage = returnedUrl;
           toast.success('Photo uploaded!', { id: 'recipe-upload' });
+        } else {
+          throw new Error('Invalid upload response');
         }
       } catch (err) {
-        console.warn('Recipe image upload error:', err);
-        toast.error('Image upload failed, using default concentrate image.', { id: 'recipe-upload' });
+        console.error('Recipe image upload error:', err);
+        toast.error('Photo upload failed. Submission aborted so you do not lose your recipe details.', { id: 'recipe-upload' });
+        return; // STRICT ABORT — DO NOT SUBMIT, DO NOT OPEN SUCCESS MODAL
       }
     }
+
+    const author = authorName.trim() || 'Community Mixologist';
 
     const newRecipe = {
       id: `custom-mix-${Date.now()}`,
       name: recipeName.trim(),
       description: description.trim() || `Custom brew created with ${selectedConcentrate} concentrate.`,
-      author: 'User Mixologist',
+      author: author,
       concentrate: selectedConcentrate,
       status: 'pending',
       is_published: false,
@@ -170,30 +240,13 @@ export default function CreateRecipePage() {
       image: defaultImage,
     };
 
-    // 2. Save to local storage for instant offline / CRM sync
+    // 2. Post to backend API — STRICT FAIL-SAFE: ABORT IF API CALL FAILS
     try {
-      const PENDING_KEY = 'chilld_local_pending_recipes';
-      const raw = localStorage.getItem(PENDING_KEY);
-      const existing = raw ? JSON.parse(raw) : [];
-      const updated = [newRecipe, ...existing];
-      localStorage.setItem(PENDING_KEY, JSON.stringify(updated));
-
-      // Broadcast events to update CRM in real-time
-      window.dispatchEvent(new Event('recipes:updated'));
-      if ('BroadcastChannel' in window) {
-        const bc = new BroadcastChannel('chilld_recipe_channel');
-        bc.postMessage({ type: 'RECIPE_ADDED', recipe: newRecipe });
-        bc.close();
-      }
-    } catch (e) {
-      console.warn('Local recipe storage error:', e);
-    }
-
-    // 3. Post to backend API
-    try {
+      toast.loading('Submitting recipe...', { id: 'recipe-submit' });
       await api.post('/recipes', {
         name: newRecipe.name,
         description: newRecipe.description,
+        author: author,
         concentrate: newRecipe.concentrate,
         mood: newRecipe.mood,
         tags: newRecipe.tags,
@@ -201,11 +254,31 @@ export default function CreateRecipePage() {
         steps: newRecipe.steps,
         image: newRecipe.image,
       });
-    } catch (_) {
-      // Non-blocking
-    }
 
-    setIsSuccessModalOpen(true);
+      toast.success('Recipe submitted successfully!', { id: 'recipe-submit' });
+      window.dispatchEvent(new CustomEvent('recipes:updated'));
+
+      // Save local pending copy as fallback
+      try {
+        const PENDING_KEY = 'chilld_local_pending_recipes';
+        const raw = localStorage.getItem(PENDING_KEY);
+        const existing = raw ? JSON.parse(raw) : [];
+        localStorage.setItem(PENDING_KEY, JSON.stringify([newRecipe, ...existing]));
+      } catch (_) {}
+
+      // CLEAR 15-MINUTE DRAFT UPON SUCCESSFUL SUBMISSION
+      try {
+        localStorage.removeItem(DRAFT_KEY);
+      } catch (_) {}
+
+      // SHOW SUCCESS MODAL ONLY WHEN SUBMISSION SAYS SUCCESS
+      setIsSuccessModalOpen(true);
+
+    } catch (err) {
+      console.error('API error submitting recipe:', err);
+      toast.error(err.message || 'Submission failed. Your recipe form data is saved in draft cache (15 min). Please try again!', { id: 'recipe-submit', duration: 5000 });
+      // STRICT ABORT — DO NOT OPEN SUCCESS MODAL
+    }
   };
 
   const handleConfirmRedirect = () => {
@@ -226,6 +299,15 @@ export default function CreateRecipePage() {
       </section>
 
       <section className="create-recipe-shell create-recipe-workspace" aria-label="Create your coffee recipe">
+        {(recipeName || description || ingredients.length > 0) && (
+          <div className="create-recipe-draft-banner">
+            <span>📝 Recipe progress auto-saved in browser cache (Valid 15 min)</span>
+            <button type="button" className="clear-draft-btn" onClick={clearDraft}>
+              Clear Saved Form
+            </button>
+          </div>
+        )}
+
         {/* ── MEDIA & DETAILS CONFIGURATION ── */}
         <div className="create-recipe-workspace__top">
           <div className="create-recipe-media-column">
@@ -281,6 +363,16 @@ export default function CreateRecipePage() {
                 onChange={(event) => setRecipeName(event.target.value)}
                 placeholder="Ex. Johpresso"
                 maxLength={48}
+              />
+            </label>
+
+            <label className="create-recipe-field">
+              <span>Your Name / Handle (Optional)</span>
+              <input
+                value={authorName}
+                onChange={(event) => setAuthorName(event.target.value)}
+                placeholder="Ex. Alex / Coffee Mixologist"
+                maxLength={36}
               />
             </label>
 

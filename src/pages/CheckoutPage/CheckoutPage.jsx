@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   MapPin, CreditCard, Shield, Plus, Minus, Trash2, Check,
@@ -19,44 +19,94 @@ const PAYMENT_METHODS = [
   { id: 'cod', title: 'Cash on Delivery', subtitle: 'Pay when your coffee arrives', icon: Truck },
 ];
 
+const ADDRESSES_STORAGE_KEY = 'chilld_user_saved_addresses_v2';
+
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { items, removeItem, updateQty, getTotalPrice, clearCart } = useCartStore();
   const { createPaymentOrder, completePayment } = useOrderStore();
   const { phone: authPhone, userName: authName } = useAuthStore();
 
-  const [selectedAddressId, setSelectedAddressId] = useState('home');
-  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [addresses, setAddresses] = useState(() => {
+    try {
+      const saved = localStorage.getItem(ADDRESSES_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (_) {}
+    return [];
+  });
+
+  const [selectedAddressId, setSelectedAddressId] = useState(() => {
+    return addresses.length > 0 ? addresses[0].id : '';
+  });
+
+  const [showAddressForm, setShowAddressForm] = useState(() => addresses.length === 0);
   const [paymentMethod, setPaymentMethod] = useState('upi');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [addresses, setAddresses] = useState([
-    { id: 'home', type: 'Home', name: authName || 'Arya Kagathara', phone: authPhone || '+91 98765 43210', line1: 'Flat 402, Sunshine Heights', line2: '100 Feet Road, Indiranagar', city: 'Bengaluru', pincode: '560038', isDefault: true },
-  ]);
-  const [newAddr, setNewAddr] = useState({ name: authName || '', phone: authPhone || '', line1: '', line2: '', city: 'Bengaluru', pincode: '', type: 'Home' });
+
+  const [newAddr, setNewAddr] = useState({
+    name: authName || '',
+    phone: authPhone || '',
+    line1: '',
+    line2: '',
+    city: 'Bengaluru',
+    pincode: '',
+    type: 'Home'
+  });
+
+  // Keep addresses state synced with localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(ADDRESSES_STORAGE_KEY, JSON.stringify(addresses));
+    } catch (_) {}
+  }, [addresses]);
 
   const subtotal = getTotalPrice();
   const deliveryFee = subtotal >= 500 ? 0 : 40;
   const tax = Math.round(subtotal * 0.05);
   const grandTotal = subtotal + deliveryFee + tax;
-  const currentAddress = addresses.find(a => a.id === selectedAddressId) || addresses[0];
+  const currentAddress = addresses.find(a => a.id === selectedAddressId) || (addresses.length > 0 ? addresses[0] : null);
 
   const handleAddAddress = (e) => {
     e.preventDefault();
-    if (!newAddr.name || !newAddr.phone || !newAddr.line1 || !newAddr.pincode) {
-      toast.error('Please fill all required fields.');
+    if (!newAddr.name.trim() || !newAddr.phone.trim() || !newAddr.line1.trim() || !newAddr.pincode.trim()) {
+      toast.error('Please fill all required fields (*)');
       return;
     }
-    const created = { ...newAddr, id: `addr_${Date.now()}`, isDefault: false };
-    setAddresses([created, ...addresses]);
+    const created = {
+      ...newAddr,
+      id: `addr_${Date.now()}`,
+      isDefault: addresses.length === 0
+    };
+    const updated = [created, ...addresses];
+    setAddresses(updated);
     setSelectedAddressId(created.id);
     setShowAddressForm(false);
-    setNewAddr({ name: '', phone: '', line1: '', line2: '', city: 'Bengaluru', pincode: '', type: 'Home' });
-    toast.success('Address added!');
+    setNewAddr({ name: authName || '', phone: authPhone || '', line1: '', line2: '', city: 'Bengaluru', pincode: '', type: 'Home' });
+    toast.success('Delivery address saved!');
+  };
+
+  const handleDeleteAddress = (id, e) => {
+    e.stopPropagation();
+    const updated = addresses.filter(a => a.id !== id);
+    setAddresses(updated);
+    if (selectedAddressId === id) {
+      const nextId = updated.length > 0 ? updated[0].id : '';
+      setSelectedAddressId(nextId);
+      if (updated.length === 0) setShowAddressForm(true);
+    }
+    toast.success('Address removed.');
   };
 
   const handlePlaceOrder = async () => {
     if (items.length === 0) { toast.error('Your cart is empty!'); return; }
-    if (!currentAddress) { toast.error('Please select a delivery address.'); return; }
+    if (!currentAddress) {
+      toast.error('Please add and save your delivery address before placing order');
+      setShowAddressForm(true);
+      return;
+    }
     setIsProcessing(true);
 
     if (paymentMethod === 'cod') {
@@ -128,6 +178,9 @@ export default function CheckoutPage() {
                 <h3>Delivery Address</h3>
               </div>
               <div className="address-list">
+                {addresses.length === 0 && !showAddressForm && (
+                  <p className="no-address-text">No saved delivery address found. Please add your address below.</p>
+                )}
                 {addresses.map(addr => (
                   <label key={addr.id} className={`address-card ${selectedAddressId === addr.id ? 'selected' : ''}`}>
                     <input type="radio" name="address" value={addr.id} checked={selectedAddressId === addr.id} onChange={() => setSelectedAddressId(addr.id)} />
@@ -135,9 +188,12 @@ export default function CheckoutPage() {
                       <div className="address-top">
                         <span className="address-type">{addr.type}</span>
                         {addr.isDefault && <span className="default-badge">Default</span>}
+                        <button type="button" className="addr-delete-btn" onClick={(e) => handleDeleteAddress(addr.id, e)} title="Delete Address">
+                          <Trash2 size={13} />
+                        </button>
                       </div>
                       <p className="address-name">{addr.name}</p>
-                      <p className="address-text">{addr.line1}, {addr.line2}</p>
+                      <p className="address-text">{addr.line1}{addr.line2 ? `, ${addr.line2}` : ''}</p>
                       <p className="address-text">{addr.city} — {addr.pincode}</p>
                       <p className="address-phone"><Phone size={12} /> {addr.phone}</p>
                     </div>
@@ -145,7 +201,7 @@ export default function CheckoutPage() {
                 ))}
               </div>
               <button type="button" className="add-address-toggle" onClick={() => setShowAddressForm(!showAddressForm)}>
-                <Plus size={16} /> {showAddressForm ? 'Cancel' : 'Add New Address'}
+                <Plus size={16} /> {showAddressForm ? 'Cancel' : (addresses.length === 0 ? 'Enter Delivery Address' : 'Add New Address')}
               </button>
               {showAddressForm && (
                 <form className="address-form" onSubmit={handleAddAddress}>
@@ -187,29 +243,6 @@ export default function CheckoutPage() {
                     <div className="item-price">{formatPrice(item.price * item.qty)}</div>
                     <button className="item-remove" onClick={() => removeItem(item.cartKey)}><Trash2 size={14} /></button>
                   </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Payment Section */}
-            <section className="checkout-section">
-              <div className="section-header">
-                <span className="section-num">3</span>
-                <h3>Payment Method</h3>
-              </div>
-              <div className="payment-list">
-                {PAYMENT_METHODS.map(({ id, title, subtitle, icon: Icon, badge }) => (
-                  <label key={id} className={`payment-card ${paymentMethod === id ? 'selected' : ''}`}>
-                    <input type="radio" name="payment" value={id} checked={paymentMethod === id} onChange={() => setPaymentMethod(id)} />
-                    <Icon size={20} className="payment-icon" />
-                    <div className="payment-info">
-                      <div className="payment-title-row">
-                        <span className="payment-title">{title}</span>
-                        {badge && <span className="payment-badge">{badge}</span>}
-                      </div>
-                      <span className="payment-sub">{subtitle}</span>
-                    </div>
-                  </label>
                 ))}
               </div>
             </section>

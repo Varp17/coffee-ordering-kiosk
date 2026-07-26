@@ -15,6 +15,37 @@
   margin-inline: auto;
 }
 
+.create-recipe-draft-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  color: #1E40AF;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.clear-draft-btn {
+  background: transparent;
+  border: 1px solid #93C5FD;
+  color: #1E40AF;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.clear-draft-btn:hover {
+  background: #DBEAFE;
+  color: #1E3A8A;
+}
+
 .create-recipe-hero {
   position: relative;
   isolation: isolate;

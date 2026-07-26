@@ -39,10 +39,16 @@ import { useUserStore } from '@/store/useUserStore';
 import useProportionalScaling from '@/hooks/useProportionalScaling';
 import './App.css';
 
-/* Guard: redirect to /welcome if user hasn't completed onboarding */
+/* Guard: redirect to /welcome only on fresh root visits if user hasn't completed onboarding */
 function RequireWelcome({ children }) {
   const hasCompleted = useUserStore((s) => s.hasCompletedWelcome);
-  if (!hasCompleted) return <Navigate to="/welcome" replace />;
+  const { pathname } = useLocation();
+
+  const isDirectContentRoute = ['/recipes', '/menu', '/create-recipe', '/recipe-details', '/store', '/contact', '/b2b', '/policies', '/checkout', '/order-confirm', '/profile'].some(r => pathname.startsWith(r));
+
+  if (!hasCompleted && pathname === '/' && !isDirectContentRoute) {
+    return <Navigate to="/welcome" replace />;
+  }
   return children;
 }
 

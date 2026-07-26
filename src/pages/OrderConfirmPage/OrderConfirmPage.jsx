@@ -93,14 +93,14 @@ export default function OrderConfirmPage() {
 
           <span className="confirm-eyebrow">Order Placed Successfully</span>
           <h1 className="confirm-title">Thank you for your order!</h1>
-          <p className="confirm-order-id">Order ID: <strong>{orderId}</strong></p>
+          <p className="confirm-order-id">Order ID: <strong>{token || orderId}</strong></p>
 
           {/* ── TOKEN BOX ── */}
           <div className="token-display-box">
             <span className="token-lbl">Your Token</span>
-            <div className="token-number">{token}</div>
+            <div className="token-number">{token || orderId}</div>
             <p className="token-desc">
-              Show this token number at the pickup counter or table.
+              Your order has been successfully placed on the CHILLD Website.
             </p>
           </div>
 
@@ -144,8 +144,8 @@ export default function OrderConfirmPage() {
           <div className="confirm-location-card">
             <MapPin size={16} />
             <div className="loc-card-details">
-              <h4>{selectedLocation?.shortName || 'Cafe Location'}</h4>
-              <p>{orderType === 'dine-in' ? `Dine In — Table #${tableNumber || 'Pending'}` : 'Takeaway Counter'}</p>
+              <h4>Order Source</h4>
+              <p>Order Placed at CHILLD Website</p>
             </div>
           </div>
 

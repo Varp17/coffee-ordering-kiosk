@@ -77,6 +77,7 @@ export const useOrderStore = create((set, get) => ({
 
       set({
         orderId: order.id,
+        orderNumber: order.order_number || order.id,
         token: order.order_number || order.id.slice(0, 8).toUpperCase(),
         status: 'placing',
         placedAt: new Date().toISOString(),
